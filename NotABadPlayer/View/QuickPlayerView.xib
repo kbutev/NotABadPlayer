@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="QuickPlayerView" customModule="NotABadPlayer" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="heA-3X-0NM">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="92x-Ay-PFt">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_album_unknown" translatesAutoresizingMaskIntoConstraints="NO" id="iHI-s6-pcL">
+                                    <rect key="frame" x="0.0" y="0.0" width="372" height="48"/>
+                                </imageView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qxe-z5-jYf">
+                                    <rect key="frame" x="372" y="0.0" width="42" height="48"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Mf-16-aOq">
+                                            <rect key="frame" x="0.0" y="0.0" width="42" height="27.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2J-S7-icF">
+                                            <rect key="frame" x="0.0" y="27.5" width="42" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lnm-GN-nDr">
+                            <rect key="frame" x="0.0" y="48" width="414" height="770"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xS1-q4-Mux">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="740"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="IXx-Gy-UMr">
+                                            <rect key="frame" x="0.0" y="346" width="83" height="48"/>
+                                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </imageView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_previous" translatesAutoresizingMaskIntoConstraints="NO" id="1na-pL-kn0">
+                                            <rect key="frame" x="83" y="346" width="82.5" height="48"/>
+                                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </imageView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_play" translatesAutoresizingMaskIntoConstraints="NO" id="g4l-RX-6cP">
+                                            <rect key="frame" x="165.5" y="346" width="83" height="48"/>
+                                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </imageView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_next" translatesAutoresizingMaskIntoConstraints="NO" id="Pfy-K8-L84">
+                                            <rect key="frame" x="248.5" y="346" width="82.5" height="48"/>
+                                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </imageView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_order_forwards" translatesAutoresizingMaskIntoConstraints="NO" id="b55-uw-kmn">
+                                            <rect key="frame" x="331" y="346" width="83" height="48"/>
+                                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </imageView>
+                                    </subviews>
+                                </stackView>
+                                <slider opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="EXn-AZ-TAm">
+                                    <rect key="frame" x="-2" y="740" width="418" height="31"/>
+                                    <color key="tintColor" red="1" green="0.62527403622268296" blue="0.014185282698119028" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </slider>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="heA-3X-0NM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="Cif-Qm-wC0"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="heA-3X-0NM" secondAttribute="bottom" id="E3D-65-Pue"/>
+                <constraint firstAttribute="trailing" secondItem="heA-3X-0NM" secondAttribute="trailing" id="cvd-sc-stO"/>
+                <constraint firstItem="heA-3X-0NM" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="xVg-jw-aW9"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="mediaButtonsStackView" destination="Lnm-GN-nDr" id="cGb-N7-0dS"/>
+                <outlet property="nextMediaButton" destination="Pfy-K8-L84" id="9ez-ps-raG"/>
+                <outlet property="playMediaButton" destination="g4l-RX-6cP" id="Lok-g1-vQE"/>
+                <outlet property="playOrderMediaButton" destination="b55-uw-kmn" id="8c5-N8-qsK"/>
+                <outlet property="playlistMediaButton" destination="IXx-Gy-UMr" id="9dm-eh-vbR"/>
+                <outlet property="previousMediaButton" destination="1na-pL-kn0" id="XlP-ZH-xm4"/>
+                <outlet property="primaryStackView" destination="heA-3X-0NM" id="hmz-uY-S3B"/>
+                <outlet property="trackInfoArtCoverImage" destination="iHI-s6-pcL" id="S6N-0N-Kcp"/>
+                <outlet property="trackInfoDurationText" destination="b2J-S7-icF" id="zby-Pa-4el"/>
+                <outlet property="trackInfoStackView" destination="92x-Ay-PFt" id="ap7-FM-MSZ"/>
+                <outlet property="trackInfoTextStackView" destination="qxe-z5-jYf" id="mwK-nX-yQG"/>
+                <outlet property="trackInfoTitleText" destination="6Mf-16-aOq" id="phO-JG-tMH"/>
+                <outlet property="trackSeekBarSlider" destination="EXn-AZ-TAm" id="U3A-ac-I3j"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="cover_album_unknown" width="48" height="48"/>
+        <image name="media_next" width="48" height="48"/>
+        <image name="media_order_forwards" width="48" height="48"/>
+        <image name="media_play" width="48" height="48"/>
+        <image name="media_playlist" width="48" height="48"/>
+        <image name="media_previous" width="48" height="48"/>
+    </resources>
+</document>
