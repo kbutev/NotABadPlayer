@@ -36,7 +36,17 @@ struct AudioTrackSource: Codable {
     func getSourcePlaylist(audioInfo: AudioInfo, playingTrack: AudioTrack) -> AudioPlaylist? {
         if (isAlbum())
         {
+            if let albumID = Int(value)
+            {
+                if let album = audioInfo.getAlbum(byID: NSNumber(value: albumID))
+                {
+                    let tracks = audioInfo.getAlbumTracks(album: album)
+                    
+                    return AudioPlaylist(name: album.albumTitle, tracks: tracks, startWithTrack: playingTrack)
+                }
+            }
             
+            return nil
         }
         
         if (isPlaylist())

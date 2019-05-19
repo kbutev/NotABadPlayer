@@ -41,8 +41,8 @@ class QuickPlayerView : UIView
     
     override func awakeFromNib() {
         // Text default values
-        trackInfoTitleText.text = "Nothing playing"
-        trackInfoDurationText.text = "0:00/0:00"
+        trackInfoTitleText.text = Text.value(.NothingPlaying)
+        trackInfoDurationText.text = Text.value(.DoubleZeroTimers)
         
         setup()
     }
@@ -63,10 +63,8 @@ class QuickPlayerView : UIView
         
         trackInfoArtCoverImage.translatesAutoresizingMaskIntoConstraints = false
         trackInfoArtCoverImage.widthAnchor.constraint(equalToConstant: 64).isActive = true
-        trackInfoArtCoverImage.heightAnchor.constraint(equalTo: trackInfoStackView.heightAnchor).isActive = true
         
         trackInfoTextStackView.translatesAutoresizingMaskIntoConstraints = false
-        trackInfoTextStackView.heightAnchor.constraint(equalTo: trackInfoStackView.heightAnchor).isActive = true
         
         // Constraints - media stack
         mediaButtonsStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -134,7 +132,7 @@ class QuickPlayerView : UIView
         trackInfoTitleText.text = track.title
     }
     
-    func updateButtonsStates(playing: Bool) {
+    func updatePlayButtonState(playing: Bool) {
         if playing
         {
             playMediaButton.image = UIImage(named: "media_pause")
@@ -145,8 +143,8 @@ class QuickPlayerView : UIView
         }
     }
     
-    func updatePlayOrderButtonState(playOrder: AudioPlayOrder) {
-        switch playOrder
+    func updatePlayOrderButtonState(order: AudioPlayOrder) {
+        switch order
         {
         case .FORWARDS:
             playOrderMediaButton.image = UIImage(named: "media_order_forwards")
@@ -172,7 +170,7 @@ extension QuickPlayerView {
     @objc public func actionPlaylist(sender: Any) {
         UIAnimations.animateImageClicked(self.playlistMediaButton)
         
-        delegate?.onPlayerButtonClick(input: .PLAYER_RECALL)
+        delegate?.onPlaylistButtonClick()
     }
     
     @objc public func actionPrevious(sender: Any) {

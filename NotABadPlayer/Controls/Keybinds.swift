@@ -83,33 +83,32 @@ class Keybinds {
             AudioPlayer.shared.jumpBackwards(15);
             break
         case .CHANGE_PLAY_ORDER:
-            if let playlist = AudioPlayer.shared.playlist
+            let player = AudioPlayer.shared
+            
+            let order = player.playOrder
+            
+            switch order
             {
-                let order = playlist.playOrder
-                
-                switch order
-                {
-                case .FORWARDS:
-                    playlist.playOrder = .FORWARDS_REPEAT
-                    break
-                case .FORWARDS_REPEAT:
-                    playlist.playOrder = .ONCE_FOREVER
-                    break
-                case .ONCE_FOREVER:
-                    playlist.playOrder = .SHUFFLE
-                    break
-                case .SHUFFLE:
-                    playlist.playOrder = .FORWARDS
-                    break
-                default:
-                    playlist.playOrder = .FORWARDS
-                    break
-                }
+            case .FORWARDS:
+                player.playOrder = .FORWARDS_REPEAT
+                break
+            case .FORWARDS_REPEAT:
+                player.playOrder = .ONCE_FOREVER
+                break
+            case .ONCE_FOREVER:
+                player.playOrder = .SHUFFLE
+                break
+            case .SHUFFLE:
+                player.playOrder = .FORWARDS
+                break
+            default:
+                player.playOrder = .FORWARDS
+                break
             }
             
             break
         case .RECALL:
-            let toDo = 5 // Implement functionality
+            AudioPlayer.shared.playPreviousInPlayHistory()
             break
         }
         

@@ -35,7 +35,22 @@ class PlaylistPresenter: BasePresenter
         let actionDelegate = PlaylistViewActionDelegate(view: delegate)
         self.collectionActionDelegate = actionDelegate
         
-        delegate.onAlbumSongsLoad(dataSource: dataSource, actionDelegate: actionDelegate)
+        let audioPlayer = AudioPlayer.shared
+        var scrollToIndex: UInt = 0
+        
+        if let playlist =  audioPlayer.playlist
+        {
+            for e in 0..<playlist.tracks.count
+            {
+                if playlist.tracks[e] == playlist.playingTrack
+                {
+                    scrollToIndex = UInt(e)
+                    break
+                }
+            }
+        }
+        
+        delegate.onAlbumSongsLoad(dataSource: dataSource, actionDelegate: actionDelegate, scrollToIndex: scrollToIndex)
     }
     
     func onAlbumClick(index: UInt) {
@@ -65,7 +80,7 @@ class PlaylistPresenter: BasePresenter
     }
     
     func onPlayOrderButtonClick() {
-        Logging.log(PlaylistPresenter.self, "Change play order")
+        Logging.log(PlaylistPresenter.self, "Action - change play order")
         
         let _ = Keybinds.shared.performAction(action: .CHANGE_PLAY_ORDER)
     }

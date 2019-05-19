@@ -38,4 +38,8 @@ class SettingsViewController: UIViewController, BaseViewController {
     func onPlayOrderButtonClick() {
         
     }
+    
+    func onPlaylistButtonClick() {
+        
+    }
 }

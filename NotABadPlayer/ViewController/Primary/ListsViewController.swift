@@ -38,5 +38,9 @@ class ListsViewController: UIViewController, BaseViewController {
     func onPlayOrderButtonClick() {
         
     }
+    
+    func onPlaylistButtonClick() {
+        
+    }
 }
 

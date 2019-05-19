@@ -16,15 +16,13 @@ enum AudioPlayOrder: String, Codable {
     case SHUFFLE;
 }
 
-class AudioPlaylist: Codable {
+struct AudioPlaylist: Codable {
     public let name: String
-    
-    public var playOrder: AudioPlayOrder
     
     private (set) var tracks: [AudioTrack]
     private (set) var firstTrack: AudioTrack
     
-    private (set) var isPlaying: Bool
+    private (set) var isPlaying: Bool = false
     private (set) var playingTrackPosition: Int
     
     public var playingTrack: AudioTrack {
@@ -33,11 +31,11 @@ class AudioPlaylist: Codable {
         }
     }
     
-    convenience init(name: String, startWithTrack: AudioTrack) {
+    init(name: String, startWithTrack: AudioTrack) {
         self.init(name: name, tracks: [startWithTrack], startWithTrack: startWithTrack)
     }
     
-    convenience init(name: String, tracks: [AudioTrack]) {
+    init(name: String, tracks: [AudioTrack]) {
         self.init(name: name, tracks: tracks, startWithTrack: nil)
     }
     
@@ -47,11 +45,9 @@ class AudioPlaylist: Codable {
         }
         
         self.name = name;
-        self.playOrder = AudioPlayOrder.FORWARDS;
-        self.tracks = tracks;
+        self.tracks = tracks
         self.firstTrack = firstTrack
-        self.isPlaying = true;
-        self.playingTrackPosition = 0;
+        self.playingTrackPosition = 0
         
         // Set proper source value
         let isAlbumList = isAlbumPlaylist()
@@ -101,7 +97,11 @@ class AudioPlaylist: Codable {
         return nil
     }
     
-    func goToTrackBasedOnPlayOrder() {
+    mutating func playCurrent() {
+        isPlaying = true
+    }
+    
+    mutating func goToTrackBasedOnPlayOrder(playOrder: AudioPlayOrder) {
         isPlaying = true
         
         switch playOrder
@@ -123,7 +123,7 @@ class AudioPlaylist: Codable {
         }
     }
     
-    func goToNextPlayingTrack() {
+    mutating func goToNextPlayingTrack() {
         isPlaying = true
         
         if (playingTrackPosition + 1 == tracks.count)
@@ -136,7 +136,7 @@ class AudioPlaylist: Codable {
         }
     }
     
-    func goToNextPlayingTrackRepeat() {
+    mutating func goToNextPlayingTrackRepeat() {
         isPlaying = true
         
         if (playingTrackPosition + 1 < tracks.count)
@@ -149,7 +149,7 @@ class AudioPlaylist: Codable {
         }
     }
     
-    func goToPreviousPlayingTrack() {
+    mutating func goToPreviousPlayingTrack() {
         isPlaying = true
         
         if (playingTrackPosition - 1 < 0)
@@ -163,7 +163,7 @@ class AudioPlaylist: Codable {
         }
     }
     
-    func goToTrackByShuffle() {
+    mutating func goToTrackByShuffle() {
         isPlaying = true
         
         let min = 0

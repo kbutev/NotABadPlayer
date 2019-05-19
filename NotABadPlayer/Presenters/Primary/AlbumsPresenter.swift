@@ -42,6 +42,8 @@ class AlbumsPresenter: BasePresenter
     func onAlbumClick(index: UInt) {
         let item = self.albums[Int(index)]
         
+        Logging.log(AlbumsPresenter.self, "Open playlist screen for album '\(item.albumTitle)'")
+        
         self.delegate?.openPlaylistScreen(audioInfo: audioInfo, album: item)
     }
     
@@ -64,7 +66,24 @@ class AlbumsPresenter: BasePresenter
     }
     
     func onOpenPlaylistButtonClick() {
+        guard let playlist = AudioPlayer.shared.playlist else {
+            return
+        }
         
+        // Album playlist? Open album from here
+        if playlist.isAlbumPlaylist()
+        {
+            for e in 0..<albums.count
+            {
+                let album = albums[e]
+                
+                if album.albumTitle == playlist.name
+                {
+                    self.onAlbumClick(index: UInt(e))
+                    return
+                }
+            }
+        }
     }
     
     func onSearchResultClick(index: UInt) {

@@ -40,6 +40,7 @@ class TabController : UITabBarController, UITabBarControllerDelegate {
         GeneralStorage.shared.initialize()
         AudioPlayer.shared.initialize(audioInfo: audioStorage)
         QuickPlayerService.shared.initialize(audioPlayer: AudioPlayer.shared)
+        GeneralStorage.shared.restorePlayerState()
         
         setup()
     }

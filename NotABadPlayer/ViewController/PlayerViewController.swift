@@ -80,7 +80,7 @@ class PlayerViewController: UIViewController, BaseViewController {
     func onPlayerSeekChanged(positionInPercentage: Double) {
         let duration = AudioPlayer.shared.durationSec
         
-        AudioPlayer.shared.seekTo(seconds: Int(duration * positionInPercentage))
+        AudioPlayer.shared.seekTo(seconds: duration * positionInPercentage)
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -89,6 +89,10 @@ class PlayerViewController: UIViewController, BaseViewController {
     
     func onPlayOrderButtonClick() {
         presenter?.onPlayOrderButtonClick()
+    }
+    
+    func onPlaylistButtonClick() {
+        presenter?.onOpenPlaylistButtonClick()
     }
 }
 
@@ -121,6 +125,10 @@ extension PlayerViewController : AudioPlayerObserver {
     
     func onPlayerResume(track: AudioTrack) {
         self.baseView?.updatePlayButtonState(player: AudioPlayer.shared)
+    }
+    
+    func onPlayOrderChange(order: AudioPlayOrder) {
+        self.baseView?.updatePlayOrderButtonState(order: order)
     }
 }
 

@@ -21,9 +21,9 @@ struct Serializing {
     }
     
     public static func deserialize<T: Decodable>(fromData data: String) -> T? {
-        if let json = data.data(using: .utf8)
+        if let encodedData = Data(base64Encoded: data)
         {
-            if let result = try? JSONDecoder().decode(T.self, from: json)
+            if let result = try? JSONDecoder().decode(T.self, from: encodedData)
             {
                 return result
             }

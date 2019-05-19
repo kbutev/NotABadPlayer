@@ -77,6 +77,10 @@ class AlbumsViewController: UIViewController, BaseViewController {
         presenter?.onPlayOrderButtonClick()
     }
     
+    func onPlaylistButtonClick() {
+        presenter?.onOpenPlaylistButtonClick()
+    }
+    
     func openPlayerScreen(playlist: AudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController(withPresenter: presenter)
@@ -127,11 +131,11 @@ extension AlbumsViewController : QuickPlayerObserver {
         baseView?.updateMediaInfo(track: track)
     }
     
-    func updateButtonsStates(isPlaying: Bool) {
-        baseView?.updateButtonsStates(playing: isPlaying)
+    func updatePlayButtonState(isPlaying: Bool) {
+        baseView?.updatePlayButtonState(playing: isPlaying)
     }
     
-    func updatePlayOrderButtonState(playOrder: AudioPlayOrder) {
-        baseView?.updatePlayOrderButtonState(playOrder: playOrder)
+    func updatePlayOrderButtonState(order: AudioPlayOrder) {
+        baseView?.updatePlayOrderButtonState(order: order)
     }
 }
