@@ -27,33 +27,12 @@ struct QuickPlayerObserverValue
 protocol QuickPlayerObserver : NSObject {
     func updateTime(currentTime: Double, totalDuration: Double)
     func updateMediaInfo(track: AudioTrack)
-    func updateButtonsStates(isPlaying: Bool)
-    func updatePlayOrderButtonState(playOrder: AudioPlayOrder)
-}
-
-struct QuickPlayerAudioState {
-    var playOrder: AudioPlayOrder = .FORWARDS
-    
-    init() {
-        
-    }
-    
-    init(player: AudioPlayer) {
-        playOrder = player.playlist?.playOrder ?? .FORWARDS
-    }
-    
-    func isStateOutdated(player: AudioPlayer) -> Bool {
-        if let playlist = player.playlist
-        {
-            return playOrder != playlist.playOrder
-        }
-        
-        return false
-    }
+    func updatePlayButtonState(isPlaying: Bool)
+    func updatePlayOrderButtonState(order: AudioPlayOrder)
 }
 
 class QuickPlayerService : NSObject {
-    public static let LOOP_INTERVAL_SECONDS: Double = 0.5
+    public static let LOOP_INTERVAL_SECONDS: Double = 0.4
     
     public static let shared = QuickPlayerService()
     
@@ -70,8 +49,6 @@ class QuickPlayerService : NSObject {
     private var observers: [QuickPlayerObserverValue] = []
     
     private var timer: Timer?
-    
-    private var audioState: QuickPlayerAudioState = QuickPlayerAudioState()
     
     func initialize(audioPlayer: AudioPlayer) {
         if self.timer != nil
@@ -133,8 +110,14 @@ extension QuickPlayerService {
             
             observer.updateMediaInfo(track: currentTrack)
             observer.updateTime(currentTime: currentTime, totalDuration: duration)
-            observer.updateButtonsStates(isPlaying: player.isPlaying)
-            observer.updatePlayOrderButtonState(playOrder: playlist.playOrder)
+            observer.updatePlayButtonState(isPlaying: player.isPlaying)
+            observer.updatePlayOrderButtonState(order: player.playOrder)
+        }
+        else
+        {
+            observer.updateTime(currentTime: 0, totalDuration: 0)
+            observer.updatePlayButtonState(isPlaying: false)
+            observer.updatePlayOrderButtonState(order: player.playOrder)
         }
     }
 }
@@ -148,20 +131,6 @@ extension QuickPlayerService : LooperClient {
         for observer in observers
         {
             observer.value?.updateTime(currentTime: currentTime, totalDuration: duration)
-        }
-        
-        // Audio player state check
-        if audioState.isStateOutdated(player: player)
-        {
-            audioState = QuickPlayerAudioState(player: player)
-            
-            for observer in observers
-            {
-                if let value = observer.value
-                {
-                    fullyUpdateObserver(value)
-                }
-            }
         }
     }
 }
@@ -177,28 +146,35 @@ extension QuickPlayerService : AudioPlayerObserver {
     func onPlayerFinish() {
         for observer in observers
         {
-            observer.value?.updateButtonsStates(isPlaying: false)
+            observer.value?.updatePlayButtonState(isPlaying: false)
         }
     }
     
     func onPlayerStop() {
         for observer in observers
         {
-            observer.value?.updateButtonsStates(isPlaying: false)
+            observer.value?.updatePlayButtonState(isPlaying: false)
         }
     }
     
     func onPlayerPause(track: AudioTrack) {
         for observer in observers
         {
-            observer.value?.updateButtonsStates(isPlaying: false)
+            observer.value?.updatePlayButtonState(isPlaying: false)
         }
     }
     
     func onPlayerResume(track: AudioTrack) {
         for observer in observers
         {
-            observer.value?.updateButtonsStates(isPlaying: true)
+            observer.value?.updatePlayButtonState(isPlaying: true)
+        }
+    }
+    
+    func onPlayOrderChange(order: AudioPlayOrder) {
+        for observer in observers
+        {
+            observer.value?.updatePlayOrderButtonState(order: order)
         }
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PlaylistViewDelegate : NSObject {
-    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate)
+    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate, scrollToIndex: UInt)
     func onTrackClicked(index: UInt)
     func openPlayerScreen(playlist: AudioPlaylist)
     
@@ -80,13 +80,19 @@ class PlaylistViewController: UIViewController, BaseViewController {
     func onPlayOrderButtonClick() {
         presenter?.onPlayOrderButtonClick()
     }
+    
+    func onPlaylistButtonClick() {
+        presenter?.onOpenPlaylistButtonClick()
+    }
 }
 
 extension PlaylistViewController : PlaylistViewDelegate {
-    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate) {
+    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate, scrollToIndex: UInt) {
         self.baseView?.collectionDataSource = dataSource
         self.baseView?.collectionDelegate = actionDelegate
         self.baseView?.reloadData()
+        
+        self.baseView?.scrollDownToSelectedTrack(index: scrollToIndex)
     }
     
     func onTrackClicked(index: UInt) {
@@ -115,12 +121,12 @@ extension PlaylistViewController : QuickPlayerObserver {
         baseView?.updateMediaInfo(track: track)
     }
     
-    func updateButtonsStates(isPlaying: Bool) {
-        baseView?.updateButtonsStates(playing: isPlaying)
+    func updatePlayButtonState(isPlaying: Bool) {
+        baseView?.updatePlayButtonState(playing: isPlaying)
     }
     
-    func updatePlayOrderButtonState(playOrder: AudioPlayOrder) {
-        baseView?.updatePlayOrderButtonState(playOrder: playOrder)
+    func updatePlayOrderButtonState(order: AudioPlayOrder) {
+        baseView?.updatePlayOrderButtonState(order: order)
     }
 }
 

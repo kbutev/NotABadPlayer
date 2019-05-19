@@ -16,4 +16,5 @@ protocol BaseViewController : NSObject {
     func onPlayerSeekChanged(positionInPercentage: Double)
     func onPlayerButtonClick(input: ApplicationInput)
     func onPlayOrderButtonClick()
+    func onPlaylistButtonClick()
 }

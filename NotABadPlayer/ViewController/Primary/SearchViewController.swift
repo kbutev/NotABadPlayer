@@ -38,5 +38,9 @@ class SearchViewController: UIViewController, BaseViewController {
     func onPlayOrderButtonClick() {
         
     }
+    
+    func onPlaylistButtonClick() {
+        
+    }
 }
 

@@ -111,20 +111,44 @@ class GeneralStorage {
             return
         }
         
-        let playlistSerialized = Serializing.serialize(object: playlist)
-        
-        storage.set(playlistSerialized, forKey: "player_current_playlist")
-        storage.set(player.currentPositionMSec, forKey: "player_current_position")
+        if let playlistSerialized = Serializing.serialize(object: playlist)
+        {
+            storage.set(player.playOrder.rawValue, forKey: "player_play_order")
+            storage.set(playlistSerialized, forKey: "player_current_playlist")
+            storage.set(player.currentPositionSec, forKey: "player_current_position")
+            
+            Logging.log(GeneralStorage.self, "Saved audio player state to storage.")
+        }
+        else
+        {
+            storage.set(AudioPlayOrder.FORWARDS, forKey: "player_play_order")
+            storage.set("", forKey: "player_current_playlist")
+            storage.set(0, forKey: "player_current_position")
+            
+            Logging.log(GeneralStorage.self, "Failed to save audio player state to storage.")
+        }
     }
     
     func restorePlayerState() {
         let player = AudioPlayer.shared
         
+        guard let playOrderAsString = storage.string(forKey: "player_play_order") else {
+            return
+        }
+        
         guard let playlistAsString = storage.string(forKey: "player_current_playlist") else {
             return
         }
         
-        guard let playlist:AudioPlaylist = Serializing.deserialize(fromData: playlistAsString) else {
+        Logging.log(GeneralStorage.self, "Restoring audio player state...")
+        
+        guard let playOrder: AudioPlayOrder = AudioPlayOrder(rawValue: playOrderAsString) else {
+            Logging.log(GeneralStorage.self, "Error: could not restore player audio state")
+            return
+        }
+        
+        guard let playlist: AudioPlaylist = Serializing.deserialize(fromData: playlistAsString) else {
+            Logging.log(GeneralStorage.self, "Error: could not restore player audio state")
             return
         }
         
@@ -135,14 +159,17 @@ class GeneralStorage {
             return
         }
         
-        player.setPlaylistPlayOrder(playlist.playOrder)
+        player.playOrder = playOrder
         
-        let currentPositionMSec = storage.integer(forKey: "player_current_position")
+        let currentPositionSec = storage.double(forKey: "player_current_position")
         
-        player.seekTo(mseconds: currentPositionMSec)
+        player.seekTo(seconds: currentPositionSec)
         
         // Always pause by default when restoring state from storage
         player.pause()
+        
+        // Success
+        Logging.log(GeneralStorage.self, "Successfully restored the audio player state!")
     }
     
     func savePlayerPlayHistoryState() {

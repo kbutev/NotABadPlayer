@@ -15,6 +15,8 @@ class AudioTrack: Equatable, Codable {
     public let artist : String
     public let albumTitle : String
     
+    private let _albumID : String
+    
     public var albumID : NSNumber {
         get {
             if let value = Int(_albumID)
@@ -26,7 +28,7 @@ class AudioTrack: Equatable, Codable {
         }
     }
     
-    private let _albumID : String
+    public var _albumCover : MPMediaItemArtwork? = nil
     
     public var albumCover : MPMediaItemArtwork? {
         get {
@@ -41,16 +43,17 @@ class AudioTrack: Equatable, Codable {
             
             let query = MPMediaQuery(filterPredicates: set)
             
-            if let item = query.collections?.first
+            if let collection = query.collections?.first
             {
-                _albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
+                if let item = collection.items.first
+                {
+                    _albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
+                }
             }
             
             return _albumCover
         }
     }
-    
-    public var _albumCover : MPMediaItemArtwork? = nil
     
     public let trackNum : String
     public let durationInSeconds : Double
@@ -125,6 +128,7 @@ class AudioTrack: Equatable, Codable {
         return "\(strHr):\(strMin):\(strSec)"
     }
     
+    // Serialization keys
     // MPMediaItemArtwork should not be codable
     private enum CodingKeys: String, CodingKey {
         case filePath

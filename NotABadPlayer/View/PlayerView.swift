@@ -47,8 +47,8 @@ class PlayerView : UIView
         self.titleText.text = ""
         self.playlistText.text = ""
         self.artistText.text = ""
-        self.currentTimeText.text = "0:00"
-        self.totalDurationText.text = "0:00"
+        self.currentTimeText.text = Text.value(.ZeroTimer)
+        self.totalDurationText.text = Text.value(.ZeroTimer)
         
         setup()
     }
@@ -134,7 +134,7 @@ class PlayerView : UIView
         currentTimeText.text = AudioTrack.secondsToString(currentPosition)
         
         // Play order button update
-        updatePlayOrderButtonState(player: player)
+        updatePlayOrderButtonState(order: player.playOrder)
         
         // Volume bar update
         
@@ -148,7 +148,6 @@ class PlayerView : UIView
         self.playlistText.text = track.albumTitle
         self.artistText.text = track.artist
         
-        self.currentTimeText.text = "0:00"
         self.totalDurationText.text = track.duration
         
         // Update play button state
@@ -166,27 +165,24 @@ class PlayerView : UIView
         }
     }
     
-    public func updatePlayOrderButtonState(player: AudioPlayer) {
-        if let playlist = player.playlist
+    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
+        switch order
         {
-            switch playlist.playOrder
-            {
-            case .FORWARDS:
-                playOrderMediaButton.image = UIImage(named: "media_order_forwards")
-                break
-            case .FORWARDS_REPEAT:
-                playOrderMediaButton.image = UIImage(named: "media_order_forwards_repeat")
-                break
-            case .ONCE_FOREVER:
-                playOrderMediaButton.image = UIImage(named: "media_order_repeat_forever")
-                break
-            case .SHUFFLE:
-                playOrderMediaButton.image = UIImage(named: "media_order_shuffle")
-                break
-            default:
-                playOrderMediaButton.image = UIImage(named: "media_order_forwards")
-                break
-            }
+        case .FORWARDS:
+        playOrderMediaButton.image = UIImage(named: "media_order_forwards")
+        break
+        case .FORWARDS_REPEAT:
+        playOrderMediaButton.image = UIImage(named: "media_order_forwards_repeat")
+        break
+        case .ONCE_FOREVER:
+        playOrderMediaButton.image = UIImage(named: "media_order_repeat_forever")
+        break
+        case .SHUFFLE:
+        playOrderMediaButton.image = UIImage(named: "media_order_shuffle")
+        break
+        default:
+        playOrderMediaButton.image = UIImage(named: "media_order_forwards")
+        break
         }
     }
 }

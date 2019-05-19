@@ -65,9 +65,9 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         // Highlight cells that contain the currently playing track
         cell.backgroundColor = .clear
         
-        if let playlist = AudioPlayer.shared.playlist
+        if let playerPlaylist = AudioPlayer.shared.playlist
         {
-            if playlist.playingTrack == item
+            if playerPlaylist.playingTrack == item && playlist.name == playerPlaylist.name
             {
                 cell.backgroundColor = PlaylistViewDataSource.HIGHLIGHT_COLOR
             }
@@ -88,7 +88,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
             totalDuration += track.durationInSeconds
         }
         
-        return "\(playlist.tracks.count) tracks, duration \(AudioTrack.secondsToString(totalDuration))"
+        return Text.value(.ListDescription, "\(playlist.tracks.count)", "\(AudioTrack.secondsToString(totalDuration))")
     }
 }
 
@@ -146,22 +146,30 @@ class PlaylistView : UIView
         }
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     override func awakeFromNib() {
         setup()
     }
     
     private func setup() {
-        let guide = self
+        let guide = self.safeAreaLayoutGuide
         let navigationLayoutHeight = TabController.TAB_SIZE.height
         
         // Quick player view
         quickPlayerView = QuickPlayerView.create(owner: self)
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
-        quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
-        quickPlayerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
-        quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
+        quickPlayerView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
+        quickPlayerView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
+        quickPlayerView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        quickPlayerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2).isActive = true
         
         // Collection view
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -196,20 +204,29 @@ class PlaylistView : UIView
         collectionView.reloadData()
     }
     
+    public func scrollDownToSelectedTrack(index: UInt) {
+        DispatchQueue.main.async {
+            self.collectionView.layoutIfNeeded()
+            self.collectionView.scrollToItem(at: IndexPath(row: Int(index), section: 0), at: .centeredVertically, animated: false)
+        }
+    }
+    
     func updateTime(currentTime: Double, totalDuration: Double) {
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
     func updateMediaInfo(track: AudioTrack) {
         quickPlayerView.updateMediaInfo(track: track)
+        
+        reloadData()
     }
     
-    func updateButtonsStates(playing: Bool) {
-        quickPlayerView.updateButtonsStates(playing: playing)
+    func updatePlayButtonState(playing: Bool) {
+        quickPlayerView.updatePlayButtonState(playing: playing)
     }
     
-    func updatePlayOrderButtonState(playOrder: AudioPlayOrder) {
-        quickPlayerView.updatePlayOrderButtonState(playOrder: playOrder)
+    func updatePlayOrderButtonState(order: AudioPlayOrder) {
+        quickPlayerView.updatePlayOrderButtonState(order: order)
     }
 }
 

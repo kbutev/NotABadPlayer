@@ -46,6 +46,8 @@
 		99761BC222898D94004577E0 /* QuickPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99761BC122898D94004577E0 /* QuickPlayerView.swift */; };
 		999382E722806D5A00B8C8D9 /* PermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999382E622806D5A00B8C8D9 /* PermissionsViewController.swift */; };
 		999382EB22807DCA00B8C8D9 /* AlbumsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 999382EA22807DCA00B8C8D9 /* AlbumsCell.xib */; };
+		999F7A652291B2B10065E360 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999F7A642291B2B10065E360 /* Text.swift */; };
+		999F7A672291B5200065E360 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999F7A662291B5200065E360 /* StringExtensions.swift */; };
 		99A0140922820A7E0084E830 /* NavigationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A0140822820A7E0084E830 /* NavigationHelpers.swift */; };
 		99A0140B228215430084E830 /* AlbumsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A0140A228215430084E830 /* AlbumsView.xib */; };
 		99A0140D22821D1C0084E830 /* PlaylistView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A0140C22821D1C0084E830 /* PlaylistView.xib */; };
@@ -128,6 +130,8 @@
 		99761BC122898D94004577E0 /* QuickPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPlayerView.swift; sourceTree = "<group>"; };
 		999382E622806D5A00B8C8D9 /* PermissionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsViewController.swift; sourceTree = "<group>"; };
 		999382EA22807DCA00B8C8D9 /* AlbumsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlbumsCell.xib; sourceTree = "<group>"; };
+		999F7A642291B2B10065E360 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
+		999F7A662291B5200065E360 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		99A0140822820A7E0084E830 /* NavigationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHelpers.swift; sourceTree = "<group>"; };
 		99A0140A228215430084E830 /* AlbumsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlbumsView.xib; sourceTree = "<group>"; };
 		99A0140C22821D1C0084E830 /* PlaylistView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaylistView.xib; sourceTree = "<group>"; };
@@ -308,8 +312,8 @@
 				996392FA2260ABFA0050F82A /* AudioTrackSource.swift */,
 				996392FC2260ACEB0050F82A /* AudioPlaylist.swift */,
 				996392FE2260BC0B0050F82A /* AudioInfo.swift */,
-				996393022260C00F0050F82A /* AudioPlayerObserver.swift */,
 				996393042260C0430050F82A /* AudioPlayer.swift */,
+				996393022260C00F0050F82A /* AudioPlayerObserver.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -338,6 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				99A6CA7822677C0C0071DC0D /* MediaSorting.swift */,
+				999F7A662291B5200065E360 /* StringExtensions.swift */,
 				99A6CA7D22677EA40071DC0D /* AppThemeSetter.swift */,
 				99A6CA7F22677EF20071DC0D /* Serializing.swift */,
 				99B8617E2287614500344C17 /* UIAnimations.swift */,
@@ -371,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				99A6CA7B22677C850071DC0D /* AppSettings.swift */,
+				999F7A642291B2B10065E360 /* Text.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -553,8 +559,10 @@
 				99A0140922820A7E0084E830 /* NavigationHelpers.swift in Sources */,
 				999382E722806D5A00B8C8D9 /* PermissionsViewController.swift in Sources */,
 				996392FB2260ABFA0050F82A /* AudioTrackSource.swift in Sources */,
+				999F7A672291B5200065E360 /* StringExtensions.swift in Sources */,
 				99B8617F2287614500344C17 /* UIAnimations.swift in Sources */,
 				99021E4D2281EF5C007B2BF7 /* PlaylistView.swift in Sources */,
+				999F7A652291B2B10065E360 /* Text.swift in Sources */,
 				99C633ED2284A36800A2BF25 /* PlayerPresenter.swift in Sources */,
 				996392FD2260ACEB0050F82A /* AudioPlaylist.swift in Sources */,
 				992EA212228FF7C7000C5592 /* AlertWindows.swift in Sources */,

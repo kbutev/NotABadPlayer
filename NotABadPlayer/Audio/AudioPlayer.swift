@@ -30,6 +30,12 @@ class AudioPlayer : NSObject {
         }
     }
     
+    var isCompletelyStopped: Bool {
+        get {
+            return !(self.playlist?.isPlaying ?? false)
+        }
+    }
+    
     var durationSec: Double {
         get {
             if !self.hasPlaylist {
@@ -105,6 +111,26 @@ class AudioPlayer : NSObject {
     
     private (set) var playlist: AudioPlaylist?
     
+    private var _playOrder: AudioPlayOrder = .FORWARDS
+    
+    public var playOrder: AudioPlayOrder {
+        get {
+            return _playOrder
+        }
+        
+        set {
+            self._playOrder = newValue
+            
+            onPlayOrderChange(order: _playOrder)
+        }
+    }
+    
+    public var playingTrack: AudioTrack? {
+        get {
+            return self.playlist?.playingTrack
+        }
+    }
+    
     private (set) var playHistory: [AudioTrack] = []
     
     private (set) var muted: Bool = false
@@ -121,37 +147,22 @@ class AudioPlayer : NSObject {
         self._audioInfo = audioInfo
     }
     
-    func setPlaylistPlayOrder(_ playOrder: AudioPlayOrder) {
-        self.playlist?.playOrder = playOrder
-    }
-    
     func play(playlist: AudioPlaylist) throws {
         checkIfPlayerIsInitialized()
         
-        let playOrder = self.playlist?.playOrder ?? playlist.playOrder
-        let previousPlaylist = self.playlist
-        
-        self.playlist = playlist
-        self.playlist?.playOrder = playOrder
-        
-        let playingTrack = self.playlist!.playingTrack
-        
         do {
-            try play(track: playingTrack)
+            try play(track: playlist.playingTrack)
         } catch let error {
-            self.playlist = previousPlaylist
             stop()
             throw error
         }
+        
+        self.playlist = playlist
+        self.playlist?.playCurrent()
     }
     
-    func play(track: AudioTrack, usePlayHistory: Bool=true) throws {
+    private func play(track: AudioTrack, usePlayHistory: Bool=true) throws {
         checkIfPlayerIsInitialized()
-        
-        if usePlayHistory
-        {
-            addToPlayHistory(newTrack: track)
-        }
         
         let url = track.filePath
         
@@ -169,6 +180,11 @@ class AudioPlayer : NSObject {
             stop()
             throw error
         }
+        
+        if usePlayHistory
+        {
+            addToPlayHistory(newTrack: track)
+        }
     }
     
     func resume() {
@@ -183,7 +199,7 @@ class AudioPlayer : NSObject {
             return
         }
         
-        if !playlist.isPlaying {
+        if isCompletelyStopped {
             do {
                 try play(track: playlist.playingTrack)
             } catch let error {
@@ -262,13 +278,13 @@ class AudioPlayer : NSObject {
             return
         }
         
+        self.playlist?.goToNextPlayingTrack()
+        
         guard let playlist = self.playlist else {
             return
         }
         
-        playlist.goToNextPlayingTrack()
-        
-        if playlist.isPlaying
+        if !isCompletelyStopped
         {
             let playingTrack = playlist.playingTrack
             
@@ -300,13 +316,13 @@ class AudioPlayer : NSObject {
             return
         }
         
+        self.playlist?.goToPreviousPlayingTrack()
+        
         guard let playlist = self.playlist else {
             return
         }
         
-        playlist.goToPreviousPlayingTrack()
-        
-        if playlist.isPlaying
+        if !isCompletelyStopped
         {
             let playingTrack = playlist.playingTrack
             
@@ -333,13 +349,13 @@ class AudioPlayer : NSObject {
     func playNextBasedOnPlayOrder() {
         checkIfPlayerIsInitialized()
         
+        self.playlist?.goToTrackBasedOnPlayOrder(playOrder: _playOrder)
+        
         guard let playlist = self.playlist else {
             return
         }
         
-        playlist.goToTrackBasedOnPlayOrder()
-        
-        if playlist.isPlaying
+        if !isCompletelyStopped
         {
             let playingTrack = playlist.playingTrack
             
@@ -366,13 +382,13 @@ class AudioPlayer : NSObject {
     func shuffle() {
         checkIfPlayerIsInitialized()
         
+        self.playlist?.goToTrackByShuffle()
+        
         guard let playlist = self.playlist else {
             return
         }
         
-        playlist.goToTrackByShuffle()
-        
-        if playlist.isPlaying
+        if !isCompletelyStopped
         {
             Logging.log(AudioPlayer.self, "Playing random track...")
             
@@ -432,7 +448,7 @@ class AudioPlayer : NSObject {
         }
     }
     
-    func seekTo(seconds: Int) {
+    func seekTo(seconds: Double) {
         checkIfPlayerIsInitialized()
         
         self.player?.currentTime = TimeInterval(seconds)
@@ -555,6 +571,13 @@ extension AudioPlayer {
             observer.value?.onPlayerPause(track: track)
         }
     }
+    
+    private func onPlayOrderChange(order: AudioPlayOrder) {
+        for observer in observers
+        {
+            observer.value?.onPlayOrderChange(order: order)
+        }
+    }
 }
 
 // Component - Play history
@@ -578,7 +601,7 @@ extension AudioPlayer {
         }
     }
     
-    private func playPreviousInPlayHistory() {
+    public func playPreviousInPlayHistory() {
         checkIfPlayerIsInitialized()
         
         stop()
@@ -603,23 +626,13 @@ extension AudioPlayer {
             newPlaylist = AudioPlaylist(name: playlistName, startWithTrack: previousTrack)
         }
         
-        if let playlist = self.playlist
-        {
-            newPlaylist?.playOrder = playlist.playOrder
-        }
-        
         // Play playlist with specific track from play history
         if let resultPlaylist = newPlaylist
         {
-            let previousPlaylist = self.playlist
-            
-            self.playlist = nil
-            
             do {
-                try play(playlist:resultPlaylist)
+                try play(playlist: resultPlaylist)
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play previous in play history, \(error.localizedDescription)")
-                self.playlist = previousPlaylist
                 stop()
                 return
             }
