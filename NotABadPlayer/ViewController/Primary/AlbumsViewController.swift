@@ -8,8 +8,8 @@
 
 import UIKit
 
-protocol AlbumsViewDelegate : NSObject {
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate)
+protocol AlbumsViewDelegate : class {
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String])
     func onAlbumClick(index: UInt)
     
     func openPlaylistScreen(audioInfo: AudioInfo, album: AudioAlbum)
@@ -91,9 +91,10 @@ class AlbumsViewController: UIViewController, BaseViewController {
 }
 
 extension AlbumsViewController : AlbumsViewDelegate {
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate) {
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
         self.baseView?.collectionDataSource = dataSource
         self.baseView?.collectionDelegate = actionDelegate
+        self.baseView?.updateIndexerAlphabet(albumTitles: albumTitles)
         self.baseView?.reloadData()
     }
     

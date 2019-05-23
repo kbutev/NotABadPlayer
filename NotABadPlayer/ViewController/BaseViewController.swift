@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol BaseViewController : NSObject {
+protocol BaseViewController : class {
     func goBack()
     func onSwipeUp()
     func onSwipeDown()

@@ -24,7 +24,7 @@ struct QuickPlayerObserverValue
     }
 }
 
-protocol QuickPlayerObserver : NSObject {
+protocol QuickPlayerObserver : class {
     func updateTime(currentTime: Double, totalDuration: Double)
     func updateMediaInfo(track: AudioTrack)
     func updatePlayButtonState(isPlaying: Bool)
@@ -91,7 +91,7 @@ extension QuickPlayerService {
         observers.removeAll(where: {(element) -> Bool in
             if let elementValue = element.value
             {
-                return elementValue == observer
+                return elementValue === observer
             }
             
             return false

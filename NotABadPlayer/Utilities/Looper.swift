@@ -24,7 +24,7 @@ struct LooperClientValue
     }
 }
 
-protocol LooperClient : NSObject {
+protocol LooperClient : class {
     func loop()
 }
 
@@ -89,7 +89,7 @@ class Looper {
         
         result = clients.contains(where: {(element) -> Bool in
             if let value = element.value {
-                return value == client
+                return value === client
             }
             
             return false
@@ -101,7 +101,7 @@ class Looper {
     private func removeClient(_ client: LooperClient) {
         clients.removeAll(where: {(element) -> Bool in
             if let value = element.value {
-                return value == client
+                return value === client
             }
             
             return false
