@@ -59,8 +59,12 @@ class AlbumsView : UIView
 {
     static let CELL_IDENTIFIER = "cell"
     static let CELLS_PER_COLUMN: Int = 2
+    static let INDEXER_VIEW_WIDTH: CGFloat = 16
+    static let COLLECTION_VIEW_HORIZONTAL_MARGIN: CGFloat = INDEXER_VIEW_WIDTH
     
     @IBOutlet var collectionView: UICollectionView!
+    var collectionIndexerView: CollectionIndexerView?
+    @IBOutlet weak var indexerCenterCharacter: UILabel!
     @IBOutlet var quickPlayerView: QuickPlayerView!
     
     private var flowLayout: AlbumsFlowLayout?
@@ -119,8 +123,8 @@ class AlbumsView : UIView
         
         // Collection view
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 2).isActive = true
-        collectionView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -2).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: AlbumsView.COLLECTION_VIEW_HORIZONTAL_MARGIN).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -AlbumsView.COLLECTION_VIEW_HORIZONTAL_MARGIN).isActive = true
         collectionView.topAnchor.constraint(equalTo: guide.topAnchor, constant: navigationLayoutHeight).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
         
@@ -130,6 +134,28 @@ class AlbumsView : UIView
         flowLayout = AlbumsFlowLayout(cellsPerColumn: AlbumsView.CELLS_PER_COLUMN)
         
         collectionView.collectionViewLayout = flowLayout!
+        
+        // Indexer view initialize and setup
+        collectionIndexerView = CollectionIndexerView()
+        
+        if let indexerView = collectionIndexerView
+        {
+            indexerView.delegate = self
+            self.addSubview(indexerView)
+            
+            indexerView.translatesAutoresizingMaskIntoConstraints = false
+            indexerView.widthAnchor.constraint(equalToConstant: AlbumsView.INDEXER_VIEW_WIDTH).isActive = true
+            indexerView.heightAnchor.constraint(equalTo: collectionView.heightAnchor).isActive = true
+            indexerView.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
+            indexerView.rightAnchor.constraint(equalTo: guide.rightAnchor).isActive = true
+        }
+        
+        // Indexer center character
+        indexerCenterCharacter.translatesAutoresizingMaskIntoConstraints = false
+        indexerCenterCharacter.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
+        indexerCenterCharacter.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor).isActive = true
+        indexerCenterCharacter.widthAnchor.constraint(equalToConstant: 96).isActive = true
+        indexerCenterCharacter.heightAnchor.constraint(equalToConstant: 96).isActive = true
     }
     
     public func reloadData() {
@@ -151,6 +177,58 @@ class AlbumsView : UIView
     func updatePlayOrderButtonState(order: AudioPlayOrder) {
         quickPlayerView.updatePlayOrderButtonState(order: order)
     }
+    
+    func updateIndexerAlphabet(albumTitles: [String]) {
+        collectionIndexerView?.updateAlphabet(strings: albumTitles)
+    }
+    
+    func jumpToItem(index: Int) {
+        var index = index / AlbumsView.CELLS_PER_COLUMN
+        
+        if index >= collectionView.numberOfItems(inSection: 0)
+        {
+            index = collectionView.numberOfItems(inSection: 0) - 1
+        }
+        
+        let path = IndexPath(item: index, section: 0)
+        
+        collectionView.scrollToItem(at: path, at: .top, animated: false)
+    }
+    
+    func showIndexerCenterCharacter(character: Character) {
+        indexerCenterCharacter.text = String(character)
+        
+        UIAnimations.stopAnimations(indexerCenterCharacter)
+        indexerCenterCharacter.alpha = 1
+    }
+    
+    func hideIndexerCenterCharacter() {
+        UIAnimations.animateViewFadeOut(indexerCenterCharacter)
+    }
+}
+
+// Indexer delegate
+extension AlbumsView : CollectionIndexerDelegate {
+    func onTouchGestureBegin(selection: CollectionIndexerSelection) {
+        // Jump to location
+        jumpToItem(index: Int(selection.index))
+        
+        // Display character
+        showIndexerCenterCharacter(character: selection.character)
+    }
+    
+    func onTouchGestureMove(selection: CollectionIndexerSelection) {
+        // Jump to location
+        jumpToItem(index: Int(selection.index))
+        
+        // Display character
+        showIndexerCenterCharacter(character: selection.character)
+    }
+    
+    func onTouchGestureEnd(selection: CollectionIndexerSelection) {
+        // Hide character
+        hideIndexerCenterCharacter()
+    }
 }
 
 // Builder
@@ -164,6 +242,7 @@ extension AlbumsView {
     }
 }
 
+// Custom flow layout
 class AlbumsFlowLayout : UICollectionViewFlowLayout
 {
     static let CELL_SIZE = CGSize(width: 0, height: 256)

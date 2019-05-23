@@ -36,13 +36,13 @@ class PlaylistPresenter: BasePresenter
         self.collectionActionDelegate = actionDelegate
         
         let audioPlayer = AudioPlayer.shared
-        var scrollToIndex: UInt = 0
+        var scrollToIndex: UInt? = nil
         
-        if let playlist =  audioPlayer.playlist
+        if let playlist = audioPlayer.playlist
         {
             for e in 0..<playlist.tracks.count
             {
-                if playlist.tracks[e] == playlist.playingTrack
+                if playlist.tracks[e] == playlist.playingTrack && self.playlist.name == playlist.name
                 {
                     scrollToIndex = UInt(e)
                     break

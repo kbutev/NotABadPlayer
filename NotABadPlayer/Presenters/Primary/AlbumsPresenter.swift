@@ -36,7 +36,14 @@ class AlbumsPresenter: BasePresenter
         let actionDelegate = AlbumsViewActionDelegate(view: delegate)
         self.collectionActionDelegate = actionDelegate
         
-        delegate.onMediaAlbumsLoad(dataSource: dataSource, actionDelegate: actionDelegate)
+        var albumTitles: [String] = []
+        
+        for album in self.albums
+        {
+            albumTitles.append(album.albumTitle)
+        }
+        
+        delegate.onMediaAlbumsLoad(dataSource: dataSource, actionDelegate: actionDelegate, albumTitles: albumTitles)
     }
     
     func onAlbumClick(index: UInt) {

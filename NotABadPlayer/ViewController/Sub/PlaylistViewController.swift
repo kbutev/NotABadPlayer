@@ -8,8 +8,8 @@
 
 import UIKit
 
-protocol PlaylistViewDelegate : NSObject {
-    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate, scrollToIndex: UInt)
+protocol PlaylistViewDelegate : class {
+    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate, scrollToIndex: UInt?)
     func onTrackClicked(index: UInt)
     func openPlayerScreen(playlist: AudioPlaylist)
     
@@ -87,12 +87,15 @@ class PlaylistViewController: UIViewController, BaseViewController {
 }
 
 extension PlaylistViewController : PlaylistViewDelegate {
-    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate, scrollToIndex: UInt) {
+    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate, scrollToIndex: UInt?) {
         self.baseView?.collectionDataSource = dataSource
         self.baseView?.collectionDelegate = actionDelegate
         self.baseView?.reloadData()
         
-        self.baseView?.scrollDownToSelectedTrack(index: scrollToIndex)
+        if let scrollIndex = scrollToIndex
+        {
+            self.baseView?.scrollDownToSelectedTrack(index: scrollIndex)
+        }
     }
     
     func onTrackClicked(index: UInt) {

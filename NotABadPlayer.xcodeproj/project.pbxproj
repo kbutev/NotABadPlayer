@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		904DB06C40019A1CA906F33E /* libPods-NotABadPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F710AB58EC3D5E1FA8C3115 /* libPods-NotABadPlayer.a */; };
 		99021E462281EE2A007B2BF7 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99021E452281EE2A007B2BF7 /* PlaylistViewController.swift */; };
 		99021E4A2281EEEA007B2BF7 /* PlaylistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99021E492281EEEA007B2BF7 /* PlaylistPresenter.swift */; };
 		99021E4D2281EF5C007B2BF7 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99021E4C2281EF5C007B2BF7 /* PlaylistView.swift */; };
@@ -30,6 +31,7 @@
 		993B353722840F990003D150 /* PlaylistHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 993B353622840F990003D150 /* PlaylistHeaderView.xib */; };
 		9949E52F228E9599002CDCC0 /* QuickPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949E52E228E9599002CDCC0 /* QuickPlayerService.swift */; };
 		9949E531228E9698002CDCC0 /* Looper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949E530228E9698002CDCC0 /* Looper.swift */; };
+		994E20FF2296D516002BA684 /* CollectionIndexerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994E20FE2296D516002BA684 /* CollectionIndexerView.swift */; };
 		9960343A22805E77003A0DFE /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9960343922805E77003A0DFE /* Logging.swift */; };
 		996392F72260AB090050F82A /* AudioAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996392F62260AB090050F82A /* AudioAlbum.swift */; };
 		996392F92260AB140050F82A /* AudioTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996392F82260AB140050F82A /* AudioTrack.swift */; };
@@ -84,7 +86,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5A3966E2A78B0003536C7BC0 /* Pods_NotABadPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NotABadPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F710AB58EC3D5E1FA8C3115 /* libPods-NotABadPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NotABadPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		99021E452281EE2A007B2BF7 /* PlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		99021E492281EEEA007B2BF7 /* PlaylistPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistPresenter.swift; sourceTree = "<group>"; };
 		99021E4C2281EF5C007B2BF7 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		993B353622840F990003D150 /* PlaylistHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaylistHeaderView.xib; sourceTree = "<group>"; };
 		9949E52E228E9599002CDCC0 /* QuickPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPlayerService.swift; sourceTree = "<group>"; };
 		9949E530228E9698002CDCC0 /* Looper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Looper.swift; sourceTree = "<group>"; };
+		994E20FE2296D516002BA684 /* CollectionIndexerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionIndexerView.swift; sourceTree = "<group>"; };
 		9960343922805E77003A0DFE /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		996392F62260AB090050F82A /* AudioAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAlbum.swift; sourceTree = "<group>"; };
 		996392F82260AB140050F82A /* AudioTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTrack.swift; sourceTree = "<group>"; };
@@ -147,7 +150,10 @@
 		99C633EA22849ECF00A2BF25 /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerView.xib; sourceTree = "<group>"; };
 		99C633EC2284A36800A2BF25 /* PlayerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPresenter.swift; sourceTree = "<group>"; };
 		99C9405422835F4600F0FA49 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		99E9120D2294806C00C30D9A /* NotABadPlayer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NotABadPlayer-Bridging-Header.h"; sourceTree = "<group>"; };
 		99F2C26022898B35000F6AA7 /* QuickPlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickPlayerView.xib; sourceTree = "<group>"; };
+		BB4B74DBECF55DAE5230633C /* Pods-NotABadPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotABadPlayer.release.xcconfig"; path = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.release.xcconfig"; sourceTree = "<group>"; };
+		DD871B545DBB27E8C1D6F59B /* Pods-NotABadPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotABadPlayer.debug.xcconfig"; path = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				904DB06C40019A1CA906F33E /* libPods-NotABadPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +182,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7EE858BF9898BDAB0B82AC8E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DD871B545DBB27E8C1D6F59B /* Pods-NotABadPlayer.debug.xcconfig */,
+				BB4B74DBECF55DAE5230633C /* Pods-NotABadPlayer.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		99021E432281EE04007B2BF7 /* Primary */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +234,7 @@
 				992EC1D5225B6A5E007DDD9D /* NotABadPlayerUITests */,
 				992EC1B2225B6A5C007DDD9D /* Products */,
 				B9975CA464D5E8B15E95B30B /* Frameworks */,
+				7EE858BF9898BDAB0B82AC8E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -235,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				992EC1B4225B6A5C007DDD9D /* AppDelegate.swift */,
+				99E9120D2294806C00C30D9A /* NotABadPlayer-Bridging-Header.h */,
 				99A6CA7A22677C730071DC0D /* Constants */,
 				992EC1E9225B6EB1007DDD9D /* ViewController */,
 				992EC1EE225B7063007DDD9D /* Presenters */,
@@ -277,6 +295,7 @@
 				99A0140A228215430084E830 /* AlbumsView.xib */,
 				99194242227867CA00FF041E /* AlbumsCell.swift */,
 				999382EA22807DCA00B8C8D9 /* AlbumsCell.xib */,
+				994E20FE2296D516002BA684 /* CollectionIndexerView.swift */,
 				99021E4C2281EF5C007B2BF7 /* PlaylistView.swift */,
 				99A0140C22821D1C0084E830 /* PlaylistView.xib */,
 				993B353422840D8C0003D150 /* PlaylistHeaderView.swift */,
@@ -384,7 +403,7 @@
 		B9975CA464D5E8B15E95B30B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5A3966E2A78B0003536C7BC0 /* Pods_NotABadPlayer.framework */,
+				2F710AB58EC3D5E1FA8C3115 /* libPods-NotABadPlayer.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -396,6 +415,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 992EC1DB225B6A5E007DDD9D /* Build configuration list for PBXNativeTarget "NotABadPlayer" */;
 			buildPhases = (
+				5C8F746F8FF7745EE8D0F293 /* [CP] Check Pods Manifest.lock */,
 				992EC1AD225B6A5C007DDD9D /* Sources */,
 				992EC1AE225B6A5C007DDD9D /* Frameworks */,
 				992EC1AF225B6A5C007DDD9D /* Resources */,
@@ -457,6 +477,7 @@
 				TargetAttributes = {
 					992EC1B0225B6A5C007DDD9D = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					992EC1C6225B6A5E007DDD9D = {
 						CreatedOnToolsVersion = 10.1;
@@ -522,6 +543,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5C8F746F8FF7745EE8D0F293 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NotABadPlayer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		992EC1AD225B6A5C007DDD9D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -553,6 +599,7 @@
 				99B9CA5D2278859100000888 /* AlbumsPresenter.swift in Sources */,
 				99194241227867BF00FF041E /* AlbumsView.swift in Sources */,
 				996392F72260AB090050F82A /* AudioAlbum.swift in Sources */,
+				994E20FF2296D516002BA684 /* CollectionIndexerView.swift in Sources */,
 				99C633E922849EC800A2BF25 /* PlayerView.swift in Sources */,
 				992EC1B7225B6A5C007DDD9D /* AlbumsViewController.swift in Sources */,
 				99A6CA7922677C0C0071DC0D /* MediaSorting.swift in Sources */,
@@ -744,8 +791,10 @@
 		};
 		992EC1DC225B6A5E007DDD9D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD871B545DBB27E8C1D6F59B /* Pods-NotABadPlayer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XU7WQ382FC;
 				INFOPLIST_FILE = NotABadPlayer/Info.plist;
@@ -756,6 +805,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = media.NotABadPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NotABadPlayer/NotABadPlayer-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -763,8 +814,10 @@
 		};
 		992EC1DD225B6A5E007DDD9D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB4B74DBECF55DAE5230633C /* Pods-NotABadPlayer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XU7WQ382FC;
 				INFOPLIST_FILE = NotABadPlayer/Info.plist;
@@ -775,6 +828,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = media.NotABadPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NotABadPlayer/NotABadPlayer-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

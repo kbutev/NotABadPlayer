@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PlayerViewDelegate : NSObject {
+protocol PlayerViewDelegate : class {
     func updatePlayerScreen(playlist: AudioPlaylist)
     
     func onErrorEncountered(message: String)
