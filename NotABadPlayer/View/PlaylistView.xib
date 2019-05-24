@@ -27,10 +27,19 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Album" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aXL-XX-aOK">
+                    <rect key="frame" x="186" y="437" width="57" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="albumTitleOverlayLabel" destination="aXL-XX-aOK" id="npP-Rv-Tns"/>
                 <outlet property="collectionView" destination="Yx1-hY-zTt" id="tl9-GL-3cB"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="153.34821428571428"/>

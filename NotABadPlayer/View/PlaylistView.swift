@@ -104,6 +104,10 @@ class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
         view?.onTrackClicked(index: UInt(indexPath.row))
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view?.onScrollDown()
+    }
+    
     func onSwipeRight() {
         view?.onSwipeRight()
     }
@@ -113,11 +117,15 @@ class PlaylistView : UIView
 {
     static let CELL_IDENTIFIER = "cell"
     static let HEADER_IDENTIFIER = "header"
+    static let ALBUM_TITLE_OVERLAY_HEIGHT: CGFloat = 48
     
+    @IBOutlet weak var albumTitleOverlayLabel: UILabel!
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var quickPlayerView: QuickPlayerView!
     
     private var flowLayout: PlaylistFlowLayout?
+    
+    private var collectionViewHeaderHeight: CGFloat = 0
     
     var collectionDataSource : PlaylistViewDataSource? {
         get {
@@ -190,14 +198,17 @@ class PlaylistView : UIView
         
         collectionView.collectionViewLayout = flowLayout!
         
+        // Album title overlay label
+        albumTitleOverlayLabel.translatesAutoresizingMaskIntoConstraints = false
+        albumTitleOverlayLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
+        albumTitleOverlayLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
+        albumTitleOverlayLabel.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
+        albumTitleOverlayLabel.heightAnchor.constraint(equalToConstant: PlaylistView.ALBUM_TITLE_OVERLAY_HEIGHT).isActive = true
+        
         // User input
-        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeRight(sender:)))
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeRight(gesture:)))
         gesture.direction = .right
         self.addGestureRecognizer(gesture)
-    }
-    
-    @objc func actionSwipeRight(sender: Any) {
-        self.collectionDelegate?.onSwipeRight()
     }
     
     public func reloadData() {
@@ -227,6 +238,50 @@ class PlaylistView : UIView
     
     func updatePlayOrderButtonState(order: AudioPlayOrder) {
         quickPlayerView.updatePlayOrderButtonState(order: order)
+    }
+    
+    func updateOverlayTitle(title: String) {
+        albumTitleOverlayLabel.text = title
+    }
+    
+    func showAlbumTitleOverlay() {
+        if albumTitleOverlayLabel.alpha == 0
+        {
+            UIAnimations.animateViewFadeIn(albumTitleOverlayLabel)
+        }
+    }
+    
+    func hideAlbumTitleOverlay() {
+        if albumTitleOverlayLabel.alpha == 1
+        {
+            UIAnimations.animateViewFadeOut(albumTitleOverlayLabel)
+        }
+    }
+    
+    func updateScrollState() {
+        if collectionViewHeaderHeight == 0
+        {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
+                                                                         withReuseIdentifier: PlaylistView.HEADER_IDENTIFIER,
+                                                                         for: IndexPath(row: 0, section: 0))
+            self.collectionViewHeaderHeight = header.frame.height
+        }
+        
+        if collectionView.bounds.origin.y > collectionViewHeaderHeight
+        {
+            showAlbumTitleOverlay()
+        }
+        else
+        {
+            hideAlbumTitleOverlay()
+        }
+    }
+}
+
+// Actions
+extension PlaylistView {
+    @objc func actionSwipeRight(gesture: UISwipeGestureRecognizer) {
+        self.collectionDelegate?.onSwipeRight()
     }
 }
 

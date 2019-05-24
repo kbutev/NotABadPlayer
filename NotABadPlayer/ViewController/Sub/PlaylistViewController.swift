@@ -9,10 +9,17 @@
 import UIKit
 
 protocol PlaylistViewDelegate : class {
-    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate, scrollToIndex: UInt?)
+    func onAlbumSongsLoad(name: String,
+                          dataSource: PlaylistViewDataSource,
+                          actionDelegate: PlaylistViewActionDelegate)
+    func onPlaylistSongsLoad(name: String,
+                             dataSource: PlaylistViewDataSource,
+                             actionDelegate: PlaylistViewActionDelegate)
+    func scrollTo(index: UInt)
     func onTrackClicked(index: UInt)
     func openPlayerScreen(playlist: AudioPlaylist)
     
+    func onScrollDown()
     func onSwipeRight()
 }
 
@@ -65,6 +72,10 @@ class PlaylistViewController: UIViewController, BaseViewController {
         }
     }
     
+    func onScrollDown() {
+        baseView?.updateScrollState()
+    }
+    
     func onSwipeDown() {
         
     }
@@ -87,15 +98,26 @@ class PlaylistViewController: UIViewController, BaseViewController {
 }
 
 extension PlaylistViewController : PlaylistViewDelegate {
-    func onAlbumSongsLoad(dataSource: PlaylistViewDataSource, actionDelegate: PlaylistViewActionDelegate, scrollToIndex: UInt?) {
+    func onAlbumSongsLoad(name: String,
+                          dataSource: PlaylistViewDataSource,
+                          actionDelegate: PlaylistViewActionDelegate) {
         self.baseView?.collectionDataSource = dataSource
         self.baseView?.collectionDelegate = actionDelegate
+        self.baseView?.updateOverlayTitle(title: name)
         self.baseView?.reloadData()
-        
-        if let scrollIndex = scrollToIndex
-        {
-            self.baseView?.scrollDownToSelectedTrack(index: scrollIndex)
-        }
+    }
+    
+    func onPlaylistSongsLoad(name: String,
+                             dataSource: PlaylistViewDataSource,
+                             actionDelegate: PlaylistViewActionDelegate) {
+        self.baseView?.collectionDataSource = dataSource
+        self.baseView?.collectionDelegate = actionDelegate
+        self.baseView?.updateOverlayTitle(title: name)
+        self.baseView?.reloadData()
+    }
+    
+    func scrollTo(index: UInt) {
+        self.baseView?.scrollDownToSelectedTrack(index: index)
     }
     
     func onTrackClicked(index: UInt) {
