@@ -140,6 +140,7 @@ extension QuickPlayerService : AudioPlayerObserver {
         for observer in observers
         {
             observer.value?.updateMediaInfo(track: current)
+            observer.value?.updatePlayButtonState(isPlaying: true)
         }
     }
     

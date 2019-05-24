@@ -36,7 +36,7 @@ class PlaylistPresenter: BasePresenter
         self.collectionActionDelegate = actionDelegate
         
         let audioPlayer = AudioPlayer.shared
-        var scrollToIndex: UInt? = nil
+        var scrollIndex: UInt? = nil
         
         if let playlist = audioPlayer.playlist
         {
@@ -44,13 +44,25 @@ class PlaylistPresenter: BasePresenter
             {
                 if playlist.tracks[e] == playlist.playingTrack && self.playlist.name == playlist.name
                 {
-                    scrollToIndex = UInt(e)
+                    scrollIndex = UInt(e)
                     break
                 }
             }
         }
         
-        delegate.onAlbumSongsLoad(dataSource: dataSource, actionDelegate: actionDelegate, scrollToIndex: scrollToIndex)
+        if playlist.isAlbumPlaylist()
+        {
+            delegate.onAlbumSongsLoad(name: playlist.name, dataSource: dataSource, actionDelegate: actionDelegate)
+        }
+        else
+        {
+            delegate.onPlaylistSongsLoad(name: playlist.name, dataSource: dataSource, actionDelegate: actionDelegate)
+        }
+        
+        if let scrollToIndex = scrollIndex
+        {
+            delegate.scrollTo(index: scrollToIndex)
+        }
     }
     
     func onAlbumClick(index: UInt) {
