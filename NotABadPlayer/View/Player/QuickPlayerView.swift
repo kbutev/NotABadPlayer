@@ -12,6 +12,8 @@ class QuickPlayerView : UIView
 {
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
     
+    private var initialized: Bool = false
+    
     public weak var delegate: BaseViewController?
     
     @IBOutlet var primaryStackView: UIStackView!
@@ -43,8 +45,16 @@ class QuickPlayerView : UIView
         // Text default values
         trackInfoTitleText.text = Text.value(.NothingPlaying)
         trackInfoDurationText.text = Text.value(.DoubleZeroTimers)
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
         
-        setup()
+        if !initialized
+        {
+            initialized = true
+            setup()
+        }
     }
     
     private func setup() {

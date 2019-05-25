@@ -21,16 +21,6 @@ class PlayerViewController: UIViewController, BaseViewController {
     
     private var encounteredError: String?
     
-    init(withPresenter presenter: BasePresenter) {
-        self.presenter = presenter
-        
-        super.init(nibName: String(describing: PlayerViewController.self), bundle: Bundle.main)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func loadView() {
         self.baseView = PlayerView.create(owner: self)
         self.view = self.baseView

@@ -13,10 +13,6 @@ class SettingsViewController: UIViewController, BaseViewController {
     
     public var presenter: BasePresenter?
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func loadView() {
         self.baseView = SettingsView.create(owner: self)
         self.view = self.baseView!

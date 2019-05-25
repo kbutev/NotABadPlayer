@@ -22,10 +22,6 @@ class AlbumsViewController: UIViewController, BaseViewController {
     
     private var subViewController: PlaylistViewController?
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func loadView() {
         self.baseView = AlbumsView.create(owner: self)
         self.view = self.baseView!
@@ -83,7 +79,8 @@ class AlbumsViewController: UIViewController, BaseViewController {
     
     func openPlayerScreen(playlist: AudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
-        let vc = PlayerViewController(withPresenter: presenter)
+        let vc = PlayerViewController()
+        vc.presenter = presenter
         presenter.delegate = vc
         
         NavigationHelpers.showVC(current: self, vc: vc)
@@ -113,13 +110,14 @@ extension AlbumsViewController : AlbumsViewDelegate {
         
         let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist)
         
-        let vc = PlaylistViewController(withPresenter: presenter)
+        let vc = PlaylistViewController()
+        vc.presenter = presenter
         
         self.subViewController = vc
         
         presenter.delegate = vc
         
-        PlaylistViewControllerHelpers.addVCChild(parent: self, child: vc)
+        NavigationHelpers.addVCChild(parent: self, child: vc)
     }
 }
 

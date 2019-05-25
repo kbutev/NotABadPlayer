@@ -27,46 +27,10 @@ class NavigationHelpers
         vc.dismiss(animated: true, completion: nil)
     }
     
-    class func addVCChild(parent: UIViewController,
-                          child: UIViewController,
-                          size: CGSize,
-                          anchor: NavigationHelpersAttachAnchor=NavigationHelpersAttachAnchor.bottom) {
+    class func addVCChild(parent: UIViewController, child: UIViewController) {
         parent.addChild(child)
         
-        child.view.bounds.size = size
-        
         parent.view.addSubview(child.view)
-        
-        child.view.translatesAutoresizingMaskIntoConstraints = false
-        child.view.widthAnchor.constraint(equalToConstant: size.width).isActive = true
-        child.view.heightAnchor.constraint(equalToConstant: size.height).isActive = true
-        
-        switch anchor {
-        case .top:
-            child.view.topAnchor.constraint(equalTo: parent.view.topAnchor).isActive = true
-            child.view.centerXAnchor.constraint(equalTo: parent.view.centerXAnchor).isActive = true
-            break
-        case .topRight:
-            child.view.topAnchor.constraint(equalTo: parent.view.topAnchor).isActive = true
-            child.view.rightAnchor.constraint(equalTo: parent.view.rightAnchor).isActive = true
-            break
-        case .topLeft:
-            child.view.topAnchor.constraint(equalTo: parent.view.topAnchor).isActive = true
-            child.view.leftAnchor.constraint(equalTo: parent.view.leftAnchor).isActive = true
-            break
-        case .bottom:
-            child.view.bottomAnchor.constraint(equalTo: parent.view.bottomAnchor).isActive = true
-            child.view.centerXAnchor.constraint(equalTo: parent.view.centerXAnchor).isActive = true
-            break
-        case .bottomRight:
-            child.view.bottomAnchor.constraint(equalTo: parent.view.bottomAnchor).isActive = true
-            child.view.rightAnchor.constraint(equalTo: parent.view.rightAnchor).isActive = true
-            break
-        case .bottomLeft:
-            child.view.bottomAnchor.constraint(equalTo: parent.view.bottomAnchor).isActive = true
-            child.view.leftAnchor.constraint(equalTo: parent.view.leftAnchor).isActive = true
-            break
-        }
         
         child.didMove(toParent: parent)
     }
@@ -74,5 +38,9 @@ class NavigationHelpers
     class func removeVCChild(_ child: UIViewController) {
         child.view.removeFromSuperview()
         child.removeFromParent()
+    }
+    
+    class func presentVC(parent: UIViewController, vc: UIViewController) {
+        parent.present(vc, animated: true, completion: nil)
     }
 }
