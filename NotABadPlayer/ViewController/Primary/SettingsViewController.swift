@@ -9,10 +9,29 @@
 import UIKit
 
 class SettingsViewController: UIViewController, BaseViewController {
+    private var baseView: SettingsView?
+    
+    public var presenter: BasePresenter?
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func loadView() {
+        self.baseView = SettingsView.create(owner: self)
+        self.view = self.baseView!
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        presenter?.start()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
     }
     
     func goBack() {

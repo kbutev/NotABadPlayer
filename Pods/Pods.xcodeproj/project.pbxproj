@@ -7,47 +7,51 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3612C43788217B8FD240573448A31BAF /* BDKCollectionIndexView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CA2A9D083224B777CF74F49CAD871C /* BDKCollectionIndexView-dummy.m */; };
-		5DA799B9B51DED71AB87A01432FE5DAC /* Pods-NotABadPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F620CF1B3D1309B6C3E5529538E5D6 /* Pods-NotABadPlayer-dummy.m */; };
-		6CBDFD555CAD6664F30FF3761F511290 /* BDKCollectionIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6D23EAABF670453D1864D4FD18867 /* BDKCollectionIndexView.m */; };
-		BDEF6D87E647B1E5FFC434109B581940 /* BDKCollectionIndexView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EE6A6A4DC68C05F0BD0D149E6CFE0A8 /* BDKCollectionIndexView.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		3BBA66A6493E9B28293F2098C119B9C8 /* iOSDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA24CCBDEB17D542BBC948FC6C087E3 /* iOSDropDown.swift */; };
+		3E4B757C6FCFED4674CB2BDB6B104335 /* Pods-NotABadPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E343715353E5F2D09A03361444C3AE /* Pods-NotABadPlayer-dummy.m */; };
+		8DB854500009D9B29A9322BFFBC3C022 /* iOSDropDown-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 384E60F9D0A1075A42BDA5F177F1BE30 /* iOSDropDown-dummy.m */; };
+		A7F0EC9E08C4CA960D56A8BC94EF4145 /* Pods-NotABadPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D93CCADDFBEE25101339D477AF7E4789 /* Pods-NotABadPlayer-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		DA759B0E8B83FE3FF7DE01FB5725A698 /* iOSDropDown-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C15D8C27AA1C28E6F7542B2DF4171C8A /* iOSDropDown-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AEC4EED73CBCB7A98AC01D86E0280C06 /* PBXContainerItemProxy */ = {
+		146C3E7591DDF477D0BA5FEA1EF73E7D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = EEFDA5E77027D1C1B423EA960E36CE31;
-			remoteInfo = BDKCollectionIndexView;
+			remoteGlobalIDString = 4575B6B8BD79813E0A6C49248D368E37;
+			remoteInfo = iOSDropDown;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2FD6D23EAABF670453D1864D4FD18867 /* BDKCollectionIndexView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = BDKCollectionIndexView.m; sourceTree = "<group>"; };
-		36CA2A9D083224B777CF74F49CAD871C /* BDKCollectionIndexView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "BDKCollectionIndexView-dummy.m"; sourceTree = "<group>"; };
-		394F0A96A321CDF26391F8A13AD4DB5C /* libBDKCollectionIndexView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libBDKCollectionIndexView.a; path = libBDKCollectionIndexView.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4458C91E631A6AD7690568FA9863ECF9 /* BDKCollectionIndexView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BDKCollectionIndexView-prefix.pch"; sourceTree = "<group>"; };
-		5CE6FB8444C3A05E78FE8CBEF4B10723 /* libPods-NotABadPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-NotABadPlayer.a"; path = "libPods-NotABadPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		673BE8F3CCE2963B2A12F85D76998577 /* Pods-NotABadPlayer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NotABadPlayer-acknowledgements.markdown"; sourceTree = "<group>"; };
-		6A836A503E63A0E87FB36C455C527714 /* Pods-NotABadPlayer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NotABadPlayer-acknowledgements.plist"; sourceTree = "<group>"; };
-		6C80524E96EFD1FE5EA22AFDA145A32C /* BDKCollectionIndexView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BDKCollectionIndexView.xcconfig; sourceTree = "<group>"; };
-		6EE6A6A4DC68C05F0BD0D149E6CFE0A8 /* BDKCollectionIndexView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = BDKCollectionIndexView.h; sourceTree = "<group>"; };
-		92F620CF1B3D1309B6C3E5529538E5D6 /* Pods-NotABadPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NotABadPlayer-dummy.m"; sourceTree = "<group>"; };
-		96053966F33002B21248532E4690E72E /* Pods-NotABadPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NotABadPlayer.debug.xcconfig"; sourceTree = "<group>"; };
+		132745ABE57BCA6CC0DD398999423691 /* Pods-NotABadPlayer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NotABadPlayer-acknowledgements.markdown"; sourceTree = "<group>"; };
+		16F071FF023E63FC87939F4767F1219D /* iOSDropDown-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDropDown-prefix.pch"; sourceTree = "<group>"; };
+		17E1FB084AD41BC64EF1C7B89428F6CC /* iOSDropDown.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iOSDropDown.xcconfig; sourceTree = "<group>"; };
+		384E60F9D0A1075A42BDA5F177F1BE30 /* iOSDropDown-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "iOSDropDown-dummy.m"; sourceTree = "<group>"; };
+		52983383B48E7112AA5EA48F1FB3936E /* libPods-NotABadPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-NotABadPlayer.a"; path = "libPods-NotABadPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		60B089A33A58C945A4511ABAB8A00DAB /* Pods-NotABadPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NotABadPlayer.release.xcconfig"; sourceTree = "<group>"; };
+		6963158D302D8761A80521B9B95F9B4D /* Pods-NotABadPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-NotABadPlayer.modulemap"; sourceTree = "<group>"; };
+		746AC69789C47D8B6AF4280331AEB02B /* libiOSDropDown.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libiOSDropDown.a; path = libiOSDropDown.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		99BA0721664D68D72CC5418B1F8AFDEB /* Pods-NotABadPlayer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NotABadPlayer-acknowledgements.plist"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		FD1946D70B8CF5ECA9DA5B28AF3F9249 /* Pods-NotABadPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NotABadPlayer.release.xcconfig"; sourceTree = "<group>"; };
+		A32C6413B4B6671777C57ED5FBE55D92 /* iOSDropDown.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = iOSDropDown.modulemap; sourceTree = "<group>"; };
+		A4E343715353E5F2D09A03361444C3AE /* Pods-NotABadPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NotABadPlayer-dummy.m"; sourceTree = "<group>"; };
+		C15D8C27AA1C28E6F7542B2DF4171C8A /* iOSDropDown-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDropDown-umbrella.h"; sourceTree = "<group>"; };
+		D93CCADDFBEE25101339D477AF7E4789 /* Pods-NotABadPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-NotABadPlayer-umbrella.h"; sourceTree = "<group>"; };
+		DFA24CCBDEB17D542BBC948FC6C087E3 /* iOSDropDown.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = iOSDropDown.swift; path = iOSDropDown/Classes/iOSDropDown.swift; sourceTree = "<group>"; };
+		F71C224624E662E09FB07FCB81AA58A1 /* Pods-NotABadPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NotABadPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		6C8CD947DB4BB0613DDA362F9FA80887 /* Frameworks */ = {
+		DDA01CA79137DBFDA25A317CD6024B43 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C7669DAFB09C2CEBF0F4F656380608B2 /* Frameworks */ = {
+		EAF107774FD7443B092A951C697A41E4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -57,51 +61,67 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		318B352990CB79C3B164733669A287C2 /* Targets Support Files */ = {
+		0CFEC115F12DA37FE8EA28A3DC6CDFF8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FB07A4C144AEE47EB3789E658F66BB3C /* Pods-NotABadPlayer */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		3ABADDE1C1DFAA1568A31F7BD89ED106 /* BDKCollectionIndexView */ = {
-			isa = PBXGroup;
-			children = (
-				6EE6A6A4DC68C05F0BD0D149E6CFE0A8 /* BDKCollectionIndexView.h */,
-				2FD6D23EAABF670453D1864D4FD18867 /* BDKCollectionIndexView.m */,
-				CDB3509FFC3166FAB83D1B99CE08EC5B /* Support Files */,
-			);
-			name = BDKCollectionIndexView;
-			path = BDKCollectionIndexView;
-			sourceTree = "<group>";
-		};
-		8C963A4C86D60CF8460173CC29A0946A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3ABADDE1C1DFAA1568A31F7BD89ED106 /* BDKCollectionIndexView */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		CD8754351B8D4A25DAD0154F4913EDC8 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				394F0A96A321CDF26391F8A13AD4DB5C /* libBDKCollectionIndexView.a */,
-				5CE6FB8444C3A05E78FE8CBEF4B10723 /* libPods-NotABadPlayer.a */,
+				746AC69789C47D8B6AF4280331AEB02B /* libiOSDropDown.a */,
+				52983383B48E7112AA5EA48F1FB3936E /* libPods-NotABadPlayer.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CDB3509FFC3166FAB83D1B99CE08EC5B /* Support Files */ = {
+		422E80411CDDE7A9AA3779BFD82C69F4 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				6C80524E96EFD1FE5EA22AFDA145A32C /* BDKCollectionIndexView.xcconfig */,
-				36CA2A9D083224B777CF74F49CAD871C /* BDKCollectionIndexView-dummy.m */,
-				4458C91E631A6AD7690568FA9863ECF9 /* BDKCollectionIndexView-prefix.pch */,
+				A32C6413B4B6671777C57ED5FBE55D92 /* iOSDropDown.modulemap */,
+				17E1FB084AD41BC64EF1C7B89428F6CC /* iOSDropDown.xcconfig */,
+				384E60F9D0A1075A42BDA5F177F1BE30 /* iOSDropDown-dummy.m */,
+				16F071FF023E63FC87939F4767F1219D /* iOSDropDown-prefix.pch */,
+				C15D8C27AA1C28E6F7542B2DF4171C8A /* iOSDropDown-umbrella.h */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/BDKCollectionIndexView";
+			path = "../Target Support Files/iOSDropDown";
+			sourceTree = "<group>";
+		};
+		5099492A94F788D545E433E04A611A17 /* Pods-NotABadPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				6963158D302D8761A80521B9B95F9B4D /* Pods-NotABadPlayer.modulemap */,
+				132745ABE57BCA6CC0DD398999423691 /* Pods-NotABadPlayer-acknowledgements.markdown */,
+				99BA0721664D68D72CC5418B1F8AFDEB /* Pods-NotABadPlayer-acknowledgements.plist */,
+				A4E343715353E5F2D09A03361444C3AE /* Pods-NotABadPlayer-dummy.m */,
+				D93CCADDFBEE25101339D477AF7E4789 /* Pods-NotABadPlayer-umbrella.h */,
+				F71C224624E662E09FB07FCB81AA58A1 /* Pods-NotABadPlayer.debug.xcconfig */,
+				60B089A33A58C945A4511ABAB8A00DAB /* Pods-NotABadPlayer.release.xcconfig */,
+			);
+			name = "Pods-NotABadPlayer";
+			path = "Target Support Files/Pods-NotABadPlayer";
+			sourceTree = "<group>";
+		};
+		54D7EE6DC35A057EE1A04BCA614348C6 /* iOSDropDown */ = {
+			isa = PBXGroup;
+			children = (
+				DFA24CCBDEB17D542BBC948FC6C087E3 /* iOSDropDown.swift */,
+				422E80411CDDE7A9AA3779BFD82C69F4 /* Support Files */,
+			);
+			name = iOSDropDown;
+			path = iOSDropDown;
+			sourceTree = "<group>";
+		};
+		60E09F58A4B6EF1F34AC349248B764C0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				54D7EE6DC35A057EE1A04BCA614348C6 /* iOSDropDown */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9E4ECD279B21EA3F7E015B02290F88AA /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				5099492A94F788D545E433E04A611A17 /* Pods-NotABadPlayer */,
+			);
+			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -109,9 +129,9 @@
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
 				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
-				8C963A4C86D60CF8460173CC29A0946A /* Pods */,
-				CD8754351B8D4A25DAD0154F4913EDC8 /* Products */,
-				318B352990CB79C3B164733669A287C2 /* Targets Support Files */,
+				60E09F58A4B6EF1F34AC349248B764C0 /* Pods */,
+				0CFEC115F12DA37FE8EA28A3DC6CDFF8 /* Products */,
+				9E4ECD279B21EA3F7E015B02290F88AA /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,73 +142,62 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		FB07A4C144AEE47EB3789E658F66BB3C /* Pods-NotABadPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				673BE8F3CCE2963B2A12F85D76998577 /* Pods-NotABadPlayer-acknowledgements.markdown */,
-				6A836A503E63A0E87FB36C455C527714 /* Pods-NotABadPlayer-acknowledgements.plist */,
-				92F620CF1B3D1309B6C3E5529538E5D6 /* Pods-NotABadPlayer-dummy.m */,
-				96053966F33002B21248532E4690E72E /* Pods-NotABadPlayer.debug.xcconfig */,
-				FD1946D70B8CF5ECA9DA5B28AF3F9249 /* Pods-NotABadPlayer.release.xcconfig */,
-			);
-			name = "Pods-NotABadPlayer";
-			path = "Target Support Files/Pods-NotABadPlayer";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		283393EAC1CA81AA03D6ABC0F71BE411 /* Headers */ = {
+		116DF7FBBAB9ED9B0222165C4C506A75 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDEF6D87E647B1E5FFC434109B581940 /* BDKCollectionIndexView.h in Headers */,
+				A7F0EC9E08C4CA960D56A8BC94EF4145 /* Pods-NotABadPlayer-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ABD5833CE0646524299D28CA8DCC001A /* Headers */ = {
+		94D8A2752D40DD0F9297E9BD29794BA4 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA759B0E8B83FE3FF7DE01FB5725A698 /* iOSDropDown-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8635CD4868AE593157750A9862290FDF /* Pods-NotABadPlayer */ = {
+		315B43683D88608C89D13A537EAA694B /* Pods-NotABadPlayer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A81C0F57567D84B885BDB95D60CED50E /* Build configuration list for PBXNativeTarget "Pods-NotABadPlayer" */;
+			buildConfigurationList = 3D6A6CCD5AE3B95CB4D07C2A1AED63BB /* Build configuration list for PBXNativeTarget "Pods-NotABadPlayer" */;
 			buildPhases = (
-				ABD5833CE0646524299D28CA8DCC001A /* Headers */,
-				C0CE787A83EC46A36930456B344FD766 /* Sources */,
-				6C8CD947DB4BB0613DDA362F9FA80887 /* Frameworks */,
+				116DF7FBBAB9ED9B0222165C4C506A75 /* Headers */,
+				94B975CD63896769A45E8A4817DFE8CD /* Sources */,
+				DDA01CA79137DBFDA25A317CD6024B43 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DCFBDB0251751A90C3CDBEBD5C397238 /* PBXTargetDependency */,
+				957C9271B39644B69C382FB7141AD6B7 /* PBXTargetDependency */,
 			);
 			name = "Pods-NotABadPlayer";
 			productName = "Pods-NotABadPlayer";
-			productReference = 5CE6FB8444C3A05E78FE8CBEF4B10723 /* libPods-NotABadPlayer.a */;
+			productReference = 52983383B48E7112AA5EA48F1FB3936E /* libPods-NotABadPlayer.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		EEFDA5E77027D1C1B423EA960E36CE31 /* BDKCollectionIndexView */ = {
+		4575B6B8BD79813E0A6C49248D368E37 /* iOSDropDown */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7AAE2888B23161999D446B4CEB098ABA /* Build configuration list for PBXNativeTarget "BDKCollectionIndexView" */;
+			buildConfigurationList = BE9AC5735CF0768F2ACBA0B231A996F2 /* Build configuration list for PBXNativeTarget "iOSDropDown" */;
 			buildPhases = (
-				283393EAC1CA81AA03D6ABC0F71BE411 /* Headers */,
-				9D36D3EFD2CFCE7C55A98E7D66826340 /* Sources */,
-				C7669DAFB09C2CEBF0F4F656380608B2 /* Frameworks */,
+				94D8A2752D40DD0F9297E9BD29794BA4 /* Headers */,
+				F2DF29C18258D9B19C628A2B243B9ECF /* Sources */,
+				EAF107774FD7443B092A951C697A41E4 /* Frameworks */,
+				422C9FEA8243D4615C1B285F02AD5083 /* Copy generated compatibility header */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = BDKCollectionIndexView;
-			productName = BDKCollectionIndexView;
-			productReference = 394F0A96A321CDF26391F8A13AD4DB5C /* libBDKCollectionIndexView.a */;
+			name = iOSDropDown;
+			productName = iOSDropDown;
+			productReference = 746AC69789C47D8B6AF4280331AEB02B /* libiOSDropDown.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -208,49 +217,76 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = CD8754351B8D4A25DAD0154F4913EDC8 /* Products */;
+			productRefGroup = 0CFEC115F12DA37FE8EA28A3DC6CDFF8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EEFDA5E77027D1C1B423EA960E36CE31 /* BDKCollectionIndexView */,
-				8635CD4868AE593157750A9862290FDF /* Pods-NotABadPlayer */,
+				4575B6B8BD79813E0A6C49248D368E37 /* iOSDropDown */,
+				315B43683D88608C89D13A537EAA694B /* Pods-NotABadPlayer */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		422C9FEA8243D4615C1B285F02AD5083 /* Copy generated compatibility header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DERIVED_SOURCES_DIR}/${PRODUCT_MODULE_NAME}-Swift.h",
+				"${PODS_ROOT}/Headers/Public/iOSDropDown/iOSDropDown.modulemap",
+				"${PODS_ROOT}/Headers/Public/iOSDropDown/iOSDropDown-umbrella.h",
+			);
+			name = "Copy generated compatibility header";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/${PRODUCT_MODULE_NAME}.modulemap",
+				"${BUILT_PRODUCTS_DIR}/iOSDropDown-umbrella.h",
+				"${BUILT_PRODUCTS_DIR}/Swift Compatibility Header/${PRODUCT_MODULE_NAME}-Swift.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "COMPATIBILITY_HEADER_PATH=\"${BUILT_PRODUCTS_DIR}/Swift Compatibility Header/${PRODUCT_MODULE_NAME}-Swift.h\"\nMODULE_MAP_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_MODULE_NAME}.modulemap\"\n\nditto \"${DERIVED_SOURCES_DIR}/${PRODUCT_MODULE_NAME}-Swift.h\" \"${COMPATIBILITY_HEADER_PATH}\"\nditto \"${PODS_ROOT}/Headers/Public/iOSDropDown/iOSDropDown.modulemap\" \"${MODULE_MAP_PATH}\"\nditto \"${PODS_ROOT}/Headers/Public/iOSDropDown/iOSDropDown-umbrella.h\" \"${BUILT_PRODUCTS_DIR}\"\nprintf \"\\n\\nmodule ${PRODUCT_MODULE_NAME}.Swift {\\n  header \\\"${COMPATIBILITY_HEADER_PATH}\\\"\\n  requires objc\\n}\\n\" >> \"${MODULE_MAP_PATH}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		9D36D3EFD2CFCE7C55A98E7D66826340 /* Sources */ = {
+		94B975CD63896769A45E8A4817DFE8CD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3612C43788217B8FD240573448A31BAF /* BDKCollectionIndexView-dummy.m in Sources */,
-				6CBDFD555CAD6664F30FF3761F511290 /* BDKCollectionIndexView.m in Sources */,
+				3E4B757C6FCFED4674CB2BDB6B104335 /* Pods-NotABadPlayer-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C0CE787A83EC46A36930456B344FD766 /* Sources */ = {
+		F2DF29C18258D9B19C628A2B243B9ECF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DA799B9B51DED71AB87A01432FE5DAC /* Pods-NotABadPlayer-dummy.m in Sources */,
+				8DB854500009D9B29A9322BFFBC3C022 /* iOSDropDown-dummy.m in Sources */,
+				3BBA66A6493E9B28293F2098C119B9C8 /* iOSDropDown.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DCFBDB0251751A90C3CDBEBD5C397238 /* PBXTargetDependency */ = {
+		957C9271B39644B69C382FB7141AD6B7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = BDKCollectionIndexView;
-			target = EEFDA5E77027D1C1B423EA960E36CE31 /* BDKCollectionIndexView */;
-			targetProxy = AEC4EED73CBCB7A98AC01D86E0280C06 /* PBXContainerItemProxy */;
+			name = iOSDropDown;
+			target = 4575B6B8BD79813E0A6C49248D368E37 /* iOSDropDown */;
+			targetProxy = 146C3E7591DDF477D0BA5FEA1EF73E7D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		02D89B89D0B7B092D036FF847813CB01 /* Debug */ = {
+		22648576E04801D53EB19419DEEFBE01 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96053966F33002B21248532E4690E72E /* Pods-NotABadPlayer.debug.xcconfig */;
+			baseConfigurationReference = F71C224624E662E09FB07FCB81AA58A1 /* Pods-NotABadPlayer.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -260,6 +296,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -270,26 +307,51 @@
 			};
 			name = Debug;
 		};
-		1B37767DF86A6BDCA5BE940D8C86461B /* Release */ = {
+		3182ED6A7A7D151F19BAD7BF98146E86 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C80524E96EFD1FE5EA22AFDA145A32C /* BDKCollectionIndexView.xcconfig */;
+			baseConfigurationReference = 60B089A33A58C945A4511ABAB8A00DAB /* Pods-NotABadPlayer.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3D70BC3BC895B5ADE25E46419F30512A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17E1FB084AD41BC64EF1C7B89428F6CC /* iOSDropDown.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/BDKCollectionIndexView/BDKCollectionIndexView-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				GCC_PREFIX_HEADER = "Target Support Files/iOSDropDown/iOSDropDown-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MODULEMAP_FILE = Headers/Public/iOSDropDown/iOSDropDown.modulemap;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = BDKCollectionIndexView;
-				PRODUCT_NAME = BDKCollectionIndexView;
+				PRODUCT_MODULE_NAME = iOSDropDown;
+				PRODUCT_NAME = iOSDropDown;
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -419,56 +481,43 @@
 			};
 			name = Debug;
 		};
-		7D0615B01EE99D615C40DED38A3BD47B /* Debug */ = {
+		F1366E504E2DE972E62F3C1651624638 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C80524E96EFD1FE5EA22AFDA145A32C /* BDKCollectionIndexView.xcconfig */;
+			baseConfigurationReference = 17E1FB084AD41BC64EF1C7B89428F6CC /* iOSDropDown.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/BDKCollectionIndexView/BDKCollectionIndexView-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				GCC_PREFIX_HEADER = "Target Support Files/iOSDropDown/iOSDropDown-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MODULEMAP_FILE = Headers/Public/iOSDropDown/iOSDropDown.modulemap;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = BDKCollectionIndexView;
-				PRODUCT_NAME = BDKCollectionIndexView;
+				PRODUCT_MODULE_NAME = iOSDropDown;
+				PRODUCT_NAME = iOSDropDown;
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		AAC0801459ECF51BD6C312D0ECEA575C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FD1946D70B8CF5ECA9DA5B28AF3F9249 /* Pods-NotABadPlayer.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3D6A6CCD5AE3B95CB4D07C2A1AED63BB /* Build configuration list for PBXNativeTarget "Pods-NotABadPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22648576E04801D53EB19419DEEFBE01 /* Debug */,
+				3182ED6A7A7D151F19BAD7BF98146E86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -478,20 +527,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7AAE2888B23161999D446B4CEB098ABA /* Build configuration list for PBXNativeTarget "BDKCollectionIndexView" */ = {
+		BE9AC5735CF0768F2ACBA0B231A996F2 /* Build configuration list for PBXNativeTarget "iOSDropDown" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7D0615B01EE99D615C40DED38A3BD47B /* Debug */,
-				1B37767DF86A6BDCA5BE940D8C86461B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A81C0F57567D84B885BDB95D60CED50E /* Build configuration list for PBXNativeTarget "Pods-NotABadPlayer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				02D89B89D0B7B092D036FF847813CB01 /* Debug */,
-				AAC0801459ECF51BD6C312D0ECEA575C /* Release */,
+				F1366E504E2DE972E62F3C1651624638 /* Debug */,
+				3D70BC3BC895B5ADE25E46419F30512A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

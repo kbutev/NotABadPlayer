@@ -6,7 +6,7 @@
 //  Copyright © 2019 Kristiyan Butev. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol CollectionIndexerDelegate : class {
     func onTouchGestureBegin(selection: CollectionIndexerSelection)

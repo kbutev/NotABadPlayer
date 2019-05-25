@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EEFDA5E77027D1C1B423EA960E36CE31"
-               BuildableName = "libBDKCollectionIndexView.a"
-               BlueprintName = "BDKCollectionIndexView"
+               BlueprintIdentifier = "4575B6B8BD79813E0A6C49248D368E37"
+               BuildableName = "libiOSDropDown.a"
+               BlueprintName = "iOSDropDown"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
