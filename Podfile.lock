@@ -1,16 +1,16 @@
 PODS:
-  - BDKCollectionIndexView (2.2.2)
+  - iOSDropDown (0.2.7)
 
 DEPENDENCIES:
-  - BDKCollectionIndexView
+  - iOSDropDown
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - BDKCollectionIndexView
+    - iOSDropDown
 
 SPEC CHECKSUMS:
-  BDKCollectionIndexView: 489a0c57d27fafe6944ef61e5a4192902148ea84
+  iOSDropDown: 7a4cfc67d5166f319858747b63cd2f7760c4fb4b
 
-PODFILE CHECKSUM: 81bd2cb5948d7e08c69b36a23e7838c79cd5b0b5
+PODFILE CHECKSUM: 9bd6cace683ffa5a8621f6afafabf6ef1deb5e12
 
 COCOAPODS: 1.6.1
