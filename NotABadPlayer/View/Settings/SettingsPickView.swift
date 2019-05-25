@@ -95,6 +95,8 @@ class SettingsPickContentView : UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dropDownView: DropDown!
     
+    private var initialized: Bool = false
+    
     class func create(owner: Any) -> SettingsPickContentView? {
         let bundle = Bundle.main
         let nibName = String(describing: SettingsPickContentView.self)
@@ -112,7 +114,13 @@ class SettingsPickContentView : UIView {
     }
     
     override func didMoveToSuperview() {
-        setup()
+        super.didMoveToSuperview()
+        
+        if !initialized
+        {
+            initialized = true
+            setup()
+        }
     }
     
     func setup() {

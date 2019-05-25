@@ -23,6 +23,8 @@ class SettingsView : UIView
     @IBOutlet weak var pickAppTheme: SettingsPickView!
     @IBOutlet weak var pickTrackSorting: SettingsPickView!
     
+    private var initialized: Bool = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -31,24 +33,29 @@ class SettingsView : UIView
         super.init(coder: aDecoder)
     }
     
-    override func awakeFromNib() {
-        setup()
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        if !initialized
+        {
+            initialized = true
+            setup()
+        }
     }
     
     private func setup() {
-        let guide = self.safeAreaLayoutGuide
-        let navigationLayoutHeight = TabController.TAB_SIZE.height
+        let guide = self
         
         // Base
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: SettingsView.HORIZONTAL_MARGIN).isActive = true
         scrollView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -SettingsView.HORIZONTAL_MARGIN).isActive = true
-        scrollView.contentSize.height = stackView.frame.size.height // width should be 0, to prevent horizontal scroll
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
         stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
         
+        setScrollContentSize()
         
         // Appearance
         updatePickerTitle(title: "Theme", forPicker: .Theme)
@@ -60,6 +67,10 @@ class SettingsView : UIView
         
         // Picker value interaction
         pickAppTheme.setPickGesture(forTarget: self, selector: #selector(actionPickerTap(gesture:)))
+    }
+    
+    private func setScrollContentSize() {
+        scrollView.contentSize.height = stackView.frame.size.height // width should be 0, to prevent horizontal scroll
     }
     
     func updatePickerTitle(title: String, forPicker picker: SettingsPickerValue)

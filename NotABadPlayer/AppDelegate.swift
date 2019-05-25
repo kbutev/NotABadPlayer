@@ -16,6 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Create window
+        window = UIWindow(frame: UIScreen.main.bounds)
+        
+        // Create main controller and set it as root controller
+        window!.rootViewController = MainViewController()
+        
+        // Activate window
+        window!.makeKeyAndVisible()
+        
         return true
     }
 

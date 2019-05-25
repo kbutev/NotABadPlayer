@@ -168,7 +168,6 @@ class PlaylistView : UIView
     
     private func setup() {
         let guide = self.safeAreaLayoutGuide
-        let navigationLayoutHeight = TabController.TAB_SIZE.height
         
         // Quick player view
         quickPlayerView = QuickPlayerView.create(owner: self)
@@ -183,7 +182,7 @@ class PlaylistView : UIView
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
         collectionView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
-        collectionView.topAnchor.constraint(equalTo: guide.topAnchor, constant: navigationLayoutHeight).isActive = true
+        collectionView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
         
         let cellNib = UINib(nibName: String(describing: PlaylistCell.self), bundle: nil)

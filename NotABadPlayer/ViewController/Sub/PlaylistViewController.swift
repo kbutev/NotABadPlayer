@@ -28,16 +28,6 @@ class PlaylistViewController: UIViewController, BaseViewController {
     
     public var presenter: BasePresenter?
     
-    init(withPresenter presenter: BasePresenter) {
-        self.presenter = presenter
-        
-        super.init(nibName: nil, bundle: Bundle.main)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func loadView() {
         self.baseView = PlaylistView.create(owner: self)
         self.view = self.baseView
@@ -126,7 +116,8 @@ extension PlaylistViewController : PlaylistViewDelegate {
     
     func openPlayerScreen(playlist: AudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
-        let vc = PlayerViewController(withPresenter: presenter)
+        let vc = PlayerViewController()
+        vc.presenter = presenter
         presenter.delegate = vc
         
         NavigationHelpers.showVC(current: self, vc: vc)
@@ -152,15 +143,5 @@ extension PlaylistViewController : QuickPlayerObserver {
     
     func updatePlayOrderButtonState(order: AudioPlayOrder) {
         baseView?.updatePlayOrderButtonState(order: order)
-    }
-}
-
-class PlaylistViewControllerHelpers {
-    static func addVCChild(parent: UIViewController, child: PlaylistViewController) {
-        let width = parent.view.bounds.width
-        let height = parent.view.bounds.height
-        let size = CGSize(width: width, height: height)
-        
-        NavigationHelpers.addVCChild(parent: parent, child: child, size: size, anchor: .bottom)
     }
 }

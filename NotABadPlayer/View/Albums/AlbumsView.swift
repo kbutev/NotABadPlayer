@@ -62,6 +62,8 @@ class AlbumsView : UIView
     static let INDEXER_VIEW_WIDTH: CGFloat = 16
     static let COLLECTION_VIEW_HORIZONTAL_MARGIN: CGFloat = INDEXER_VIEW_WIDTH
     
+    private var initialized: Bool = false
+    
     @IBOutlet var collectionView: UICollectionView!
     var collectionIndexerView: CollectionIndexerView?
     @IBOutlet weak var indexerCenterCharacter: UILabel!
@@ -98,42 +100,50 @@ class AlbumsView : UIView
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        initialize()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        initialize()
     }
     
-    override func awakeFromNib() {
-         setup()
+    private func initialize() {
+        quickPlayerView = QuickPlayerView.create(owner: self)
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        if !initialized
+        {
+            initialized = true
+            setup()
+        }
     }
     
     private func setup() {
-        let guide = self.safeAreaLayoutGuide
-        let navigationLayoutHeight = TabController.TAB_SIZE.height
+        let guide = self
         
         // Quick player view
-        quickPlayerView = QuickPlayerView.create(owner: self)
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
-        quickPlayerView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        quickPlayerView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
-        quickPlayerView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        quickPlayerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2).isActive = true
+        quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
+        quickPlayerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
+        quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+        quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
         
         // Collection view
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: AlbumsView.COLLECTION_VIEW_HORIZONTAL_MARGIN).isActive = true
         collectionView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -AlbumsView.COLLECTION_VIEW_HORIZONTAL_MARGIN).isActive = true
-        collectionView.topAnchor.constraint(equalTo: guide.topAnchor, constant: navigationLayoutHeight).isActive = true
+        collectionView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
         
         let nib = UINib(nibName: String(describing: AlbumsCell.self), bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: AlbumsView.CELL_IDENTIFIER)
         
-        flowLayout = AlbumsFlowLayout(cellsPerColumn: AlbumsView.CELLS_PER_COLUMN)
-        
-        collectionView.collectionViewLayout = flowLayout!
+        collectionView.collectionViewLayout = AlbumsFlowLayout(cellsPerColumn: AlbumsView.CELLS_PER_COLUMN)
         
         // Indexer view initialize and setup
         collectionIndexerView = CollectionIndexerView()
@@ -147,7 +157,7 @@ class AlbumsView : UIView
             indexerView.widthAnchor.constraint(equalToConstant: AlbumsView.INDEXER_VIEW_WIDTH).isActive = true
             indexerView.heightAnchor.constraint(equalTo: collectionView.heightAnchor).isActive = true
             indexerView.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
-            indexerView.rightAnchor.constraint(equalTo: guide.rightAnchor).isActive = true
+            indexerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
         }
         
         // Indexer center character
