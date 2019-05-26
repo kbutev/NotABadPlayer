@@ -18,9 +18,28 @@ class MainViewController : UIViewController {
     
     private var audioStorage: AudioStorage = AudioStorage()
     
-    private var selectedTab: UIViewController?
+    private var _selectedTab: UIViewController?
+    
+    private var selectedTab: BaseViewController? {
+        get {
+            return _selectedTab as? BaseViewController
+        }
+    }
     
     private var selectedTabID: TabID = .None
+    
+    private var selectedTabIsFocused: Bool {
+        get {
+            if let vc = _selectedTab
+            {
+                return vc.children.count == 0
+            }
+            
+            return false
+        }
+    }
+    
+    private var tabViewControllerCache: [TabID: BaseViewController] = [:]
     
     override func loadView() {
         self.baseView = MainView.create(owner: self)
@@ -63,29 +82,33 @@ class MainViewController : UIViewController {
     private func onTabItemSelected(_ tabID: TabID) {
         if self.selectedTabID == tabID
         {
+            if self.selectedTabIsFocused
+            {
+                return
+            }
+            
+            navigateBackwards()
             return
         }
         
-        deselectAllTabs()
+        cacheCurrentTab()
         
         self.selectedTabID = tabID
+        
+        updateTabButtonsColor()
         
         switch tabID {
         case .Albums:
             selectAlbumsTab()
-            self.baseView?.albumsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
             break
         case .Lists:
             selectListsTab()
-            self.baseView?.listsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
             break
         case .Search:
             selectSearchTab()
-            self.baseView?.searchButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
             break
         case .Settings:
             selectSettingsTab()
-            self.baseView?.settingsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
             break
         default:
             fatalError("Cannot select tab \(tabID.rawValue)")
@@ -94,23 +117,58 @@ class MainViewController : UIViewController {
     }
     
     private func deselectAllTabs() {
-        self.selectedTab?.view.removeFromSuperview()
-        self.selectedTab = nil
+        self._selectedTab?.view.removeFromSuperview()
+        self._selectedTab = nil
         self.selectedTabID = .None
-        self.baseView?.albumsButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR
-        self.baseView?.listsButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR
-        self.baseView?.searchButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR
-        self.baseView?.settingsButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR
+        
+        resetTabButtonsColor()
+    }
+    
+    private func navigateBackwards() {
+        self.selectedTab?.goBack()
+    }
+    
+    private func cacheCurrentTab() {
+        switch self.selectedTabID {
+        case .Albums:
+            tabViewControllerCache[TabID.Albums] = selectedTab!
+            break
+        case .Lists:
+            tabViewControllerCache[TabID.Lists] = selectedTab!
+            break
+        case .Search:
+            tabViewControllerCache[TabID.Search] = selectedTab!
+            break
+        case .Settings:
+            tabViewControllerCache[TabID.Settings] = selectedTab!
+            break
+        default:
+            break
+        }
     }
     
     private func selectAlbumsTab() {
         Logging.log(MainViewController.self, "Selecting tab 'Albums'")
         
-        let vc = AlbumsViewController()
-        self.selectedTab = vc
-        vc.presenter = AlbumsPresenter(view: vc, audioInfo: audioStorage)
-        NavigationHelpers.addVCChild(parent: self, child: vc)
-        self.baseView?.embedViewIntoPrimaryArea(vc.view)
+        let vc = tabViewControllerCache[TabID.Albums]
+        
+        if vc == nil
+        {
+            let albumsVC = AlbumsViewController()
+            self._selectedTab = albumsVC
+            albumsVC.presenter = AlbumsPresenter(view: albumsVC, audioInfo: audioStorage)
+        }
+        else
+        {
+            self._selectedTab = vc as? UIViewController
+        }
+        
+        guard let albumsVC = self._selectedTab else {
+            fatalError("MainViewController: Could not create an Albums view controller")
+        }
+        
+        NavigationHelpers.addVCChild(parent: self, child: albumsVC)
+        self.baseView?.embedViewIntoPrimaryArea(albumsVC.view)
     }
     
     private func selectListsTab() {
@@ -126,10 +184,24 @@ class MainViewController : UIViewController {
     private func selectSettingsTab() {
         Logging.log(MainViewController.self, "Selecting tab 'Settings'")
         
-        let vc = SettingsViewController()
-        self.selectedTab = vc
-        NavigationHelpers.addVCChild(parent: self, child: vc)
-        self.baseView?.embedViewIntoPrimaryArea(vc.view)
+        let vc = tabViewControllerCache[TabID.Settings]
+        
+        if vc == nil
+        {
+            let settingsVC = SettingsViewController()
+            self._selectedTab = settingsVC
+        }
+        else
+        {
+            self._selectedTab = vc as? UIViewController
+        }
+        
+        guard let settingsVC = self._selectedTab else {
+            fatalError("MainViewController: Could not create an Settings view controller")
+        }
+        
+        NavigationHelpers.addVCChild(parent: self, child: settingsVC)
+        self.baseView?.embedViewIntoPrimaryArea(settingsVC.view)
     }
 }
 
@@ -148,5 +220,36 @@ extension MainViewController {
     
     @objc func actionSettingsMenuButtonTap(sender: Any) {
         onTabItemSelected(.Settings)
+    }
+}
+
+// Interface actions
+extension MainViewController {
+    private func resetTabButtonsColor() {
+        self.baseView?.albumsButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR
+        self.baseView?.listsButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR
+        self.baseView?.searchButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR
+        self.baseView?.settingsButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR
+    }
+    
+    private func updateTabButtonsColor() {
+        resetTabButtonsColor()
+        
+        switch self.selectedTabID {
+        case .Albums:
+            self.baseView?.albumsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
+            break
+        case .Lists:
+            self.baseView?.listsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
+            break
+        case .Search:
+            self.baseView?.searchButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
+            break
+        case .Settings:
+            self.baseView?.settingsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
+            break
+        default:
+            break
+        }
     }
 }

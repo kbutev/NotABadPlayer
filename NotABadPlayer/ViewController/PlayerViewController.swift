@@ -56,7 +56,7 @@ class PlayerViewController: UIViewController, BaseViewController {
     }
     
     func goBack() {
-        NavigationHelpers.removeVC(self)
+        NavigationHelpers.dismissPresentedVC(self)
     }
     
     func onSwipeUp() {

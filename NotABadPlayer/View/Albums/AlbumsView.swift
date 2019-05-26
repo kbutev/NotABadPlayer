@@ -62,12 +62,13 @@ class AlbumsView : UIView
     static let INDEXER_VIEW_WIDTH: CGFloat = 16
     static let COLLECTION_VIEW_HORIZONTAL_MARGIN: CGFloat = INDEXER_VIEW_WIDTH
     
-    private var initialized: Bool = false
-    
     @IBOutlet var collectionView: UICollectionView!
-    var collectionIndexerView: CollectionIndexerView?
     @IBOutlet weak var indexerCenterCharacter: UILabel!
     @IBOutlet var quickPlayerView: QuickPlayerView!
+    
+    private var initialized: Bool = false
+    
+    var collectionIndexerView: CollectionIndexerView?
     
     private var flowLayout: AlbumsFlowLayout?
     

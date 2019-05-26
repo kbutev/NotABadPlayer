@@ -120,7 +120,7 @@ extension PlaylistViewController : PlaylistViewDelegate {
         vc.presenter = presenter
         presenter.delegate = vc
         
-        NavigationHelpers.showVC(current: self, vc: vc)
+        NavigationHelpers.presentVC(current: self, vc: vc)
     }
     
     func onSwipeRight() {
