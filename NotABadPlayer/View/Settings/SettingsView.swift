@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import iOSDropDown
 
 enum SettingsPickerValue {
     case Theme; case TrackSorting; case ShowVolumeBar;
@@ -58,68 +59,94 @@ class SettingsView : UIView
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
         
-        // Appearance
-        updatePickerTitle(title: "Theme", forPicker: .Theme)
-        updatePickerOptions(values: ["a", "b"], forPicker: .Theme)
-        updatePickerTitle(title: "Track Sorting", forPicker: .TrackSorting)
-        updatePickerOptions(values: ["a", "b"], forPicker: .TrackSorting)
-        
-        // Picker value default values
-        
-        // Picker value interaction
-        pickAppTheme.setPickGesture(forTarget: self, selector: #selector(actionPickerTap(gesture:)))
+        // Picker setup
+        setupPicker(.Theme)
+        setupPicker(.TrackSorting)
     }
     
     private func setScrollContentSize() {
         scrollView.contentSize.height = stackView.bounds.size.height // width should be 0, to prevent horizontal scroll
     }
-    
-    func updatePickerTitle(title: String, forPicker picker: SettingsPickerValue)
-    {
-        switch picker {
+}
+
+// Picker views
+extension SettingsView {
+    private func getPickerView(for type: SettingsPickerValue) -> SettingsPickView {
+        switch type {
         case .Theme:
-            pickAppTheme.setTitle(title: title)
-            break
+            return pickAppTheme
         case .TrackSorting:
-            pickTrackSorting.setTitle(title: title)
-            break
+            return pickTrackSorting
         default:
             break
         }
+        
+        fatalError("SettingsView: picker views are not initialized properly, cannot get picker view for given type")
     }
     
-    func updatePickerOptions(values: [String], forPicker picker: SettingsPickerValue)
-    {
-        switch picker {
+    private func setupPicker(_ type: SettingsPickerValue) {
+        let pickerView: SettingsPickView = getPickerView(for: type)
+        
+        let optionsUgly = ApplicationAction.stringValues()
+        var options: [String] = []
+        
+        for option in optionsUgly
+        {
+            options.append(option.stringByReplacingFirstOccurrenceOfString(target: "_", replaceString: " "))
+        }
+        
+        var title = ""
+        
+        switch type {
         case .Theme:
-            pickAppTheme.setPickOptions(options: values)
+            title = "Theme"
             break
         case .TrackSorting:
-            pickTrackSorting.setPickOptions(options: values)
+            title = "Track Sorting"
             break
         default:
             break
         }
+        
+        pickerView.type = type
+        pickerView.delegate = self
+        pickerView.setTitle(title: title)
+        pickerView.setPickOptions(options: options)
     }
     
-    func selectPickerValue(index: UInt, forPicker picker: SettingsPickerValue)
-    {
-        switch picker {
-        case .Theme:
-            pickAppTheme.selectOption(index: index)
-            break
-        case .TrackSorting:
-            pickTrackSorting.selectOption(index: index)
-            break
-        default:
-            break
-        }
+    private func enableAllPickerViews() {
+        setUserInteractionStateForAllPickerViews(true)
+    }
+    
+    private func disableAllPickerViews() {
+        setUserInteractionStateForAllPickerViews(false)
+    }
+    
+    private func setUserInteractionStateForAllPickerViews(_ value: Bool) {
+        getPickerView(for: .Theme).isUserInteractionEnabled = value
+        getPickerView(for: .TrackSorting).isUserInteractionEnabled = value
     }
 }
 
-extension SettingsView {
-    @objc func actionPickerTap(gesture: UIGestureRecognizer) {
-        pickTrackSorting.hidePickerView()
+// View action delegate
+extension SettingsView: SettingsPickActionDelegate {
+    func onTap(source: SettingsPickerValue) {
+        NSLog("onTap")
+        
+        let pview = getPickerView(for: source)
+        
+        disableAllPickerViews()
+        pview.isUserInteractionEnabled = true
+    }
+    
+    func onSelect(source: SettingsPickerValue, index: UInt) {
+        NSLog("onSelect")
+    }
+    
+    func onClose(source: SettingsPickerValue) {
+        NSLog("onClose")
+        
+        enableAllPickerViews()
     }
 }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ApplicationAction: String, Codable {
+enum ApplicationAction: String, CaseIterable, Codable {
     case DO_NOTHING;
     case EXIT;
     case PLAY;
@@ -30,4 +30,15 @@ enum ApplicationAction: String, Codable {
     case BACKWARDS_15;
     case CHANGE_PLAY_ORDER;
     case RECALL;
+    
+    static func stringValues() -> [String] {
+        var strings: [String] = []
+        
+        for value in ApplicationAction.allCases
+        {
+            strings.append(value.rawValue)
+        }
+        
+        return strings
+    }
 }

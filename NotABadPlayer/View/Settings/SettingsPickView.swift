@@ -9,8 +9,30 @@
 import UIKit
 import iOSDropDown
 
+protocol SettingsPickActionDelegate: class {
+    func onTap(source: SettingsPickerValue)
+    func onSelect(source: SettingsPickerValue, index: UInt)
+    func onClose(source: SettingsPickerValue)
+}
+
 class SettingsPickView : UIView {
-    public static let HEIGHT: CGFloat = 32
+    public static let HEIGHT: CGFloat = 48
+    
+    private weak var _delegate: SettingsPickActionDelegate?
+    
+    public var delegate: SettingsPickActionDelegate? {
+        get {
+            return self._delegate
+        }
+        
+        set {
+            self._delegate = newValue
+            
+            setupInteraction()
+        }
+    }
+    
+    public var type: SettingsPickerValue = .PlayerPrevious
     
     private weak var content: SettingsPickContentView!
     
@@ -20,7 +42,7 @@ class SettingsPickView : UIView {
         }
     }
     
-    var dropDownView: DropDown! {
+    var dropDownView: SettingsDropDownView! {
         get {
             return content.dropDownView
         }
@@ -36,7 +58,7 @@ class SettingsPickView : UIView {
         initialize()
     }
     
-    func initialize() {
+    private func initialize() {
         content = SettingsPickContentView.create(owner: self)
         addSubview(content)
         backgroundColor = .clear
@@ -54,11 +76,29 @@ class SettingsPickView : UIView {
         self.heightAnchor.constraint(equalToConstant: SettingsPickView.HEIGHT).isActive = true
     }
     
-    func setTitle(title: String) {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        // When the drop down is dropped down, bypass the frame of this view
+        // and go straight to the subviews testing
+        if dropDownView.isSelected
+        {
+            for subview in subviews
+            {
+                if let result = subview.hitTest(point, with: event)
+                {
+                    return result
+                }
+            }
+        }
+        
+        // Otherwise, normal testing
+        return super.hitTest(point, with: event)
+    }
+    
+    public func setTitle(title: String) {
         titleLabel.text = title
     }
     
-    func setPickOptions(options: [String]) {
+    public func setPickOptions(options: [String]) {
         let wasEmpty = dropDownView.optionArray.count == 0
         
         dropDownView.optionArray = options
@@ -70,77 +110,46 @@ class SettingsPickView : UIView {
         }
     }
     
-    func selectOption(index: UInt) {
+    public func selectOption(index: UInt) {
         dropDownView.text = dropDownView.optionArray[Int(index)]
         dropDownView.selectedIndex = Int(index)
     }
     
-    func showPickerView() {
+    public func showPickerView() {
         dropDownView.isHidden = false
     }
     
-    func hidePickerView() {
+    public func hidePickerView() {
         dropDownView.isHidden = true
     }
     
-    func setPickGesture(forTarget target: UIView, selector: Selector) -> UITapGestureRecognizer {
-        let tap = UITapGestureRecognizer(target: target, action: selector)
-        tap.numberOfTapsRequired = 1
-        dropDownView.addGestureRecognizer(tap)
-        return tap
+    private func setupInteraction() {
+        dropDownView.listWillAppear(completion: {[weak self] () -> () in
+            if let view = self
+            {
+                view.bringToFront()
+                view.delegate?.onTap(source: view.type)
+            }
+        })
+        
+        dropDownView.didSelect(completion: {[weak self] (_ selectedText: String, _ index: Int , _ id:Int ) -> () in
+            if let view = self
+            {
+                view.selectOption(index: UInt(index))
+                view.delegate?.onSelect(source: view.type, index: UInt(index))
+            }
+        })
+        
+        dropDownView.listWillDisappear(completion: {[weak self] () -> () in
+            if let view = self
+            {
+                view.delegate?.onClose(source: view.type)
+            }
+        })
+    }
+    
+    private func bringToFront() {
+        self.superview!.bringSubviewToFront(self)
     }
 }
 
-class SettingsPickContentView : UIView {
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var dropDownView: DropDown!
-    
-    private var initialized: Bool = false
-    
-    class func create(owner: Any) -> SettingsPickContentView? {
-        let bundle = Bundle.main
-        let nibName = String(describing: SettingsPickContentView.self)
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        
-        return nib.instantiate(withOwner: owner, options: nil).first as? SettingsPickContentView
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        
-        if !initialized
-        {
-            initialized = true
-            setup()
-        }
-    }
-    
-    func setup() {
-        let parent = superview!
-        
-        backgroundColor = .clear
-        
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.widthAnchor.constraint(equalTo: parent.widthAnchor).isActive = true
-        self.heightAnchor.constraint(equalToConstant: 256).isActive = true
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
-        titleLabel.leftAnchor.constraint(equalTo: parent.leftAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: 128).isActive = true
-        
-        dropDownView.translatesAutoresizingMaskIntoConstraints = false
-        dropDownView.topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
-        dropDownView.rightAnchor.constraint(equalTo: parent.rightAnchor).isActive = true
-        dropDownView.widthAnchor.constraint(equalToConstant: 128).isActive = true
-        dropDownView.selectedRowColor = .orange
-    }
-}

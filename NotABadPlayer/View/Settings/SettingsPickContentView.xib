@@ -23,7 +23,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="woG-fh-7Se" customClass="DropDown" customModule="iOSDropDown">
+                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="woG-fh-7Se" customClass="SettingsDropDownView" customModule="NotABadPlayer" customModuleProvider="target">
                     <rect key="frame" x="158" y="433" width="97" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <nil key="textColor"/>
@@ -37,8 +37,8 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="dropDownView" destination="woG-fh-7Se" id="Djq-Fw-BTn"/>
-                <outlet property="titleLabel" destination="HJf-q7-O8I" id="5n5-K1-gKJ"/>
+                <outlet property="dropDownView" destination="woG-fh-7Se" id="yHC-DL-Afc"/>
+                <outlet property="titleLabel" destination="HJf-q7-O8I" id="KdA-Qu-xWV"/>
             </connections>
         </view>
     </objects>
