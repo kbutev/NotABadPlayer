@@ -93,6 +93,8 @@ class MainViewController : UIViewController {
         
         cacheCurrentTab()
         
+        deselectAllTabs()
+        
         self.selectedTabID = tabID
         
         updateTabButtonsColor()
@@ -117,8 +119,12 @@ class MainViewController : UIViewController {
     }
     
     private func deselectAllTabs() {
-        self._selectedTab?.view.removeFromSuperview()
-        self._selectedTab = nil
+        if let selectedTabVC = self._selectedTab
+        {
+            NavigationHelpers.removeVCChild(selectedTabVC)
+            self._selectedTab = nil
+        }
+        
         self.selectedTabID = .None
         
         resetTabButtonsColor()
