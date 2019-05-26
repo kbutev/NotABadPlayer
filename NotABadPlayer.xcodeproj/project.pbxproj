@@ -48,6 +48,8 @@
 		996F11A2226768660064D6DA /* ApplicationInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996F11A1226768660064D6DA /* ApplicationInput.swift */; };
 		996F11A42267686D0064D6DA /* Keybinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996F11A32267686D0064D6DA /* Keybinds.swift */; };
 		99761BC222898D94004577E0 /* QuickPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99761BC122898D94004577E0 /* QuickPlayerView.swift */; };
+		997C9448229AD68B00601D12 /* SettingsDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997C9447229AD68B00601D12 /* SettingsDropDownView.swift */; };
+		997C944A229AE30E00601D12 /* SettingsPickViewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997C9449229AE30D00601D12 /* SettingsPickViewContentView.swift */; };
 		999382E722806D5A00B8C8D9 /* PermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999382E622806D5A00B8C8D9 /* PermissionsViewController.swift */; };
 		999382EB22807DCA00B8C8D9 /* AlbumsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 999382EA22807DCA00B8C8D9 /* AlbumsCell.xib */; };
 		999F7A652291B2B10065E360 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999F7A642291B2B10065E360 /* Text.swift */; };
@@ -139,6 +141,8 @@
 		996F11A1226768660064D6DA /* ApplicationInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationInput.swift; sourceTree = "<group>"; };
 		996F11A32267686D0064D6DA /* Keybinds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keybinds.swift; sourceTree = "<group>"; };
 		99761BC122898D94004577E0 /* QuickPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPlayerView.swift; sourceTree = "<group>"; };
+		997C9447229AD68B00601D12 /* SettingsDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDropDownView.swift; sourceTree = "<group>"; };
+		997C9449229AE30D00601D12 /* SettingsPickViewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPickViewContentView.swift; sourceTree = "<group>"; };
 		999382E622806D5A00B8C8D9 /* PermissionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsViewController.swift; sourceTree = "<group>"; };
 		999382EA22807DCA00B8C8D9 /* AlbumsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlbumsCell.xib; sourceTree = "<group>"; };
 		999F7A642291B2B10065E360 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
@@ -279,7 +283,9 @@
 				9909D6672299199600B4E637 /* SettingsView.swift */,
 				9909D669229919A200B4E637 /* SettingsView.xib */,
 				9909D66B229920DE00B4E637 /* SettingsPickView.swift */,
+				997C9449229AE30D00601D12 /* SettingsPickViewContentView.swift */,
 				9909D66D229925C200B4E637 /* SettingsPickContentView.xib */,
+				997C9447229AD68B00601D12 /* SettingsDropDownView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -661,6 +667,7 @@
 				996F119D226766C40064D6DA /* GeneralStorage.swift in Sources */,
 				996392F92260AB140050F82A /* AudioTrack.swift in Sources */,
 				992EC1B5225B6A5C007DDD9D /* AppDelegate.swift in Sources */,
+				997C944A229AE30E00601D12 /* SettingsPickViewContentView.swift in Sources */,
 				996393032260C00F0050F82A /* AudioPlayerObserver.swift in Sources */,
 				99B9CA5D2278859100000888 /* AlbumsPresenter.swift in Sources */,
 				99194241227867BF00FF041E /* AlbumsView.swift in Sources */,
@@ -684,6 +691,7 @@
 				996392FD2260ACEB0050F82A /* AudioPlaylist.swift in Sources */,
 				992EA212228FF7C7000C5592 /* AlertWindows.swift in Sources */,
 				99021E462281EE2A007B2BF7 /* PlaylistViewController.swift in Sources */,
+				997C9448229AD68B00601D12 /* SettingsDropDownView.swift in Sources */,
 				992EC1ED225B6ED9007DDD9D /* SettingsViewController.swift in Sources */,
 				9949E531228E9698002CDCC0 /* Looper.swift in Sources */,
 				99A6CA7C22677C850071DC0D /* AppSettings.swift in Sources */,
