@@ -50,12 +50,13 @@ class SettingsView : UIView
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: SettingsView.HORIZONTAL_MARGIN).isActive = true
         scrollView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -SettingsView.HORIZONTAL_MARGIN).isActive = true
+        scrollView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+        
+        setScrollContentSize()
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
-        stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
-        
-        setScrollContentSize()
         
         // Appearance
         updatePickerTitle(title: "Theme", forPicker: .Theme)
@@ -70,7 +71,7 @@ class SettingsView : UIView
     }
     
     private func setScrollContentSize() {
-        scrollView.contentSize.height = stackView.frame.size.height // width should be 0, to prevent horizontal scroll
+        scrollView.contentSize.height = stackView.bounds.size.height // width should be 0, to prevent horizontal scroll
     }
     
     func updatePickerTitle(title: String, forPicker picker: SettingsPickerValue)
