@@ -19,14 +19,6 @@ enum NavigationHelpersAttachAnchor {
 
 class NavigationHelpers
 {
-    class func showVC(current: UIViewController, vc: UIViewController) {
-        current.present(vc, animated: true, completion: nil)
-    }
-    
-    class func removeVC(_ vc: UIViewController) {
-        vc.dismiss(animated: true, completion: nil)
-    }
-    
     class func addVCChild(parent: UIViewController, child: UIViewController) {
         parent.addChild(child)
         
@@ -40,7 +32,13 @@ class NavigationHelpers
         child.removeFromParent()
     }
     
-    class func presentVC(parent: UIViewController, vc: UIViewController) {
-        parent.present(vc, animated: true, completion: nil)
+    class func presentVC(current: UIViewController, vc: UIViewController) {
+        current.present(vc, animated: true, completion: nil)
+    }
+    
+    class func dismissPresentedVC(_ vc: UIViewController) {
+        vc.dismiss(animated: true, completion: {() in
+            vc.view.removeFromSuperview()
+        })
     }
 }

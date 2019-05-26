@@ -123,6 +123,8 @@ class PlaylistView : UIView
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var quickPlayerView: QuickPlayerView!
     
+    private var initialized: Bool = false
+    
     private var flowLayout: PlaylistFlowLayout?
     
     private var collectionViewHeaderHeight: CGFloat = 0
@@ -156,27 +158,38 @@ class PlaylistView : UIView
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        initialize()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        initialize()
     }
     
-    override func awakeFromNib() {
-        setup()
+    private func initialize() {
+        quickPlayerView = QuickPlayerView.create(owner: self)
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        if !initialized
+        {
+            initialized = true
+            setup()
+        }
     }
     
     private func setup() {
-        let guide = self.safeAreaLayoutGuide
+        let guide = self.superview!
         
         // Quick player view
-        quickPlayerView = QuickPlayerView.create(owner: self)
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
-        quickPlayerView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        quickPlayerView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
-        quickPlayerView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        quickPlayerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2).isActive = true
+        quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
+        quickPlayerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
+        quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+        quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
         
         // Collection view
         collectionView.translatesAutoresizingMaskIntoConstraints = false
