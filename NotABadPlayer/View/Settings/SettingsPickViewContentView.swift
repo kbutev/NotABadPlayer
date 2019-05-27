@@ -9,6 +9,9 @@
 import UIKit
 
 class SettingsPickContentView : UIView {
+    public static let TITLE_WIDTH: CGFloat = 140
+    public static let DROP_DOWN_WIDTH: CGFloat = 140
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dropDownView: SettingsDropDownView!
     
@@ -45,19 +48,15 @@ class SettingsPickContentView : UIView {
         
         backgroundColor = .clear
         
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.widthAnchor.constraint(equalTo: parent.widthAnchor).isActive = true
-        self.heightAnchor.constraint(equalToConstant: 256).isActive = true
-        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: parent.leftAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: 128).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: SettingsPickContentView.TITLE_WIDTH).isActive = true
         
         dropDownView.translatesAutoresizingMaskIntoConstraints = false
         dropDownView.topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
         dropDownView.rightAnchor.constraint(equalTo: parent.rightAnchor).isActive = true
-        dropDownView.widthAnchor.constraint(equalToConstant: 128).isActive = true
+        dropDownView.widthAnchor.constraint(equalToConstant: SettingsPickContentView.DROP_DOWN_WIDTH).isActive = true
         dropDownView.selectedRowColor = .orange
     }
 }

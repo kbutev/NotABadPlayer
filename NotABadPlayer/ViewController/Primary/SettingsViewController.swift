@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol SettingsViewDelegate : class {
+    
+}
+
 class SettingsViewController: UIViewController, BaseViewController {
     private var baseView: SettingsView?
     
@@ -22,12 +26,47 @@ class SettingsViewController: UIViewController, BaseViewController {
         super.viewDidLoad()
         
         presenter?.start()
+        
+        baseView?.delegate = self
+        
+        selectDefaultPickerValues()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        
+    }
+    
+    private func selectDefaultPickerValues() {
+        baseView?.selectTheme(GeneralStorage.shared.getAppThemeValue())
+        baseView?.selectTrackSorting(GeneralStorage.shared.getTrackSortingValue())
+        baseView?.selectShowVolumeBar(GeneralStorage.shared.getShowVolumeBarValue())
+        
+        baseView?.selectKeybind(keybind: .PLAYER_VOLUME_UP_BUTTON,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_VOLUME_UP_BUTTON))
+        baseView?.selectKeybind(keybind: .PLAYER_VOLUME_DOWN_BUTTON,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_VOLUME_DOWN_BUTTON))
+        baseView?.selectKeybind(keybind: .PLAYER_RECALL,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_RECALL))
+        baseView?.selectKeybind(keybind: .PLAYER_PREVIOUS_BUTTON,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_PREVIOUS_BUTTON))
+        baseView?.selectKeybind(keybind: .PLAYER_NEXT_BUTTON,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_NEXT_BUTTON))
+        baseView?.selectKeybind(keybind: .PLAYER_SWIPE_LEFT,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_SWIPE_LEFT))
+        baseView?.selectKeybind(keybind: .PLAYER_SWIPE_RIGHT,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_SWIPE_RIGHT))
+        baseView?.selectKeybind(keybind: .QUICK_PLAYER_VOLUME_UP_BUTTON,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_VOLUME_UP_BUTTON))
+        baseView?.selectKeybind(keybind: .QUICK_PLAYER_VOLUME_DOWN_BUTTON,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_VOLUME_DOWN_BUTTON))
+        baseView?.selectKeybind(keybind: .QUICK_PLAYER_PREVIOUS_BUTTON,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_PREVIOUS_BUTTON))
+        baseView?.selectKeybind(keybind: .QUICK_PLAYER_NEXT_BUTTON,
+                                action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_NEXT_BUTTON))
     }
     
     func goBack() {
@@ -57,4 +96,35 @@ class SettingsViewController: UIViewController, BaseViewController {
     func onPlaylistButtonClick() {
         
     }
+}
+
+extension SettingsViewController: SettingsActionDelegate {
+    func onThemeSelect(_ value: AppTheme) {
+        presenter?.onAppThemeChange(themeValue: value)
+    }
+    
+    func onTrackSortingSelect(_ value: TrackSorting) {
+        presenter?.onAppSortingChange(albumSorting: .TITLE, trackSorting: value)
+    }
+    
+    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
+        presenter?.onAppAppearanceChange(showStars: .NO, showVolumeBar: value)
+    }
+    
+    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
+        presenter?.onKeybindChange(action: action, input: input)
+    }
+    
+    func onResetSettingsDefaults() {
+        AlertWindows.shared.show(sourceVC: self, withTitle: "", withDescription: "Reset settings to defaults?",
+                                 actionLeftText: "NO", actionLeft: nil,
+                                 actionRightText: "YES", actionRight: {[weak self] (action) in
+                                    self?.presenter?.onAppSettingsReset()
+                                    self?.selectDefaultPickerValues()
+        })
+    }
+}
+
+extension SettingsViewController: SettingsViewDelegate {
+    
 }

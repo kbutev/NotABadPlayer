@@ -68,7 +68,7 @@ class AlbumsView : UIView
     
     private var initialized: Bool = false
     
-    var collectionIndexerView: CollectionIndexerView?
+    var collectionIndexerView: CollectionIndexerView!
     
     private var flowLayout: AlbumsFlowLayout?
     
@@ -111,6 +111,7 @@ class AlbumsView : UIView
     
     private func initialize() {
         quickPlayerView = QuickPlayerView.create(owner: self)
+        collectionIndexerView = CollectionIndexerView()
     }
     
     override func didMoveToSuperview() {
@@ -147,19 +148,14 @@ class AlbumsView : UIView
         collectionView.collectionViewLayout = AlbumsFlowLayout(cellsPerColumn: AlbumsView.CELLS_PER_COLUMN)
         
         // Indexer view initialize and setup
-        collectionIndexerView = CollectionIndexerView()
+        collectionIndexerView.delegate = self
+        self.addSubview(collectionIndexerView)
         
-        if let indexerView = collectionIndexerView
-        {
-            indexerView.delegate = self
-            self.addSubview(indexerView)
-            
-            indexerView.translatesAutoresizingMaskIntoConstraints = false
-            indexerView.widthAnchor.constraint(equalToConstant: AlbumsView.INDEXER_VIEW_WIDTH).isActive = true
-            indexerView.heightAnchor.constraint(equalTo: collectionView.heightAnchor).isActive = true
-            indexerView.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
-            indexerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
-        }
+        collectionIndexerView.translatesAutoresizingMaskIntoConstraints = false
+        collectionIndexerView.widthAnchor.constraint(equalToConstant: AlbumsView.INDEXER_VIEW_WIDTH).isActive = true
+        collectionIndexerView.heightAnchor.constraint(equalTo: collectionView.heightAnchor).isActive = true
+        collectionIndexerView.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
+        collectionIndexerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
         
         // Indexer center character
         indexerCenterCharacter.translatesAutoresizingMaskIntoConstraints = false
