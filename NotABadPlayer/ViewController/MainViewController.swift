@@ -180,11 +180,49 @@ class MainViewController : UIViewController {
     private func selectListsTab() {
         Logging.log(MainViewController.self, "Selecting tab 'Lists'")
         
+        let vc = tabViewControllerCache[TabID.Lists]
+        
+        if vc == nil
+        {
+            let albumsVC = AlbumsViewController()
+            self._selectedTab = albumsVC
+            albumsVC.presenter = AlbumsPresenter(view: albumsVC, audioInfo: audioStorage)
+        }
+        else
+        {
+            self._selectedTab = vc as? UIViewController
+        }
+        
+        guard let albumsVC = self._selectedTab else {
+            fatalError("MainViewController: Could not create an Albums view controller")
+        }
+        
+        NavigationHelpers.addVCChild(parent: self, child: albumsVC)
+        self.baseView?.embedViewIntoPrimaryArea(albumsVC.view)
     }
     
     private func selectSearchTab() {
         Logging.log(MainViewController.self, "Selecting tab 'Search'")
         
+        let vc = tabViewControllerCache[TabID.Search]
+        
+        if vc == nil
+        {
+            let albumsVC = AlbumsViewController()
+            self._selectedTab = albumsVC
+            albumsVC.presenter = AlbumsPresenter(view: albumsVC, audioInfo: audioStorage)
+        }
+        else
+        {
+            self._selectedTab = vc as? UIViewController
+        }
+        
+        guard let albumsVC = self._selectedTab else {
+            fatalError("MainViewController: Could not create an Albums view controller")
+        }
+        
+        NavigationHelpers.addVCChild(parent: self, child: albumsVC)
+        self.baseView?.embedViewIntoPrimaryArea(albumsVC.view)
     }
     
     private func selectSettingsTab() {
@@ -196,6 +234,7 @@ class MainViewController : UIViewController {
         {
             let settingsVC = SettingsViewController()
             self._selectedTab = settingsVC
+            settingsVC.presenter = SettingsPresenter(view: settingsVC)
         }
         else
         {

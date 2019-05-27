@@ -76,6 +76,25 @@ class CollectionIndexerView : UIView
         addGestureRecognizer(longPressGesture)
     }
     
+    override func layoutSubviews() {
+        let width = self.frame.width
+        let height = self.frame.height
+        let labelsCount = CGFloat(characterLabels.count)
+        
+        let labelSize = CGSize(width: width, height: height / labelsCount)
+        
+        var currentPositionY: CGFloat = 0
+        
+        // order the views
+        for label in self.characterLabels
+        {
+            label.frame.origin = CGPoint(x: 0, y: currentPositionY)
+            label.frame.size = labelSize
+            
+            currentPositionY += label.frame.height + spacing
+        }
+    }
+    
     private func removeLabels() {
         for label in self.characterLabels
         {
@@ -104,21 +123,6 @@ class CollectionIndexerView : UIView
             self.characterLabels.append(label)
             
             self.addSubview(label)
-        }
-    }
-    
-    @objc func onGestureEvent(recognizer: UIGestureRecognizer) {
-        switch recognizer.state
-        {
-        case .began:
-            onTouchGestureBegin(recognizer)
-            break
-        case .ended:
-            onTouchGestureEnd(recognizer)
-            break
-        default:
-            onTouchGestureMove(recognizer)
-            break
         }
     }
     
@@ -184,26 +188,7 @@ class CollectionIndexerView : UIView
         }
     }
     
-    override func layoutSubviews() {
-        let width = self.frame.width
-        let height = self.frame.height
-        let labelsCount = CGFloat(characterLabels.count)
-        
-        let labelSize = CGSize(width: width, height: height / labelsCount)
-        
-        var currentPositionY: CGFloat = 0
-        
-        // order the views
-        for label in self.characterLabels
-        {
-            label.frame.origin = CGPoint(x: 0, y: currentPositionY)
-            label.frame.size = labelSize
-            
-            currentPositionY += label.frame.height + spacing
-        }
-    }
-    
-    func updateAlphabet(strings: [String]) {
+    public func updateAlphabet(strings: [String]) {
         var alphabet: [Character] = []
         
         for title in strings
@@ -227,5 +212,23 @@ class CollectionIndexerView : UIView
         
         rebuildLabels()
         layoutIfNeeded()
+    }
+}
+
+// Actions
+extension CollectionIndexerView {
+    @objc func onGestureEvent(recognizer: UIGestureRecognizer) {
+        switch recognizer.state
+        {
+        case .began:
+            onTouchGestureBegin(recognizer)
+            break
+        case .ended:
+            onTouchGestureEnd(recognizer)
+            break
+        default:
+            onTouchGestureMove(recognizer)
+            break
+        }
     }
 }

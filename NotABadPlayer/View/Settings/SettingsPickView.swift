@@ -10,7 +10,7 @@ import UIKit
 import iOSDropDown
 
 protocol SettingsPickActionDelegate: class {
-    func onTap(source: SettingsPickerValue)
+    func onOpen(source: SettingsPickerValue)
     func onSelect(source: SettingsPickerValue, index: UInt)
     func onClose(source: SettingsPickerValue)
 }
@@ -128,7 +128,7 @@ class SettingsPickView : UIView {
             if let view = self
             {
                 view.bringToFront()
-                view.delegate?.onTap(source: view.type)
+                view.delegate?.onOpen(source: view.type)
             }
         })
         

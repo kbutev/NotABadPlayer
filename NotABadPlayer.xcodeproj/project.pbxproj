@@ -47,6 +47,7 @@
 		996F11A02267685B0064D6DA /* ApplicationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996F119F2267685B0064D6DA /* ApplicationAction.swift */; };
 		996F11A2226768660064D6DA /* ApplicationInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996F11A1226768660064D6DA /* ApplicationInput.swift */; };
 		996F11A42267686D0064D6DA /* Keybinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996F11A32267686D0064D6DA /* Keybinds.swift */; };
+		9971379A229C6A8C009E8F35 /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99713799229C6A8C009E8F35 /* SettingsPresenter.swift */; };
 		99761BC222898D94004577E0 /* QuickPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99761BC122898D94004577E0 /* QuickPlayerView.swift */; };
 		997C9448229AD68B00601D12 /* SettingsDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997C9447229AD68B00601D12 /* SettingsDropDownView.swift */; };
 		997C944A229AE30E00601D12 /* SettingsPickViewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997C9449229AE30D00601D12 /* SettingsPickViewContentView.swift */; };
@@ -140,6 +141,7 @@
 		996F119F2267685B0064D6DA /* ApplicationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationAction.swift; sourceTree = "<group>"; };
 		996F11A1226768660064D6DA /* ApplicationInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationInput.swift; sourceTree = "<group>"; };
 		996F11A32267686D0064D6DA /* Keybinds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keybinds.swift; sourceTree = "<group>"; };
+		99713799229C6A8C009E8F35 /* SettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
 		99761BC122898D94004577E0 /* QuickPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPlayerView.swift; sourceTree = "<group>"; };
 		997C9447229AD68B00601D12 /* SettingsDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDropDownView.swift; sourceTree = "<group>"; };
 		997C9449229AE30D00601D12 /* SettingsPickViewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPickViewContentView.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				99B9CA5C2278859100000888 /* AlbumsPresenter.swift */,
+				99713799229C6A8C009E8F35 /* SettingsPresenter.swift */,
 			);
 			path = Primary;
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				996F11A2226768660064D6DA /* ApplicationInput.swift in Sources */,
 				992EC1E7225B6E65007DDD9D /* SearchViewController.swift in Sources */,
 				9960343A22805E77003A0DFE /* Logging.swift in Sources */,
+				9971379A229C6A8C009E8F35 /* SettingsPresenter.swift in Sources */,
 				99021E4A2281EEEA007B2BF7 /* PlaylistPresenter.swift in Sources */,
 				99761BC222898D94004577E0 /* QuickPlayerView.swift in Sources */,
 				99C633E722849E2E00A2BF25 /* PlayerViewController.swift in Sources */,
