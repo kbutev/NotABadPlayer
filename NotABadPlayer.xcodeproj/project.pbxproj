@@ -74,6 +74,7 @@
 		99D69D5422998541007D79F8 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99D69D5322998541007D79F8 /* MainView.xib */; };
 		99D69D5622998667007D79F8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D69D5522998667007D79F8 /* MainView.swift */; };
 		99D69D5A22998733007D79F8 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D69D5922998733007D79F8 /* MainTabView.swift */; };
+		99DE0087229D7D7D00ADB539 /* GeneralStorageObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */; };
 		99F2C26122898B35000F6AA7 /* QuickPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F2C26022898B35000F6AA7 /* QuickPlayerView.xib */; };
 /* End PBXBuildFile section */
 
@@ -168,6 +169,7 @@
 		99D69D5322998541007D79F8 /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainView.xib; sourceTree = "<group>"; };
 		99D69D5522998667007D79F8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		99D69D5922998733007D79F8 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralStorageObserver.swift; sourceTree = "<group>"; };
 		99F2C26022898B35000F6AA7 /* QuickPlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickPlayerView.xib; sourceTree = "<group>"; };
 		BB4B74DBECF55DAE5230633C /* Pods-NotABadPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotABadPlayer.release.xcconfig"; path = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		DD871B545DBB27E8C1D6F59B /* Pods-NotABadPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotABadPlayer.debug.xcconfig"; path = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 			isa = PBXGroup;
 			children = (
 				996F119C226766C40064D6DA /* GeneralStorage.swift */,
+				99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */,
 				996393002260BD360050F82A /* AudioStorage.swift */,
 			);
 			path = Storage;
@@ -433,15 +436,15 @@
 		992EC1EF225B7079007DDD9D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				99A6CA7822677C0C0071DC0D /* MediaSorting.swift */,
 				999F7A662291B5200065E360 /* StringExtensions.swift */,
-				99A6CA7D22677EA40071DC0D /* AppThemeSetter.swift */,
 				99A6CA7F22677EF20071DC0D /* Serializing.swift */,
-				99B8617E2287614500344C17 /* UIAnimations.swift */,
 				9960343922805E77003A0DFE /* Logging.swift */,
-				99A0140822820A7E0084E830 /* NavigationHelpers.swift */,
 				9949E530228E9698002CDCC0 /* Looper.swift */,
+				99A0140822820A7E0084E830 /* NavigationHelpers.swift */,
 				992EA211228FF7C7000C5592 /* AlertWindows.swift */,
+				99B8617E2287614500344C17 /* UIAnimations.swift */,
+				99A6CA7D22677EA40071DC0D /* AppThemeSetter.swift */,
+				99A6CA7822677C0C0071DC0D /* MediaSorting.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -664,6 +667,7 @@
 				9949E52F228E9599002CDCC0 /* QuickPlayerService.swift in Sources */,
 				99D69D5622998667007D79F8 /* MainView.swift in Sources */,
 				996392FF2260BC0B0050F82A /* AudioInfo.swift in Sources */,
+				99DE0087229D7D7D00ADB539 /* GeneralStorageObserver.swift in Sources */,
 				99A6CA7E22677EA40071DC0D /* AppThemeSetter.swift in Sources */,
 				996F11A02267685B0064D6DA /* ApplicationAction.swift in Sources */,
 				996F11A42267686D0064D6DA /* Keybinds.swift in Sources */,

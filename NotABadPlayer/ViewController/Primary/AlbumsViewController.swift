@@ -12,7 +12,7 @@ protocol AlbumsViewDelegate : class {
     func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String])
     func onAlbumClick(index: UInt)
     
-    func openPlaylistScreen(audioInfo: AudioInfo, album: AudioAlbum)
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist)
 }
 
 class AlbumsViewController: UIViewController, BaseViewController {
@@ -77,7 +77,7 @@ class AlbumsViewController: UIViewController, BaseViewController {
         presenter?.onOpenPlaylistButtonClick()
     }
     
-    func openPlayerScreen(playlist: AudioPlaylist) {
+    private func openPlayerScreen(playlist: AudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController()
         vc.presenter = presenter
@@ -99,14 +99,11 @@ extension AlbumsViewController : AlbumsViewDelegate {
         self.presenter?.onAlbumClick(index: index)
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, album: AudioAlbum) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
         if self.subViewController != nil
         {
             fatalError("Logic error in \(String(describing: AlbumsViewController.self)), cannot open playlist, its already open")
         }
-        
-        let tracks = audioInfo.getAlbumTracks(album: album)
-        let playlist = AudioPlaylist(name: album.albumTitle, tracks: tracks, startWithTrack: tracks.first)
         
         let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist)
         

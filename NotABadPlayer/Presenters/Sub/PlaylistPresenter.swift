@@ -21,7 +21,12 @@ class PlaylistPresenter: BasePresenter
     required init(view: PlaylistViewDelegate?=nil, audioInfo: AudioInfo, playlist: AudioPlaylist) {
         self.delegate = view
         self.audioInfo = audioInfo
-        self.playlist = playlist
+        
+        // Sort playlist
+        // Sort only playlists of type album
+        let sorting = GeneralStorage.shared.getTrackSortingValue()
+        let sortedPlaylist = playlist.isAlbumPlaylist() ? playlist.sortedPlaylist(withSorting: sorting) : playlist
+        self.playlist = sortedPlaylist
     }
     
     func start() {
@@ -92,7 +97,7 @@ class PlaylistPresenter: BasePresenter
     }
     
     func onPlayOrderButtonClick() {
-        Logging.log(PlaylistPresenter.self, "Action - change play order")
+        Logging.log(PlaylistPresenter.self, "Change audio player play order")
         
         let _ = Keybinds.shared.performAction(action: .CHANGE_PLAY_ORDER)
     }

@@ -47,11 +47,14 @@ class AlbumsPresenter: BasePresenter
     }
     
     func onAlbumClick(index: UInt) {
-        let item = self.albums[Int(index)]
+        let album = self.albums[Int(index)]
         
-        Logging.log(AlbumsPresenter.self, "Open playlist screen for album '\(item.albumTitle)'")
+        Logging.log(AlbumsPresenter.self, "Open playlist screen for album '\(album.albumTitle)'")
         
-        self.delegate?.openPlaylistScreen(audioInfo: audioInfo, album: item)
+        let tracks = audioInfo.getAlbumTracks(album: album)
+        let playlist = AudioPlaylist(name: album.albumTitle, tracks: tracks)
+        
+        self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
     }
     
     func onPlaylistItemClick(index: UInt) {
