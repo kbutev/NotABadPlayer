@@ -39,6 +39,11 @@ struct AudioPlaylist: Codable {
         self.init(name: name, tracks: tracks, startWithTrack: nil)
     }
     
+    init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?, sorting: TrackSorting) {
+        let sortedTracks = MediaSorting.sortTracks(tracks, sorting: sorting)
+        self.init(name: name, tracks: sortedTracks, startWithTrack: startWithTrack)
+    }
+    
     init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?) {
         guard let firstTrack = tracks.first else {
             fatalError("Given Playlist Track Must Not Be Empty")
@@ -71,6 +76,10 @@ struct AudioPlaylist: Codable {
                 }
             }
         }
+    }
+    
+    func sortedPlaylist(withSorting sorting: TrackSorting) -> AudioPlaylist {
+        return AudioPlaylist(name: name, tracks: tracks, startWithTrack: playingTrack, sorting: sorting)
     }
     
     func isAlbumPlaylist() -> Bool {

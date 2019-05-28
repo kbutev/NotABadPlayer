@@ -117,6 +117,22 @@ enum TabsCachingPolicy: String, CaseIterable {
     case ALBUMS_ONLY;
     case CACHE_ALL;
     
+    func canCacheAlbums() -> Bool {
+        return self == .CACHE_ALL || self == .ALBUMS_ONLY
+    }
+    
+    func canCacheLists() -> Bool {
+        return self == .CACHE_ALL
+    }
+    
+    func canCacheSearch() -> Bool {
+        return self == .CACHE_ALL
+    }
+    
+    func canCacheSettings() -> Bool {
+        return self == .CACHE_ALL
+    }
+    
     static func stringValues() -> [String] {
         var strings: [String] = []
         

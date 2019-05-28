@@ -27,6 +27,8 @@ class GeneralStorage {
     
     private var keybinds: [String: String] = [:]
     
+    private var observers: [GeneralStorageObserverValue] = []
+    
     init() {
         
     }
@@ -77,6 +79,7 @@ class GeneralStorage {
         saveTrackSortingValue(TrackSorting.TRACK_NUMBER)
         saveShowStarsValue(ShowStars.NO)
         saveShowVolumeBarValue(ShowVolumeBar.NO)
+        saveCachingPolicy(.ALBUMS_ONLY)
         
         saveSettingsAction(action: .VOLUME_UP, forInput: .PLAYER_VOLUME_UP_BUTTON)
         saveSettingsAction(action: .VOLUME_DOWN, forInput: .PLAYER_VOLUME_DOWN_BUTTON)
@@ -94,6 +97,9 @@ class GeneralStorage {
         saveSettingsAction(action: .PAUSE, forInput: .EARPHONES_UNPLUG)
         
         saveCachingPolicy(.ALBUMS_ONLY);
+        
+        // Observers alert
+        onResetDefaultSettings()
     }
     
     private func saveStorageVersion(_ version: String) {
@@ -263,6 +269,9 @@ class GeneralStorage {
     
     func saveAppThemeValue(_ theme: AppTheme) {
         storage.set(theme.rawValue, forKey: "app_theme")
+        
+        // Observers alert
+        onAppAppearanceChange()
     }
     
     func getAlbumSortingValue() -> AlbumSorting {
@@ -281,6 +290,9 @@ class GeneralStorage {
     
     func saveAlbumSortingValue(_ sorting: AlbumSorting) {
         storage.set(sorting.rawValue, forKey: "album_sorting")
+        
+        // Observers alert
+        onAppAppearanceChange()
     }
     
     func getTrackSortingValue() -> TrackSorting {
@@ -299,6 +311,9 @@ class GeneralStorage {
     
     func saveTrackSortingValue(_ sorting: TrackSorting) {
         storage.set(sorting.rawValue, forKey: "track_sorting")
+        
+        // Observers alert
+        onAppAppearanceChange()
     }
     
     func getShowStarsValue() -> ShowStars {
@@ -317,6 +332,9 @@ class GeneralStorage {
     
     func saveShowStarsValue(_ value: ShowStars) {
         storage.set(value.rawValue, forKey: "show_stars")
+        
+        // Observers alert
+        onAppAppearanceChange()
     }
     
     func getShowVolumeBarValue() -> ShowVolumeBar {
@@ -335,10 +353,16 @@ class GeneralStorage {
     
     func saveShowVolumeBarValue(_ theme: ShowVolumeBar) {
         storage.set(theme.rawValue, forKey: "show_volume_bar")
+        
+        // Observers alert
+        onAppAppearanceChange()
     }
     
     func saveCachingPolicy(_ value: TabsCachingPolicy) {
         storage.set(value.rawValue, forKey: "caching_policy")
+        
+        // Observers alert
+        onTabCachingPolicyChange(value)
     }
     
     func getCachingPolicy() -> TabsCachingPolicy {
@@ -354,11 +378,51 @@ class GeneralStorage {
         
         return .NO_CACHING
     }
-    
+}
+
+// Utils
+extension GeneralStorage {
     private func checkIfStorageIsInitialized() {
         if self._storage == nil
         {
             fatalError("[\(String(describing: GeneralStorage.self))] being used before being initialized, initialize() has never been called")
+        }
+    }
+}
+
+// Component - Observers
+extension GeneralStorage {
+    func attach(observer: GeneralStorageObserver) {
+        if observers.contains(where: {(element) -> Bool in element.value === observer})
+        {
+            return
+        }
+        
+        observers.append(GeneralStorageObserverValue(observer))
+    }
+    
+    func detach(observer: GeneralStorageObserver) {
+        observers.removeAll(where: {(element) -> Bool in element.value === observer})
+    }
+    
+    private func onAppAppearanceChange() {
+        for observer in observers
+        {
+            observer.observer?.onAppAppearanceChange()
+        }
+    }
+    
+    private func onTabCachingPolicyChange(_ value: TabsCachingPolicy) {
+        for observer in observers
+        {
+            observer.observer?.onTabCachingPolicyChange(value)
+        }
+    }
+    
+    private func onResetDefaultSettings() {
+        for observer in observers
+        {
+            observer.observer?.onResetDefaultSettings()
         }
     }
 }

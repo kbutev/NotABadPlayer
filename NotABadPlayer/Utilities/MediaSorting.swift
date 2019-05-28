@@ -9,6 +9,14 @@
 import Foundation
 
 struct MediaSorting {
+    public static func sortAlbums(_ albums:[AudioAlbum], sorting: AlbumSorting) -> [AudioAlbum] {
+        switch sorting
+        {
+        case .TITLE:
+            return sortAlbumsByTitle(albums)
+        }
+    }
+    
     public static func sortTracks(_ tracks:[AudioTrack], sorting: TrackSorting) -> [AudioTrack] {
         switch sorting
         {
@@ -23,19 +31,13 @@ struct MediaSorting {
         }
     }
     
-    public static func sortAlbums(_ albums:[AudioAlbum], sorting: AlbumSorting) -> [AudioAlbum] {
-        switch sorting
-        {
-        case .TITLE:
-            return sortAlbumsByTitle(albums)
-        }
-    }
-    
     public static func sortTracksByTrackNumber(_ tracks:[AudioTrack]) -> [AudioTrack] {
         var result = tracks
         
         result.sort(by: {(e1, e2) -> Bool in
-            return e1.trackNum > e2.trackNum
+            let numL = e1.trackNum.count == 2 ? e1.trackNum : "0\(e1.trackNum)"
+            let numR = e2.trackNum.count == 2 ? e2.trackNum : "0\(e2.trackNum)"
+            return numL < numR
         })
         
         return result
@@ -45,7 +47,7 @@ struct MediaSorting {
         var result = tracks
         
         result.sort(by: {(e1, e2) -> Bool in
-            return e1.title > e2.title
+            return e1.title < e2.title
         })
         
         return result
@@ -71,7 +73,7 @@ struct MediaSorting {
         var result = albums
         
         result.sort(by: {(e1, e2) -> Bool in
-            return e1.albumTitle > e2.albumTitle
+            return e1.albumTitle < e2.albumTitle
         })
         
         return result

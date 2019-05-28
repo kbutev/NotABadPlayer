@@ -39,7 +39,7 @@ class MainViewController : UIViewController {
         }
     }
     
-    private var tabViewControllerCache: [TabID: BaseViewController] = [:]
+    private var tabsCache: [TabID: BaseViewController] = [:]
     
     override func loadView() {
         self.baseView = MainView.create(owner: self)
@@ -54,7 +54,13 @@ class MainViewController : UIViewController {
         QuickPlayerService.shared.initialize(audioPlayer: AudioPlayer.shared)
         GeneralStorage.shared.restorePlayerState()
         
+        GeneralStorage.shared.attach(observer: self)
+        
         setup()
+    }
+    
+    deinit {
+        GeneralStorage.shared.detach(observer: self)
     }
     
     private func setup() {
@@ -135,18 +141,32 @@ class MainViewController : UIViewController {
     }
     
     private func cacheCurrentTab() {
+        let cachingPolicy = GeneralStorage.shared.getCachingPolicy()
+        
         switch self.selectedTabID {
         case .Albums:
-            tabViewControllerCache[TabID.Albums] = selectedTab!
+            if cachingPolicy.canCacheAlbums()
+            {
+                tabsCache[TabID.Albums] = selectedTab!
+            }
             break
         case .Lists:
-            tabViewControllerCache[TabID.Lists] = selectedTab!
+            if cachingPolicy.canCacheLists()
+            {
+                tabsCache[TabID.Lists] = selectedTab!
+            }
             break
         case .Search:
-            tabViewControllerCache[TabID.Search] = selectedTab!
+            if cachingPolicy.canCacheSearch()
+            {
+                tabsCache[TabID.Search] = selectedTab!
+            }
             break
         case .Settings:
-            tabViewControllerCache[TabID.Settings] = selectedTab!
+            if cachingPolicy.canCacheSettings()
+            {
+                tabsCache[TabID.Settings] = selectedTab!
+            }
             break
         default:
             break
@@ -156,7 +176,7 @@ class MainViewController : UIViewController {
     private func selectAlbumsTab() {
         Logging.log(MainViewController.self, "Selecting tab 'Albums'")
         
-        let vc = tabViewControllerCache[TabID.Albums]
+        let vc = tabsCache[TabID.Albums]
         
         if vc == nil
         {
@@ -180,7 +200,7 @@ class MainViewController : UIViewController {
     private func selectListsTab() {
         Logging.log(MainViewController.self, "Selecting tab 'Lists'")
         
-        let vc = tabViewControllerCache[TabID.Lists]
+        let vc = tabsCache[TabID.Lists]
         
         if vc == nil
         {
@@ -204,7 +224,7 @@ class MainViewController : UIViewController {
     private func selectSearchTab() {
         Logging.log(MainViewController.self, "Selecting tab 'Search'")
         
-        let vc = tabViewControllerCache[TabID.Search]
+        let vc = tabsCache[TabID.Search]
         
         if vc == nil
         {
@@ -228,7 +248,7 @@ class MainViewController : UIViewController {
     private func selectSettingsTab() {
         Logging.log(MainViewController.self, "Selecting tab 'Settings'")
         
-        let vc = tabViewControllerCache[TabID.Settings]
+        let vc = tabsCache[TabID.Settings]
         
         if vc == nil
         {
@@ -247,6 +267,56 @@ class MainViewController : UIViewController {
         
         NavigationHelpers.addVCChild(parent: self, child: settingsVC)
         self.baseView?.embedViewIntoPrimaryArea(settingsVC.view)
+    }
+    
+    private func clearTabsCache() {
+        Logging.log(MainViewController.self, "Clear tabs cache")
+        
+        tabsCache.removeAll()
+    }
+}
+
+extension MainViewController: BaseViewController {
+    func goBack() {
+        
+    }
+    
+    func onSwipeUp() {
+        
+    }
+    
+    func onSwipeDown() {
+        
+    }
+    
+    func onPlayerSeekChanged(positionInPercentage: Double) {
+        
+    }
+    
+    func onPlayerButtonClick(input: ApplicationInput) {
+        
+    }
+    
+    func onPlayOrderButtonClick() {
+        
+    }
+    
+    func onPlaylistButtonClick() {
+        
+    }
+}
+
+extension MainViewController: GeneralStorageObserver {
+    func onAppAppearanceChange() {
+        clearTabsCache()
+    }
+    
+    func onTabCachingPolicyChange(_ value: TabsCachingPolicy) {
+        clearTabsCache()
+    }
+    
+    func onResetDefaultSettings() {
+        clearTabsCache()
     }
 }
 

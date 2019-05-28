@@ -241,11 +241,17 @@ extension SettingsView {
             break
         case .TrackSorting:
             title = "Track Sorting"
-            options = applicationActionsAsStrings()
+            for option in TrackSorting.stringValues()
+            {
+                options.append(option.stringByReplacingFirstOccurrenceOfString(target: "_", replaceString: " "))
+            }
             break
         case .ShowVolumeBar:
             title = "Show Volume Bar"
-            options = applicationActionsAsStrings()
+            for option in ShowVolumeBar.stringValues()
+            {
+                options.append(option.stringByReplacingFirstOccurrenceOfString(target: "_", replaceString: " "))
+            }
             break
         case .PlayerVolumeUp:
             title = "Player Volume U"
