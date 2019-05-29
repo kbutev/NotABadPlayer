@@ -38,4 +38,7 @@ enum Text: String {
     case NothingPlaying = "Nothing Playing";
     case ZeroTimer = "0:00";
     case DoubleZeroTimers = "0:00/0:00";
+    case SearchDescriptionNoResults = "no results";
+    case SearchDescriptionResults = "@! search results";
+    case SearchPlaylistName = "Recently played"
 }

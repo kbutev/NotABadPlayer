@@ -68,13 +68,8 @@ class QuickPlayerView : UIView
         primaryStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
         // Constraints - track info stack
-        trackInfoStackView.translatesAutoresizingMaskIntoConstraints = false
-        trackInfoStackView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.5).isActive = true
-        
         trackInfoArtCoverImage.translatesAutoresizingMaskIntoConstraints = false
         trackInfoArtCoverImage.widthAnchor.constraint(equalToConstant: 64).isActive = true
-        
-        trackInfoTextStackView.translatesAutoresizingMaskIntoConstraints = false
         
         // Constraints - media stack
         mediaButtonsStackView.translatesAutoresizingMaskIntoConstraints = false

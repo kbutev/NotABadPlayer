@@ -13,5 +13,4 @@ protocol AudioInfo {
     func getAlbum(byID identifier: NSNumber) -> AudioAlbum?
     func getAlbumTracks(album: AudioAlbum) -> [AudioTrack]
     func searchForTracks(query: String) -> [AudioTrack]
-    func findTrack(byPath path: String) -> AudioTrack?
 }

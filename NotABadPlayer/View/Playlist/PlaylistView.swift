@@ -29,18 +29,29 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
             return headerV
         }
         
-        if let image = playlist.firstTrack.albumCover?.image(at: header.bounds.size)
+        let isAlbum = playlist.isAlbumPlaylist()
+        
+        if isAlbum
         {
-            header.artCoverImage.image = image
+            setImage(header: header, collectionView: collectionView)
         }
         else
         {
-            header.artCoverImage.image = nil
+            hideImage(header: header, collectionView: collectionView)
         }
         
         header.titleText.text = playlist.name
-        header.artistText.text = playlist.firstTrack.artist
-        header.descriptionText.text = getAlbumDescription()
+        
+        if isAlbum
+        {
+            header.artistText.text = playlist.firstTrack.artist
+        }
+        else
+        {
+            header.artistText.text = ""
+        }
+        
+        header.descriptionText.text = getPlaylistDescription()
         
         return header
     }
@@ -67,7 +78,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         
         if let playerPlaylist = AudioPlayer.shared.playlist
         {
-            if playerPlaylist.playingTrack == item && playlist.name == playerPlaylist.name
+            if playerPlaylist.playingTrack == item
             {
                 cell.backgroundColor = PlaylistViewDataSource.HIGHLIGHT_COLOR
             }
@@ -80,7 +91,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         return 1
     }
     
-    func getAlbumDescription() -> String {
+    func getPlaylistDescription() -> String {
         var totalDuration: Double = 0
         
         for track in playlist.tracks
@@ -89,6 +100,27 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         }
         
         return Text.value(.ListDescription, "\(playlist.tracks.count)", "\(AudioTrack.secondsToString(totalDuration))")
+    }
+    
+    private func setImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
+        if let image = playlist.firstTrack.albumCover?.image(at: header.bounds.size)
+        {
+            header.artCoverImage.image = image
+            header.artCoverImage.frame.size = .zero
+        }
+        else
+        {
+            hideImage(header: header, collectionView: collectionView)
+        }
+    }
+    
+    private func hideImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
+        header.removeArtCoverImage()
+        
+        if let flowLayout = collectionView.collectionViewLayout as? PlaylistFlowLayout
+        {
+            flowLayout.headerSize = PlaylistFlowLayout.HEADER_SIZE_IMAGELESS
+        }
     }
 }
 
@@ -138,7 +170,7 @@ class PlaylistView : UIView
         }
     }
     
-    var collectionDelegate : PlaylistViewActionDelegate? {
+    var collectionActionDelegate : PlaylistViewActionDelegate? {
         get {
             return collectionView.delegate as? PlaylistViewActionDelegate
         }
@@ -293,7 +325,7 @@ class PlaylistView : UIView
 // Actions
 extension PlaylistView {
     @objc func actionSwipeRight(gesture: UISwipeGestureRecognizer) {
-        self.collectionDelegate?.onSwipeRight()
+        self.collectionActionDelegate?.onSwipeRight()
     }
 }
 
@@ -312,6 +344,22 @@ class PlaylistFlowLayout : UICollectionViewFlowLayout
 {
     static let CELL_SIZE = CGSize(width: 0, height: 48)
     static let HEADER_SIZE = CGSize(width: 0, height: 224)
+    static let HEADER_SIZE_IMAGELESS = CGSize(width: 0, height: 64)
+    
+    public var headerSize: CGSize {
+        get {
+            return self.headerReferenceSize
+        }
+        
+        set {
+            if self.headerReferenceSize != newValue
+            {
+                self.headerReferenceSize = newValue
+                
+                self.invalidateLayout()
+            }
+        }
+    }
     
     init(collectionView: UICollectionView, minimumInteritemSpacing: CGFloat = 0, minimumLineSpacing: CGFloat = 1, sectionInset: UIEdgeInsets = .zero) {
         super.init()

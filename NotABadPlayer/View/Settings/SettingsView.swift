@@ -10,7 +10,7 @@ import UIKit
 import iOSDropDown
 
 enum SettingsPickerValue {
-    case Theme; case TrackSorting; case ShowVolumeBar;
+    case Theme; case TrackSorting; case ShowVolumeBar; case OpenPlayerOnPlay;
     case PlayerVolumeUp; case PlayerVolumeDown; case PlayerRecall; case PlayerPrevious; case PlayerNext; case PlayerSwipeL; case PlayerSwipeR;
     case QPlayerVolumeUp; case QPlayerVolumeDown; case QPlayerPrevious; case QPlayerNext;
 }
@@ -19,6 +19,7 @@ protocol SettingsActionDelegate: class {
     func onThemeSelect(_ value: AppTheme)
     func onTrackSortingSelect(_ value: TrackSorting)
     func onShowVolumeBarSelect(_ value: ShowVolumeBar)
+    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay)
     func onKeybindSelect(input: ApplicationInput, action: ApplicationAction)
     
     func onResetSettingsDefaults()
@@ -37,6 +38,7 @@ class SettingsView : UIView
     @IBOutlet weak var pickAppTheme: SettingsPickView!
     @IBOutlet weak var pickTrackSorting: SettingsPickView!
     @IBOutlet weak var pickShowVolumeBar: SettingsPickView!
+    @IBOutlet weak var pickOpenPlayerOnPlay: SettingsPickView!
     
     @IBOutlet weak var pickKeybindPlayerVolumeUp: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerVolumeDown: SettingsPickView!
@@ -65,6 +67,7 @@ class SettingsView : UIView
         setupPickerValues(.Theme)
         setupPickerValues(.TrackSorting)
         setupPickerValues(.ShowVolumeBar)
+        setupPickerValues(.OpenPlayerOnPlay)
         setupPickerValues(.PlayerVolumeUp)
         setupPickerValues(.PlayerVolumeDown)
         setupPickerValues(.PlayerRecall)
@@ -105,7 +108,7 @@ class SettingsView : UIView
         resizeScrollViewContentSize()
         
         // User interaction
-        resetDefaultsButton.addTarget(self, action: #selector(actionResetDefaultsButton), for: .touchDown)
+        resetDefaultsButton.addTarget(self, action: #selector(actionResetDefaultsButton), for: .touchUpInside)
     }
     
     private func resizeScrollViewContentSize() {
@@ -141,6 +144,13 @@ class SettingsView : UIView
         if let index = ShowVolumeBar.allCases.firstIndex(of: value)
         {
             pickAppTheme.selectOption(index: UInt(index))
+        }
+    }
+    
+    public func selectOpenPlayerOnPlay(_ value: OpenPlayerOnPlay) {
+        if let index = OpenPlayerOnPlay.allCases.firstIndex(of: value)
+        {
+            pickOpenPlayerOnPlay.selectOption(index: UInt(index))
         }
     }
     
@@ -199,6 +209,8 @@ extension SettingsView {
             return pickTrackSorting
         case .ShowVolumeBar:
             return pickShowVolumeBar
+        case .OpenPlayerOnPlay:
+            return pickOpenPlayerOnPlay
         case .PlayerVolumeUp:
             return pickKeybindPlayerVolumeUp
         case .PlayerVolumeDown:
@@ -236,21 +248,28 @@ extension SettingsView {
             title = "Theme"
             for option in AppTheme.stringValues()
             {
-                options.append(option.stringByReplacingFirstOccurrenceOfString(target: "_", replaceString: " "))
+                options.append(option.replacingOccurrences(of: "_", with: " "))
             }
             break
         case .TrackSorting:
             title = "Track Sorting"
             for option in TrackSorting.stringValues()
             {
-                options.append(option.stringByReplacingFirstOccurrenceOfString(target: "_", replaceString: " "))
+                options.append(option.replacingOccurrences(of: "_", with: " "))
             }
             break
         case .ShowVolumeBar:
             title = "Show Volume Bar"
             for option in ShowVolumeBar.stringValues()
             {
-                options.append(option.stringByReplacingFirstOccurrenceOfString(target: "_", replaceString: " "))
+                options.append(option.replacingOccurrences(of: "_", with: " "))
+            }
+            break
+        case .OpenPlayerOnPlay:
+            title = "Play opens player"
+            for option in OpenPlayerOnPlay.stringValues()
+            {
+                options.append(option.replacingOccurrences(of: "_", with: " "))
             }
             break
         case .PlayerVolumeUp:
@@ -335,7 +354,7 @@ extension SettingsView {
         
         for option in ApplicationAction.stringValues()
         {
-            options.append(option.stringByReplacingFirstOccurrenceOfString(target: "_", replaceString: " "))
+            options.append(option.replacingOccurrences(of: "_", with: " "))
         }
         
         return options
@@ -380,6 +399,12 @@ extension SettingsView: SettingsPickActionDelegate {
             if index < ShowVolumeBar.allCases.count
             {
                 delegate?.onShowVolumeBarSelect(ShowVolumeBar.allCases[Int(index)])
+            }
+            break
+        case .OpenPlayerOnPlay:
+            if index < OpenPlayerOnPlay.allCases.count
+            {
+                delegate?.onOpenPlayerOnPlaySelect(OpenPlayerOnPlay.allCases[Int(index)])
             }
             break
         case .PlayerVolumeUp:

@@ -228,21 +228,21 @@ class MainViewController : UIViewController {
         
         if vc == nil
         {
-            let albumsVC = AlbumsViewController()
-            self._selectedTab = albumsVC
-            albumsVC.presenter = AlbumsPresenter(view: albumsVC, audioInfo: audioStorage)
+            let searchVC = SearchViewController()
+            self._selectedTab = searchVC
+            searchVC.presenter = SearchPresenter(view: searchVC, audioInfo: audioStorage)
         }
         else
         {
             self._selectedTab = vc as? UIViewController
         }
         
-        guard let albumsVC = self._selectedTab else {
-            fatalError("MainViewController: Could not create an Albums view controller")
+        guard let searchVC = self._selectedTab else {
+            fatalError("MainViewController: Could not create an Search view controller")
         }
         
-        NavigationHelpers.addVCChild(parent: self, child: albumsVC)
-        self.baseView?.embedViewIntoPrimaryArea(albumsVC.view)
+        NavigationHelpers.addVCChild(parent: self, child: searchVC)
+        self.baseView?.embedViewIntoPrimaryArea(searchVC.view)
     }
     
     private func selectSettingsTab() {

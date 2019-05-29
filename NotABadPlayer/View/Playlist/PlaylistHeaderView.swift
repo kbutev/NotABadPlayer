@@ -34,17 +34,11 @@ class PlaylistHeaderView : UICollectionReusableView
         artCoverImage.translatesAutoresizingMaskIntoConstraints = false
         artCoverImage.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
         artCoverImage.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.7).isActive = true
-        
-        titleText.translatesAutoresizingMaskIntoConstraints = false
-        titleText.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
-        titleText.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.1).isActive = true
-        
-        artistText.translatesAutoresizingMaskIntoConstraints = false
-        artistText.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
-        artistText.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.1).isActive = true
-        
-        descriptionText.translatesAutoresizingMaskIntoConstraints = false
-        descriptionText.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
-        descriptionText.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.1).isActive = true
+    }
+    
+    public func removeArtCoverImage() {
+        artCoverImage.image = nil
+        stackView.removeArrangedSubview(artCoverImage)
+        artCoverImage.removeFromSuperview()
     }
 }

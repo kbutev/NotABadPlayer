@@ -264,10 +264,3 @@ extension PlayerView {
         return nib.instantiate(withOwner: owner, options: nil).first as? PlayerView
     }
 }
-
-// Slider
-extension UISlider {
-    override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        return true
-    }
-}

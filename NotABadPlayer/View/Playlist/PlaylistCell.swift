@@ -30,8 +30,10 @@ class PlaylistCell : UICollectionViewCell
     }
     
     private func setup() {
+        let guide = self
+        
         trackNumText.translatesAutoresizingMaskIntoConstraints = false
         trackNumText.widthAnchor.constraint(equalToConstant: 32).isActive = true
-        trackNumText.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        trackNumText.heightAnchor.constraint(equalTo: guide.heightAnchor).isActive = true
     }
 }

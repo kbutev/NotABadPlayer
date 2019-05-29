@@ -44,7 +44,7 @@ class SettingsPresenter: BasePresenter
         
     }
     
-    func onSearchQuery(searchValue: String) {
+    func onSearchQuery(_ query: String) {
         
     }
     
@@ -76,15 +76,26 @@ class SettingsPresenter: BasePresenter
         GeneralStorage.shared.saveTrackSortingValue(trackSorting)
     }
     
-    func onAppAppearanceChange(showStars: ShowStars, showVolumeBar: ShowVolumeBar) {
-        if GeneralStorage.shared.getShowVolumeBarValue() == showVolumeBar
+    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
+        if GeneralStorage.shared.getShowVolumeBarValue() == value
         {
             return
         }
         
-        Logging.log(SettingsPresenter.self, "App show volume bar setting changed to \(showVolumeBar.rawValue)")
+        Logging.log(SettingsPresenter.self, "App ShowVolumeBar setting changed to \(value.rawValue)")
         
-        GeneralStorage.shared.saveShowVolumeBarValue(showVolumeBar)
+        GeneralStorage.shared.saveShowVolumeBarValue(value)
+    }
+    
+    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
+        if GeneralStorage.shared.getOpenPlayerOnPlayValue() == value
+        {
+            return
+        }
+        
+        Logging.log(SettingsPresenter.self, "App OpenPlayerOnPlay setting changed to \(value.rawValue)")
+        
+        GeneralStorage.shared.saveOpenPlayerOnPlayValue(value)
     }
     
     func onKeybindChange(action: ApplicationAction, input: ApplicationInput) {

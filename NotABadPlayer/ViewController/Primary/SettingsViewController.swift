@@ -32,18 +32,11 @@ class SettingsViewController: UIViewController, BaseViewController {
         selectDefaultPickerValues()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        
-    }
-    
     private func selectDefaultPickerValues() {
         baseView?.selectTheme(GeneralStorage.shared.getAppThemeValue())
         baseView?.selectTrackSorting(GeneralStorage.shared.getTrackSortingValue())
         baseView?.selectShowVolumeBar(GeneralStorage.shared.getShowVolumeBarValue())
+        baseView?.selectOpenPlayerOnPlay(GeneralStorage.shared.getOpenPlayerOnPlayValue())
         
         baseView?.selectKeybind(keybind: .PLAYER_VOLUME_UP_BUTTON,
                                 action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_VOLUME_UP_BUTTON))
@@ -108,7 +101,11 @@ extension SettingsViewController: SettingsActionDelegate {
     }
     
     func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        presenter?.onAppAppearanceChange(showStars: .NO, showVolumeBar: value)
+        presenter?.onShowVolumeBarSettingChange(value)
+    }
+    
+    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
+        presenter?.onOpenPlayerOnPlaySettingChange(value)
     }
     
     func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {

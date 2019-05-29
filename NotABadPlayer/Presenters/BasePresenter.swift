@@ -21,11 +21,12 @@ protocol BasePresenter
     func onOpenPlaylistButtonClick()
     
     func onSearchResultClick(index: UInt)
-    func onSearchQuery(searchValue: String)
+    func onSearchQuery(_ query: String)
     
     func onAppSettingsReset()
     func onAppThemeChange(themeValue: AppTheme);
     func onAppSortingChange(albumSorting: AlbumSorting, trackSorting: TrackSorting)
-    func onAppAppearanceChange(showStars: ShowStars, showVolumeBar: ShowVolumeBar)
+    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar)
+    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay)
     func onKeybindChange(action: ApplicationAction, input: ApplicationInput)
 }
