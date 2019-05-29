@@ -21,9 +21,9 @@ class AudioStorage : AudioInfo {
         
         albums.removeAll()
         
-        let query: MPMediaQuery = MPMediaQuery.albums()
+        let mediaQuery: MPMediaQuery = MPMediaQuery.albums()
         
-        guard let allAlbums = query.collections else
+        guard let allAlbums = mediaQuery.collections else
         {
             return
         }
@@ -117,10 +117,54 @@ class AudioStorage : AudioInfo {
     }
     
     func searchForTracks(query: String) -> [AudioTrack] {
-        return []
-    }
-    
-    func findTrack(byPath path: String) -> AudioTrack? {
-        return nil
+        var tracks: [AudioTrack] = []
+        
+        let mediaQuery = MPMediaQuery.songs()
+        
+        let predicate = MPMediaPropertyPredicate.init(value: query, forProperty: MPMediaItemPropertyTitle, comparisonType: .contains)
+        mediaQuery.addFilterPredicate(predicate)
+        
+        guard let result = mediaQuery.items else
+        {
+            return []
+        }
+        
+        for item in result
+        {
+            guard let path = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL else {
+                continue
+            }
+            
+            let albumId = item.value(forProperty: MPMediaItemPropertyAlbumPersistentID) as! NSNumber
+            let albumTitle = item.value(forKey: MPMediaItemPropertyAlbumTitle) as? String ?? "<Unknown>"
+            let artist = item.value(forKey: MPMediaItemPropertyArtist) as? String ?? "<Unknown>"
+            let albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
+            
+            let title = item.value(forProperty: MPMediaItemPropertyTitle) as? String ?? "<Unknown>"
+            let trackNum_ = item.value(forProperty: MPMediaItemPropertyAlbumTrackNumber) as? NSNumber
+            let durationInSeconds_ = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber
+            
+            guard let trackNum = trackNum_?.intValue else {
+                continue
+            }
+            
+            guard let durationInSeconds = durationInSeconds_?.doubleValue else {
+                continue
+            }
+            
+            let track = AudioTrack(filePath: path,
+                                   title: title,
+                                   artist: artist,
+                                   albumTitle: albumTitle,
+                                   albumID: albumId,
+                                   albumCover: albumCover,
+                                   trackNum: trackNum,
+                                   durationInSeconds: durationInSeconds,
+                                   source: AudioTrackSource.createAlbumSource(albumID: albumId))
+            
+            tracks.append(track)
+        }
+        
+        return tracks
     }
 }

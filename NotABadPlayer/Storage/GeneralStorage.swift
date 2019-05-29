@@ -55,30 +55,36 @@ class GeneralStorage {
     }
     
     private func detectVersionChange() {
-        let storageVersion = getStorageVersion()
+        var storageVersion = getStorageVersion()
         let currentVersion = GeneralStorage.CURRENT_VERSION
         
         saveStorageVersion(currentVersion)
         
-        if storageVersion != currentVersion
+        guard storageVersion == currentVersion else
         {
-            if storageVersion == ""
-            {
-                Logging.log(GeneralStorage.self, "Migrating settings from version nil to version \(storageVersion)")
-                
-                Logging.log(GeneralStorage.self, "Successfully migrated settings values!")
-                return
-            }
+            return
         }
+        
+        // Migrate to 1.0
+        if storageVersion == ""
+        {
+            let version = "1.0"
+            
+            Logging.log(GeneralStorage.self, "Migrating settings from version nil to version \(version)")
+            
+            storageVersion = version
+        }
+        
+        Logging.log(GeneralStorage.self, "Successfully migrated settings values!")
     }
     
     func resetDefaultSettingsValues() {
         savePlayerPlayedHistoryCapacity(50)
-        saveAppThemeValue(AppTheme.LIGHT)
-        saveAlbumSortingValue(AlbumSorting.TITLE)
-        saveTrackSortingValue(TrackSorting.TRACK_NUMBER)
-        saveShowStarsValue(ShowStars.NO)
-        saveShowVolumeBarValue(ShowVolumeBar.NO)
+        saveAppThemeValue(.LIGHT)
+        saveAlbumSortingValue(.TITLE)
+        saveTrackSortingValue(.TRACK_NUMBER)
+        saveShowVolumeBarValue(.NO)
+        saveOpenPlayerOnPlayValue(.NO)
         saveCachingPolicy(.ALBUMS_ONLY)
         
         saveSettingsAction(action: .VOLUME_UP, forInput: .PLAYER_VOLUME_UP_BUTTON)
@@ -316,27 +322,6 @@ class GeneralStorage {
         onAppAppearanceChange()
     }
     
-    func getShowStarsValue() -> ShowStars {
-        if let value = storage.string(forKey: "show_stars")
-        {
-            if let result = ShowStars(rawValue: value)
-            {
-                return result
-            }
-            
-            Logging.log(GeneralStorage.self, "Error: could not read ShowStars value from storage")
-        }
-        
-        return .NO
-    }
-    
-    func saveShowStarsValue(_ value: ShowStars) {
-        storage.set(value.rawValue, forKey: "show_stars")
-        
-        // Observers alert
-        onAppAppearanceChange()
-    }
-    
     func getShowVolumeBarValue() -> ShowVolumeBar {
         if let value = storage.string(forKey: "show_volume_bar")
         {
@@ -351,11 +336,29 @@ class GeneralStorage {
         return .NO
     }
     
-    func saveShowVolumeBarValue(_ theme: ShowVolumeBar) {
-        storage.set(theme.rawValue, forKey: "show_volume_bar")
+    func saveShowVolumeBarValue(_ value: ShowVolumeBar) {
+        storage.set(value.rawValue, forKey: "show_volume_bar")
         
         // Observers alert
         onAppAppearanceChange()
+    }
+    
+    func getOpenPlayerOnPlayValue() -> OpenPlayerOnPlay {
+        if let value = storage.string(forKey: "open_player_on_play")
+        {
+            if let result = OpenPlayerOnPlay(rawValue: value)
+            {
+                return result
+            }
+            
+            Logging.log(GeneralStorage.self, "Error: could not read OpenPlayerOnPlay value from storage")
+        }
+        
+        return .NO
+    }
+    
+    func saveOpenPlayerOnPlayValue(_ value: OpenPlayerOnPlay) {
+        storage.set(value.rawValue, forKey: "open_player_on_play")
     }
     
     func saveCachingPolicy(_ value: TabsCachingPolicy) {

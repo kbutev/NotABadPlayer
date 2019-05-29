@@ -77,24 +77,6 @@ enum TrackSorting: String, CaseIterable {
     }
 }
 
-enum ShowStars: String, CaseIterable {
-    case YES;
-    case PLAYER_ONLY;
-    case TRACK_ONLY;
-    case NO;
-    
-    static func stringValues() -> [String] {
-        var strings: [String] = []
-        
-        for value in ShowStars.allCases
-        {
-            strings.append(value.rawValue)
-        }
-        
-        return strings
-    }
-}
-
 enum ShowVolumeBar: String, CaseIterable {
     case NO;
     case LEFT_SIDE;
@@ -109,6 +91,32 @@ enum ShowVolumeBar: String, CaseIterable {
         }
         
         return strings
+    }
+}
+
+enum OpenPlayerOnPlay: String, CaseIterable {
+    case NO;
+    case YES;
+    case PLAYLIST_ONLY;
+    case SEARCH_ONLY;
+    
+    static func stringValues() -> [String] {
+        var strings: [String] = []
+        
+        for value in OpenPlayerOnPlay.allCases
+        {
+            strings.append(value.rawValue)
+        }
+        
+        return strings
+    }
+    
+    func openForPlaylist() -> Bool {
+        return self == .YES || self == .PLAYLIST_ONLY
+    }
+    
+    func openForSearch() -> Bool {
+        return self == .YES || self == .SEARCH_ONLY
     }
 }
 

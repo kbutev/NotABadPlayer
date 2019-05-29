@@ -21,6 +21,8 @@ protocol PlaylistViewDelegate : class {
     
     func onScrollDown()
     func onSwipeRight()
+    
+    func onPlayerErrorEncountered(_ error: Error)
 }
 
 class PlaylistViewController: UIViewController, BaseViewController {
@@ -92,7 +94,7 @@ extension PlaylistViewController : PlaylistViewDelegate {
                           dataSource: PlaylistViewDataSource,
                           actionDelegate: PlaylistViewActionDelegate) {
         self.baseView?.collectionDataSource = dataSource
-        self.baseView?.collectionDelegate = actionDelegate
+        self.baseView?.collectionActionDelegate = actionDelegate
         self.baseView?.updateOverlayTitle(title: name)
         self.baseView?.reloadData()
     }
@@ -101,7 +103,7 @@ extension PlaylistViewController : PlaylistViewDelegate {
                              dataSource: PlaylistViewDataSource,
                              actionDelegate: PlaylistViewActionDelegate) {
         self.baseView?.collectionDataSource = dataSource
-        self.baseView?.collectionDelegate = actionDelegate
+        self.baseView?.collectionActionDelegate = actionDelegate
         self.baseView?.updateOverlayTitle(title: name)
         self.baseView?.reloadData()
     }
@@ -125,6 +127,10 @@ extension PlaylistViewController : PlaylistViewDelegate {
     
     func onSwipeRight() {
         NavigationHelpers.removeVCChild(self)
+    }
+    
+    func onPlayerErrorEncountered(_ error: Error) {
+        AlertWindows.shared.show(sourceVC: self, withTitle: "Error", withDescription: error.localizedDescription, actionText: "Ok", action: nil)
     }
 }
 

@@ -60,17 +60,17 @@ class AlbumsView : UIView
     static let CELL_IDENTIFIER = "cell"
     static let CELLS_PER_COLUMN: Int = 2
     static let INDEXER_VIEW_WIDTH: CGFloat = 16
-    static let COLLECTION_VIEW_HORIZONTAL_MARGIN: CGFloat = INDEXER_VIEW_WIDTH
-    
-    @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet weak var indexerCenterCharacter: UILabel!
-    @IBOutlet var quickPlayerView: QuickPlayerView!
+    static let COLLECTION_HORIZONTAL_MARGIN: CGFloat = INDEXER_VIEW_WIDTH
     
     private var initialized: Bool = false
     
     var collectionIndexerView: CollectionIndexerView!
     
     private var flowLayout: AlbumsFlowLayout?
+    
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet weak var indexerCenterCharacter: UILabel!
+    @IBOutlet var quickPlayerView: QuickPlayerView!
     
     var collectionDataSource : AlbumsViewDataSource? {
         get {
@@ -137,8 +137,8 @@ class AlbumsView : UIView
         
         // Collection view
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: AlbumsView.COLLECTION_VIEW_HORIZONTAL_MARGIN).isActive = true
-        collectionView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -AlbumsView.COLLECTION_VIEW_HORIZONTAL_MARGIN).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: AlbumsView.COLLECTION_HORIZONTAL_MARGIN).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -AlbumsView.COLLECTION_HORIZONTAL_MARGIN).isActive = true
         collectionView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
         

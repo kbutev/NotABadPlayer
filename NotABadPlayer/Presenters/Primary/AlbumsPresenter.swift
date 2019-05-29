@@ -100,7 +100,7 @@ class AlbumsPresenter: BasePresenter
         
     }
     
-    func onSearchQuery(searchValue: String) {
+    func onSearchQuery(_ query: String) {
         
     }
     
@@ -116,7 +116,11 @@ class AlbumsPresenter: BasePresenter
         
     }
     
-    func onAppAppearanceChange(showStars: ShowStars, showVolumeBar: ShowVolumeBar) {
+    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
         
     }
     

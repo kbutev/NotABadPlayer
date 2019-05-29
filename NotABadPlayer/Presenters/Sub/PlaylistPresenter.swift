@@ -75,17 +75,21 @@ class PlaylistPresenter: BasePresenter
     }
     
     func onPlaylistItemClick(index: UInt) {
-        guard let delegate = self.delegate else {
-            fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
+        if index >= playlist.tracks.count
+        {
+            return
         }
-        
-        let playlistName = playlist.name
         
         let clickedTrack = playlist.tracks[Int(index)]
         
-        let newPlaylist = AudioPlaylist(name: playlistName, tracks: playlist.tracks, startWithTrack: clickedTrack)
-        
-        delegate.openPlayerScreen(playlist: newPlaylist)
+        if GeneralStorage.shared.getOpenPlayerOnPlayValue().openForPlaylist()
+        {
+            openPlayerScreen(clickedTrack)
+        }
+        else
+        {
+            playNewTrack(clickedTrack)
+        }
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -110,7 +114,7 @@ class PlaylistPresenter: BasePresenter
         
     }
     
-    func onSearchQuery(searchValue: String) {
+    func onSearchQuery(_ query: String) {
         
     }
     
@@ -126,11 +130,81 @@ class PlaylistPresenter: BasePresenter
         
     }
     
-    func onAppAppearanceChange(showStars: ShowStars, showVolumeBar: ShowVolumeBar) {
+    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
         
     }
     
     func onKeybindChange(action: ApplicationAction, input: ApplicationInput) {
         
+    }
+    
+    private func openPlayerScreen(_ track: AudioTrack) {
+        guard let delegate = self.delegate else {
+            fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
+        }
+        
+        Logging.log(PlaylistPresenter.self, "Opening player screen")
+        
+        let playlistName = playlist.name
+        
+        let newPlaylist = AudioPlaylist(name: playlistName, tracks: playlist.tracks, startWithTrack: track)
+        
+        delegate.openPlayerScreen(playlist: newPlaylist)
+    }
+    
+    private func playNewTrack(_ track: AudioTrack) {
+        let player = AudioPlayer.shared
+        
+        let playlistName = self.playlist.name
+        let tracks = self.playlist.tracks
+        let playlist = AudioPlaylist(name: playlistName, tracks: tracks, startWithTrack: track)
+        
+        if let currentPlaylist = player.playlist
+        {
+            // Current playing playlist or track does not match the state of the presenter's playlist?
+            if (playlist.name != currentPlaylist.name || playlist.playingTrack != currentPlaylist.playingTrack)
+            {
+                // Change the audio player playlist to equal the presenter's playlist
+                Logging.log(PlaylistPresenter.self, "Playing track '\(playlist.playingTrack.title)' from playlist '\(playlist.name)'")
+                playNew(playlist: playlist)
+                
+                return
+            }
+            
+            // Do nothing, track is already playing
+            
+            return
+        }
+        
+        // Set audio player playlist for the first time and play its track
+        Logging.log(PlaylistPresenter.self, "Playing track '\(playlist.playingTrack.title)' from playlist '\(playlist.name)' for the first time")
+        playFirstTime(playlist: playlist)
+    }
+    
+    private func playFirstTime(playlist: AudioPlaylist) {
+        playNew(playlist: playlist)
+    }
+    
+    private func playNew(playlist: AudioPlaylist) {
+        guard let delegate = self.delegate else {
+            fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
+        }
+        
+        let player = AudioPlayer.shared
+        
+        do {
+            try player.play(playlist: playlist)
+        } catch let e {
+            delegate.onPlayerErrorEncountered(e)
+        }
+        
+        if !player.isPlaying
+        {
+            player.resume()
+        }
     }
 }

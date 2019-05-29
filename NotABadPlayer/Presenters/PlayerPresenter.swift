@@ -72,7 +72,7 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func onSearchQuery(searchValue: String) {
+    func onSearchQuery(_ query: String) {
         
     }
     
@@ -88,7 +88,11 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func onAppAppearanceChange(showStars: ShowStars, showVolumeBar: ShowVolumeBar) {
+    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
         
     }
     
