@@ -10,9 +10,13 @@ import Foundation
 
 class SettingsPresenter: BasePresenter
 {
-    public weak var delegate: SettingsViewDelegate?
+    private weak var delegate: BaseView?
     
-    required init(view: SettingsViewDelegate?=nil) {
+    init() {
+        
+    }
+    
+    func setView(_ view: BaseView) {
         self.delegate = view
     }
     

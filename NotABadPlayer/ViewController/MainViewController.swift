@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class MainViewController : UIViewController {
+class MainViewController : UIViewController, BaseView {
     public static let DEFAULT_SELECTED_TAB: TabID = .Albums
     public static let TAB_SIZE = CGSize(width: 0, height: 60.0)
     public static let SELECTED_MENU_BUTTON_COLOR: UIColor = UIColor(displayP3Red: 0.37, green: 0.59, blue: 0.94, alpha: 1)
@@ -20,9 +20,9 @@ class MainViewController : UIViewController {
     
     private var _selectedTab: UIViewController?
     
-    private var selectedTab: BaseViewController? {
+    private var selectedTab: BaseView? {
         get {
-            return _selectedTab as? BaseViewController
+            return _selectedTab as? BaseView
         }
     }
     
@@ -39,7 +39,7 @@ class MainViewController : UIViewController {
         }
     }
     
-    private var tabsCache: [TabID: BaseViewController] = [:]
+    private var tabsCache: [TabID: BaseView] = [:]
     
     override func loadView() {
         self.baseView = MainView.create(owner: self)
@@ -180,9 +180,10 @@ class MainViewController : UIViewController {
         
         if vc == nil
         {
-            let albumsVC = AlbumsViewController()
+            let presenter = AlbumsPresenter(audioInfo: audioStorage)
+            let albumsVC = AlbumsViewController(presenter: presenter)
             self._selectedTab = albumsVC
-            albumsVC.presenter = AlbumsPresenter(view: albumsVC, audioInfo: audioStorage)
+            presenter.setView(albumsVC)
         }
         else
         {
@@ -204,9 +205,10 @@ class MainViewController : UIViewController {
         
         if vc == nil
         {
-            let albumsVC = AlbumsViewController()
+            let presenter = AlbumsPresenter(audioInfo: audioStorage)
+            let albumsVC = AlbumsViewController(presenter: presenter)
             self._selectedTab = albumsVC
-            albumsVC.presenter = AlbumsPresenter(view: albumsVC, audioInfo: audioStorage)
+            presenter.setView(albumsVC)
         }
         else
         {
@@ -228,9 +230,10 @@ class MainViewController : UIViewController {
         
         if vc == nil
         {
-            let searchVC = SearchViewController()
+            let presenter = SearchPresenter(audioInfo: audioStorage)
+            let searchVC = SearchViewController(presenter: presenter)
             self._selectedTab = searchVC
-            searchVC.presenter = SearchPresenter(view: searchVC, audioInfo: audioStorage)
+            presenter.setView(searchVC)
         }
         else
         {
@@ -252,9 +255,10 @@ class MainViewController : UIViewController {
         
         if vc == nil
         {
-            let settingsVC = SettingsViewController()
+            let presenter = SettingsPresenter()
+            let settingsVC = SettingsViewController(presenter: presenter, rootView: self)
             self._selectedTab = settingsVC
-            settingsVC.presenter = SettingsPresenter(view: settingsVC)
+            presenter.setView(settingsVC)
         }
         else
         {
@@ -274,20 +278,6 @@ class MainViewController : UIViewController {
         
         tabsCache.removeAll()
     }
-}
-
-extension MainViewController: BaseViewController {
-    func goBack() {
-        
-    }
-    
-    func onSwipeUp() {
-        
-    }
-    
-    func onSwipeDown() {
-        
-    }
     
     func onPlayerSeekChanged(positionInPercentage: Double) {
         
@@ -302,6 +292,102 @@ extension MainViewController: BaseViewController {
     }
     
     func onPlaylistButtonClick() {
+        
+    }
+    
+    func goBack() {
+        
+    }
+    
+    func onSwipeUp() {
+        
+    }
+    
+    func onSwipeDown() {
+        
+    }
+    
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+        
+    }
+    
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
+        
+    }
+    
+    func onAlbumClick(index: UInt) {
+        
+    }
+    
+    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
+        
+    }
+    
+    func onSearchResultClick(index: UInt) {
+        
+    }
+    
+    func setSearchFieldText(_ text: String) {
+        
+    }
+    
+    func onAlbumSongsLoad(name: String,
+                          dataSource: PlaylistViewDataSource,
+                          actionDelegate: PlaylistViewActionDelegate) {
+        
+    }
+    
+    func onPlaylistSongsLoad(name: String,
+                             dataSource: PlaylistViewDataSource,
+                             actionDelegate: PlaylistViewActionDelegate) {
+        
+    }
+    
+    func scrollTo(index: UInt) {
+        
+    }
+    
+    func onTrackClicked(index: UInt) {
+        
+    }
+    
+    func openPlayerScreen(playlist: AudioPlaylist) {
+        
+    }
+    
+    func updatePlayerScreen(playlist: AudioPlaylist) {
+        
+    }
+    
+    func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
+        
+    }
+    
+    func onThemeSelect(_ value: AppTheme) {
+        
+    }
+    
+    func onTrackSortingSelect(_ value: TrackSorting) {
+        
+    }
+    
+    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
+        
+    }
+    
+    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
+        
+    }
+    
+    func onResetSettingsDefaults() {
+        
+    }
+    
+    func onPlayerErrorEncountered(_ error: Error) {
         
     }
 }
@@ -320,6 +406,7 @@ extension MainViewController: GeneralStorageObserver {
     }
 }
 
+// Actions
 extension MainViewController {
     @objc func actionAlbumsMenuButtonTap(sender: Any) {
         onTabItemSelected(.Albums)
@@ -338,7 +425,7 @@ extension MainViewController {
     }
 }
 
-// Interface actions
+// Interface operations
 extension MainViewController {
     private func resetTabButtonsColor() {
         self.baseView?.albumsButton.tintColor = MainTabView.DEFAULT_BUTTON_COLOR

@@ -41,4 +41,6 @@ enum Text: String {
     case SearchDescriptionNoResults = "no results";
     case SearchDescriptionResults = "@! search results";
     case SearchPlaylistName = "Recently played"
+    
+    case ErrorAlbumDoesNotExist = "Album does not exist"
 }

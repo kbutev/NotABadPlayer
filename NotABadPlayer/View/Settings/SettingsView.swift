@@ -29,7 +29,7 @@ class SettingsView : UIView
 {
     public static let HORIZONTAL_MARGIN: CGFloat = 10
     
-    public weak var delegate: SettingsActionDelegate?
+    public weak var delegate: BaseView?
     
     private var initialized: Bool = false
     

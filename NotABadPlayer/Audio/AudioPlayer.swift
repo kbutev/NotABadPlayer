@@ -9,10 +9,6 @@
 import Foundation
 import AVFoundation
 
-enum AudioPlayerError : Error {
-    case InvalidFile
-}
-
 class AudioPlayer : NSObject {
     static let shared = AudioPlayer()
     

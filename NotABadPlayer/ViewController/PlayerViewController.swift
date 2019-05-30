@@ -8,18 +8,22 @@
 
 import UIKit
 
-protocol PlayerViewDelegate : class {
-    func updatePlayerScreen(playlist: AudioPlaylist)
-    
-    func onErrorEncountered(message: String)
-}
-
-class PlayerViewController: UIViewController, BaseViewController {
+class PlayerViewController: UIViewController, BaseView {
     private var baseView: PlayerView?
     
-    public var presenter: BasePresenter?
+    private let presenter: BasePresenter?
     
     private var encounteredError: String?
+    
+    init(presenter: BasePresenter) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.presenter = nil
+        super.init(coder: aDecoder)
+    }
     
     override func loadView() {
         self.baseView = PlayerView.create(owner: self)
@@ -55,18 +59,6 @@ class PlayerViewController: UIViewController, BaseViewController {
         AudioPlayer.shared.detach(observer: self)
     }
     
-    func goBack() {
-        NavigationHelpers.dismissPresentedVC(self)
-    }
-    
-    func onSwipeUp() {
-        
-    }
-    
-    func onSwipeDown() {
-        self.goBack()
-    }
-    
     func onPlayerSeekChanged(positionInPercentage: Double) {
         let duration = AudioPlayer.shared.durationSec
         
@@ -84,15 +76,101 @@ class PlayerViewController: UIViewController, BaseViewController {
     func onPlaylistButtonClick() {
         presenter?.onOpenPlaylistButtonClick()
     }
-}
-
-extension PlayerViewController : PlayerViewDelegate {
+    
+    func goBack() {
+        NavigationHelpers.dismissPresentedVC(self)
+    }
+    
+    func onSwipeUp() {
+        
+    }
+    
+    func onSwipeDown() {
+        self.goBack()
+    }
+    
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+        
+    }
+    
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
+        
+    }
+    
+    func onAlbumClick(index: UInt) {
+        
+    }
+    
+    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
+        
+    }
+    
+    func onSearchResultClick(index: UInt) {
+        
+    }
+    
+    func setSearchFieldText(_ text: String) {
+        
+    }
+    
+    func onAlbumSongsLoad(name: String,
+                          dataSource: PlaylistViewDataSource,
+                          actionDelegate: PlaylistViewActionDelegate) {
+        
+    }
+    
+    func onPlaylistSongsLoad(name: String,
+                             dataSource: PlaylistViewDataSource,
+                             actionDelegate: PlaylistViewActionDelegate) {
+        
+    }
+    
+    func scrollTo(index: UInt) {
+        
+    }
+    
+    func onTrackClicked(index: UInt) {
+        
+    }
+    
+    func openPlayerScreen(playlist: AudioPlaylist) {
+        
+    }
+    
     func updatePlayerScreen(playlist: AudioPlaylist) {
         self.baseView?.updateUIState(player: AudioPlayer.shared, track: playlist.playingTrack)
     }
     
-    func onErrorEncountered(message: String) {
-        self.encounteredError = message
+    func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
+        
+    }
+    
+    func onThemeSelect(_ value: AppTheme) {
+        
+    }
+    
+    func onTrackSortingSelect(_ value: TrackSorting) {
+        
+    }
+    
+    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
+        
+    }
+    
+    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
+        
+    }
+    
+    func onResetSettingsDefaults() {
+        
+    }
+    
+    func onPlayerErrorEncountered(_ error: Error) {
+        self.encounteredError = error.localizedDescription
     }
 }
 

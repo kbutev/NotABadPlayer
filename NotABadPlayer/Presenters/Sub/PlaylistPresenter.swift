@@ -10,7 +10,7 @@ import Foundation
 
 class PlaylistPresenter: BasePresenter
 {
-    public weak var delegate: PlaylistViewDelegate?
+    private weak var delegate: BaseView?
     
     private let audioInfo: AudioInfo
     private let playlist: AudioPlaylist
@@ -18,8 +18,7 @@ class PlaylistPresenter: BasePresenter
     private var collectionDataSource: PlaylistViewDataSource?
     private var collectionActionDelegate: PlaylistViewActionDelegate?
     
-    required init(view: PlaylistViewDelegate?=nil, audioInfo: AudioInfo, playlist: AudioPlaylist) {
-        self.delegate = view
+    required init(audioInfo: AudioInfo, playlist: AudioPlaylist) {
         self.audioInfo = audioInfo
         
         // Sort playlist
@@ -27,6 +26,10 @@ class PlaylistPresenter: BasePresenter
         let sorting = GeneralStorage.shared.getTrackSortingValue()
         let sortedPlaylist = playlist.isAlbumPlaylist() ? playlist.sortedPlaylist(withSorting: sorting) : playlist
         self.playlist = sortedPlaylist
+    }
+    
+    func setView(_ view: BaseView) {
+        self.delegate = view
     }
     
     func start() {
@@ -107,7 +110,10 @@ class PlaylistPresenter: BasePresenter
     }
     
     func onOpenPlaylistButtonClick() {
-        
+        if let playlist = AudioPlayer.shared.playlist
+        {
+            delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+        }
     }
     
     func onSearchResultClick(index: UInt) {

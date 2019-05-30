@@ -10,12 +10,16 @@ import Foundation
 
 class PlayerPresenter: BasePresenter
 {
-    public weak var delegate: PlayerViewDelegate?
+    private weak var delegate: BaseView?
     
     private let playlist: AudioPlaylist
     
     required init(playlist: AudioPlaylist) {
         self.playlist = playlist
+    }
+    
+    func setView(_ view: BaseView) {
+        self.delegate = view
     }
     
     func start() {
@@ -121,7 +125,7 @@ class PlayerPresenter: BasePresenter
         do {
             try player.play(playlist: playlist)
         } catch let error {
-            delegate?.onErrorEncountered(message: error.localizedDescription)
+            delegate?.onPlayerErrorEncountered(error)
             return
         }
         

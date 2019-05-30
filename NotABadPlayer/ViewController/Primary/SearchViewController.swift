@@ -8,24 +8,22 @@
 
 import UIKit
 
-protocol SearchViewDelegate : class {
-    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt)
-    func onSearchResultClick(index: UInt)
-    func setSearchFieldText(_ text: String)
-    
-    func openPlayerScreen(playlist: AudioPlaylist)
-    
-    func onOpenPlaylistButtonClick(audioInfo: AudioInfo)
-    
-    func onPlayerErrorEncountered(_ error: Error)
-}
-
-class SearchViewController: UIViewController, BaseViewController {
+class SearchViewController: UIViewController, BaseView {
     private var baseView: SearchView?
     
-    public var presenter: BasePresenter?
+    private var presenter: BasePresenter?
     
     private var subViewController: PlaylistViewController?
+    
+    init(presenter: BasePresenter?) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.presenter = nil
+        super.init(coder: aDecoder)
+    }
     
     override func loadView() {
         self.baseView = SearchView.create(owner: self)
@@ -49,6 +47,22 @@ class SearchViewController: UIViewController, BaseViewController {
         QuickPlayerService.shared.detach(observer: self)
     }
     
+    func onPlayerSeekChanged(positionInPercentage: Double) {
+        
+    }
+    
+    func onPlayerButtonClick(input: ApplicationInput) {
+        presenter?.onPlayerButtonClick(input: input)
+    }
+    
+    func onPlayOrderButtonClick() {
+        presenter?.onPlayOrderButtonClick()
+    }
+    
+    func onPlaylistButtonClick() {
+        presenter?.onOpenPlaylistButtonClick()
+    }
+    
     func goBack() {
         self.subViewController?.goBack()
         self.subViewController = nil
@@ -65,27 +79,19 @@ class SearchViewController: UIViewController, BaseViewController {
         
     }
     
-    func onPlayerSeekChanged(positionInPercentage: Double) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
         
     }
     
-    func onPlayerButtonClick(input: ApplicationInput) {
-        presenter?.onPlayerButtonClick(input: input)
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
+        
     }
     
-    func onPlayOrderButtonClick() {
-        presenter?.onPlayOrderButtonClick()
+    func onAlbumClick(index: UInt) {
+        
     }
     
-    func onPlaylistButtonClick() {
-        presenter?.onOpenPlaylistButtonClick()
-    }
-}
-
-extension SearchViewController: SearchViewDelegate {
-    func searchQueryUpdate(dataSource: SearchViewDataSource,
-                           actionDelegate: SearchViewActionDelegate,
-                           resultsCount: UInt) {
+    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
         baseView?.collectionDataSource = dataSource
         baseView?.collectionActionDelegate = actionDelegate
         baseView?.updateSearchResults(resultsCount: resultsCount)
@@ -99,13 +105,37 @@ extension SearchViewController: SearchViewDelegate {
         baseView?.setTextFieldText(text)
     }
     
+    func onAlbumSongsLoad(name: String,
+                          dataSource: PlaylistViewDataSource,
+                          actionDelegate: PlaylistViewActionDelegate) {
+        
+    }
+    
+    func onPlaylistSongsLoad(name: String,
+                             dataSource: PlaylistViewDataSource,
+                             actionDelegate: PlaylistViewActionDelegate) {
+        
+    }
+    
+    func scrollTo(index: UInt) {
+        
+    }
+    
+    func onTrackClicked(index: UInt) {
+        
+    }
+    
     func openPlayerScreen(playlist: AudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
-        let vc = PlayerViewController()
-        vc.presenter = presenter
-        presenter.delegate = vc
+        let vc = PlayerViewController(presenter: presenter)
+        
+        presenter.setView(vc)
         
         NavigationHelpers.presentVC(current: self, vc: vc)
+    }
+    
+    func updatePlayerScreen(playlist: AudioPlaylist) {
+        
     }
     
     func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
@@ -119,15 +149,37 @@ extension SearchViewController: SearchViewDelegate {
         }
         
         let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist)
+        let vc = PlaylistViewController(presenter: presenter, rootView: self)
         
-        let vc = PlaylistViewController()
-        vc.presenter = presenter
+        presenter.setView(vc)
         
         self.subViewController = vc
         
-        presenter.delegate = vc
-        
         NavigationHelpers.addVCChild(parent: self, child: vc)
+    }
+    
+    func onThemeSelect(_ value: AppTheme) {
+        
+    }
+    
+    func onTrackSortingSelect(_ value: TrackSorting) {
+        
+    }
+    
+    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
+        
+    }
+    
+    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
+        
+    }
+    
+    func onResetSettingsDefaults() {
+        
     }
     
     func onPlayerErrorEncountered(_ error: Error) {

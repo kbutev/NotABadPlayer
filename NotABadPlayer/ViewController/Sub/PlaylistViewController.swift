@@ -8,27 +8,23 @@
 
 import UIKit
 
-protocol PlaylistViewDelegate : class {
-    func onAlbumSongsLoad(name: String,
-                          dataSource: PlaylistViewDataSource,
-                          actionDelegate: PlaylistViewActionDelegate)
-    func onPlaylistSongsLoad(name: String,
-                             dataSource: PlaylistViewDataSource,
-                             actionDelegate: PlaylistViewActionDelegate)
-    func scrollTo(index: UInt)
-    func onTrackClicked(index: UInt)
-    func openPlayerScreen(playlist: AudioPlaylist)
-    
-    func onScrollDown()
-    func onSwipeRight()
-    
-    func onPlayerErrorEncountered(_ error: Error)
-}
-
-class PlaylistViewController: UIViewController, BaseViewController {
+class PlaylistViewController: UIViewController, BaseView {
     private var baseView: PlaylistView?
     
-    public var presenter: BasePresenter?
+    private let presenter: BasePresenter?
+    private let rootView: BaseView?
+    
+    init(presenter: BasePresenter, rootView: BaseView) {
+        self.presenter = presenter
+        self.rootView = rootView
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.presenter = nil
+        self.rootView = nil
+        super.init(coder: aDecoder)
+    }
     
     override func loadView() {
         self.baseView = PlaylistView.create(owner: self)
@@ -53,25 +49,6 @@ class PlaylistViewController: UIViewController, BaseViewController {
         QuickPlayerService.shared.detach(observer: self)
     }
     
-    func goBack() {
-        NavigationHelpers.removeVCChild(self)
-    }
-    
-    func onSwipeUp() {
-        if let playlist = AudioPlayer.shared.playlist
-        {
-            openPlayerScreen(playlist: playlist)
-        }
-    }
-    
-    func onScrollDown() {
-        baseView?.updateScrollState()
-    }
-    
-    func onSwipeDown() {
-        
-    }
-    
     func onPlayerSeekChanged(positionInPercentage: Double) {
         
     }
@@ -87,9 +64,47 @@ class PlaylistViewController: UIViewController, BaseViewController {
     func onPlaylistButtonClick() {
         presenter?.onOpenPlaylistButtonClick()
     }
-}
-
-extension PlaylistViewController : PlaylistViewDelegate {
+    
+    func goBack() {
+        NavigationHelpers.removeVCChild(self)
+    }
+    
+    func onSwipeUp() {
+        if let playlist = AudioPlayer.shared.playlist
+        {
+            openPlayerScreen(playlist: playlist)
+        }
+    }
+    
+    func onSwipeDown() {
+        
+    }
+    
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+        // Forward request to delegate
+        rootView?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+    }
+    
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
+        
+    }
+    
+    func onAlbumClick(index: UInt) {
+        
+    }
+    
+    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
+        
+    }
+    
+    func onSearchResultClick(index: UInt) {
+        
+    }
+    
+    func setSearchFieldText(_ text: String) {
+        
+    }
+    
     func onAlbumSongsLoad(name: String,
                           dataSource: PlaylistViewDataSource,
                           actionDelegate: PlaylistViewActionDelegate) {
@@ -118,19 +133,47 @@ extension PlaylistViewController : PlaylistViewDelegate {
     
     func openPlayerScreen(playlist: AudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
-        let vc = PlayerViewController()
-        vc.presenter = presenter
-        presenter.delegate = vc
+        let vc = PlayerViewController(presenter: presenter)
+        
+        presenter.setView(vc)
         
         NavigationHelpers.presentVC(current: self, vc: vc)
     }
     
-    func onSwipeRight() {
-        NavigationHelpers.removeVCChild(self)
+    func updatePlayerScreen(playlist: AudioPlaylist) {
+        
+    }
+    
+    func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
+        
+    }
+    
+    func onThemeSelect(_ value: AppTheme) {
+        
+    }
+    
+    func onTrackSortingSelect(_ value: TrackSorting) {
+        
+    }
+    
+    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
+        
+    }
+    
+    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
+        
+    }
+    
+    func onResetSettingsDefaults() {
+        
     }
     
     func onPlayerErrorEncountered(_ error: Error) {
-        AlertWindows.shared.show(sourceVC: self, withTitle: "Error", withDescription: error.localizedDescription, actionText: "Ok", action: nil)
+           AlertWindows.shared.show(sourceVC: self, withTitle: "Error", withDescription: error.localizedDescription, actionText: "Ok", action: nil)
     }
 }
 
