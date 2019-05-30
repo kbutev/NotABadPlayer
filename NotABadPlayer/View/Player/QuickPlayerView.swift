@@ -14,7 +14,7 @@ class QuickPlayerView : UIView
     
     private var initialized: Bool = false
     
-    public weak var delegate: BaseViewController?
+    public weak var delegate: BaseView?
     
     @IBOutlet var primaryStackView: UIStackView!
     

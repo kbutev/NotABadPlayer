@@ -44,9 +44,9 @@ class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
 
 class AlbumsViewActionDelegate : NSObject, UICollectionViewDelegate
 {
-    private weak var view: AlbumsViewDelegate?
+    private weak var view: BaseView?
     
-    init(view: AlbumsViewDelegate) {
+    init(view: BaseView) {
         self.view = view
     }
     
@@ -90,7 +90,7 @@ class AlbumsView : UIView
         }
     }
     
-    var quickPlayerDelegate : BaseViewController? {
+    var quickPlayerDelegate : BaseView? {
         get {
             return quickPlayerView.delegate
         }

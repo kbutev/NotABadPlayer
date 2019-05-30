@@ -8,19 +8,22 @@
 
 import UIKit
 
-protocol AlbumsViewDelegate : class {
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String])
-    func onAlbumClick(index: UInt)
-    
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist)
-}
-
-class AlbumsViewController: UIViewController, BaseViewController {
+class AlbumsViewController: UIViewController, BaseView {
     private var baseView: AlbumsView?
     
-    public var presenter: BasePresenter?
+    private let presenter: BasePresenter?
     
     private var subViewController: PlaylistViewController?
+    
+    init(presenter: BasePresenter) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.presenter = nil
+        super.init(coder: aDecoder)
+    }
     
     override func loadView() {
         self.baseView = AlbumsView.create(owner: self)
@@ -45,22 +48,6 @@ class AlbumsViewController: UIViewController, BaseViewController {
         QuickPlayerService.shared.detach(observer: self)
     }
     
-    func goBack() {
-        self.subViewController?.goBack()
-        self.subViewController = nil
-    }
-    
-    func onSwipeUp() {
-        if let playlist = AudioPlayer.shared.playlist
-        {
-            openPlayerScreen(playlist: playlist)
-        }
-    }
-    
-    func onSwipeDown() {
-        
-    }
-    
     func onPlayerSeekChanged(positionInPercentage: Double) {
         
     }
@@ -77,17 +64,37 @@ class AlbumsViewController: UIViewController, BaseViewController {
         presenter?.onOpenPlaylistButtonClick()
     }
     
-    private func openPlayerScreen(playlist: AudioPlaylist) {
-        let presenter = PlayerPresenter(playlist: playlist)
-        let vc = PlayerViewController()
-        vc.presenter = presenter
-        presenter.delegate = vc
-        
-        NavigationHelpers.presentVC(current: self, vc: vc)
+    func goBack() {
+        self.subViewController?.goBack()
+        self.subViewController = nil
     }
-}
-
-extension AlbumsViewController : AlbumsViewDelegate {
+    
+    func onSwipeUp() {
+        if let playlist = AudioPlayer.shared.playlist
+        {
+            openPlayerScreen(playlist: playlist)
+        }
+    }
+    
+    func onSwipeDown() {
+        
+    }
+    
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+        if self.subViewController != nil
+        {
+            fatalError("Logic error in \(String(describing: AlbumsViewController.self)), cannot open playlist, its already open")
+        }
+        
+        let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist)
+        let vc = PlaylistViewController(presenter: presenter, rootView: self)
+        
+        presenter.setView(vc)
+        self.subViewController = vc
+        
+        NavigationHelpers.addVCChild(parent: self, child: vc)
+    }
+    
     func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
         self.baseView?.collectionDataSource = dataSource
         self.baseView?.collectionDelegate = actionDelegate
@@ -99,22 +106,81 @@ extension AlbumsViewController : AlbumsViewDelegate {
         self.presenter?.onAlbumClick(index: index)
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
-        if self.subViewController != nil
-        {
-            fatalError("Logic error in \(String(describing: AlbumsViewController.self)), cannot open playlist, its already open")
-        }
+    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
         
-        let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist)
+    }
+    
+    func onSearchResultClick(index: UInt) {
         
-        let vc = PlaylistViewController()
-        vc.presenter = presenter
+    }
+    
+    func setSearchFieldText(_ text: String) {
         
-        self.subViewController = vc
+    }
+    
+    func onAlbumSongsLoad(name: String,
+                          dataSource: PlaylistViewDataSource,
+                          actionDelegate: PlaylistViewActionDelegate) {
         
-        presenter.delegate = vc
+    }
+    
+    func onPlaylistSongsLoad(name: String,
+                             dataSource: PlaylistViewDataSource,
+                             actionDelegate: PlaylistViewActionDelegate) {
         
-        NavigationHelpers.addVCChild(parent: self, child: vc)
+    }
+    
+    func scrollTo(index: UInt) {
+        
+    }
+    
+    func onTrackClicked(index: UInt) {
+        
+    }
+    
+    func openPlayerScreen(playlist: AudioPlaylist) {
+        let presenter = PlayerPresenter(playlist: playlist)
+        let vc = PlayerViewController(presenter: presenter)
+        
+        presenter.setView(vc)
+        
+        NavigationHelpers.presentVC(current: self, vc: vc)
+    }
+    
+    func updatePlayerScreen(playlist: AudioPlaylist) {
+        
+    }
+    
+    func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
+        
+    }
+    
+    func onThemeSelect(_ value: AppTheme) {
+        
+    }
+    
+    func onTrackSortingSelect(_ value: TrackSorting) {
+        
+    }
+    
+    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
+        
+    }
+    
+    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
+        
+    }
+    
+    func onResetSettingsDefaults() {
+        
+    }
+    
+    func onPlayerErrorEncountered(_ error: Error) {
+        AlertWindows.shared.show(sourceVC: self, withTitle: "Error", withDescription: error.localizedDescription)
     }
 }
 

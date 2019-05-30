@@ -57,9 +57,9 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
 
 class SearchViewActionDelegate : NSObject, UICollectionViewDelegate
 {
-    private weak var view: SearchViewDelegate?
+    private weak var view: BaseView?
     
-    init(view: SearchViewDelegate) {
+    init(view: BaseView) {
         self.view = view
     }
     
@@ -108,7 +108,7 @@ class SearchView: UIView
         }
     }
     
-    var quickPlayerDelegate : BaseViewController? {
+    var quickPlayerDelegate : BaseView? {
         get {
             return quickPlayerView.delegate
         }

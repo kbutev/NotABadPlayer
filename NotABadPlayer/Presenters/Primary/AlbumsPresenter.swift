@@ -8,9 +8,22 @@
 
 import Foundation
 
+public enum AlbumsPresenterError: Error {
+    case AlbumDoesNotExist
+}
+
+extension AlbumsPresenterError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .AlbumDoesNotExist:
+            return Text.value(.ErrorAlbumDoesNotExist)
+        }
+    }
+}
+
 class AlbumsPresenter: BasePresenter
 {
-    public weak var delegate: AlbumsViewDelegate?
+    private weak var delegate: BaseView?
     
     private let audioInfo: AudioInfo
     private var albums: [AudioAlbum] = []
@@ -18,9 +31,12 @@ class AlbumsPresenter: BasePresenter
     private var collectionDataSource: AlbumsViewDataSource?
     private var collectionActionDelegate: AlbumsViewActionDelegate?
     
-    required init(view: AlbumsViewDelegate?=nil, audioInfo: AudioInfo) {
-        self.delegate = view
+    required init(audioInfo: AudioInfo) {
         self.audioInfo = audioInfo
+    }
+    
+    func setView(_ view: BaseView) {
+        self.delegate = view
     }
     
     func start() {
@@ -80,7 +96,7 @@ class AlbumsPresenter: BasePresenter
             return
         }
         
-        // Album playlist? Open album from here
+        // Album playlist? Simulate on album click
         if playlist.isAlbumPlaylist()
         {
             for e in 0..<albums.count
@@ -89,10 +105,20 @@ class AlbumsPresenter: BasePresenter
                 
                 if album.albumTitle == playlist.name
                 {
-                    self.onAlbumClick(index: UInt(e))
+                    onAlbumClick(index: UInt(e))
                     return
                 }
             }
+            
+            delegate?.onPlayerErrorEncountered(AlbumsPresenterError.AlbumDoesNotExist)
+        }
+        
+        // Non-album playlist
+        if let playlist = AudioPlayer.shared.playlist
+        {
+            Logging.log(AlbumsPresenter.self, "Open playlist screen for playlist '\(playlist.name)'")
+            
+            delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
         }
     }
     

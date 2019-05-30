@@ -106,7 +106,6 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         if let image = playlist.firstTrack.albumCover?.image(at: header.bounds.size)
         {
             header.artCoverImage.image = image
-            header.artCoverImage.frame.size = .zero
         }
         else
         {
@@ -126,9 +125,9 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
 
 class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
 {
-    private weak var view: PlaylistViewDelegate?
+    private weak var view: BaseView?
 
-    init(view: PlaylistViewDelegate) {
+    init(view: BaseView) {
         self.view = view
     }
 
@@ -137,11 +136,13 @@ class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        view?.onScrollDown()
+        //view?.onScrollDown()
+        let FIX_ME = 0
     }
     
     func onSwipeRight() {
-        view?.onSwipeRight()
+        //view?.onSwipeRight()
+        let FIX_ME = 0
     }
 }
 
@@ -151,15 +152,15 @@ class PlaylistView : UIView
     static let HEADER_IDENTIFIER = "header"
     static let ALBUM_TITLE_OVERLAY_HEIGHT: CGFloat = 48
     
-    @IBOutlet weak var albumTitleOverlayLabel: UILabel!
-    @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet var quickPlayerView: QuickPlayerView!
-    
     private var initialized: Bool = false
     
     private var flowLayout: PlaylistFlowLayout?
     
     private var collectionViewHeaderHeight: CGFloat = 0
+    
+    @IBOutlet weak var albumTitleOverlayLabel: UILabel!
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var quickPlayerView: QuickPlayerView!
     
     var collectionDataSource : PlaylistViewDataSource? {
         get {
@@ -179,7 +180,7 @@ class PlaylistView : UIView
         }
     }
     
-    var quickPlayerDelegate : BaseViewController? {
+    var quickPlayerDelegate : BaseView? {
         get {
             return quickPlayerView.delegate
         }

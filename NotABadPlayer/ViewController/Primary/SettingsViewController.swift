@@ -8,14 +8,24 @@
 
 import UIKit
 
-protocol SettingsViewDelegate : class {
-    
-}
-
-class SettingsViewController: UIViewController, BaseViewController {
+class SettingsViewController: UIViewController, BaseView {
     private var baseView: SettingsView?
     
-    public var presenter: BasePresenter?
+    private let presenter: BasePresenter?
+    
+    private let rootView: BaseView?
+    
+    init(presenter: BasePresenter, rootView: BaseView?) {
+        self.presenter = presenter
+        self.rootView = rootView
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.presenter = nil
+        self.rootView = nil
+        super.init(coder: aDecoder)
+    }
     
     override func loadView() {
         self.baseView = SettingsView.create(owner: self)
@@ -62,18 +72,6 @@ class SettingsViewController: UIViewController, BaseViewController {
                                 action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_NEXT_BUTTON))
     }
     
-    func goBack() {
-        
-    }
-    
-    func onSwipeUp() {
-        
-    }
-    
-    func onSwipeDown() {
-        
-    }
-    
     func onPlayerSeekChanged(positionInPercentage: Double) {
         
     }
@@ -89,9 +87,75 @@ class SettingsViewController: UIViewController, BaseViewController {
     func onPlaylistButtonClick() {
         
     }
-}
-
-extension SettingsViewController: SettingsActionDelegate {
+    
+    func goBack() {
+        
+    }
+    
+    func onSwipeUp() {
+        
+    }
+    
+    func onSwipeDown() {
+        
+    }
+    
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+        
+    }
+    
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
+        
+    }
+    
+    func onAlbumClick(index: UInt) {
+        
+    }
+    
+    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
+        
+    }
+    
+    func onSearchResultClick(index: UInt) {
+        
+    }
+    
+    func setSearchFieldText(_ text: String) {
+        
+    }
+    
+    func onAlbumSongsLoad(name: String,
+                          dataSource: PlaylistViewDataSource,
+                          actionDelegate: PlaylistViewActionDelegate) {
+        
+    }
+    
+    func onPlaylistSongsLoad(name: String,
+                             dataSource: PlaylistViewDataSource,
+                             actionDelegate: PlaylistViewActionDelegate) {
+        
+    }
+    
+    func scrollTo(index: UInt) {
+        
+    }
+    
+    func onTrackClicked(index: UInt) {
+        
+    }
+    
+    func openPlayerScreen(playlist: AudioPlaylist) {
+        
+    }
+    
+    func updatePlayerScreen(playlist: AudioPlaylist) {
+        
+    }
+    
+    func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
+        
+    }
+    
     func onThemeSelect(_ value: AppTheme) {
         presenter?.onAppThemeChange(themeValue: value)
     }
@@ -120,8 +184,8 @@ extension SettingsViewController: SettingsActionDelegate {
                                     self?.selectDefaultPickerValues()
         })
     }
-}
-
-extension SettingsViewController: SettingsViewDelegate {
     
+    func onPlayerErrorEncountered(_ error: Error) {
+        
+    }
 }

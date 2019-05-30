@@ -10,7 +10,7 @@ import Foundation
 
 class SearchPresenter: BasePresenter
 {
-    public weak var delegate: SearchViewDelegate?
+    private weak var delegate: BaseView?
     
     private let audioInfo: AudioInfo
     
@@ -19,9 +19,12 @@ class SearchPresenter: BasePresenter
     private var collectionDataSource: SearchViewDataSource?
     private var collectionActionDelegate: SearchViewActionDelegate?
     
-    required init(view: SearchViewDelegate?=nil, audioInfo: AudioInfo) {
-        self.delegate = view
+    required init(audioInfo: AudioInfo) {
         self.audioInfo = audioInfo
+    }
+    
+    func setView(_ view: BaseView) {
+        self.delegate = view
     }
     
     func start() {

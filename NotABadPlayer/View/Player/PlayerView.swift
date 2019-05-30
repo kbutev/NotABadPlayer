@@ -12,7 +12,7 @@ class PlayerView : UIView
 {
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
     
-    public weak var delegate: BaseViewController?
+    public weak var delegate: BaseView?
     
     @IBOutlet weak var primaryStackView: UIStackView!
     

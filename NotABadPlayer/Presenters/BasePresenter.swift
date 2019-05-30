@@ -10,6 +10,8 @@ import Foundation
 
 protocol BasePresenter
 {
+    func setView(_ view: BaseView)
+    
     func start()
     
     func onAlbumClick(index: UInt)
