@@ -53,6 +53,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
         AudioPlayer.shared.initialize(audioInfo: audioStorage)
         QuickPlayerService.shared.initialize(audioPlayer: AudioPlayer.shared)
         GeneralStorage.shared.restorePlayerState()
+        GeneralStorage.shared.restorePlayerPlayHistoryState()
         
         GeneralStorage.shared.attach(observer: self)
         
@@ -205,10 +206,10 @@ class MainViewController : UIViewController, BaseViewDelegate {
         
         if vc == nil
         {
-            let presenter = AlbumsPresenter(audioInfo: audioStorage)
-            let albumsVC = AlbumsViewController(presenter: presenter)
-            self._selectedTab = albumsVC
-            presenter.setView(albumsVC)
+            let presenter = ListsPresenter(audioInfo: audioStorage)
+            let listsVC = ListsViewController(presenter: presenter)
+            self._selectedTab = listsVC
+            presenter.setView(listsVC)
         }
         else
         {
@@ -216,7 +217,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
         }
         
         guard let albumsVC = self._selectedTab else {
-            fatalError("MainViewController: Could not create an Albums view controller")
+            fatalError("MainViewController: Could not create an Lists view controller")
         }
         
         NavigationHelpers.addVCChild(parent: self, child: albumsVC)
@@ -292,6 +293,10 @@ class MainViewController : UIViewController, BaseViewDelegate {
     }
     
     func onPlaylistSongsLoad(name: String, dataSource: PlaylistViewDataSource?, playingTrackIndex: UInt?) {
+        
+    }
+    
+    func onUserPlaylistsLoad(dataSource: ListsViewDataSource?) {
         
     }
     

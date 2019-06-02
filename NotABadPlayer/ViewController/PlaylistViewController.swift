@@ -105,6 +105,10 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         self.baseView?.reloadData()
     }
     
+    func onUserPlaylistsLoad(dataSource: ListsViewDataSource?) {
+        
+    }
+    
     func openPlayerScreen(playlist: AudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController(presenter: presenter)

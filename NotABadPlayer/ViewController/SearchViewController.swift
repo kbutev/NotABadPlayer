@@ -114,6 +114,10 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func onUserPlaylistsLoad(dataSource: ListsViewDataSource?) {
+        
+    }
+    
     func openPlayerScreen(playlist: AudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController(presenter: presenter)

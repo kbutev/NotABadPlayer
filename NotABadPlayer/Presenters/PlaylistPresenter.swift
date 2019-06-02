@@ -60,6 +60,10 @@ class PlaylistPresenter: BasePresenter
         delegate.onPlaylistSongsLoad(name: playlist.name, dataSource: dataSource, playingTrackIndex: scrollIndex)
     }
     
+    func onAppStateChange(state: AppState) {
+        
+    }
+    
     func onAlbumClick(index: UInt) {
         
     }
@@ -107,6 +111,10 @@ class PlaylistPresenter: BasePresenter
         {
             delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
         }
+    }
+    
+    func onPlaylistItemDelete(index: UInt) {
+        
     }
     
     func onSearchResultClick(index: UInt) {

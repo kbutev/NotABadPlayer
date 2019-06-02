@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ListsItemCell" customModule="NotABadPlayer" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nf6-kV-Dyh">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aZG-99-mhY">
+                            <rect key="frame" x="0.0" y="0.0" width="372" height="818"/>
+                        </imageView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ijd-Es-yGD">
+                            <rect key="frame" x="372" y="0.0" width="42" height="818"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TEO-zT-8PK">
+                                    <rect key="frame" x="0.0" y="0.0" width="42" height="797.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUQ-VR-YpN">
+                                    <rect key="frame" x="0.0" y="797.5" width="42" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <viewLayoutGuide key="safeArea" id="9mJ-cy-1nB"/>
+                        </stackView>
+                    </subviews>
+                    <viewLayoutGuide key="safeArea" id="bH7-rs-f43"/>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Nf6-kV-Dyh" secondAttribute="bottom" id="0L9-pK-TEF"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Nf6-kV-Dyh" secondAttribute="trailing" id="eox-bX-z33"/>
+                <constraint firstItem="Nf6-kV-Dyh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="pFx-jQ-lya"/>
+                <constraint firstItem="Nf6-kV-Dyh" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="rLK-Uo-Phc"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="descriptionLabel" destination="aUQ-VR-YpN" id="4Xi-0i-6DS"/>
+                <outlet property="playlistImage" destination="aZG-99-mhY" id="0A2-vp-RO7"/>
+                <outlet property="primaryStackView" destination="Nf6-kV-Dyh" id="wTE-rv-h9R"/>
+                <outlet property="textStackView" destination="Ijd-Es-yGD" id="MFp-Ob-wOE"/>
+                <outlet property="titleLabel" destination="TEO-zT-8PK" id="9Dl-sR-1Ue"/>
+            </connections>
+        </view>
+    </objects>
+</document>
