@@ -58,6 +58,10 @@ class AlbumsPresenter: BasePresenter
         delegate.onMediaAlbumsLoad(dataSource: dataSource, albumTitles: albumTitles)
     }
     
+    func onAppStateChange(state: AppState) {
+        
+    }
+    
     func onAlbumClick(index: UInt) {
         let album = self.albums[Int(index)]
         
@@ -101,6 +105,10 @@ class AlbumsPresenter: BasePresenter
         Logging.log(AlbumsPresenter.self, "Open playlist screen for playlist '\(playlist.name)'")
         
         delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+    }
+    
+    func onPlaylistItemDelete(index: UInt) {
+        
     }
     
     func onSearchResultClick(index: UInt) {

@@ -204,11 +204,11 @@ class AlbumsView : UIView
     }
     
     public func updateIndexerAlphabet(albumTitles: [String]) {
-        collectionIndexerView?.updateAlphabet(strings: albumTitles)
+        collectionIndexerView?.setAlphabet(albumTitles)
     }
     
-    public func jumpToItem(index: Int) {
-        var index = index / AlbumsView.CELLS_PER_COLUMN
+    public func jumpToItem(selection: CollectionIndexerSelection) {
+        var index = Int(selection.index)
         
         if index >= collectionView.numberOfItems(inSection: 0)
         {
@@ -243,7 +243,7 @@ extension AlbumsView {
 extension AlbumsView : CollectionIndexerDelegate {
     func onTouchGestureBegin(selection: CollectionIndexerSelection) {
         // Jump to location
-        jumpToItem(index: Int(selection.index))
+        jumpToItem(selection: selection)
         
         // Display character
         showIndexerCenterCharacter(character: selection.character)
@@ -251,7 +251,7 @@ extension AlbumsView : CollectionIndexerDelegate {
     
     func onTouchGestureMove(selection: CollectionIndexerSelection) {
         // Jump to location
-        jumpToItem(index: Int(selection.index))
+        jumpToItem(selection: selection)
         
         // Display character
         showIndexerCenterCharacter(character: selection.character)

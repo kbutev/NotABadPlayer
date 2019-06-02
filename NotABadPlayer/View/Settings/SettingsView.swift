@@ -259,79 +259,79 @@ extension SettingsView {
         
         switch type {
         case .Theme:
-            title = "Theme"
+            title = Text.value(.SettingsTheme)
             for option in AppTheme.stringValues()
             {
                 options.append(option.replacingOccurrences(of: "_", with: " "))
             }
             break
         case .TrackSorting:
-            title = "Track Sorting"
+            title = Text.value(.SettingsTrackSorting)
             for option in TrackSorting.stringValues()
             {
                 options.append(option.replacingOccurrences(of: "_", with: " "))
             }
             break
         case .ShowVolumeBar:
-            title = "Show Volume Bar"
+            title = Text.value(.SettingsShowVolumeBar)
             for option in ShowVolumeBar.stringValues()
             {
                 options.append(option.replacingOccurrences(of: "_", with: " "))
             }
             break
         case .OpenPlayerOnPlay:
-            title = "Play opens player"
+            title = Text.value(.SettingsPlayOpensPlayer)
             for option in OpenPlayerOnPlay.stringValues()
             {
                 options.append(option.replacingOccurrences(of: "_", with: " "))
             }
             break
         case .PlayerVolumeUp:
-            title = "Player Volume U"
+            title = Text.value(.SettingsPlayerVolumeUp)
             options = applicationActionsAsStrings()
             break
         case .PlayerVolumeDown:
-            title = "Player Volume D"
+            title = Text.value(.SettingsPlayerVolumeDown)
             options = applicationActionsAsStrings()
             break
         case .PlayerVolume:
-            title = "Player Speaker Icon"
+            title = Text.value(.SettingsPlayerVolume)
             options = applicationActionsAsStrings()
             break
         case .PlayerRecall:
-            title = "Player Recall"
+            title = Text.value(.SettingsPlayerRecall)
             options = applicationActionsAsStrings()
             break
         case .PlayerPrevious:
-            title = "Player Previous"
+            title = Text.value(.SettingsPlayerPrevious)
             options = applicationActionsAsStrings()
             break
         case .PlayerNext:
-            title = "Player Next"
+            title = Text.value(.SettingsPlayerNext)
             options = applicationActionsAsStrings()
             break
         case .PlayerSwipeL:
-            title = "Player Swipe L"
+            title = Text.value(.SettingsPlayerSwipeL)
             options = applicationActionsAsStrings()
             break
         case .PlayerSwipeR:
-            title = "Player Swipe R"
+            title = Text.value(.SettingsPlayerSwipeR)
             options = applicationActionsAsStrings()
             break
         case .QPlayerVolumeUp:
-            title = "QPlayer Volume U"
+            title = Text.value(.SettingsQPlayerVolumeU)
             options = applicationActionsAsStrings()
             break
         case .QPlayerVolumeDown:
-            title = "QPlayer Volume D"
+            title = Text.value(.SettingsQPlayerVolumeD)
             options = applicationActionsAsStrings()
             break
         case .QPlayerPrevious:
-            title = "QPlayer Previous"
+            title = Text.value(.SettingsQPlayerPrevious)
             options = applicationActionsAsStrings()
             break
         case .QPlayerNext:
-            title = "QPlayer Next"
+            title = Text.value(.SettingsQPlayerNext)
             options = applicationActionsAsStrings()
             break
         }

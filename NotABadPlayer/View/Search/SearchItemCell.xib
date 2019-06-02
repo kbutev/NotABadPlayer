@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,28 +13,28 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hpx-8q-cy1">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_album_unknown" translatesAutoresizingMaskIntoConstraints="NO" id="3Ja-le-Vm8">
-                            <rect key="frame" x="0.0" y="0.0" width="326" height="862"/>
+                            <rect key="frame" x="0.0" y="0.0" width="326" height="896"/>
                         </imageView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ie2-gu-ADt">
-                            <rect key="frame" x="326" y="0.0" width="88" height="862"/>
+                            <rect key="frame" x="326" y="0.0" width="88" height="896"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gMt-4i-sZQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="88" height="821"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="88" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3Z-Tw-aAx">
-                                    <rect key="frame" x="0.0" y="821" width="88" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="20.5" width="88" height="20.5"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jvl-K5-loF">
-                                    <rect key="frame" x="0.0" y="841.5" width="88" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="41" width="88" height="855"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -60,9 +56,9 @@
                 <outlet property="albumTitle" destination="z3Z-Tw-aAx" id="YWx-oI-5Pf"/>
                 <outlet property="durationText" destination="jvl-K5-loF" id="ii1-uJ-dqD"/>
                 <outlet property="horizontalStackView" destination="Hpx-8q-cy1" id="oss-zC-Ome"/>
+                <outlet property="textStackView" destination="Ie2-gu-ADt" id="Por-Zd-lQd"/>
                 <outlet property="titleText" destination="gMt-4i-sZQ" id="jA3-1a-Ay3"/>
                 <outlet property="trackAlbumCover" destination="3Ja-le-Vm8" id="TS6-TS-Fqm"/>
-                <outlet property="verticalStackView" destination="Ie2-gu-ADt" id="Por-Zd-lQd"/>
             </connections>
         </view>
     </objects>

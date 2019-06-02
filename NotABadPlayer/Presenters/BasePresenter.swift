@@ -14,6 +14,8 @@ protocol BasePresenter
     
     func start()
     
+    func onAppStateChange(state: AppState)
+    
     func onAlbumClick(index: UInt)
     func onPlaylistItemClick(index: UInt)
     
@@ -22,6 +24,8 @@ protocol BasePresenter
     func onPlayerButtonClick(input: ApplicationInput)
     func onPlayOrderButtonClick()
     func onOpenPlaylistButtonClick()
+    
+    func onPlaylistItemDelete(index: UInt)
     
     func onSearchResultClick(index: UInt)
     func onSearchQuery(_ query: String)

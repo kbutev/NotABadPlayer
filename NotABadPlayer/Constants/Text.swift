@@ -38,9 +38,30 @@ enum Text: String {
     case NothingPlaying = "Nothing Playing";
     case ZeroTimer = "0:00";
     case DoubleZeroTimers = "0:00/0:00";
+    
+    case PlaylistRecentlyPlayed = "Recently Played";
+    case PlaylistCellDescription = "@! tracks";
+    
     case SearchDescriptionNoResults = "no results";
     case SearchDescriptionResults = "@! search results";
     case SearchPlaylistName = "Recently played"
+    
+    case SettingsTheme = "Theme"
+    case SettingsTrackSorting = "Track Sorting"
+    case SettingsShowVolumeBar = "Show Volume Bar"
+    case SettingsPlayOpensPlayer = "Play Opens Player"
+    case SettingsPlayerVolumeUp = "Player Volume Down"
+    case SettingsPlayerVolumeDown = "Player Volume Up"
+    case SettingsPlayerVolume = "Player Speaker"
+    case SettingsPlayerRecall = "Player Recall"
+    case SettingsPlayerPrevious = "Player Previous"
+    case SettingsPlayerNext = "Player Next"
+    case SettingsPlayerSwipeL = "Player Swipe L"
+    case SettingsPlayerSwipeR = "Player Swipe R"
+    case SettingsQPlayerVolumeU = "QPlayer Volume U"
+    case SettingsQPlayerVolumeD = "QPlayer Volume D"
+    case SettingsQPlayerPrevious = "QPlayer Previous"
+    case SettingsQPlayerNext = "QPlayer Next"
     
     case ErrorAlbumDoesNotExist = "Album does not exist"
 }

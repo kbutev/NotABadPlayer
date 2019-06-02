@@ -24,6 +24,10 @@ class SettingsPresenter: BasePresenter
         
     }
     
+    func onAppStateChange(state: AppState) {
+        
+    }
+    
     func onAlbumClick(index: UInt) {
         
     }
@@ -48,6 +52,10 @@ class SettingsPresenter: BasePresenter
         
     }
     
+    func onPlaylistItemDelete(index: UInt) {
+        
+    }
+    
     func onSearchResultClick(index: UInt) {
         
     }
@@ -60,6 +68,9 @@ class SettingsPresenter: BasePresenter
         Logging.log(SettingsPresenter.self, "Settings reset")
         
         GeneralStorage.shared.resetDefaultSettingsValues()
+        
+        AudioPlayer.shared.unmute()
+        AudioPlayer.shared.pause()
     }
     
     func onAppThemeChange(_ themeValue: AppTheme) {

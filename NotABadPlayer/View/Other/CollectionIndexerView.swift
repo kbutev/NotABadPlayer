@@ -22,6 +22,12 @@ struct CollectionIndexerSelection {
         self.character = character
         self.index = UInt(index)
     }
+    
+    public func rowIndex(columns: UInt) -> UInt {
+        let indexAsFloat = CGFloat(index)
+        let columnsAsFloat = CGFloat(columns)
+        return UInt((indexAsFloat / columnsAsFloat).rounded(.up))
+    }
 }
 
 class CollectionIndexerView : UIView
@@ -40,6 +46,7 @@ class CollectionIndexerView : UIView
     
     private var characterLabels: [UILabel] = []
     
+    private var fullAlphabet: [Character] = []
     private var alphabet: [Character] = []
     
     private var panGesture: UIPanGestureRecognizer?
@@ -127,9 +134,16 @@ class CollectionIndexerView : UIView
     }
     
     private func updateSelectedCharacter(location: CGPoint) -> Bool {
-        for e in 0..<self.characterLabels.count
+        guard characterLabels.count > 0 else {
+            return false
+        }
+        
+        var characterTappedOn: Character? = nil
+        
+        // What did we click on? Get the character of the label
+        for e in 0..<characterLabels.count
         {
-            let label = self.characterLabels[e]
+            let label = characterLabels[e]
             
             guard location.y >= label.frame.minY && location.y <= label.frame.maxY else {
                 continue
@@ -137,23 +151,21 @@ class CollectionIndexerView : UIView
             
             if location.y >= label.frame.minY && location.y <= label.frame.maxY
             {
-                if let currentSelection = self.selection
-                {
-                    if currentSelection.character != alphabet[e]
-                    {
-                        previousSelection = self.selection
-                        self.selection = CollectionIndexerSelection(character: alphabet[e], index: e)
-                        return true
-                    }
-                }
-                else
-                {
-                    self.selection = CollectionIndexerSelection(character: alphabet[e], index: e)
-                    return true
-                }
+                characterTappedOn = self.alphabet[e]
                 
                 break
             }
+        }
+        
+        guard let char = characterTappedOn else {
+            return false
+        }
+        
+        // Retrieve the first matching item for the character of the label we clicked on
+        if let exactItemIndex = self.fullAlphabet.index(of: char)
+        {
+            self.selection = CollectionIndexerSelection(character: char, index: exactItemIndex)
+            return true
         }
         
         return false
@@ -188,7 +200,8 @@ class CollectionIndexerView : UIView
         }
     }
     
-    public func updateAlphabet(strings: [String]) {
+    public func setAlphabet(_ strings: [String]) {
+        var fullAlphabet: [Character] = []
         var alphabet: [Character] = []
         
         for title in strings
@@ -204,11 +217,12 @@ class CollectionIndexerView : UIView
             {
                 alphabet.append(firstChar)
             }
+            
+            fullAlphabet.append(firstChar)
         }
         
         self.alphabet = alphabet.sorted { $0 < $1 }
-        
-        self.alphabet = ["A", "B", "c", "d", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "E"]
+        self.fullAlphabet = fullAlphabet.sorted { $0 < $1 }
         
         rebuildLabels()
         layoutIfNeeded()

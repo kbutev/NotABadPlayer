@@ -17,6 +17,14 @@ class AudioStorage : AudioInfo {
     }
     
     public func load() {
+        // Thread safe
+        lockEnter(self.albums)
+        
+        defer {
+            lockExit(self.albums)
+        }
+        
+        // Load albums
         Logging.log(AudioStorage.self, "Loading albums from MP media...")
         
         albums.removeAll()
@@ -50,6 +58,14 @@ class AudioStorage : AudioInfo {
     }
     
     func getAlbums() -> [AudioAlbum] {
+        // Thread safe
+        lockEnter(self.albums)
+        
+        defer {
+            lockExit(self.albums)
+        }
+        
+        // Retrieve albums
         if (albums.count > 0)
         {
             return albums
@@ -166,5 +182,13 @@ class AudioStorage : AudioInfo {
         }
         
         return tracks
+    }
+    
+    private func lockEnter(_ lock: Any) {
+        objc_sync_enter(lock)
+    }
+    
+    private func lockExit(_ lock: Any) {
+        objc_sync_exit(lock)
     }
 }

@@ -38,6 +38,10 @@ class SearchPresenter: BasePresenter
         }
     }
     
+    func onAppStateChange(state: AppState) {
+        
+    }
+    
     func onAlbumClick(index: UInt) {
         
     }
@@ -71,6 +75,10 @@ class SearchPresenter: BasePresenter
         {
             delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
         }
+    }
+    
+    func onPlaylistItemDelete(index: UInt) {
+        
     }
     
     func onSearchResultClick(index: UInt) {

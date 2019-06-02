@@ -120,7 +120,7 @@
                                     <rect key="frame" x="0.0" y="956" width="339" height="66.5"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <string key="text">Version 1.0 (1)
-Released 2019.05.25
+Released 2019.06.2
 Programmed, designed &amp; tested by Kristiyan Butev</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>

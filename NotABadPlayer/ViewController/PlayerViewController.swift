@@ -98,6 +98,10 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func onUserPlaylistsLoad(dataSource: ListsViewDataSource?) {
+        
+    }
+    
     func openPlayerScreen(playlist: AudioPlaylist) {
         
     }

@@ -46,6 +46,10 @@ class PlayerPresenter: BasePresenter
         playFirstTime(playlist: self.playlist)
     }
     
+    func onAppStateChange(state: AppState) {
+        
+    }
+    
     func onAlbumClick(index: UInt) {
         
     }
@@ -73,6 +77,10 @@ class PlayerPresenter: BasePresenter
     }
     
     func onOpenPlaylistButtonClick() {
+        
+    }
+    
+    func onPlaylistItemDelete(index: UInt) {
         
     }
     
