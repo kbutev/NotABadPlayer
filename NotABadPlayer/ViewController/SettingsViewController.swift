@@ -8,14 +8,14 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, BaseView {
+class SettingsViewController: UIViewController, BaseViewDelegate {
     private var baseView: SettingsView?
     
     private let presenter: BasePresenter?
     
-    private let rootView: BaseView?
+    private let rootView: BaseViewDelegate?
     
-    init(presenter: BasePresenter, rootView: BaseView?) {
+    init(presenter: BasePresenter, rootView: BaseViewDelegate?) {
         self.presenter = presenter
         self.rootView = rootView
         super.init(nibName: nil, bundle: nil)
@@ -35,11 +35,49 @@ class SettingsViewController: UIViewController, BaseView {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setup()
+        
         presenter?.start()
         
         baseView?.delegate = self
         
         selectDefaultPickerValues()
+    }
+    
+    private func setup() {
+        baseView?.onAppThemeSelectCallback = {[weak self] (value) in
+            self?.presenter?.onAppThemeChange(value)
+        }
+        
+        baseView?.onTrackSortingSelectCallback = {[weak self] (value) in
+            self?.presenter?.onTrackSortingSettingChange(value)
+        }
+        
+        baseView?.onShowVolumeBarSelectCallback = {[weak self] (value) in
+            self?.presenter?.onShowVolumeBarSettingChange(value)
+        }
+        
+        baseView?.onOpenPlayerOnPlaySelectCallback = {[weak self] (value) in
+            self?.presenter?.onOpenPlayerOnPlaySettingChange(value)
+        }
+        
+        baseView?.onKeybindSelectCallback = {[weak self] (input, action) in
+            self?.presenter?.onKeybindChange(input: input, action: action)
+        }
+        
+        let resetSettingsDefaultsAction = {[weak self] (action:UIAlertAction) in
+            self?.presenter?.onAppSettingsReset()
+            self?.selectDefaultPickerValues()
+        }
+        
+        baseView?.onResetSettingsDefaults = {[weak self] () in
+            if let vc = self
+            {
+                AlertWindows.shared.show(sourceVC: vc, withTitle: "", withDescription: "Reset settings to defaults?",
+                                         actionLeftText: "NO", actionLeft: nil,
+                                         actionRightText: "YES", actionRight: resetSettingsDefaultsAction)
+            }
+        }
     }
     
     private func selectDefaultPickerValues() {
@@ -72,31 +110,7 @@ class SettingsViewController: UIViewController, BaseView {
                                 action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_NEXT_BUTTON))
     }
     
-    func onPlayerSeekChanged(positionInPercentage: Double) {
-        
-    }
-    
-    func onPlayerButtonClick(input: ApplicationInput) {
-        
-    }
-    
-    func onPlayOrderButtonClick() {
-        
-    }
-    
-    func onPlaylistButtonClick() {
-        
-    }
-    
     func goBack() {
-        
-    }
-    
-    func onSwipeUp() {
-        
-    }
-    
-    func onSwipeDown() {
         
     }
     
@@ -104,43 +118,11 @@ class SettingsViewController: UIViewController, BaseView {
         
     }
     
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource?, albumTitles: [String]) {
         
     }
     
-    func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
-        
-    }
-    
-    func onSearchResultClick(index: UInt) {
-        
-    }
-    
-    func setSearchFieldText(_ text: String) {
-        
-    }
-    
-    func onAlbumSongsLoad(name: String,
-                          dataSource: PlaylistViewDataSource,
-                          actionDelegate: PlaylistViewActionDelegate) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String,
-                             dataSource: PlaylistViewDataSource,
-                             actionDelegate: PlaylistViewActionDelegate) {
-        
-    }
-    
-    func scrollTo(index: UInt) {
-        
-    }
-    
-    func onTrackClicked(index: UInt) {
+    func onPlaylistSongsLoad(name: String, dataSource: PlaylistViewDataSource?, playingTrackIndex: UInt?) {
         
     }
     
@@ -152,37 +134,24 @@ class SettingsViewController: UIViewController, BaseView {
         
     }
     
-    func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
+    func searchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+        
+    }
+    
+    func onResetSettingsDefaults() {
         
     }
     
     func onThemeSelect(_ value: AppTheme) {
-        presenter?.onAppThemeChange(themeValue: value)
+        
     }
     
     func onTrackSortingSelect(_ value: TrackSorting) {
-        presenter?.onAppSortingChange(albumSorting: .TITLE, trackSorting: value)
+        
     }
     
     func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        presenter?.onShowVolumeBarSettingChange(value)
-    }
-    
-    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
-        presenter?.onOpenPlayerOnPlaySettingChange(value)
-    }
-    
-    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
-        presenter?.onKeybindChange(action: action, input: input)
-    }
-    
-    func onResetSettingsDefaults() {
-        AlertWindows.shared.show(sourceVC: self, withTitle: "", withDescription: "Reset settings to defaults?",
-                                 actionLeftText: "NO", actionLeft: nil,
-                                 actionRightText: "YES", actionRight: {[weak self] (action) in
-                                    self?.presenter?.onAppSettingsReset()
-                                    self?.selectDefaultPickerValues()
-        })
+        
     }
     
     func onPlayerErrorEncountered(_ error: Error) {

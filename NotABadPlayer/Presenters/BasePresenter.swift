@@ -10,25 +10,26 @@ import Foundation
 
 protocol BasePresenter
 {
-    func setView(_ view: BaseView)
+    func setView(_ delegate: BaseViewDelegate)
     
     func start()
     
     func onAlbumClick(index: UInt)
     func onPlaylistItemClick(index: UInt)
     
+    func onOpenPlayer(playlist: AudioPlaylist)
+    
     func onPlayerButtonClick(input: ApplicationInput)
     func onPlayOrderButtonClick()
-    
     func onOpenPlaylistButtonClick()
     
     func onSearchResultClick(index: UInt)
     func onSearchQuery(_ query: String)
     
     func onAppSettingsReset()
-    func onAppThemeChange(themeValue: AppTheme);
-    func onAppSortingChange(albumSorting: AlbumSorting, trackSorting: TrackSorting)
+    func onAppThemeChange(_ themeValue: AppTheme);
+    func onTrackSortingSettingChange(_ trackSorting: TrackSorting)
     func onShowVolumeBarSettingChange(_ value: ShowVolumeBar)
     func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay)
-    func onKeybindChange(action: ApplicationAction, input: ApplicationInput)
+    func onKeybindChange(input: ApplicationInput, action: ApplicationAction)
 }

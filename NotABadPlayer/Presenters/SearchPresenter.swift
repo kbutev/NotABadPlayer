@@ -10,31 +10,31 @@ import Foundation
 
 class SearchPresenter: BasePresenter
 {
-    private weak var delegate: BaseView?
+    private weak var delegate: BaseViewDelegate?
     
     private let audioInfo: AudioInfo
     
     private var searchResults: [AudioTrack] = []
     
-    private var collectionDataSource: SearchViewDataSource?
-    private var collectionActionDelegate: SearchViewActionDelegate?
+    private var dataSource: SearchViewDataSource?
+    
+    private var lastSearchQuery: String?
     
     required init(audioInfo: AudioInfo) {
         self.audioInfo = audioInfo
     }
     
-    func setView(_ view: BaseView) {
-        self.delegate = view
+    func setView(_ delegate: BaseViewDelegate) {
+        self.delegate = delegate
     }
     
     func start() {
-        // Restored state
+        // Restore last search query from storage
         let savedQuery = GeneralStorage.shared.retrieveSearchQuery()
-        
+
         if savedQuery.count > 0
         {
             onSearchQuery(savedQuery)
-            delegate?.setSearchFieldText(savedQuery)
         }
     }
     
@@ -44,6 +44,12 @@ class SearchPresenter: BasePresenter
     
     func onPlaylistItemClick(index: UInt) {
         
+    }
+    
+    func onOpenPlayer(playlist: AudioPlaylist) {
+        Logging.log(SearchPresenter.self, "Open player screen")
+        
+        self.delegate?.openPlayerScreen(playlist: playlist)
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -61,7 +67,10 @@ class SearchPresenter: BasePresenter
     }
     
     func onOpenPlaylistButtonClick() {
-        delegate?.onOpenPlaylistButtonClick(audioInfo: audioInfo)
+        if let playlist = AudioPlayer.shared.playlist
+        {
+            delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+        }
     }
     
     func onSearchResultClick(index: UInt) {
@@ -83,34 +92,56 @@ class SearchPresenter: BasePresenter
     }
     
     func onSearchQuery(_ query: String) {
-        guard let delegate = self.delegate else {
+        guard self.delegate != nil else {
             fatalError("Delegate is not set for \(String(describing: SearchPresenter.self))")
         }
         
+        // If the query was already made, return
+        if let lastQuery = lastSearchQuery
+        {
+            if query == lastQuery
+            {
+                return
+            }
+        }
+        
+        lastSearchQuery = query
+        
         Logging.log(SearchPresenter.self, "Searching for tracks by query '\(query)'")
         
-        self.searchResults = audioInfo.searchForTracks(query: query)
-        
-        let dataSource = SearchViewDataSource(audioInfo: audioInfo, searchResults: searchResults)
-        self.collectionDataSource = dataSource
-        
-        let actionDelegate = SearchViewActionDelegate(view: delegate)
-        self.collectionActionDelegate = actionDelegate
-        
-        delegate.searchQueryUpdate(dataSource: dataSource, actionDelegate: actionDelegate, resultsCount: UInt(searchResults.count))
-        
+        // Save query to storage
         GeneralStorage.shared.saveSearchQuery(query)
+        
+        // Start search process
+        delegate?.searchQueryResults(query: query, dataSource: nil, resultsCount: 0, searchTip: "Searching...")
+        
+        // Use background thread to retrieve the search results
+        // Then, update the view on the main thread
+        DispatchQueue.global(qos: .background).async {
+            let results = self.audioInfo.searchForTracks(query: query)
+            self.searchResults = results
+            
+            let dataSource = SearchViewDataSource(audioInfo: self.audioInfo, searchResults: results)
+            self.dataSource = dataSource
+            
+            DispatchQueue.main.async {
+                self.delegate?.searchQueryResults(query: query,
+                                                  dataSource: dataSource,
+                                                  resultsCount: UInt(results.count),
+                                                  searchTip: nil)
+            }
+        }
     }
     
     func onAppSettingsReset() {
         
     }
     
-    func onAppThemeChange(themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppTheme) {
         
     }
     
-    func onAppSortingChange(albumSorting: AlbumSorting, trackSorting: TrackSorting) {
+    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
         
     }
     
@@ -122,7 +153,7 @@ class SearchPresenter: BasePresenter
         
     }
     
-    func onKeybindChange(action: ApplicationAction, input: ApplicationInput) {
+    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         
     }
     

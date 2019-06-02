@@ -91,7 +91,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         return 1
     }
     
-    func getPlaylistDescription() -> String {
+    private func getPlaylistDescription() -> String {
         var totalDuration: Double = 0
         
         for track in playlist.tracks
@@ -125,24 +125,18 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
 
 class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
 {
-    private weak var view: BaseView?
+    private weak var view: PlaylistView?
 
-    init(view: BaseView) {
+    init(view: PlaylistView) {
         self.view = view
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        view?.onTrackClicked(index: UInt(indexPath.row))
+        view?.actionTrackClicked(index: UInt(indexPath.row))
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //view?.onScrollDown()
-        let FIX_ME = 0
-    }
-    
-    func onSwipeRight() {
-        //view?.onSwipeRight()
-        let FIX_ME = 0
+        view?.actionScreenScrollDown()
     }
 }
 
@@ -158,11 +152,9 @@ class PlaylistView : UIView
     
     private var collectionViewHeaderHeight: CGFloat = 0
     
-    @IBOutlet weak var albumTitleOverlayLabel: UILabel!
-    @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet var quickPlayerView: QuickPlayerView!
+    private var collectionActionDelegate: PlaylistViewActionDelegate?
     
-    var collectionDataSource : PlaylistViewDataSource? {
+    public var collectionDataSource : PlaylistViewDataSource? {
         get {
             return collectionView.dataSource as? PlaylistViewDataSource
         }
@@ -171,23 +163,32 @@ class PlaylistView : UIView
         }
     }
     
-    var collectionActionDelegate : PlaylistViewActionDelegate? {
-        get {
-            return collectionView.delegate as? PlaylistViewActionDelegate
-        }
-        set {
-            collectionView.delegate = newValue
-        }
+    public var onTrackClickedCallback: (UInt)->() = {(index) in }
+    public var onSwipeRightCallback: ()->() = {() in }
+    
+    public var onQuickPlayerPlaylistButtonClickCallback: ()->() {
+        get { return quickPlayerView.onPlaylistButtonClickCallback }
+        set { quickPlayerView.onPlaylistButtonClickCallback = newValue }
     }
     
-    var quickPlayerDelegate : BaseView? {
-        get {
-            return quickPlayerView.delegate
-        }
-        set {
-            quickPlayerView.delegate = newValue
-        }
+    public var onQuickPlayerButtonClickCallback: (ApplicationInput)->() {
+        get { return quickPlayerView.onPlayerButtonClickCallback }
+        set { quickPlayerView.onPlayerButtonClickCallback = newValue }
     }
+    
+    public var onQuickPlayerPlayOrderButtonClickCallback: ()->() {
+        get { return quickPlayerView.onPlayOrderButtonClickCallback }
+        set { quickPlayerView.onPlayOrderButtonClickCallback = newValue }
+    }
+    
+    public var onQuickPlayerSwipeUpCallback: ()->() {
+        get { return quickPlayerView.onSwipeUpCallback }
+        set { quickPlayerView.onSwipeUpCallback = newValue }
+    }
+    
+    @IBOutlet weak var albumTitleOverlayLabel: UILabel!
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -243,6 +244,9 @@ class PlaylistView : UIView
         
         collectionView.collectionViewLayout = flowLayout!
         
+        self.collectionActionDelegate = PlaylistViewActionDelegate(view: self)
+        collectionView.delegate = collectionActionDelegate
+        
         // Album title overlay label
         albumTitleOverlayLabel.translatesAutoresizingMaskIntoConstraints = false
         albumTitleOverlayLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
@@ -267,43 +271,43 @@ class PlaylistView : UIView
         }
     }
     
-    func updateTime(currentTime: Double, totalDuration: Double) {
+    public func updateTime(currentTime: Double, totalDuration: Double) {
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: AudioTrack) {
+    public func updateMediaInfo(track: AudioTrack) {
         quickPlayerView.updateMediaInfo(track: track)
         
         reloadData()
     }
     
-    func updatePlayButtonState(playing: Bool) {
+    public func updatePlayButtonState(playing: Bool) {
         quickPlayerView.updatePlayButtonState(playing: playing)
     }
     
-    func updatePlayOrderButtonState(order: AudioPlayOrder) {
+    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
         quickPlayerView.updatePlayOrderButtonState(order: order)
     }
     
-    func updateOverlayTitle(title: String) {
+    public func updateOverlayTitle(title: String) {
         albumTitleOverlayLabel.text = title
     }
     
-    func showAlbumTitleOverlay() {
+    public func showAlbumTitleOverlay() {
         if albumTitleOverlayLabel.alpha == 0
         {
             UIAnimations.animateViewFadeIn(albumTitleOverlayLabel)
         }
     }
     
-    func hideAlbumTitleOverlay() {
+    public func hideAlbumTitleOverlay() {
         if albumTitleOverlayLabel.alpha == 1
         {
             UIAnimations.animateViewFadeOut(albumTitleOverlayLabel)
         }
     }
     
-    func updateScrollState() {
+    public func updateScrollState() {
         if collectionViewHeaderHeight == 0
         {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
@@ -325,8 +329,16 @@ class PlaylistView : UIView
 
 // Actions
 extension PlaylistView {
-    @objc func actionSwipeRight(gesture: UISwipeGestureRecognizer) {
-        self.collectionActionDelegate?.onSwipeRight()
+    @objc func actionTrackClicked(index: UInt) {
+        self.onTrackClickedCallback(index)
+    }
+    
+    @objc func actionSwipeRight(gesture: UIGestureRecognizer) {
+        self.onSwipeRightCallback()
+    }
+    
+    @objc func actionScreenScrollDown() {
+        self.updateScrollState()
     }
 }
 

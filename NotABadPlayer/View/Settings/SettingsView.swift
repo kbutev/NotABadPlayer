@@ -11,7 +11,7 @@ import iOSDropDown
 
 enum SettingsPickerValue {
     case Theme; case TrackSorting; case ShowVolumeBar; case OpenPlayerOnPlay;
-    case PlayerVolumeUp; case PlayerVolumeDown; case PlayerRecall; case PlayerPrevious; case PlayerNext; case PlayerSwipeL; case PlayerSwipeR;
+    case PlayerVolumeUp; case PlayerVolumeDown; case PlayerVolume; case PlayerRecall; case PlayerPrevious; case PlayerNext; case PlayerSwipeL; case PlayerSwipeR;
     case QPlayerVolumeUp; case QPlayerVolumeDown; case QPlayerPrevious; case QPlayerNext;
 }
 
@@ -29,9 +29,16 @@ class SettingsView : UIView
 {
     public static let HORIZONTAL_MARGIN: CGFloat = 10
     
-    public weak var delegate: BaseView?
+    public weak var delegate: BaseViewDelegate?
     
     private var initialized: Bool = false
+    
+    public var onAppThemeSelectCallback: (AppTheme)->() = {(value) in }
+    public var onTrackSortingSelectCallback: (TrackSorting)->() = {(value) in }
+    public var onShowVolumeBarSelectCallback: (ShowVolumeBar)->() = {(value) in }
+    public var onOpenPlayerOnPlaySelectCallback: (OpenPlayerOnPlay)->() = {(value) in }
+    public var onKeybindSelectCallback: (ApplicationInput, ApplicationAction)->() = {(input, action) in }
+    public var onResetSettingsDefaults: ()->() = {() in }
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackView: UIStackView!
@@ -42,6 +49,7 @@ class SettingsView : UIView
     
     @IBOutlet weak var pickKeybindPlayerVolumeUp: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerVolumeDown: SettingsPickView!
+    @IBOutlet weak var pickKeybindPlayerVolume: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerRecall: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerPrevious: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerNext: SettingsPickView!
@@ -70,6 +78,7 @@ class SettingsView : UIView
         setupPickerValues(.OpenPlayerOnPlay)
         setupPickerValues(.PlayerVolumeUp)
         setupPickerValues(.PlayerVolumeDown)
+        setupPickerValues(.PlayerVolume)
         setupPickerValues(.PlayerRecall)
         setupPickerValues(.PlayerPrevious)
         setupPickerValues(.PlayerNext)
@@ -166,6 +175,9 @@ class SettingsView : UIView
         case .PLAYER_VOLUME_DOWN_BUTTON:
             pickKeybindPlayerVolumeDown.selectOption(index: UInt(index))
             break
+        case .PLAYER_VOLUME:
+            pickKeybindPlayerVolume.selectOption(index: UInt(index))
+            break
         case .PLAYER_RECALL:
             pickKeybindPlayerRecall.selectOption(index: UInt(index))
             break
@@ -215,6 +227,8 @@ extension SettingsView {
             return pickKeybindPlayerVolumeUp
         case .PlayerVolumeDown:
             return pickKeybindPlayerVolumeDown
+        case .PlayerVolume:
+            return pickKeybindPlayerVolume
         case .PlayerRecall:
             return pickKeybindPlayerRecall
         case .PlayerPrevious:
@@ -280,6 +294,10 @@ extension SettingsView {
             title = "Player Volume D"
             options = applicationActionsAsStrings()
             break
+        case .PlayerVolume:
+            title = "Player Speaker Icon"
+            options = applicationActionsAsStrings()
+            break
         case .PlayerRecall:
             title = "Player Recall"
             options = applicationActionsAsStrings()
@@ -338,6 +356,7 @@ extension SettingsView {
         getPickerView(for: .ShowVolumeBar).isUserInteractionEnabled = value
         getPickerView(for: .PlayerVolumeUp).isUserInteractionEnabled = value
         getPickerView(for: .PlayerVolumeDown).isUserInteractionEnabled = value
+        getPickerView(for: .PlayerVolume).isUserInteractionEnabled = value
         getPickerView(for: .PlayerRecall).isUserInteractionEnabled = value
         getPickerView(for: .PlayerPrevious).isUserInteractionEnabled = value
         getPickerView(for: .PlayerNext).isUserInteractionEnabled = value
@@ -364,7 +383,7 @@ extension SettingsView {
 // Actions
 extension SettingsView {
     @objc func actionResetDefaultsButton() {
-        delegate?.onResetSettingsDefaults()
+        self.onResetSettingsDefaults()
     }
 }
 
@@ -386,91 +405,97 @@ extension SettingsView: SettingsPickActionDelegate {
         case .Theme:
             if index < AppTheme.allCases.count
             {
-                delegate?.onThemeSelect(AppTheme.allCases[Int(index)])
+                self.onAppThemeSelectCallback(AppTheme.allCases[Int(index)])
             }
             break
         case .TrackSorting:
             if index < TrackSorting.allCases.count
             {
-                delegate?.onTrackSortingSelect(TrackSorting.allCases[Int(index)])
+                self.onTrackSortingSelectCallback(TrackSorting.allCases[Int(index)])
             }
             break
         case .ShowVolumeBar:
             if index < ShowVolumeBar.allCases.count
             {
-                delegate?.onShowVolumeBarSelect(ShowVolumeBar.allCases[Int(index)])
+                self.onShowVolumeBarSelectCallback(ShowVolumeBar.allCases[Int(index)])
             }
             break
         case .OpenPlayerOnPlay:
             if index < OpenPlayerOnPlay.allCases.count
             {
-                delegate?.onOpenPlayerOnPlaySelect(OpenPlayerOnPlay.allCases[Int(index)])
+                self.onOpenPlayerOnPlaySelectCallback(OpenPlayerOnPlay.allCases[Int(index)])
             }
             break
         case .PlayerVolumeUp:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .PLAYER_VOLUME_UP_BUTTON, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_VOLUME_UP_BUTTON, ApplicationAction.allCases[Int(index)])
             }
             break
         case .PlayerVolumeDown:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .PLAYER_VOLUME_DOWN_BUTTON, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_VOLUME_DOWN_BUTTON, ApplicationAction.allCases[Int(index)])
+            }
+            break
+        case .PlayerVolume:
+            if index < ApplicationAction.allCases.count
+            {
+                self.onKeybindSelectCallback(.PLAYER_VOLUME, ApplicationAction.allCases[Int(index)])
             }
             break
         case .PlayerRecall:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .PLAYER_RECALL, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_RECALL, ApplicationAction.allCases[Int(index)])
             }
             break
         case .PlayerPrevious:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .PLAYER_PREVIOUS_BUTTON, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_PREVIOUS_BUTTON, ApplicationAction.allCases[Int(index)])
             }
             break
         case .PlayerNext:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .PLAYER_NEXT_BUTTON, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_NEXT_BUTTON, ApplicationAction.allCases[Int(index)])
             }
             break
         case .PlayerSwipeL:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .PLAYER_SWIPE_LEFT, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_SWIPE_LEFT, ApplicationAction.allCases[Int(index)])
             }
             break
         case .PlayerSwipeR:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .PLAYER_SWIPE_RIGHT, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_SWIPE_RIGHT, ApplicationAction.allCases[Int(index)])
             }
             break
         case .QPlayerVolumeUp:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .QUICK_PLAYER_VOLUME_UP_BUTTON, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.QUICK_PLAYER_VOLUME_UP_BUTTON, ApplicationAction.allCases[Int(index)])
             }
             break
         case .QPlayerVolumeDown:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .QUICK_PLAYER_VOLUME_DOWN_BUTTON, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.QUICK_PLAYER_VOLUME_DOWN_BUTTON, ApplicationAction.allCases[Int(index)])
             }
             break
         case .QPlayerPrevious:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .QUICK_PLAYER_PREVIOUS_BUTTON, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.QUICK_PLAYER_PREVIOUS_BUTTON, ApplicationAction.allCases[Int(index)])
             }
             break
         case .QPlayerNext:
             if index < ApplicationAction.allCases.count
             {
-                delegate?.onKeybindSelect(input: .QUICK_PLAYER_NEXT_BUTTON, action: ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.QUICK_PLAYER_NEXT_BUTTON, ApplicationAction.allCases[Int(index)])
             }
             break
         }

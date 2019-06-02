@@ -10,7 +10,7 @@ import Foundation
 
 class PlayerPresenter: BasePresenter
 {
-    private weak var delegate: BaseView?
+    private weak var delegate: BaseViewDelegate?
     
     private let playlist: AudioPlaylist
     
@@ -18,8 +18,8 @@ class PlayerPresenter: BasePresenter
         self.playlist = playlist
     }
     
-    func setView(_ view: BaseView) {
-        self.delegate = view
+    func setView(_ delegate: BaseViewDelegate) {
+        self.delegate = delegate
     }
     
     func start() {
@@ -54,6 +54,10 @@ class PlayerPresenter: BasePresenter
         
     }
     
+    func onOpenPlayer(playlist: AudioPlaylist) {
+        
+    }
+    
     func onPlayerButtonClick(input: ApplicationInput) {
         let action = Keybinds.shared.getActionFor(input: input)
         
@@ -84,11 +88,11 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func onAppThemeChange(themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppTheme) {
         
     }
     
-    func onAppSortingChange(albumSorting: AlbumSorting, trackSorting: TrackSorting) {
+    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
         
     }
     
@@ -100,18 +104,18 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func onKeybindChange(action: ApplicationAction, input: ApplicationInput) {
+    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         
-    }
-    
-    private func playFirstTime(playlist: AudioPlaylist) {
-        playNew(playlist: playlist)
     }
     
     private func playContinue(playlist: AudioPlaylist) {
         Logging.log(PlayerPresenter.self, "Opening player without changing current audio player state")
         
         delegate?.updatePlayerScreen(playlist: playlist)
+    }
+    
+    private func playFirstTime(playlist: AudioPlaylist) {
+        playNew(playlist: playlist)
     }
     
     private func playNew(playlist: AudioPlaylist) {

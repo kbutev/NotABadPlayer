@@ -15,25 +15,25 @@ class MainView : UIView
     @IBOutlet weak var tabBar: MainTabView!
     @IBOutlet weak var quickPlayer: QuickPlayerView!
     
-    var albumsButton: UIImageView {
+    public var albumsButton: UIImageView {
         get {
             return tabBar.albumsButton
         }
     }
     
-    var listsButton: UIImageView {
+    public var listsButton: UIImageView {
         get {
             return tabBar.listsButton
         }
     }
     
-    var searchButton: UIImageView {
+    public var searchButton: UIImageView {
         get {
             return tabBar.searchButton
         }
     }
     
-    var settingsButton: UIImageView {
+    public var settingsButton: UIImageView {
         get {
             return tabBar.settingsButton
         }
@@ -61,7 +61,7 @@ class MainView : UIView
         tabBar.heightAnchor.constraint(equalToConstant: MainView.TAB_BAR_HEIGHT).isActive = true
     }
     
-    func embedViewIntoPrimaryArea(_ view: UIView) {
+    public func embedViewIntoPrimaryArea(_ view: UIView) {
         if view.superview != self
         {
             fatalError("MainView: Cannot embed a non-child of this view")

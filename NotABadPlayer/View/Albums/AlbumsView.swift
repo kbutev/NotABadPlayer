@@ -44,14 +44,14 @@ class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
 
 class AlbumsViewActionDelegate : NSObject, UICollectionViewDelegate
 {
-    private weak var view: BaseView?
+    private weak var view: AlbumsView?
     
-    init(view: BaseView) {
+    init(view: AlbumsView) {
         self.view = view
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.view?.onAlbumClick(index: UInt(indexPath.row))
+        self.view?.actionAlbumClick(index: UInt(indexPath.row))
     }
 }
 
@@ -64,15 +64,13 @@ class AlbumsView : UIView
     
     private var initialized: Bool = false
     
-    var collectionIndexerView: CollectionIndexerView!
+    private var collectionIndexerView: CollectionIndexerView!
     
     private var flowLayout: AlbumsFlowLayout?
     
-    @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet weak var indexerCenterCharacter: UILabel!
-    @IBOutlet var quickPlayerView: QuickPlayerView!
+    private var collectionActionDelegate : AlbumsViewActionDelegate?
     
-    var collectionDataSource : AlbumsViewDataSource? {
+    public var collectionDataSource : AlbumsViewDataSource? {
         get {
             return collectionView.dataSource as? AlbumsViewDataSource
         }
@@ -81,7 +79,7 @@ class AlbumsView : UIView
         }
     }
     
-    var collectionDelegate : AlbumsViewActionDelegate? {
+    public var collectionDelegate : AlbumsViewActionDelegate? {
         get {
             return collectionView.delegate as? AlbumsViewActionDelegate
         }
@@ -90,14 +88,31 @@ class AlbumsView : UIView
         }
     }
     
-    var quickPlayerDelegate : BaseView? {
-        get {
-            return quickPlayerView.delegate
-        }
-        set {
-            quickPlayerView.delegate = newValue
-        }
+    public var onAlbumClickCallback: (UInt)->() = {(index) in }
+    
+    public var onQuickPlayerPlaylistButtonClickCallback: ()->() {
+        get { return quickPlayerView.onPlaylistButtonClickCallback }
+        set { quickPlayerView.onPlaylistButtonClickCallback = newValue }
     }
+    
+    public var onQuickPlayerButtonClickCallback: (ApplicationInput)->() {
+        get { return quickPlayerView.onPlayerButtonClickCallback }
+        set { quickPlayerView.onPlayerButtonClickCallback = newValue }
+    }
+    
+    public var onQuickPlayerPlayOrderButtonClickCallback: ()->() {
+        get { return quickPlayerView.onPlayOrderButtonClickCallback }
+        set { quickPlayerView.onPlayOrderButtonClickCallback = newValue }
+    }
+    
+    public var onQuickPlayerSwipeUpCallback: ()->() {
+        get { return quickPlayerView.onSwipeUpCallback }
+        set { quickPlayerView.onSwipeUpCallback = newValue }
+    }
+    
+    @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet private weak var indexerCenterCharacter: UILabel!
+    @IBOutlet private var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -147,6 +162,9 @@ class AlbumsView : UIView
         
         collectionView.collectionViewLayout = AlbumsFlowLayout(cellsPerColumn: AlbumsView.CELLS_PER_COLUMN)
         
+        self.collectionActionDelegate = AlbumsViewActionDelegate(view: self)
+        collectionView.delegate = collectionActionDelegate
+        
         // Indexer view initialize and setup
         collectionIndexerView.delegate = self
         self.addSubview(collectionIndexerView)
@@ -169,27 +187,27 @@ class AlbumsView : UIView
         collectionView.reloadData()
     }
     
-    func updateTime(currentTime: Double, totalDuration: Double) {
+    public func updateTime(currentTime: Double, totalDuration: Double) {
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: AudioTrack) {
+    public func updateMediaInfo(track: AudioTrack) {
         quickPlayerView.updateMediaInfo(track: track)
     }
     
-    func updatePlayButtonState(playing: Bool) {
+    public func updatePlayButtonState(playing: Bool) {
         quickPlayerView.updatePlayButtonState(playing: playing)
     }
     
-    func updatePlayOrderButtonState(order: AudioPlayOrder) {
+    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
         quickPlayerView.updatePlayOrderButtonState(order: order)
     }
     
-    func updateIndexerAlphabet(albumTitles: [String]) {
+    public func updateIndexerAlphabet(albumTitles: [String]) {
         collectionIndexerView?.updateAlphabet(strings: albumTitles)
     }
     
-    func jumpToItem(index: Int) {
+    public func jumpToItem(index: Int) {
         var index = index / AlbumsView.CELLS_PER_COLUMN
         
         if index >= collectionView.numberOfItems(inSection: 0)
@@ -202,15 +220,22 @@ class AlbumsView : UIView
         collectionView.scrollToItem(at: path, at: .top, animated: false)
     }
     
-    func showIndexerCenterCharacter(character: Character) {
+    public func showIndexerCenterCharacter(character: Character) {
         indexerCenterCharacter.text = String(character)
         
         UIAnimations.stopAnimations(indexerCenterCharacter)
         indexerCenterCharacter.alpha = 1
     }
     
-    func hideIndexerCenterCharacter() {
+    public func hideIndexerCenterCharacter() {
         UIAnimations.animateViewFadeOut(indexerCenterCharacter)
+    }
+}
+
+// Actions
+extension AlbumsView {
+    @objc func actionAlbumClick(index: UInt) {
+        self.onAlbumClickCallback(index)
     }
 }
 

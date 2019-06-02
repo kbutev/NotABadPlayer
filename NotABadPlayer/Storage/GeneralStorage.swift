@@ -89,6 +89,7 @@ class GeneralStorage {
         
         saveSettingsAction(action: .VOLUME_UP, forInput: .PLAYER_VOLUME_UP_BUTTON)
         saveSettingsAction(action: .VOLUME_DOWN, forInput: .PLAYER_VOLUME_DOWN_BUTTON)
+        saveSettingsAction(action: .MUTE_OR_UNMUTE, forInput: .PLAYER_VOLUME)
         saveSettingsAction(action: .PAUSE_OR_RESUME, forInput: .PLAYER_PLAY_BUTTON)
         saveSettingsAction(action: .RECALL, forInput: .PLAYER_RECALL)
         saveSettingsAction(action: .NEXT, forInput: .PLAYER_NEXT_BUTTON)
