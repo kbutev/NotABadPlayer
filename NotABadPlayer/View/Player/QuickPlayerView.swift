@@ -14,7 +14,10 @@ class QuickPlayerView : UIView
     
     private var initialized: Bool = false
     
-    public weak var delegate: BaseView?
+    public var onPlaylistButtonClickCallback: ()->() = {() in }
+    public var onPlayerButtonClickCallback: (ApplicationInput)->() = {(input) in }
+    public var onPlayOrderButtonClickCallback: ()->() = {() in }
+    public var onSwipeUpCallback: ()->() = {() in }
     
     @IBOutlet var primaryStackView: UIStackView!
     
@@ -175,43 +178,43 @@ extension QuickPlayerView {
     @objc public func actionPlaylist(sender: Any) {
         UIAnimations.animateImageClicked(self.playlistMediaButton)
         
-        delegate?.onPlaylistButtonClick()
+        self.onPlaylistButtonClickCallback()
     }
     
     @objc public func actionPrevious(sender: Any) {
         UIAnimations.animateImageClicked(self.previousMediaButton)
         
-        delegate?.onPlayerButtonClick(input: .PLAYER_PREVIOUS_BUTTON)
+        self.onPlayerButtonClickCallback(.PLAYER_PREVIOUS_BUTTON)
     }
     
     @objc public func actionPlay(sender: Any) {
         UIAnimations.animateImageClicked(self.playMediaButton)
         
-        delegate?.onPlayerButtonClick(input: .PLAYER_PLAY_BUTTON)
+        self.onPlayerButtonClickCallback(.PLAYER_PLAY_BUTTON)
     }
     
     @objc public func actionNext(sender: Any) {
         UIAnimations.animateImageClicked(self.nextMediaButton)
         
-        delegate?.onPlayerButtonClick(input: .PLAYER_NEXT_BUTTON)
+        self.onPlayerButtonClickCallback(.PLAYER_NEXT_BUTTON)
     }
     
     @objc public func actionPlayOrder(sender: Any) {
         UIAnimations.animateImageClicked(self.playOrderMediaButton)
         
-        delegate?.onPlayOrderButtonClick()
+        self.onPlayOrderButtonClickCallback()
     }
     
     @objc public func actionSwipeLeft(sender: Any) {
-        delegate?.onPlayerButtonClick(input: .PLAYER_SWIPE_LEFT)
+        self.onPlayerButtonClickCallback(.PLAYER_SWIPE_LEFT)
     }
     
     @objc public func actionSwipeRight(sender: Any) {
-        delegate?.onPlayerButtonClick(input: .PLAYER_SWIPE_RIGHT)
+        self.onPlayerButtonClickCallback(.PLAYER_SWIPE_RIGHT)
     }
     
     @objc public func actionSwipeUp(sender: Any) {
-        delegate?.onSwipeUp()
+        self.onSwipeUpCallback()
     }
 }
 

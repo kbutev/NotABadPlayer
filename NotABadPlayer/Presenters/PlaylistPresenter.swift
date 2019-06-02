@@ -10,13 +10,12 @@ import Foundation
 
 class PlaylistPresenter: BasePresenter
 {
-    private weak var delegate: BaseView?
+    private weak var delegate: BaseViewDelegate?
     
     private let audioInfo: AudioInfo
     private let playlist: AudioPlaylist
     
     private var collectionDataSource: PlaylistViewDataSource?
-    private var collectionActionDelegate: PlaylistViewActionDelegate?
     
     required init(audioInfo: AudioInfo, playlist: AudioPlaylist) {
         self.audioInfo = audioInfo
@@ -28,8 +27,8 @@ class PlaylistPresenter: BasePresenter
         self.playlist = sortedPlaylist
     }
     
-    func setView(_ view: BaseView) {
-        self.delegate = view
+    func setView(_ delegate: BaseViewDelegate) {
+        self.delegate = delegate
     }
     
     func start() {
@@ -40,37 +39,25 @@ class PlaylistPresenter: BasePresenter
         let dataSource = PlaylistViewDataSource(audioInfo: audioInfo, playlist: playlist)
         self.collectionDataSource = dataSource
         
-        let actionDelegate = PlaylistViewActionDelegate(view: delegate)
-        self.collectionActionDelegate = actionDelegate
-        
         let audioPlayer = AudioPlayer.shared
         var scrollIndex: UInt? = nil
         
         if let playlist = audioPlayer.playlist
         {
-            for e in 0..<playlist.tracks.count
+            if self.playlist.name == playlist.name
             {
-                if playlist.tracks[e] == playlist.playingTrack && self.playlist.name == playlist.name
+                for e in 0..<playlist.tracks.count
                 {
-                    scrollIndex = UInt(e)
-                    break
+                    if playlist.tracks[e] == playlist.playingTrack
+                    {
+                        scrollIndex = UInt(e)
+                        break
+                    }
                 }
             }
         }
         
-        if playlist.isAlbumPlaylist()
-        {
-            delegate.onAlbumSongsLoad(name: playlist.name, dataSource: dataSource, actionDelegate: actionDelegate)
-        }
-        else
-        {
-            delegate.onPlaylistSongsLoad(name: playlist.name, dataSource: dataSource, actionDelegate: actionDelegate)
-        }
-        
-        if let scrollToIndex = scrollIndex
-        {
-            delegate.scrollTo(index: scrollToIndex)
-        }
+        delegate.onPlaylistSongsLoad(name: playlist.name, dataSource: dataSource, playingTrackIndex: scrollIndex)
     }
     
     func onAlbumClick(index: UInt) {
@@ -93,6 +80,12 @@ class PlaylistPresenter: BasePresenter
         {
             playNewTrack(clickedTrack)
         }
+    }
+    
+    func onOpenPlayer(playlist: AudioPlaylist) {
+        Logging.log(PlaylistPresenter.self, "Open player screen")
+        
+        self.delegate?.openPlayerScreen(playlist: playlist)
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -128,11 +121,11 @@ class PlaylistPresenter: BasePresenter
         
     }
     
-    func onAppThemeChange(themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppTheme) {
         
     }
     
-    func onAppSortingChange(albumSorting: AlbumSorting, trackSorting: TrackSorting) {
+    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
         
     }
     
@@ -144,7 +137,7 @@ class PlaylistPresenter: BasePresenter
         
     }
     
-    func onKeybindChange(action: ApplicationAction, input: ApplicationInput) {
+    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         
     }
     

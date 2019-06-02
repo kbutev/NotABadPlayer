@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlayerViewController: UIViewController, BaseView {
+class PlayerViewController: UIViewController, BaseViewDelegate {
     private var baseView: PlayerView?
     
     private let presenter: BasePresenter?
@@ -28,11 +28,12 @@ class PlayerViewController: UIViewController, BaseView {
     override func loadView() {
         self.baseView = PlayerView.create(owner: self)
         self.view = self.baseView
-        self.baseView?.delegate = self
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setup()
         
         presenter?.start()
         
@@ -41,12 +42,34 @@ class PlayerViewController: UIViewController, BaseView {
         Looper.shared.subscribe(self)
     }
     
+    private func setup() {
+        self.baseView?.onPlayerSeekChangedCallback = {(percentage) in
+            let duration = AudioPlayer.shared.durationSec
+            
+            AudioPlayer.shared.seekTo(seconds: duration * percentage)
+        }
+        
+        self.baseView?.onPlayerButtonClickCallback = {[weak self] (input) in
+            self?.presenter?.onPlayerButtonClick(input: input)
+        }
+        
+        self.baseView?.onPlayOrderButtonClickCallback = {[weak self] () in
+            self?.presenter?.onPlayOrderButtonClick()
+        }
+        
+        self.baseView?.onSwipeDownCallback = {[weak self] () in
+            self?.goBack()
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Check if any errors have been encountered
         if let error = encounteredError
         {
+            self.encounteredError = nil
+            
             AlertWindows.shared.show(sourceVC: self, withTitle: "Error", withDescription: error, actionText: "Ok", action: {(action: UIAlertAction) in
                 self.goBack()
             })
@@ -59,77 +82,19 @@ class PlayerViewController: UIViewController, BaseView {
         AudioPlayer.shared.detach(observer: self)
     }
     
-    func onPlayerSeekChanged(positionInPercentage: Double) {
-        let duration = AudioPlayer.shared.durationSec
-        
-        AudioPlayer.shared.seekTo(seconds: duration * positionInPercentage)
-    }
-    
-    func onPlayerButtonClick(input: ApplicationInput) {
-        presenter?.onPlayerButtonClick(input: input)
-    }
-    
-    func onPlayOrderButtonClick() {
-        presenter?.onPlayOrderButtonClick()
-    }
-    
-    func onPlaylistButtonClick() {
-        presenter?.onOpenPlaylistButtonClick()
-    }
-    
     func goBack() {
         NavigationHelpers.dismissPresentedVC(self)
-    }
-    
-    func onSwipeUp() {
-        
-    }
-    
-    func onSwipeDown() {
-        self.goBack()
     }
     
     func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
         
     }
     
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource?, albumTitles: [String]) {
         
     }
     
-    func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
-        
-    }
-    
-    func onSearchResultClick(index: UInt) {
-        
-    }
-    
-    func setSearchFieldText(_ text: String) {
-        
-    }
-    
-    func onAlbumSongsLoad(name: String,
-                          dataSource: PlaylistViewDataSource,
-                          actionDelegate: PlaylistViewActionDelegate) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String,
-                             dataSource: PlaylistViewDataSource,
-                             actionDelegate: PlaylistViewActionDelegate) {
-        
-    }
-    
-    func scrollTo(index: UInt) {
-        
-    }
-    
-    func onTrackClicked(index: UInt) {
+    func onPlaylistSongsLoad(name: String, dataSource: PlaylistViewDataSource?, playingTrackIndex: UInt?) {
         
     }
     
@@ -141,7 +106,11 @@ class PlayerViewController: UIViewController, BaseView {
         self.baseView?.updateUIState(player: AudioPlayer.shared, track: playlist.playingTrack)
     }
     
-    func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
+    func searchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+        
+    }
+    
+    func onResetSettingsDefaults() {
         
     }
     
@@ -154,18 +123,6 @@ class PlayerViewController: UIViewController, BaseView {
     }
     
     func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
-        
-    }
-    
-    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
-        
-    }
-    
-    func onResetSettingsDefaults() {
         
     }
     

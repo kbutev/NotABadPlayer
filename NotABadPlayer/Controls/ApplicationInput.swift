@@ -14,6 +14,7 @@ enum ApplicationInput: String, Codable {
     case EARPHONES_UNPLUG;
     case PLAYER_VOLUME_UP_BUTTON;
     case PLAYER_VOLUME_DOWN_BUTTON;
+    case PLAYER_VOLUME;
     case PLAYER_RECALL;
     case PLAYER_PLAY_BUTTON;
     case PLAYER_NEXT_BUTTON;

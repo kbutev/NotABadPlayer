@@ -12,7 +12,10 @@ class PlayerView : UIView
 {
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
     
-    public weak var delegate: BaseView?
+    public var onPlayerSeekChangedCallback: (Double)->() = {(percentage) in }
+    public var onPlayerButtonClickCallback: (ApplicationInput)->() = {(input) in }
+    public var onPlayOrderButtonClickCallback: ()->() = {() in }
+    public var onSwipeDownCallback: ()->() = {() in }
     
     @IBOutlet weak var primaryStackView: UIStackView!
     
@@ -72,7 +75,7 @@ class PlayerView : UIView
         mediaButtonStack.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2).isActive = true
         
         // User input
-        let gestureSeekBar = UILongPressGestureRecognizer(target: self, action: #selector(seekBarChanged(gesture:)))
+        let gestureSeekBar = UILongPressGestureRecognizer(target: self, action: #selector(actionSeekBarChanged(gesture:)))
         gestureSeekBar.minimumPressDuration = 0
         self.seekBarSlider.isUserInteractionEnabled = true
         self.seekBarSlider.addGestureRecognizer(gestureSeekBar)
@@ -189,7 +192,7 @@ class PlayerView : UIView
 
 // Actions
 extension PlayerView {
-    @objc public func seekBarChanged(gesture: UILongPressGestureRecognizer) {
+    @objc public func actionSeekBarChanged(gesture: UILongPressGestureRecognizer) {
         let minDistance: CGFloat = 2.0
         let pointTapped: CGPoint = gesture.location(in: seekBarSlider)
         let widthOfSlider: CGFloat = seekBarSlider.frame.size.width
@@ -208,49 +211,49 @@ extension PlayerView {
         let newValue = ((pointTapped.x - positionOfSlider.x) * CGFloat(seekBarSlider.maximumValue) / widthOfSlider)
         
         // Notify delegate
-        delegate?.onPlayerSeekChanged(positionInPercentage: Double(newValue / 100.0))
+        self.onPlayerSeekChangedCallback(Double(newValue / 100.0))
     }
     
     @objc public func actionRecall(sender: Any) {
         UIAnimations.animateImageClicked(self.recallMediaButton)
         
-        delegate?.onPlayerButtonClick(input: .PLAYER_RECALL)
+        self.onPlayerButtonClickCallback(.PLAYER_RECALL)
     }
     
     @objc public func actionPrevious(sender: Any) {
         UIAnimations.animateImageClicked(self.previousMediaButton)
         
-        delegate?.onPlayerButtonClick(input: .PLAYER_PREVIOUS_BUTTON)
+        self.onPlayerButtonClickCallback(.PLAYER_PREVIOUS_BUTTON)
     }
     
     @objc public func actionPlay(sender: Any) {
         UIAnimations.animateImageClicked(self.playMediaButton)
         
-        delegate?.onPlayerButtonClick(input: .PLAYER_PLAY_BUTTON)
+        self.onPlayerButtonClickCallback(.PLAYER_PLAY_BUTTON)
     }
     
     @objc public func actionNext(sender: Any) {
         UIAnimations.animateImageClicked(self.nextMediaButton)
         
-        delegate?.onPlayerButtonClick(input: .PLAYER_NEXT_BUTTON)
+        self.onPlayerButtonClickCallback(.PLAYER_NEXT_BUTTON)
     }
     
     @objc public func actionPlayOrder(sender: Any) {
         UIAnimations.animateImageClicked(self.playOrderMediaButton)
         
-        delegate?.onPlayOrderButtonClick()
+        self.onPlayOrderButtonClickCallback()
     }
     
     @objc public func actionSwipeLeft(sender: Any) {
-        delegate?.onPlayerButtonClick(input: .PLAYER_SWIPE_LEFT)
+        self.onPlayerButtonClickCallback(.PLAYER_SWIPE_LEFT)
     }
     
     @objc public func actionSwipeRight(sender: Any) {
-        delegate?.onPlayerButtonClick(input: .PLAYER_SWIPE_RIGHT)
+        self.onPlayerButtonClickCallback(.PLAYER_SWIPE_RIGHT)
     }
     
     @objc public func actionSwipeDown(sender: Any) {
-        self.delegate?.onSwipeDown()
+        self.onSwipeDownCallback()
     }
 }
 

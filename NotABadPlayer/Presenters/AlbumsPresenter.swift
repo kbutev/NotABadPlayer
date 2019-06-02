@@ -23,20 +23,19 @@ extension AlbumsPresenterError: LocalizedError {
 
 class AlbumsPresenter: BasePresenter
 {
-    private weak var delegate: BaseView?
+    private weak var delegate: BaseViewDelegate?
     
     private let audioInfo: AudioInfo
     private var albums: [AudioAlbum] = []
     
     private var collectionDataSource: AlbumsViewDataSource?
-    private var collectionActionDelegate: AlbumsViewActionDelegate?
     
     required init(audioInfo: AudioInfo) {
         self.audioInfo = audioInfo
     }
     
-    func setView(_ view: BaseView) {
-        self.delegate = view
+    func setView(_ delegate: BaseViewDelegate) {
+        self.delegate = delegate
     }
     
     func start() {
@@ -49,9 +48,6 @@ class AlbumsPresenter: BasePresenter
         let dataSource = AlbumsViewDataSource(audioInfo: audioInfo, albums: albums)
         self.collectionDataSource = dataSource
         
-        let actionDelegate = AlbumsViewActionDelegate(view: delegate)
-        self.collectionActionDelegate = actionDelegate
-        
         var albumTitles: [String] = []
         
         for album in self.albums
@@ -59,7 +55,7 @@ class AlbumsPresenter: BasePresenter
             albumTitles.append(album.albumTitle)
         }
         
-        delegate.onMediaAlbumsLoad(dataSource: dataSource, actionDelegate: actionDelegate, albumTitles: albumTitles)
+        delegate.onMediaAlbumsLoad(dataSource: dataSource, albumTitles: albumTitles)
     }
     
     func onAlbumClick(index: UInt) {
@@ -75,6 +71,12 @@ class AlbumsPresenter: BasePresenter
     
     func onPlaylistItemClick(index: UInt) {
         
+    }
+    
+    func onOpenPlayer(playlist: AudioPlaylist) {
+        Logging.log(AlbumsPresenter.self, "Open player screen")
+        
+        self.delegate?.openPlayerScreen(playlist: playlist)
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -96,30 +98,9 @@ class AlbumsPresenter: BasePresenter
             return
         }
         
-        // Album playlist? Simulate on album click
-        if playlist.isAlbumPlaylist()
-        {
-            for e in 0..<albums.count
-            {
-                let album = albums[e]
-                
-                if album.albumTitle == playlist.name
-                {
-                    onAlbumClick(index: UInt(e))
-                    return
-                }
-            }
-            
-            delegate?.onPlayerErrorEncountered(AlbumsPresenterError.AlbumDoesNotExist)
-        }
+        Logging.log(AlbumsPresenter.self, "Open playlist screen for playlist '\(playlist.name)'")
         
-        // Non-album playlist
-        if let playlist = AudioPlayer.shared.playlist
-        {
-            Logging.log(AlbumsPresenter.self, "Open playlist screen for playlist '\(playlist.name)'")
-            
-            delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
-        }
+        delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
     }
     
     func onSearchResultClick(index: UInt) {
@@ -134,11 +115,11 @@ class AlbumsPresenter: BasePresenter
         
     }
     
-    func onAppThemeChange(themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppTheme) {
         
     }
     
-    func onAppSortingChange(albumSorting: AlbumSorting, trackSorting: TrackSorting) {
+    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
         
     }
     
@@ -150,7 +131,7 @@ class AlbumsPresenter: BasePresenter
         
     }
     
-    func onKeybindChange(action: ApplicationAction, input: ApplicationInput) {
+    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         
     }
 }

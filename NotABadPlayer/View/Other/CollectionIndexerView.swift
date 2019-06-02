@@ -62,15 +62,15 @@ class CollectionIndexerView : UIView
     }
     
     private func setup() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onGestureEvent(recognizer:)))
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(actionGestureEvent(recognizer:)))
         self.panGesture = panGesture
         addGestureRecognizer(panGesture)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onGestureEvent(recognizer:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(actionGestureEvent(recognizer:)))
         self.tapGesture = tapGesture
         addGestureRecognizer(tapGesture)
         
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onGestureEvent(recognizer:)))
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(actionGestureEvent(recognizer:)))
         longPressGesture.minimumPressDuration = 0.01
         self.longPressGesture = longPressGesture
         addGestureRecognizer(longPressGesture)
@@ -217,7 +217,7 @@ class CollectionIndexerView : UIView
 
 // Actions
 extension CollectionIndexerView {
-    @objc func onGestureEvent(recognizer: UIGestureRecognizer) {
+    @objc func actionGestureEvent(recognizer: UIGestureRecognizer) {
         switch recognizer.state
         {
         case .began:

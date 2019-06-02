@@ -57,19 +57,15 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
 
 class SearchViewActionDelegate : NSObject, UICollectionViewDelegate
 {
-    private weak var view: BaseView?
+    private weak var view: SearchView?
     
-    init(view: BaseView) {
+    init(view: SearchView) {
         self.view = view
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.view?.onSearchResultClick(index: UInt(indexPath.row))
+        self.view?.actionSearchResultClick(index: UInt(indexPath.row))
     }
-}
-
-protocol SearchViewSearchFieldDelegate: class {
-    func onSearchQuery(_ query: String)
 }
 
 class SearchView: UIView
@@ -82,15 +78,9 @@ class SearchView: UIView
     
     private var flowLayout: SearchFlowLayout?
     
-    @IBOutlet var stackView: UIStackView!
-    @IBOutlet var searchField: UITextField!
-    @IBOutlet var searchDescription: UILabel!
-    @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet var quickPlayerView: QuickPlayerView!
+    private var collectionActionDelegate : SearchViewActionDelegate?
     
-    var searchFieldDelegate : SearchViewSearchFieldDelegate?
-    
-    var collectionDataSource : SearchViewDataSource? {
+    public var collectionDataSource : SearchViewDataSource? {
         get {
             return collectionView.dataSource as? SearchViewDataSource
         }
@@ -99,23 +89,34 @@ class SearchView: UIView
         }
     }
     
-    var collectionActionDelegate : SearchViewActionDelegate? {
-        get {
-            return collectionView.delegate as? SearchViewActionDelegate
-        }
-        set {
-            collectionView.delegate = newValue
-        }
+    public var onSearchResultClickedCallback: (UInt)->() = {(index) in }
+    public var onSearchFieldTextEnteredCallback: (String)->() = {(text) in }
+    
+    public var onQuickPlayerPlaylistButtonClickCallback: ()->() {
+        get { return quickPlayerView.onPlaylistButtonClickCallback }
+        set { quickPlayerView.onPlaylistButtonClickCallback = newValue }
     }
     
-    var quickPlayerDelegate : BaseView? {
-        get {
-            return quickPlayerView.delegate
-        }
-        set {
-            quickPlayerView.delegate = newValue
-        }
+    public var onQuickPlayerButtonClickCallback: (ApplicationInput)->() {
+        get { return quickPlayerView.onPlayerButtonClickCallback }
+        set { quickPlayerView.onPlayerButtonClickCallback = newValue }
     }
+    
+    public var onQuickPlayerPlayOrderButtonClickCallback: ()->() {
+        get { return quickPlayerView.onPlayOrderButtonClickCallback }
+        set { quickPlayerView.onPlayOrderButtonClickCallback = newValue }
+    }
+    
+    public var onQuickPlayerSwipeUpCallback: ()->() {
+        get { return quickPlayerView.onSwipeUpCallback }
+        set { quickPlayerView.onSwipeUpCallback = newValue }
+    }
+    
+    @IBOutlet var stackView: UIStackView!
+    @IBOutlet var searchField: UITextField!
+    @IBOutlet var searchDescription: UILabel!
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -171,6 +172,9 @@ class SearchView: UIView
         
         collectionView.collectionViewLayout = flowLayout!
         
+        self.collectionActionDelegate = SearchViewActionDelegate(view: self)
+        collectionView.delegate = self.collectionActionDelegate
+        
         // Search field interaction
         searchField.delegate = self
     }
@@ -183,7 +187,13 @@ class SearchView: UIView
         searchField.text = text
     }
     
-    public func updateSearchResults(resultsCount: UInt) {
+    public func updateSearchResults(resultsCount: UInt, searchTip: String?) {
+        if let tip = searchTip
+        {
+            searchDescription.text = tip
+            return
+        }
+        
         if resultsCount == 0
         {
             let isEmpty = searchField.text?.isEmpty ?? true
@@ -203,22 +213,29 @@ class SearchView: UIView
         }
     }
     
-    func updateTime(currentTime: Double, totalDuration: Double) {
+    public func updateTime(currentTime: Double, totalDuration: Double) {
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: AudioTrack) {
+    public func updateMediaInfo(track: AudioTrack) {
         quickPlayerView.updateMediaInfo(track: track)
         
         reloadData()
     }
     
-    func updatePlayButtonState(playing: Bool) {
+    public func updatePlayButtonState(playing: Bool) {
         quickPlayerView.updatePlayButtonState(playing: playing)
     }
     
-    func updatePlayOrderButtonState(order: AudioPlayOrder) {
+    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
         quickPlayerView.updatePlayOrderButtonState(order: order)
+    }
+}
+
+// Actions
+extension SearchView {
+    @objc func actionSearchResultClick(index: UInt) {
+        self.onSearchResultClickedCallback(index)
     }
 }
 
@@ -229,7 +246,7 @@ extension SearchView: UITextFieldDelegate {
         
         if let query = textField.text
         {
-            searchFieldDelegate?.onSearchQuery(query)
+            self.onSearchFieldTextEnteredCallback(query)
         }
         
         return true

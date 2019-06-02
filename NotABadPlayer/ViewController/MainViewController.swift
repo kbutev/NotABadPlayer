@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class MainViewController : UIViewController, BaseView {
+class MainViewController : UIViewController, BaseViewDelegate {
     public static let DEFAULT_SELECTED_TAB: TabID = .Albums
     public static let TAB_SIZE = CGSize(width: 0, height: 60.0)
     public static let SELECTED_MENU_BUTTON_COLOR: UIColor = UIColor(displayP3Red: 0.37, green: 0.59, blue: 0.94, alpha: 1)
@@ -20,9 +20,9 @@ class MainViewController : UIViewController, BaseView {
     
     private var _selectedTab: UIViewController?
     
-    private var selectedTab: BaseView? {
+    private var selectedTab: BaseViewDelegate? {
         get {
-            return _selectedTab as? BaseView
+            return _selectedTab as? BaseViewDelegate
         }
     }
     
@@ -39,7 +39,7 @@ class MainViewController : UIViewController, BaseView {
         }
     }
     
-    private var tabsCache: [TabID: BaseView] = [:]
+    private var tabsCache: [TabID: BaseViewDelegate] = [:]
     
     override func loadView() {
         self.baseView = MainView.create(owner: self)
@@ -279,31 +279,7 @@ class MainViewController : UIViewController, BaseView {
         tabsCache.removeAll()
     }
     
-    func onPlayerSeekChanged(positionInPercentage: Double) {
-        
-    }
-    
-    func onPlayerButtonClick(input: ApplicationInput) {
-        
-    }
-    
-    func onPlayOrderButtonClick() {
-        
-    }
-    
-    func onPlaylistButtonClick() {
-        
-    }
-    
     func goBack() {
-        
-    }
-    
-    func onSwipeUp() {
-        
-    }
-    
-    func onSwipeDown() {
         
     }
     
@@ -311,43 +287,11 @@ class MainViewController : UIViewController, BaseView {
         
     }
     
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource, actionDelegate: AlbumsViewActionDelegate, albumTitles: [String]) {
+    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource?, albumTitles: [String]) {
         
     }
     
-    func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func searchQueryUpdate(dataSource: SearchViewDataSource, actionDelegate: SearchViewActionDelegate, resultsCount: UInt) {
-        
-    }
-    
-    func onSearchResultClick(index: UInt) {
-        
-    }
-    
-    func setSearchFieldText(_ text: String) {
-        
-    }
-    
-    func onAlbumSongsLoad(name: String,
-                          dataSource: PlaylistViewDataSource,
-                          actionDelegate: PlaylistViewActionDelegate) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String,
-                             dataSource: PlaylistViewDataSource,
-                             actionDelegate: PlaylistViewActionDelegate) {
-        
-    }
-    
-    func scrollTo(index: UInt) {
-        
-    }
-    
-    func onTrackClicked(index: UInt) {
+    func onPlaylistSongsLoad(name: String, dataSource: PlaylistViewDataSource?, playingTrackIndex: UInt?) {
         
     }
     
@@ -359,7 +303,11 @@ class MainViewController : UIViewController, BaseView {
         
     }
     
-    func onOpenPlaylistButtonClick(audioInfo: AudioInfo) {
+    func searchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+        
+    }
+    
+    func onResetSettingsDefaults() {
         
     }
     
@@ -372,18 +320,6 @@ class MainViewController : UIViewController, BaseView {
     }
     
     func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay) {
-        
-    }
-    
-    func onKeybindSelect(input: ApplicationInput, action: ApplicationAction) {
-        
-    }
-    
-    func onResetSettingsDefaults() {
         
     }
     

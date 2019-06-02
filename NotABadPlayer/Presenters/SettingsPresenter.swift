@@ -10,14 +10,14 @@ import Foundation
 
 class SettingsPresenter: BasePresenter
 {
-    private weak var delegate: BaseView?
+    private weak var delegate: BaseViewDelegate?
     
     init() {
         
     }
     
-    func setView(_ view: BaseView) {
-        self.delegate = view
+    func setView(_ delegate: BaseViewDelegate) {
+        self.delegate = delegate
     }
     
     func start() {
@@ -29,6 +29,10 @@ class SettingsPresenter: BasePresenter
     }
     
     func onPlaylistItemClick(index: UInt) {
+        
+    }
+    
+    func onOpenPlayer(playlist: AudioPlaylist) {
         
     }
     
@@ -58,7 +62,7 @@ class SettingsPresenter: BasePresenter
         GeneralStorage.shared.resetDefaultSettingsValues()
     }
     
-    func onAppThemeChange(themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppTheme) {
         if GeneralStorage.shared.getAppThemeValue() == themeValue
         {
             return
@@ -69,7 +73,7 @@ class SettingsPresenter: BasePresenter
         GeneralStorage.shared.saveAppThemeValue(themeValue)
     }
     
-    func onAppSortingChange(albumSorting: AlbumSorting, trackSorting: TrackSorting) {
+    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
         if GeneralStorage.shared.getTrackSortingValue() == trackSorting
         {
             return
@@ -89,6 +93,10 @@ class SettingsPresenter: BasePresenter
         Logging.log(SettingsPresenter.self, "App ShowVolumeBar setting changed to \(value.rawValue)")
         
         GeneralStorage.shared.saveShowVolumeBarValue(value)
+        
+        Logging.log(SettingsPresenter.self, "ShowVolumeBar setting changed, automatically unmuting and pausing player")
+        AudioPlayer.shared.unmute()
+        AudioPlayer.shared.pause()
     }
     
     func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
@@ -102,7 +110,7 @@ class SettingsPresenter: BasePresenter
         GeneralStorage.shared.saveOpenPlayerOnPlayValue(value)
     }
     
-    func onKeybindChange(action: ApplicationAction, input: ApplicationInput) {
+    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         if GeneralStorage.shared.getSettingsAction(forInput: input) == action
         {
             return
@@ -111,5 +119,12 @@ class SettingsPresenter: BasePresenter
         Logging.log(SettingsPresenter.self, "Map keybind input '\(input.rawValue)' to action '\(action.rawValue)'")
         
         GeneralStorage.shared.saveSettingsAction(action: action, forInput: input)
+        
+        if input == .PLAYER_VOLUME
+        {
+            Logging.log(SettingsPresenter.self, "Keybind PLAYER_VOLUME setting changed, automatically unmuting and pausing player")
+            AudioPlayer.shared.unmute()
+            AudioPlayer.shared.pause()
+        }
     }
 }
