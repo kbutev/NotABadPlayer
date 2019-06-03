@@ -114,7 +114,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onUserPlaylistsLoad(dataSource: ListsViewDataSource?) {
+    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?) {
         
     }
     

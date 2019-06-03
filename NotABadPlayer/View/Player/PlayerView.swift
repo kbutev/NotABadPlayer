@@ -12,10 +12,10 @@ class PlayerView : UIView
 {
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
     
-    public var onPlayerSeekChangedCallback: (Double)->() = {(percentage) in }
-    public var onPlayerButtonClickCallback: (ApplicationInput)->() = {(input) in }
-    public var onPlayOrderButtonClickCallback: ()->() = {() in }
-    public var onSwipeDownCallback: ()->() = {() in }
+    public var onPlayerSeekChangedCallback: (Double)->Void = {(percentage) in }
+    public var onPlayerButtonClickCallback: (ApplicationInput)->Void = {(input) in }
+    public var onPlayOrderButtonClickCallback: ()->Void = {() in }
+    public var onSwipeDownCallback: ()->Void = {() in }
     
     @IBOutlet weak var primaryStackView: UIStackView!
     

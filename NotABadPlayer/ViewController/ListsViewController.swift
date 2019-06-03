@@ -16,6 +16,8 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     private var subViewController: PlaylistViewController?
     private var subViewControllerPlaylistName: String = ""
     
+    private var audioInfo: AudioInfo?
+    
     init(presenter: BasePresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -118,7 +120,9 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onUserPlaylistsLoad(dataSource: ListsViewDataSource?) {
+    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?) {
+        self.audioInfo = audioInfo
+        
         self.baseView?.collectionDataSource = dataSource
     }
     
@@ -160,7 +164,11 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     }
     
     private func openCreateListsScreen() {
-        let vc = CreateListsViewController()
+        guard let audioInfo = self.audioInfo else {
+            return
+        }
+        
+        let vc = CreateListsViewController(audioInfo: audioInfo)
         
         NavigationHelpers.presentVC(current: self, vc: vc)
     }

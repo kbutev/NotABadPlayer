@@ -8,138 +8,6 @@
 
 import UIKit
 
-class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
-{
-    public static let HIGHLIGHT_COLOR = UIColor.yellow
-    
-    let audioInfo: AudioInfo
-    let playlist: AudioPlaylist
-    
-    init(audioInfo: AudioInfo, playlist: AudioPlaylist) {
-        self.audioInfo = audioInfo
-        self.playlist = playlist
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerV = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
-                                                                      withReuseIdentifier: PlaylistView.HEADER_IDENTIFIER,
-                                                                      for: indexPath)
-        
-        guard let header = headerV as? PlaylistHeaderView else {
-            return headerV
-        }
-        
-        let isAlbum = playlist.isAlbumPlaylist()
-        
-        if isAlbum
-        {
-            setImage(header: header, collectionView: collectionView)
-        }
-        else
-        {
-            hideImage(header: header, collectionView: collectionView)
-        }
-        
-        header.titleText.text = playlist.name
-        
-        if isAlbum
-        {
-            header.artistText.text = playlist.firstTrack.artist
-        }
-        else
-        {
-            header.artistText.text = ""
-        }
-        
-        header.descriptionText.text = getPlaylistDescription()
-        
-        return header
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return playlist.size()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaylistView.CELL_IDENTIFIER, for: indexPath)
-        
-        guard let cell = reusableCell as? PlaylistCell else {
-            return reusableCell
-        }
-        
-        let item = playlist.trackAt(indexPath.row)
-        
-        cell.titleText.text = item.title
-        cell.descriptionText.text = item.duration
-        cell.trackNumText.text = item.trackNum
-        
-        // Highlight cells that contain the currently playing track
-        cell.backgroundColor = .clear
-        
-        if let playerPlaylist = AudioPlayer.shared.playlist
-        {
-            if playerPlaylist.playingTrack == item
-            {
-                cell.backgroundColor = PlaylistViewDataSource.HIGHLIGHT_COLOR
-            }
-        }
-        
-        return cell
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    private func getPlaylistDescription() -> String {
-        var totalDuration: Double = 0
-        
-        for track in playlist.tracks
-        {
-            totalDuration += track.durationInSeconds
-        }
-        
-        return Text.value(.ListDescription, "\(playlist.tracks.count)", "\(AudioTrack.secondsToString(totalDuration))")
-    }
-    
-    private func setImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
-        if let image = playlist.firstTrack.albumCover?.image(at: header.bounds.size)
-        {
-            header.artCoverImage.image = image
-        }
-        else
-        {
-            hideImage(header: header, collectionView: collectionView)
-        }
-    }
-    
-    private func hideImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
-        header.removeArtCoverImage()
-        
-        if let flowLayout = collectionView.collectionViewLayout as? PlaylistFlowLayout
-        {
-            flowLayout.headerSize = PlaylistFlowLayout.HEADER_SIZE_IMAGELESS
-        }
-    }
-}
-
-class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
-{
-    private weak var view: PlaylistView?
-
-    init(view: PlaylistView) {
-        self.view = view
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        view?.actionTrackClicked(index: UInt(indexPath.row))
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        view?.actionScreenScrollDown()
-    }
-}
-
 class PlaylistView : UIView
 {
     static let CELL_IDENTIFIER = "cell"
@@ -163,10 +31,10 @@ class PlaylistView : UIView
         }
     }
     
-    public var onTrackClickedCallback: (UInt)->() = {(index) in }
-    public var onSwipeRightCallback: ()->() = {() in }
+    public var onTrackClickedCallback: (UInt)->Void = {(index) in }
+    public var onSwipeRightCallback: ()->Void = {() in }
     
-    public var onQuickPlayerPlaylistButtonClickCallback: ()->() {
+    public var onQuickPlayerPlaylistButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlaylistButtonClickCallback }
         set { quickPlayerView.onPlaylistButtonClickCallback = newValue }
     }
@@ -176,12 +44,12 @@ class PlaylistView : UIView
         set { quickPlayerView.onPlayerButtonClickCallback = newValue }
     }
     
-    public var onQuickPlayerPlayOrderButtonClickCallback: ()->() {
+    public var onQuickPlayerPlayOrderButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlayOrderButtonClickCallback }
         set { quickPlayerView.onPlayOrderButtonClickCallback = newValue }
     }
     
-    public var onQuickPlayerSwipeUpCallback: ()->() {
+    public var onQuickPlayerSwipeUpCallback: ()->Void {
         get { return quickPlayerView.onSwipeUpCallback }
         set { quickPlayerView.onSwipeUpCallback = newValue }
     }
@@ -353,6 +221,141 @@ extension PlaylistView {
     }
 }
 
+// Collection data source
+class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
+{
+    public static let HIGHLIGHT_COLOR = UIColor.yellow
+    
+    let audioInfo: AudioInfo
+    let playlist: AudioPlaylist
+    
+    init(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+        self.audioInfo = audioInfo
+        self.playlist = playlist
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let headerV = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
+                                                                      withReuseIdentifier: PlaylistView.HEADER_IDENTIFIER,
+                                                                      for: indexPath)
+        
+        guard let header = headerV as? PlaylistHeaderView else {
+            return headerV
+        }
+        
+        let isAlbum = playlist.isAlbumPlaylist()
+        
+        if isAlbum
+        {
+            setImage(header: header, collectionView: collectionView)
+        }
+        else
+        {
+            hideImage(header: header, collectionView: collectionView)
+        }
+        
+        header.titleText.text = playlist.name
+        
+        if isAlbum
+        {
+            header.artistText.text = playlist.firstTrack.artist
+        }
+        else
+        {
+            header.artistText.text = ""
+        }
+        
+        header.descriptionText.text = getPlaylistDescription()
+        
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return playlist.size()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaylistView.CELL_IDENTIFIER, for: indexPath)
+        
+        guard let cell = reusableCell as? PlaylistCell else {
+            return reusableCell
+        }
+        
+        let item = playlist.trackAt(indexPath.row)
+        
+        cell.titleText.text = item.title
+        cell.descriptionText.text = item.duration
+        cell.trackNumText.text = item.trackNum
+        
+        // Highlight cells that contain the currently playing track
+        cell.backgroundColor = .clear
+        
+        if let playerPlaylist = AudioPlayer.shared.playlist
+        {
+            if playerPlaylist.playingTrack == item
+            {
+                cell.backgroundColor = PlaylistViewDataSource.HIGHLIGHT_COLOR
+            }
+        }
+        
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    private func getPlaylistDescription() -> String {
+        var totalDuration: Double = 0
+        
+        for track in playlist.tracks
+        {
+            totalDuration += track.durationInSeconds
+        }
+        
+        return Text.value(.ListDescription, "\(playlist.tracks.count)", "\(AudioTrack.secondsToString(totalDuration))")
+    }
+    
+    private func setImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
+        if let image = playlist.firstTrack.albumCover?.image(at: header.bounds.size)
+        {
+            header.artCoverImage.image = image
+        }
+        else
+        {
+            hideImage(header: header, collectionView: collectionView)
+        }
+    }
+    
+    private func hideImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
+        header.removeArtCoverImage()
+        
+        if let flowLayout = collectionView.collectionViewLayout as? PlaylistFlowLayout
+        {
+            flowLayout.headerSize = PlaylistFlowLayout.HEADER_SIZE_IMAGELESS
+        }
+    }
+}
+
+// Collection delegate
+class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
+{
+    private weak var view: PlaylistView?
+    
+    init(view: PlaylistView) {
+        self.view = view
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        view?.actionTrackClicked(index: UInt(indexPath.row))
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view?.actionScreenScrollDown()
+    }
+}
+
+// Collection flow layout
 class PlaylistFlowLayout : UICollectionViewFlowLayout
 {
     static let CELL_SIZE = CGSize(width: 0, height: 48)

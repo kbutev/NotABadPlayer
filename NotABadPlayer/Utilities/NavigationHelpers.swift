@@ -28,6 +28,11 @@ class NavigationHelpers
     }
     
     class func removeVCChild(_ child: UIViewController) {
+        if child.parent == nil
+        {
+            fatalError("Cannot remove view controller \(child.description) from its parent because it doesn't have one. Maybe you meant to call dismissPresentedVC() instead?")
+        }
+        
         child.view.removeFromSuperview()
         child.removeFromParent()
     }

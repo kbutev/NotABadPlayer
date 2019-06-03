@@ -58,6 +58,9 @@ class Keybinds {
         case .MUTE_OR_UNMUTE:
             AudioPlayer.shared.muteOrUnmute();
             break
+        case .MUTE:
+            AudioPlayer.shared.mute();
+            break
         case .FORWARDS_5:
             AudioPlayer.shared.jumpForwards(5);
             break

@@ -8,53 +8,6 @@
 
 import UIKit
 
-class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
-{
-    let audioInfo: AudioInfo
-    let albums: [AudioAlbum]
-    
-    init(audioInfo: AudioInfo, albums: [AudioAlbum]) {
-        self.audioInfo = audioInfo
-        self.albums = albums
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return albums.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumsView.CELL_IDENTIFIER, for: indexPath)
-        
-        guard let cell = reusableCell as? AlbumsCell else {
-            return reusableCell
-        }
-        
-        let item = albums[indexPath.row]
-        
-        cell.covertArtImage.image = item.albumCover?.image(at: AlbumsFlowLayout.CELL_SIZE)
-        cell.titleText.text = item.albumTitle
-        
-        return cell
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-}
-
-class AlbumsViewActionDelegate : NSObject, UICollectionViewDelegate
-{
-    private weak var view: AlbumsView?
-    
-    init(view: AlbumsView) {
-        self.view = view
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.view?.actionAlbumClick(index: UInt(indexPath.row))
-    }
-}
-
 class AlbumsView : UIView
 {
     static let CELL_IDENTIFIER = "cell"
@@ -88,9 +41,9 @@ class AlbumsView : UIView
         }
     }
     
-    public var onAlbumClickCallback: (UInt)->() = {(index) in }
+    public var onAlbumClickCallback: (UInt)->Void = {(index) in }
     
-    public var onQuickPlayerPlaylistButtonClickCallback: ()->() {
+    public var onQuickPlayerPlaylistButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlaylistButtonClickCallback }
         set { quickPlayerView.onPlaylistButtonClickCallback = newValue }
     }
@@ -100,12 +53,12 @@ class AlbumsView : UIView
         set { quickPlayerView.onPlayerButtonClickCallback = newValue }
     }
     
-    public var onQuickPlayerPlayOrderButtonClickCallback: ()->() {
+    public var onQuickPlayerPlayOrderButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlayOrderButtonClickCallback }
         set { quickPlayerView.onPlayOrderButtonClickCallback = newValue }
     }
     
-    public var onQuickPlayerSwipeUpCallback: ()->() {
+    public var onQuickPlayerSwipeUpCallback: ()->Void {
         get { return quickPlayerView.onSwipeUpCallback }
         set { quickPlayerView.onSwipeUpCallback = newValue }
     }
@@ -274,7 +227,56 @@ extension AlbumsView {
     }
 }
 
-// Custom flow layout
+// Collection data source
+class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
+{
+    let audioInfo: AudioInfo
+    let albums: [AudioAlbum]
+    
+    init(audioInfo: AudioInfo, albums: [AudioAlbum]) {
+        self.audioInfo = audioInfo
+        self.albums = albums
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return albums.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumsView.CELL_IDENTIFIER, for: indexPath)
+        
+        guard let cell = reusableCell as? AlbumsCell else {
+            return reusableCell
+        }
+        
+        let item = albums[indexPath.row]
+        
+        cell.covertArtImage.image = item.albumCover?.image(at: AlbumsFlowLayout.CELL_SIZE)
+        cell.titleText.text = item.albumTitle
+        
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+}
+
+// Collection delegate
+class AlbumsViewActionDelegate : NSObject, UICollectionViewDelegate
+{
+    private weak var view: AlbumsView?
+    
+    init(view: AlbumsView) {
+        self.view = view
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.view?.actionAlbumClick(index: UInt(indexPath.row))
+    }
+}
+
+// Collection flow layout
 class AlbumsFlowLayout : UICollectionViewFlowLayout
 {
     static let CELL_SIZE = CGSize(width: 0, height: 256)

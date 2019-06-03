@@ -8,66 +8,6 @@
 
 import UIKit
 
-class SearchViewDataSource : NSObject, UICollectionViewDataSource
-{
-    let audioInfo: AudioInfo
-    let searchResults: [AudioTrack]
-    
-    init(audioInfo: AudioInfo, searchResults: [AudioTrack]) {
-        self.audioInfo = audioInfo
-        self.searchResults = searchResults
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return searchResults.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchView.CELL_IDENTIFIER, for: indexPath)
-        
-        guard let cell = reusableCell as? SearchItemCell else {
-            return reusableCell
-        }
-        
-        let item = searchResults[indexPath.row]
-        
-        cell.trackAlbumCover.image = item.albumCover?.image(at: cell.trackAlbumCover!.frame.size)
-        cell.titleText.text = item.title
-        cell.albumTitle.text = item.albumTitle
-        cell.durationText.text = item.duration
-        
-        // Highlight cells that contain the currently playing track
-        cell.backgroundColor = .clear
-        
-        if let playerPlaylist = AudioPlayer.shared.playlist
-        {
-            if playerPlaylist.playingTrack == item
-            {
-                cell.backgroundColor = PlaylistViewDataSource.HIGHLIGHT_COLOR
-            }
-        }
-        
-        return cell
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-}
-
-class SearchViewActionDelegate : NSObject, UICollectionViewDelegate
-{
-    private weak var view: SearchView?
-    
-    init(view: SearchView) {
-        self.view = view
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.view?.actionSearchResultClick(index: UInt(indexPath.row))
-    }
-}
-
 class SearchView: UIView
 {
     static let CELL_IDENTIFIER = "cell"
@@ -89,10 +29,10 @@ class SearchView: UIView
         }
     }
     
-    public var onSearchResultClickedCallback: (UInt)->() = {(index) in }
-    public var onSearchFieldTextEnteredCallback: (String)->() = {(text) in }
+    public var onSearchResultClickedCallback: (UInt)->Void = {(index) in }
+    public var onSearchFieldTextEnteredCallback: (String)->Void = {(text) in }
     
-    public var onQuickPlayerPlaylistButtonClickCallback: ()->() {
+    public var onQuickPlayerPlaylistButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlaylistButtonClickCallback }
         set { quickPlayerView.onPlaylistButtonClickCallback = newValue }
     }
@@ -102,12 +42,12 @@ class SearchView: UIView
         set { quickPlayerView.onPlayerButtonClickCallback = newValue }
     }
     
-    public var onQuickPlayerPlayOrderButtonClickCallback: ()->() {
+    public var onQuickPlayerPlayOrderButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlayOrderButtonClickCallback }
         set { quickPlayerView.onPlayOrderButtonClickCallback = newValue }
     }
     
-    public var onQuickPlayerSwipeUpCallback: ()->() {
+    public var onQuickPlayerSwipeUpCallback: ()->Void {
         get { return quickPlayerView.onSwipeUpCallback }
         set { quickPlayerView.onSwipeUpCallback = newValue }
     }
@@ -264,7 +204,69 @@ extension SearchView {
     }
 }
 
-// Custom flow layout
+// Collection data source
+class SearchViewDataSource : NSObject, UICollectionViewDataSource
+{
+    let audioInfo: AudioInfo
+    let searchResults: [AudioTrack]
+    
+    init(audioInfo: AudioInfo, searchResults: [AudioTrack]) {
+        self.audioInfo = audioInfo
+        self.searchResults = searchResults
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return searchResults.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchView.CELL_IDENTIFIER, for: indexPath)
+        
+        guard let cell = reusableCell as? SearchItemCell else {
+            return reusableCell
+        }
+        
+        let item = searchResults[indexPath.row]
+        
+        cell.trackAlbumCover.image = item.albumCover?.image(at: cell.trackAlbumCover!.frame.size)
+        cell.titleText.text = item.title
+        cell.albumTitle.text = item.albumTitle
+        cell.durationText.text = item.duration
+        
+        // Highlight cells that contain the currently playing track
+        cell.backgroundColor = .clear
+        
+        if let playerPlaylist = AudioPlayer.shared.playlist
+        {
+            if playerPlaylist.playingTrack == item
+            {
+                cell.backgroundColor = PlaylistViewDataSource.HIGHLIGHT_COLOR
+            }
+        }
+        
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+}
+
+// Collection delegate
+class SearchViewActionDelegate : NSObject, UICollectionViewDelegate
+{
+    private weak var view: SearchView?
+    
+    init(view: SearchView) {
+        self.view = view
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.view?.actionSearchResultClick(index: UInt(indexPath.row))
+    }
+}
+
+// Collection flow layout
 class SearchFlowLayout : UICollectionViewFlowLayout
 {
     static let CELL_SIZE = CGSize(width: 0, height: 64)

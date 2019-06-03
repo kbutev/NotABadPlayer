@@ -38,7 +38,7 @@ class ListsPresenter: BasePresenter
         
         self.collectionDataSource = ListsViewDataSource(audioInfo: audioInfo, playlists: playlists)
         
-        delegate?.onUserPlaylistsLoad(dataSource: collectionDataSource)
+        delegate?.onUserPlaylistsLoad(audioInfo: audioInfo, dataSource: collectionDataSource)
     }
     
     func onAppStateChange(state: AppState) {
