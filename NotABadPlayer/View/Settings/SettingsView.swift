@@ -33,12 +33,12 @@ class SettingsView : UIView
     
     private var initialized: Bool = false
     
-    public var onAppThemeSelectCallback: (AppTheme)->() = {(value) in }
-    public var onTrackSortingSelectCallback: (TrackSorting)->() = {(value) in }
-    public var onShowVolumeBarSelectCallback: (ShowVolumeBar)->() = {(value) in }
-    public var onOpenPlayerOnPlaySelectCallback: (OpenPlayerOnPlay)->() = {(value) in }
-    public var onKeybindSelectCallback: (ApplicationInput, ApplicationAction)->() = {(input, action) in }
-    public var onResetSettingsDefaults: ()->() = {() in }
+    public var onAppThemeSelectCallback: (AppTheme)->Void = {(value) in }
+    public var onTrackSortingSelectCallback: (TrackSorting)->Void = {(value) in }
+    public var onShowVolumeBarSelectCallback: (ShowVolumeBar)->Void = {(value) in }
+    public var onOpenPlayerOnPlaySelectCallback: (OpenPlayerOnPlay)->Void = {(value) in }
+    public var onKeybindSelectCallback: (ApplicationInput, ApplicationAction)->Void = {(input, action) in }
+    public var onResetSettingsDefaults: ()->Void = {() in }
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackView: UIStackView!

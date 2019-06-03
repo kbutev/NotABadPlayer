@@ -8,59 +8,6 @@
 
 import UIKit
 
-class ListsViewDataSource : NSObject, UICollectionViewDataSource
-{
-    let audioInfo: AudioInfo
-    let playlists: [AudioPlaylist]
-    
-    init(audioInfo: AudioInfo, playlists: [AudioPlaylist]) {
-        self.audioInfo = audioInfo
-        self.playlists = playlists
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return playlists.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchView.CELL_IDENTIFIER, for: indexPath)
-        
-        guard let cell = reusableCell as? ListsItemCell else {
-            return reusableCell
-        }
-        
-        let item = playlists[indexPath.row]
-        let firstTrack = item.firstTrack
-        
-        cell.playlistImage.image = firstTrack.albumCover?.image(at: cell.playlistImage!.frame.size)
-        cell.titleLabel.text = item.name
-        cell.descriptionLabel.text = getPlaylistDescription(playlist: item)
-        
-        return cell
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func getPlaylistDescription(playlist: AudioPlaylist) -> String {
-        return Text.value(.PlaylistCellDescription, "\(playlist.tracks.count)")
-    }
-}
-
-class ListsViewActionDelegate : NSObject, UICollectionViewDelegate
-{
-    private weak var view: ListsView?
-    
-    init(view: ListsView) {
-        self.view = view
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.view?.actionPlaylistClick(index: UInt(indexPath.row))
-    }
-}
-
 class ListsView : UIView
 {
     static let CELL_IDENTIFIER = "cell"
@@ -82,11 +29,11 @@ class ListsView : UIView
         }
     }
     
-    public var onCreateButtonClickedCallback: ()->() = {() in }
-    public var onDeleteButtonClickedCallback: ()->() = {() in }
-    public var onPlaylistClickedCallback: (UInt)->() = {(index) in }
+    public var onCreateButtonClickedCallback: ()->Void = {() in }
+    public var onDeleteButtonClickedCallback: ()->Void = {() in }
+    public var onPlaylistClickedCallback: (UInt)->Void = {(index) in }
     
-    public var onQuickPlayerPlaylistButtonClickCallback: ()->() {
+    public var onQuickPlayerPlaylistButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlaylistButtonClickCallback }
         set { quickPlayerView.onPlaylistButtonClickCallback = newValue }
     }
@@ -96,12 +43,12 @@ class ListsView : UIView
         set { quickPlayerView.onPlayerButtonClickCallback = newValue }
     }
     
-    public var onQuickPlayerPlayOrderButtonClickCallback: ()->() {
+    public var onQuickPlayerPlayOrderButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlayOrderButtonClickCallback }
         set { quickPlayerView.onPlayOrderButtonClickCallback = newValue }
     }
     
-    public var onQuickPlayerSwipeUpCallback: ()->() {
+    public var onQuickPlayerSwipeUpCallback: ()->Void {
         get { return quickPlayerView.onSwipeUpCallback }
         set { quickPlayerView.onSwipeUpCallback = newValue }
     }
@@ -264,5 +211,60 @@ class ListsFlowLayout : UICollectionViewFlowLayout
         let context = super.invalidationContext(forBoundsChange: newBounds) as! UICollectionViewFlowLayoutInvalidationContext
         context.invalidateFlowLayoutDelegateMetrics = newBounds.size != collectionView?.bounds.size
         return context
+    }
+}
+
+// Collection data source
+class ListsViewDataSource : NSObject, UICollectionViewDataSource
+{
+    let audioInfo: AudioInfo
+    let playlists: [AudioPlaylist]
+    
+    init(audioInfo: AudioInfo, playlists: [AudioPlaylist]) {
+        self.audioInfo = audioInfo
+        self.playlists = playlists
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return playlists.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchView.CELL_IDENTIFIER, for: indexPath)
+        
+        guard let cell = reusableCell as? ListsItemCell else {
+            return reusableCell
+        }
+        
+        let item = playlists[indexPath.row]
+        let firstTrack = item.firstTrack
+        
+        cell.playlistImage.image = firstTrack.albumCover?.image(at: cell.playlistImage!.frame.size)
+        cell.titleLabel.text = item.name
+        cell.descriptionLabel.text = getPlaylistDescription(playlist: item)
+        
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func getPlaylistDescription(playlist: AudioPlaylist) -> String {
+        return Text.value(.PlaylistCellDescription, "\(playlist.tracks.count)")
+    }
+}
+
+// Collection delegate
+class ListsViewActionDelegate : NSObject, UICollectionViewDelegate
+{
+    private weak var view: ListsView?
+    
+    init(view: ListsView) {
+        self.view = view
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.view?.actionPlaylistClick(index: UInt(indexPath.row))
     }
 }

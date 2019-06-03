@@ -14,10 +14,10 @@ class QuickPlayerView : UIView
     
     private var initialized: Bool = false
     
-    public var onPlaylistButtonClickCallback: ()->() = {() in }
-    public var onPlayerButtonClickCallback: (ApplicationInput)->() = {(input) in }
-    public var onPlayOrderButtonClickCallback: ()->() = {() in }
-    public var onSwipeUpCallback: ()->() = {() in }
+    public var onPlaylistButtonClickCallback: ()->Void = {() in }
+    public var onPlayerButtonClickCallback: (ApplicationInput)->Void = {(input) in }
+    public var onPlayOrderButtonClickCallback: ()->Void = {() in }
+    public var onSwipeUpCallback: ()->Void = {() in }
     
     @IBOutlet var primaryStackView: UIStackView!
     
