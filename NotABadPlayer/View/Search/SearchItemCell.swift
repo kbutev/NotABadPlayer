@@ -10,6 +10,8 @@ import UIKit
 
 class SearchItemCell : UICollectionViewCell
 {
+    public static let SIZE = CGSize(width: 0, height: 64)
+    
     @IBOutlet weak var horizontalStackView: UIStackView!
     @IBOutlet weak var trackAlbumCover: UIImageView!
     

@@ -16,24 +16,23 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vjM-mz-3Em">
-                    <rect key="frame" x="107" y="393" width="126.5" height="48"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vjM-mz-3Em">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_album_unknown" translatesAutoresizingMaskIntoConstraints="NO" id="zKa-oV-7cO">
-                            <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_album_unknown" translatesAutoresizingMaskIntoConstraints="NO" id="zKa-oV-7cO">
+                            <rect key="frame" x="0.0" y="0.0" width="335.5" height="818"/>
                         </imageView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="v8l-63-IQg">
-                            <rect key="frame" x="48" y="0.0" width="78.5" height="48"/>
+                            <rect key="frame" x="335.5" y="0.0" width="78.5" height="818"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Track title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vMO-bA-hes">
-                                    <rect key="frame" x="0.0" y="0.0" width="78.5" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="78.5" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H4j-tF-dls">
-                                    <rect key="frame" x="0.0" y="30" width="78.5" height="18"/>
+                                    <rect key="frame" x="0.0" y="20.5" width="78.5" height="797.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" red="0.48544770079999999" green="0.48544770079999999" blue="0.48544770079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -45,10 +44,18 @@
                 </stackView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vjM-mz-3Em" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="7yO-P2-0EC"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="vjM-mz-3Em" secondAttribute="bottom" id="CxT-QM-ucf"/>
+                <constraint firstItem="vjM-mz-3Em" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="L9Z-Ib-7lN"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="vjM-mz-3Em" secondAttribute="trailing" id="iaG-xN-U4r"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="coverImage" destination="zKa-oV-7cO" id="fKW-Ls-DDY"/>
                 <outlet property="descriptionLabel" destination="H4j-tF-dls" id="kpl-Wi-r9f"/>
+                <outlet property="stackView" destination="vjM-mz-3Em" id="2kI-tq-tde"/>
+                <outlet property="textStackView" destination="v8l-63-IQg" id="VDy-ab-Udj"/>
                 <outlet property="titleLabel" destination="vMO-bA-hes" id="fnO-6H-opH"/>
             </connections>
         </view>

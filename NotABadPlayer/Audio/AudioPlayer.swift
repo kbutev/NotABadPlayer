@@ -18,6 +18,8 @@ class AudioPlayer : NSObject {
         }
     }
     
+    private var audioSession: AVAudioSession = AVAudioSession.sharedInstance()
+    
     private var player: AVAudioPlayer?
     
     var isPlaying: Bool {
@@ -141,6 +143,12 @@ class AudioPlayer : NSObject {
         }
         
         self._audioInfo = audioInfo
+        
+        do {
+            try self.audioSession.setCategory(.playback)
+        } catch let e {
+            fatalError("[\(String(describing: AudioPlayer.self))] could not initialize audio session properly")
+        }
     }
     
     func play(playlist: AudioPlaylist) throws {
@@ -164,11 +172,12 @@ class AudioPlayer : NSObject {
         
         do {
             try self.player = AVAudioPlayer(contentsOf: url)
+            self.player?.prepareToPlay()
             self.player?.delegate = self
             
             Logging.log(AudioPlayer.self, "Playing track '\(track.title)'")
             
-            player?.play()
+            self.player?.play()
             
             onPlay(track: track)
         } catch let error {

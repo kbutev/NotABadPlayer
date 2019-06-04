@@ -269,8 +269,6 @@ class SearchViewActionDelegate : NSObject, UICollectionViewDelegate
 // Collection flow layout
 class SearchFlowLayout : UICollectionViewFlowLayout
 {
-    static let CELL_SIZE = CGSize(width: 0, height: 64)
-    
     init(minimumInteritemSpacing: CGFloat = 1, minimumLineSpacing: CGFloat = 1, sectionInset: UIEdgeInsets = .zero) {
         super.init()
         
@@ -295,7 +293,7 @@ class SearchFlowLayout : UICollectionViewFlowLayout
         
         let itemWidth = (collectionView.bounds.size.width - marginsAndInsets)
         
-        itemSize = CGSize(width: itemWidth, height: SearchFlowLayout.CELL_SIZE.height)
+        itemSize = CGSize(width: itemWidth, height: SearchItemCell.SIZE.height)
     }
     
     override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {

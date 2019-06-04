@@ -10,6 +10,8 @@ import UIKit
 
 class AlbumsCell : UICollectionViewCell
 {
+    public static let SIZE = CGSize(width: 0, height: 256)
+    
     @IBOutlet weak var covertArtImage: UIImageView!
     @IBOutlet weak var titleText: UILabel!
     

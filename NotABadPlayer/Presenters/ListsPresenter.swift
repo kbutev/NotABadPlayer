@@ -16,6 +16,8 @@ class ListsPresenter: BasePresenter
     
     private var playlists: [AudioPlaylist] = []
     
+    private var recentlyPlayedPlaylist: AudioPlaylist?
+    
     private var collectionDataSource: ListsViewDataSource?
     
     required init(audioInfo: AudioInfo) {
@@ -28,17 +30,16 @@ class ListsPresenter: BasePresenter
     
     func start() {
         self.playlists = GeneralStorage.shared.getUserPlaylists()
-        let recentlyPlayed = AudioPlayer.shared.playHistory
-        let recentlyPlayedPlaylist = recentlyPlayed.count > 0 ? AudioPlaylist(name: Text.value(.PlaylistRecentlyPlayed), tracks: recentlyPlayed) : nil
         
-        if recentlyPlayedPlaylist != nil
+        let recentlyPlayed = AudioPlayer.shared.playHistory
+        self.recentlyPlayedPlaylist = recentlyPlayed.count > 0 ? AudioPlaylist(name: Text.value(.PlaylistRecentlyPlayed), tracks: recentlyPlayed) : nil
+        
+        if let recentlyPlayed = recentlyPlayedPlaylist
         {
-            playlists.append(recentlyPlayedPlaylist!)
+            playlists.insert(recentlyPlayed, at: 0)
         }
         
-        self.collectionDataSource = ListsViewDataSource(audioInfo: audioInfo, playlists: playlists)
-        
-        delegate?.onUserPlaylistsLoad(audioInfo: audioInfo, dataSource: collectionDataSource)
+        self.updateDataSource()
     }
     
     func onAppStateChange(state: AppState) {
@@ -91,7 +92,34 @@ class ListsPresenter: BasePresenter
     }
     
     func onPlaylistItemDelete(index: UInt) {
+        if index >= self.playlists.count
+        {
+            return
+        }
         
+        if !shouldDeletePlaylistAt(index: index)
+        {
+            return
+        }
+        
+        let playlistToDelete = self.playlists[Int(index)]
+        
+        self.playlists.remove(at: Int(index))
+        
+        var playlistsWithoutRecentlyPlayed = self.playlists
+        
+        if recentlyPlayedPlaylist != nil
+        {
+            playlistsWithoutRecentlyPlayed.remove(at: 0)
+        }
+        
+        // Save
+        GeneralStorage.shared.saveUserPlaylists(playlistsWithoutRecentlyPlayed)
+        
+        Logging.log(ListsPresenter.self, "Deleted user playlist '\(playlistToDelete.name)' from storage")
+        
+        // Update data source
+        updateDataSource()
     }
     
     func onSearchResultClick(index: UInt) {
@@ -124,5 +152,24 @@ class ListsPresenter: BasePresenter
     
     func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         
+    }
+    
+    private func updateDataSource() {
+        self.collectionDataSource = ListsViewDataSource(audioInfo: audioInfo, playlists: playlists)
+        
+        delegate?.onUserPlaylistsLoad(audioInfo: audioInfo, dataSource: collectionDataSource)
+    }
+    
+    private func shouldDeletePlaylistAt(index: UInt) -> Bool {
+        // Never delete recently played plalist
+        if self.recentlyPlayedPlaylist != nil
+        {
+            if index == 0
+            {
+                return false
+            }
+        }
+        
+        return true
     }
 }

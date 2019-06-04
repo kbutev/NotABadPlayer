@@ -251,7 +251,7 @@ class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
         
         let item = albums[indexPath.row]
         
-        cell.covertArtImage.image = item.albumCover?.image(at: AlbumsFlowLayout.CELL_SIZE)
+        cell.covertArtImage.image = item.albumCover?.image(at: cell.covertArtImage!.frame.size)
         cell.titleText.text = item.albumTitle
         
         return cell
@@ -279,8 +279,6 @@ class AlbumsViewActionDelegate : NSObject, UICollectionViewDelegate
 // Collection flow layout
 class AlbumsFlowLayout : UICollectionViewFlowLayout
 {
-    static let CELL_SIZE = CGSize(width: 0, height: 256)
-    
     let cellsPerColumn: Int
     
     init(cellsPerColumn: Int, minimumInteritemSpacing: CGFloat = 1, minimumLineSpacing: CGFloat = 1, sectionInset: UIEdgeInsets = .zero) {
@@ -309,7 +307,7 @@ class AlbumsFlowLayout : UICollectionViewFlowLayout
         
         let itemWidth = ((collectionView.bounds.size.width - marginsAndInsets) / CGFloat(cellsPerColumn)).rounded(.down)
         
-        itemSize = CGSize(width: itemWidth, height: AlbumsFlowLayout.CELL_SIZE.height)
+        itemSize = CGSize(width: itemWidth, height: AlbumsCell.SIZE.height)
     }
     
     override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {

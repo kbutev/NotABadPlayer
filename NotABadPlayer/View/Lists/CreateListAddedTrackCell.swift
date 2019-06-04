@@ -8,14 +8,18 @@
 
 import UIKit
 
-class CreateListAddedTrackCell: UICollectionViewCell
+class CreateListAddedTrackCell: UITableViewCell
 {
+    public static let SIZE = CGSize(width: 0, height: 48)
+    
+    @IBOutlet var stackView: UIStackView!
     @IBOutlet var coverImage: UIImageView!
+    @IBOutlet var textStackView: UIStackView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,6 +31,11 @@ class CreateListAddedTrackCell: UICollectionViewCell
     }
     
     private func setup() {
+        coverImage.translatesAutoresizingMaskIntoConstraints = false
+        coverImage.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        coverImage.heightAnchor.constraint(equalToConstant: CreateListAddedTrackCell.SIZE.height).isActive = true
         
+        textStackView.layoutMargins = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
+        textStackView.isLayoutMarginsRelativeArrangement = true
     }
 }

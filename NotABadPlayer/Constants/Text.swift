@@ -39,6 +39,8 @@ enum Text: String {
     case ZeroTimer = "0:00";
     case DoubleZeroTimers = "0:00/0:00";
     
+    case ListsDeleteButtonName = "Delete"
+    case ListsDoneButtonName = "Done"
     case PlaylistRecentlyPlayed = "Recently Played";
     case PlaylistCellDescription = "@! tracks";
     
@@ -63,5 +65,9 @@ enum Text: String {
     case SettingsQPlayerPrevious = "QPlayer Previous"
     case SettingsQPlayerNext = "QPlayer Next"
     
+    case Error = "Error"
     case ErrorAlbumDoesNotExist = "Album does not exist"
+    case ErrorPlaylistNameEmpty = "Playlist name cannot be empty"
+    case ErrorPlaylistEmpty = "Playlist must have at least 1 track"
+    case ErrorPlaylistAlreadyExists = "A playlist with that name already exists"
 }

@@ -11,6 +11,9 @@ import UIKit
 class CreateListAlbumCell: UITableViewCell
 {
     public static let CELL_IDENTIFIER = "cell"
+    public static let SIZE = CGSize(width: 0, height: 48)
+    public static let SELECTED_SIZE = CGSize(width: 0, height: 248)
+    
     public static let HEADER_HEIGHT: CGFloat = 64
     
     @IBOutlet var content: UIView!
@@ -19,9 +22,10 @@ class CreateListAlbumCell: UITableViewCell
     
     @IBOutlet weak var tracksTable: UITableView!
     
-    public var onTrackClickedCallback: (UInt)->Void = {(index) in }
+    public var onOpenedAlbumTrackSelectionCallback: (UInt)->Void = {(index) in }
+    public var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void = {(index) in }
     
-    private var delegate : CreateListAlbumCellActionDelegate?
+    private var delegate : CreateListAlbumCellDelegate?
     
     public var dataSource : CreateListAlbumCellDataSource? {
         get {
@@ -51,10 +55,10 @@ class CreateListAlbumCell: UITableViewCell
         coverImage.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         coverImage.leftAnchor.constraint(equalTo: guide.leftAnchor).isActive = true
         coverImage.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        coverImage.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        coverImage.heightAnchor.constraint(lessThanOrEqualToConstant: 48).isActive = true
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
+        titleLabel.centerYAnchor.constraint(equalTo: coverImage.centerYAnchor).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: coverImage.rightAnchor, constant: 10).isActive = true
         titleLabel.rightAnchor.constraint(equalTo: guide.rightAnchor).isActive = true
         
@@ -64,77 +68,31 @@ class CreateListAlbumCell: UITableViewCell
         tracksTable.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
         tracksTable.leftAnchor.constraint(equalTo: guide.leftAnchor).isActive = true
         tracksTable.rightAnchor.constraint(equalTo: guide.rightAnchor).isActive = true
-        tracksTable.tableFooterView = UIView()
+        tracksTable.separatorStyle = .none
         
         let nib = UINib(nibName: String(describing: CreateListAlbumTrackCell.self), bundle: nil)
         tracksTable.register(nib, forCellReuseIdentifier: CreateListAlbumCell.CELL_IDENTIFIER)
         
-        self.delegate = CreateListAlbumCellActionDelegate(view: self)
+        self.delegate = CreateListAlbumCellDelegate(view: self)
         tracksTable.delegate = self.delegate
+    }
+    
+    public func selectAlbumTrack(at index: UInt) {
+        tracksTable.selectRow(at: IndexPath(row: Int(index), section: 0), animated: false, scrollPosition: .none)
+    }
+    
+    public func deselectAlbumTrack(at index: UInt) {
+        tracksTable.deselectRow(at: IndexPath(row: Int(index), section: 0), animated: false)
     }
 }
 
 // Actions
 extension CreateListAlbumCell {
-    @objc func actionOnTrackClick(index: UInt) {
-        self.onTrackClickedCallback(index)
+    @objc func actionOnTrackSelection(_ index: UInt) {
+        self.onOpenedAlbumTrackSelectionCallback(index)
+    }
+    
+    @objc func actionOnTrackDeselection(_ index: UInt) {
+        self.onOpenedAlbumTrackDeselectionCallback(index)
     }
 }
-
-// Table data source
-class CreateListAlbumCellDataSource : NSObject, UITableViewDataSource
-{
-    let tracks: [AudioTrack]
-    
-    init(tracks: [AudioTrack]) {
-        self.tracks = tracks
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tracks.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListAlbumCell.CELL_IDENTIFIER, for: indexPath)
-        
-        guard let cell = reusableCell as? CreateListAlbumTrackCell else {
-            return reusableCell
-        }
-        
-        let item = tracks[indexPath.row]
-        
-        cell.titleLabel.text = item.title
-        cell.descriptionLabel.text = getTrackDescription(track: item)
-        
-        return cell
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CreateListAlbumTrackCell.HEIGHT
-    }
-    
-    func getTrackDescription(track: AudioTrack) -> String {
-        return track.duration
-    }
-}
-
-// Table action delegate
-class CreateListAlbumCellActionDelegate : NSObject, UITableViewDelegate
-{
-    private weak var view: CreateListAlbumCell?
-    
-    private var selectedAlbum: Int = -1
-    
-    init(view: CreateListAlbumCell) {
-        self.view = view
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.view?.actionOnTrackClick(index: UInt(indexPath.row))
-    }
-}
-
