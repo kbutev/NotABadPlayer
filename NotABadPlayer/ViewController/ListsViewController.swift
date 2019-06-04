@@ -18,6 +18,8 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     
     private var audioInfo: AudioInfo?
     
+    private var isEditingLists: Bool = false
+    
     init(presenter: BasePresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -37,8 +39,6 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         super.viewDidLoad()
         
         setup()
-        
-        presenter?.start()
     }
     
     private func setup() {
@@ -47,11 +47,15 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         }
         
         baseView?.onDeleteButtonClickedCallback = { [weak self] () in
-            
+            self?.startOrEndEditing()
         }
         
         baseView?.onPlaylistClickedCallback = { [weak self] (index) in
             self?.presenter?.onPlaylistItemClick(index: index)
+        }
+        
+        baseView?.onDidDeletePlaylistCallback = { [weak self] (index: UInt) -> Void in
+            self?.presenter?.onPlaylistItemDelete(index: index)
         }
         
         baseView?.onQuickPlayerPlaylistButtonClickCallback = { [weak self] () in
@@ -75,6 +79,9 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // Start presenter every time, to reload the user playlists
+        presenter?.start()
+        
         QuickPlayerService.shared.attach(observer: self)
     }
     
@@ -123,7 +130,9 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?) {
         self.audioInfo = audioInfo
         
-        self.baseView?.collectionDataSource = dataSource
+        self.baseView?.tableDataSource = dataSource
+        
+        self.baseView?.reloadData()
     }
     
     func openPlayerScreen(playlist: AudioPlaylist) {
@@ -171,6 +180,19 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         let vc = CreateListsViewController(audioInfo: audioInfo)
         
         NavigationHelpers.presentVC(current: self, vc: vc)
+    }
+    
+    public func startOrEndEditing() {
+        if !isEditingLists
+        {
+            baseView?.startDeletingLists()
+        }
+        else
+        {
+            baseView?.endDeletingLists()
+        }
+        
+        isEditingLists = !isEditingLists
     }
 }
 

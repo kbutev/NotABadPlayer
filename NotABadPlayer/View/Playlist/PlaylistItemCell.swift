@@ -1,5 +1,5 @@
 //
-//  PlaylistCell.swift
+//  PlaylistItemCell.swift
 //  NotABadPlayer
 //
 //  Created by Kristiyan Butev on 7.05.19.
@@ -8,8 +8,10 @@
 
 import UIKit
 
-class PlaylistCell : UICollectionViewCell
+class PlaylistItemCell : UICollectionViewCell
 {
+    public static let SIZE = CGSize(width: 0, height: 48)
+    
     @IBOutlet weak var horizontalStackView: UIStackView!
     @IBOutlet weak var trackNumText: UILabel!
     

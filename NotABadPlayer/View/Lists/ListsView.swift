@@ -16,22 +16,23 @@ class ListsView : UIView
     
     private var initialized: Bool = false
     
-    private var flowLayout: ListsFlowLayout?
+    private var tableActionDelegate : ListsViewDelegate?
     
-    private var collectionActionDelegate : ListsViewActionDelegate?
+    private var tableDataSourceReal : ListsViewDataSource?
     
-    public var collectionDataSource : ListsViewDataSource? {
+    public var tableDataSource : ListsViewDataSource? {
         get {
-            return playlistsCollection.dataSource as? ListsViewDataSource
+            return self.tableDataSourceReal
         }
         set {
-            playlistsCollection.dataSource = newValue
+            self.tableDataSourceReal = newValue
         }
     }
     
     public var onCreateButtonClickedCallback: ()->Void = {() in }
     public var onDeleteButtonClickedCallback: ()->Void = {() in }
     public var onPlaylistClickedCallback: (UInt)->Void = {(index) in }
+    public var onDidDeletePlaylistCallback: (UInt)->Void = {(index) in }
     
     public var onQuickPlayerPlaylistButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlaylistButtonClickCallback }
@@ -56,7 +57,7 @@ class ListsView : UIView
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var playlistsCollection: UICollectionView!
+    @IBOutlet weak var playlistsTable: UITableView!
     @IBOutlet var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
@@ -116,20 +117,26 @@ class ListsView : UIView
         
         deleteButton.addTarget(self, action: #selector(actionDeleteButtonClick), for: .touchUpInside)
         
-        // Collection
-        playlistsCollection.translatesAutoresizingMaskIntoConstraints = false
-        playlistsCollection.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: ListsView.HORIZONTAL_MARGIN).isActive = true
-        playlistsCollection.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -ListsView.HORIZONTAL_MARGIN).isActive = true
-        playlistsCollection.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 2).isActive = true
-        playlistsCollection.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
+        // Table
+        playlistsTable.translatesAutoresizingMaskIntoConstraints = false
+        playlistsTable.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: ListsView.HORIZONTAL_MARGIN).isActive = true
+        playlistsTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -ListsView.HORIZONTAL_MARGIN).isActive = true
+        playlistsTable.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 2).isActive = true
+        playlistsTable.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
+        
+        playlistsTable.separatorStyle = .none
         
         let nib = UINib(nibName: String(describing: ListsItemCell.self), bundle: nil)
-        playlistsCollection.register(nib, forCellWithReuseIdentifier: ListsView.CELL_IDENTIFIER)
+        playlistsTable.register(nib, forCellReuseIdentifier: ListsView.CELL_IDENTIFIER)
         
-        playlistsCollection.collectionViewLayout = ListsFlowLayout()
+        self.tableActionDelegate = ListsViewDelegate(view: self)
+        playlistsTable.delegate = tableActionDelegate
         
-        self.collectionActionDelegate = ListsViewActionDelegate(view: self)
-        playlistsCollection.delegate = collectionActionDelegate
+        playlistsTable.dataSource = self
+    }
+    
+    public func reloadData() {
+        playlistsTable.reloadData()
     }
     
     public func updateTime(currentTime: Double, totalDuration: Double) {
@@ -146,6 +153,49 @@ class ListsView : UIView
     
     public func updatePlayOrderButtonState(order: AudioPlayOrder) {
         quickPlayerView.updatePlayOrderButtonState(order: order)
+    }
+    
+    public func startDeletingLists() {
+        playlistsTable.setEditing(true, animated: true)
+        
+        deleteButton.setTitle(Text.value(.ListsDoneButtonName), for: .normal)
+    }
+    
+    public func endDeletingLists() {
+        playlistsTable.setEditing(false, animated: true)
+        
+        deleteButton.setTitle(Text.value(.ListsDeleteButtonName), for: .normal)
+    }
+}
+
+// ListsView: Implement the data source
+// Forward nearly all requests to the actual, real data source - ListsViewDataSource
+// When receiving a delete event, perform a callback
+extension ListsView : UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let dataSource = tableDataSourceReal
+        {
+            return dataSource.tableView(tableView, numberOfRowsInSection: section)
+        }
+        
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let dataSource = tableDataSourceReal
+        {
+            return dataSource.tableView(tableView, cellForRowAt: indexPath)
+        }
+        
+        return tableView.dequeueReusableCell(withIdentifier: ListsView.CELL_IDENTIFIER, for: indexPath)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        self.onDidDeletePlaylistCallback(UInt(indexPath.row))
     }
 }
 
@@ -175,62 +225,23 @@ extension ListsView {
     }
 }
 
-// Custom flow layout
-class ListsFlowLayout : UICollectionViewFlowLayout
-{
-    static let CELL_SIZE = CGSize(width: 0, height: 64)
-    
-    init(minimumInteritemSpacing: CGFloat = 1, minimumLineSpacing: CGFloat = 1, sectionInset: UIEdgeInsets = .zero) {
-        super.init()
-        
-        self.minimumInteritemSpacing = minimumInteritemSpacing
-        self.minimumLineSpacing = minimumLineSpacing
-        self.sectionInset = sectionInset
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepare() {
-        super.prepare()
-        
-        guard let collectionView = collectionView else
-        {
-            return
-        }
-        
-        let marginsAndInsets = sectionInset.left + sectionInset.right + collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right + minimumInteritemSpacing
-        
-        let itemWidth = (collectionView.bounds.size.width - marginsAndInsets)
-        
-        itemSize = CGSize(width: itemWidth, height: ListsFlowLayout.CELL_SIZE.height)
-    }
-    
-    override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
-        let context = super.invalidationContext(forBoundsChange: newBounds) as! UICollectionViewFlowLayoutInvalidationContext
-        context.invalidateFlowLayoutDelegateMetrics = newBounds.size != collectionView?.bounds.size
-        return context
-    }
-}
-
-// Collection data source
-class ListsViewDataSource : NSObject, UICollectionViewDataSource
+// Table data source
+class ListsViewDataSource : NSObject, UITableViewDataSource
 {
     let audioInfo: AudioInfo
-    let playlists: [AudioPlaylist]
+    var playlists: [AudioPlaylist]
     
     init(audioInfo: AudioInfo, playlists: [AudioPlaylist]) {
         self.audioInfo = audioInfo
         self.playlists = playlists
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return playlists.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchView.CELL_IDENTIFIER, for: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: ListsView.CELL_IDENTIFIER, for: indexPath)
         
         guard let cell = reusableCell as? ListsItemCell else {
             return reusableCell
@@ -246,7 +257,7 @@ class ListsViewDataSource : NSObject, UICollectionViewDataSource
         return cell
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
@@ -255,8 +266,8 @@ class ListsViewDataSource : NSObject, UICollectionViewDataSource
     }
 }
 
-// Collection delegate
-class ListsViewActionDelegate : NSObject, UICollectionViewDelegate
+// Table delegate
+class ListsViewDelegate : NSObject, UITableViewDelegate
 {
     private weak var view: ListsView?
     
@@ -264,7 +275,11 @@ class ListsViewActionDelegate : NSObject, UICollectionViewDelegate
         self.view = view
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.view?.actionPlaylistClick(index: UInt(indexPath.row))
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return ListsItemCell.HEIGHT
     }
 }

@@ -100,7 +100,7 @@ class PlaylistView : UIView
         collectionView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
         
-        let cellNib = UINib(nibName: String(describing: PlaylistCell.self), bundle: nil)
+        let cellNib = UINib(nibName: String(describing: PlaylistItemCell.self), bundle: nil)
         collectionView.register(cellNib, forCellWithReuseIdentifier: PlaylistView.CELL_IDENTIFIER)
         
         let headerNib = UINib(nibName: String(describing: PlaylistHeaderView.self), bundle: nil)
@@ -277,7 +277,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaylistView.CELL_IDENTIFIER, for: indexPath)
         
-        guard let cell = reusableCell as? PlaylistCell else {
+        guard let cell = reusableCell as? PlaylistItemCell else {
             return reusableCell
         }
         
@@ -332,7 +332,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         
         if let flowLayout = collectionView.collectionViewLayout as? PlaylistFlowLayout
         {
-            flowLayout.headerSize = PlaylistFlowLayout.HEADER_SIZE_IMAGELESS
+            flowLayout.headerSize = PlaylistHeaderView.HEADER_SIZE_IMAGELESS
         }
     }
 }
@@ -358,10 +358,6 @@ class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
 // Collection flow layout
 class PlaylistFlowLayout : UICollectionViewFlowLayout
 {
-    static let CELL_SIZE = CGSize(width: 0, height: 48)
-    static let HEADER_SIZE = CGSize(width: 0, height: 224)
-    static let HEADER_SIZE_IMAGELESS = CGSize(width: 0, height: 64)
-    
     public var headerSize: CGSize {
         get {
             return self.headerReferenceSize
@@ -384,7 +380,7 @@ class PlaylistFlowLayout : UICollectionViewFlowLayout
         self.minimumLineSpacing = minimumLineSpacing
         self.sectionInset = sectionInset
         
-        self.headerReferenceSize = CGSize(width: collectionView.frame.size.width, height: PlaylistFlowLayout.HEADER_SIZE.height)
+        self.headerReferenceSize = CGSize(width: collectionView.frame.size.width, height: PlaylistHeaderView.HEADER_SIZE.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -403,7 +399,7 @@ class PlaylistFlowLayout : UICollectionViewFlowLayout
         
         let itemWidth = (collectionView.bounds.size.width - marginsAndInsets)
         
-        itemSize = CGSize(width: itemWidth, height: PlaylistFlowLayout.CELL_SIZE.height)
+        itemSize = CGSize(width: itemWidth, height: PlaylistItemCell.SIZE.height)
     }
     
     override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {

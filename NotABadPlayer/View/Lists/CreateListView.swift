@@ -8,26 +8,53 @@
 
 import UIKit
 
+struct CreateListAudioTrack
+{
+    public let title: String
+    public let description: String
+    private let identifier: String
+    
+    init(title: String, description: String, identifier: String) {
+        self.title = title
+        self.description = description
+        self.identifier = identifier
+    }
+    
+    public static func createFrom(_ track: AudioTrack) -> CreateListAudioTrack {
+        return CreateListAudioTrack(title: track.title, description: track.duration, identifier: track.filePath.absoluteString)
+    }
+    
+    static func ==(lhs: CreateListAudioTrack, rhs: CreateListAudioTrack) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+    
+    public func equalsToTrack(_ track: AudioTrack) -> Bool {
+        return identifier == track.filePath.absoluteString
+    }
+}
+
 class CreateListView : UIView
 {
     public static let CELL_IDENTIFIER = "cell"
     public static let HORIZONTAL_MARGIN: CGFloat = 8
     public static let HEADER_HEIGHT: CGFloat = 48
     
-    private var addedTracksCollectionDelegate : CreateListViewAddedTracksActionDelegate?
+    private var openedAlbum: CreateListAlbumCell?
     
-    public var addedTracksCollectionDataSource : CreateListViewAddedTracksDataSource? {
+    private var addedTracksTableDelegate : CreateListViewAddedTracksActionDelegate?
+    
+    public var addedTracksTableDataSource : CreateListViewAddedTracksTableDataSource? {
         get {
-            return addedTracksCollection.dataSource as? CreateListViewAddedTracksDataSource
+            return addedTracksTable.dataSource as? CreateListViewAddedTracksTableDataSource
         }
         set {
-            addedTracksCollection.dataSource = newValue
+            addedTracksTable.dataSource = newValue
         }
     }
     
-    private var albumsCollectionDelegate : CreateListViewAlbumsActionDelegate?
+    private var albumsTableDelegate : CreateListViewAlbumsDelegate?
     
-    public var albumsCollectionDataSource : CreateListViewAlbumsDataSource? {
+    public var albumsTableDataSource : CreateListViewAlbumsDataSource? {
         get {
             return albumsTable.dataSource as? CreateListViewAlbumsDataSource
         }
@@ -36,6 +63,7 @@ class CreateListView : UIView
         }
     }
     
+    public var onTextFieldEditedCallback: (String)->Void = {(text) in }
     public var onCancelButtonClickedCallback: ()->Void = {() in }
     public var onDoneButtonClickedCallback: ()->Void = {() in }
     public var onAddedTrackClickedCallback: (UInt)->Void = {(index) in }
@@ -47,7 +75,7 @@ class CreateListView : UIView
     @IBOutlet weak var doneButton: UIButton!
     
     @IBOutlet var addedTracksLabel: UILabel!
-    @IBOutlet weak var addedTracksCollection: UICollectionView!
+    @IBOutlet weak var addedTracksTable: UITableView!
     @IBOutlet var tracksLabel: UILabel!
     @IBOutlet weak var albumsTable: UITableView!
     
@@ -86,6 +114,8 @@ class CreateListView : UIView
         
         // Playlist name text field
         playlistNameField.frame.size.width = header.frame.width
+        playlistNameField.delegate = self
+        playlistNameField.addTarget(self, action: #selector(actionTextFieldChanged(_:)), for: .editingChanged)
         
         // Label - added tracks
         addedTracksLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -96,21 +126,21 @@ class CreateListView : UIView
         top = addedTracksLabel.bottomAnchor
         
         // Added tracks collection
-        addedTracksCollection.translatesAutoresizingMaskIntoConstraints = false
-        addedTracksCollection.topAnchor.constraint(equalTo: top).isActive = true
-        addedTracksCollection.heightAnchor.constraint(equalToConstant: entireContentSize.height * 0.2).isActive = true
-        addedTracksCollection.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
-        addedTracksCollection.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        addedTracksTable.translatesAutoresizingMaskIntoConstraints = false
+        addedTracksTable.topAnchor.constraint(equalTo: top).isActive = true
+        addedTracksTable.heightAnchor.constraint(equalToConstant: entireContentSize.height * 0.2).isActive = true
+        addedTracksTable.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
+        addedTracksTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        
+        addedTracksTable.separatorStyle = .none
         
         var nib = UINib(nibName: String(describing: CreateListAddedTrackCell.self), bundle: nil)
-        addedTracksCollection.register(nib, forCellWithReuseIdentifier: CreateListView.CELL_IDENTIFIER)
+        addedTracksTable.register(nib, forCellReuseIdentifier: CreateListView.CELL_IDENTIFIER)
         
-        self.addedTracksCollectionDelegate = CreateListViewAddedTracksActionDelegate(view: self)
-        addedTracksCollection.delegate = self.addedTracksCollectionDelegate
+        self.addedTracksTableDelegate = CreateListViewAddedTracksActionDelegate(view: self)
+        addedTracksTable.delegate = self.addedTracksTableDelegate
         
-        addedTracksCollection.collectionViewLayout = CreateListAddedTracksFlowLayout()
-        
-        top = addedTracksCollection.bottomAnchor
+        top = addedTracksTable.bottomAnchor
         
         // Label - tracks
         tracksLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -130,22 +160,29 @@ class CreateListView : UIView
         nib = UINib(nibName: String(describing: CreateListAlbumCell.self), bundle: nil)
         albumsTable.register(nib, forCellReuseIdentifier: CreateListView.CELL_IDENTIFIER)
         
-        self.albumsCollectionDelegate = CreateListViewAlbumsActionDelegate(view: self)
-        albumsTable.delegate = self.albumsCollectionDelegate
+        self.albumsTableDelegate = CreateListViewAlbumsDelegate(view: self)
+        albumsTable.delegate = self.albumsTableDelegate
     }
     
-    public func reloadData() {
-        addedTracksCollection.reloadData()
+    public func reloadAddedTracksData() {
+        addedTracksTable.reloadData()
+    }
+    
+    public func reloadAlbumsData() {
         albumsTable.reloadData()
     }
     
-    public func openAlbumAt(index: UInt, albumTracks: [AudioTrack]) {
-        self.albumsCollectionDataSource?.selectAlbum(index: index, albumTracks: albumTracks)
-        self.albumsCollectionDelegate?.selectAlbum(index: index, albumTracks: albumTracks)
+    public func openAlbumAt(index: UInt,
+                            albumTracks: [CreateListAudioTrack],
+                            addedTracks: [CreateListAudioTrack]) {
+        self.albumsTableDataSource?.openAlbum(index: index, albumTracks: albumTracks, addedTracks: addedTracks)
+        self.albumsTableDelegate?.selectAlbum(index: index, albumTracks: albumTracks)
         
-        let at: [IndexPath] = [IndexPath(row: Int(index), section: 0)]
-        
-        albumsTable.reloadRows(at: at, with: .automatic)
+        albumsTable.reloadRows(at: [IndexPath(row: Int(index), section: 0)], with: .automatic)
+    }
+    
+    public func deselectTrackFromOpenedAlbum(_ albumTrack: CreateListAudioTrack) {
+        self.albumsTableDataSource?.deselectAlbumTrack(albumTrack)
     }
 }
 
@@ -166,6 +203,27 @@ extension CreateListView {
     @objc func actionAlbumClick(index: UInt) {
         self.onAlbumClickedCallback(index)
     }
+    
+    @objc func actionTextFieldChanged(_ textField: UITextField) {
+        if let text = textField.text
+        {
+            self.onTextFieldEditedCallback(text)
+        }
+    }
+}
+
+// Text field actions
+extension CreateListView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        if let text = textField.text
+        {
+            self.onTextFieldEditedCallback(text)
+        }
+        
+        return true
+    }
 }
 
 // Builder
@@ -179,8 +237,8 @@ extension CreateListView {
     }
 }
 
-// Collection data source
-class CreateListViewAddedTracksDataSource : NSObject, UICollectionViewDataSource
+// Table data source
+class CreateListViewAddedTracksTableDataSource : NSObject, UITableViewDataSource
 {
     let audioInfo: AudioInfo
     let tracks: [AudioTrack]
@@ -190,12 +248,12 @@ class CreateListViewAddedTracksDataSource : NSObject, UICollectionViewDataSource
         self.tracks = tracks
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tracks.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateListView.CELL_IDENTIFIER, for: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListView.CELL_IDENTIFIER, for: indexPath)
         
         guard let cell = reusableCell as? CreateListAddedTrackCell else {
             return reusableCell
@@ -203,13 +261,14 @@ class CreateListViewAddedTracksDataSource : NSObject, UICollectionViewDataSource
         
         let item = tracks[indexPath.row]
         
+        cell.coverImage.image = item.albumCover?.image(at: cell.coverImage!.frame.size)
         cell.titleLabel.text = item.title
         cell.descriptionLabel.text = getTrackDescription(track: item)
         
         return cell
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
@@ -218,47 +277,8 @@ class CreateListViewAddedTracksDataSource : NSObject, UICollectionViewDataSource
     }
 }
 
-// Custom flow layout
-class CreateListAddedTracksFlowLayout : UICollectionViewFlowLayout
-{
-    static let CELL_SIZE = CGSize(width: 0, height: 64)
-    
-    init(minimumInteritemSpacing: CGFloat = 1, minimumLineSpacing: CGFloat = 1, sectionInset: UIEdgeInsets = .zero) {
-        super.init()
-        
-        self.minimumInteritemSpacing = minimumInteritemSpacing
-        self.minimumLineSpacing = minimumLineSpacing
-        self.sectionInset = sectionInset
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepare() {
-        super.prepare()
-        
-        guard let collectionView = collectionView else
-        {
-            return
-        }
-        
-        let marginsAndInsets = sectionInset.left + sectionInset.right + collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right + minimumInteritemSpacing
-        
-        let itemWidth = (collectionView.bounds.size.width - marginsAndInsets)
-        
-        itemSize = CGSize(width: itemWidth, height: ListsFlowLayout.CELL_SIZE.height)
-    }
-    
-    override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
-        let context = super.invalidationContext(forBoundsChange: newBounds) as! UICollectionViewFlowLayoutInvalidationContext
-        context.invalidateFlowLayoutDelegateMetrics = newBounds.size != collectionView?.bounds.size
-        return context
-    }
-}
-
-// Collection action delegate
-class CreateListViewAddedTracksActionDelegate : NSObject, UICollectionViewDelegate
+// Table action delegate
+class CreateListViewAddedTracksActionDelegate : NSObject, UITableViewDelegate
 {
     private weak var view: CreateListView?
     
@@ -266,7 +286,7 @@ class CreateListViewAddedTracksActionDelegate : NSObject, UICollectionViewDelega
         self.view = view
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.view?.actionAddedTrackClick(index: UInt(indexPath.row))
     }
 }
@@ -275,15 +295,22 @@ class CreateListViewAddedTracksActionDelegate : NSObject, UICollectionViewDelega
 class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
 {
     let albums: [AudioAlbum]
-    let onTrackClickedCallback: (UInt)->()
+    let onOpenedAlbumTrackSelectionCallback: (UInt)->()
+    let onOpenedAlbumTrackDeselectionCallback: (UInt)->()
     
     private var selectedAlbumIndex: Int = -1
-    private var selectedAlbumTracks: [AudioTrack] = []
+    private var selectedAlbumCell: CreateListAlbumCell?
+    private var selectedAlbumTracks: [CreateListAudioTrack] = []
     private var selectedAlbumDataSource: CreateListAlbumCellDataSource?
     
-    init(albums: [AudioAlbum], onTrackClickedCallback: @escaping (UInt)->()) {
+    private var addedTracks: [CreateListAudioTrack] = []
+    
+    init(albums: [AudioAlbum],
+         onOpenedAlbumTrackSelectionCallback: @escaping (UInt)->(),
+         onOpenedAlbumTrackDeselectionCallback: @escaping (UInt)->()) {
         self.albums = albums
-        self.onTrackClickedCallback = onTrackClickedCallback
+        self.onOpenedAlbumTrackSelectionCallback = onOpenedAlbumTrackSelectionCallback
+        self.onOpenedAlbumTrackDeselectionCallback = onOpenedAlbumTrackDeselectionCallback
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -302,17 +329,29 @@ class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
         cell.coverImage.image = item.albumCover?.image(at: cell.coverImage!.frame.size)
         cell.titleLabel.text = item.albumTitle
         
+        // Selected album - display, update callbacks and update table data source
         if indexPath.row == selectedAlbumIndex
         {
+            self.selectedAlbumCell = cell
+            
             cell.tracksTable.isHidden = false
-            cell.onTrackClickedCallback = onTrackClickedCallback
+            
+            cell.onOpenedAlbumTrackSelectionCallback = onOpenedAlbumTrackSelectionCallback
+            cell.onOpenedAlbumTrackDeselectionCallback = onOpenedAlbumTrackDeselectionCallback
+            
             self.selectedAlbumDataSource = CreateListAlbumCellDataSource(tracks: selectedAlbumTracks)
             cell.tracksTable.dataSource = self.selectedAlbumDataSource
             cell.tracksTable.reloadData()
+            
+            updateSelectedAlbumTracks()
         }
         else
         {
             cell.tracksTable.isHidden = true
+            cell.tracksTable.dataSource = nil
+            
+            cell.onOpenedAlbumTrackSelectionCallback = {(index)->() in }
+            cell.onOpenedAlbumTrackDeselectionCallback = {(index)->() in }
         }
         
         return cell
@@ -326,29 +365,69 @@ class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
         return track.duration
     }
     
-    public func selectAlbum(index: UInt, albumTracks: [AudioTrack]) {
+    public func openAlbum(index: UInt, albumTracks: [CreateListAudioTrack], addedTracks: [CreateListAudioTrack]) {
         if self.selectedAlbumIndex == Int(index)
         {
-            self.deselectAlbum()
+            self.closeAlbum()
             return
         }
         
         self.selectedAlbumIndex = Int(index)
+        self.selectedAlbumCell = nil
         self.selectedAlbumTracks = albumTracks
+        self.addedTracks = addedTracks
     }
     
-    public func deselectAlbum() {
+    public func closeAlbum() {
         self.selectedAlbumIndex = -1
+        self.selectedAlbumCell = nil
         self.selectedAlbumTracks = []
+        self.addedTracks = []
+    }
+    
+    private func updateSelectedAlbumTracks() {
+        guard let selectedAlbum = self.selectedAlbumCell else {
+            return
+        }
+        
+        for e in 0..<addedTracks.count
+        {
+            let trackToSelect = addedTracks[e]
+            
+            // Find the corresponding index
+            for i in 0..<selectedAlbumTracks.count
+            {
+                let albumTrack = selectedAlbumTracks[i]
+                
+                if albumTrack == trackToSelect
+                {
+                    selectedAlbum.selectAlbumTrack(at: UInt(i))
+                }
+            }
+        }
+    }
+    
+    public func deselectAlbumTrack(_ track: CreateListAudioTrack) {
+        guard let selectedAlbum = self.selectedAlbumCell else {
+            return
+        }
+        
+        for e in 0..<selectedAlbumTracks.count
+        {
+            let albumTrack = selectedAlbumTracks[e]
+            
+            if albumTrack == track
+            {
+                selectedAlbum.deselectAlbumTrack(at: UInt(e))
+                break
+            }
+        }
     }
 }
 
 // Table action delegate
-class CreateListViewAlbumsActionDelegate : NSObject, UITableViewDelegate
+class CreateListViewAlbumsDelegate : NSObject, UITableViewDelegate
 {
-    static let CELL_SIZE = CGSize(width: 0, height: 48)
-    static let CELL_SELECTED_SIZE = CGSize(width: 0, height: 248)
-    
     private weak var view: CreateListView?
     
     private var selectedAlbumIndex: Int = -1
@@ -363,16 +442,15 @@ class CreateListViewAlbumsActionDelegate : NSObject, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // Selected
         if selectedAlbumIndex == indexPath.row
         {
-            return CreateListViewAlbumsActionDelegate.CELL_SELECTED_SIZE.height
+            return CreateListAlbumCell.SELECTED_SIZE.height
         }
         
-        return CreateListViewAlbumsActionDelegate.CELL_SIZE.height
+        return CreateListAlbumCell.SIZE.height
     }
     
-    public func selectAlbum(index: UInt, albumTracks: [AudioTrack]) {
+    public func selectAlbum(index: UInt, albumTracks: [CreateListAudioTrack]) {
         if self.selectedAlbumIndex == Int(index)
         {
             self.deselectAlbum()
@@ -386,5 +464,60 @@ class CreateListViewAlbumsActionDelegate : NSObject, UITableViewDelegate
     public func deselectAlbum() {
         self.selectedAlbumIndex = -1
         self.selectedAlbumTracksCount = 0
+    }
+}
+
+// Table data source
+class CreateListAlbumCellDataSource : NSObject, UITableViewDataSource
+{
+    let tracks: [CreateListAudioTrack]
+    
+    init(tracks: [CreateListAudioTrack]) {
+        self.tracks = tracks
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tracks.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListAlbumCell.CELL_IDENTIFIER, for: indexPath)
+        
+        guard let cell = reusableCell as? CreateListAlbumTrackCell else {
+            return reusableCell
+        }
+        
+        let item = tracks[indexPath.row]
+        
+        cell.titleLabel.text = item.title
+        cell.descriptionLabel.text = item.description
+        
+        return cell
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+}
+
+// Table delegate
+class CreateListAlbumCellDelegate : NSObject, UITableViewDelegate
+{
+    private weak var view: CreateListAlbumCell?
+    
+    init(view: CreateListAlbumCell) {
+        self.view = view
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.view?.actionOnTrackSelection(UInt(indexPath.row))
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        self.view?.actionOnTrackDeselection(UInt(indexPath.row))
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CreateListAlbumTrackCell.HEIGHT
     }
 }

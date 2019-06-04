@@ -17,16 +17,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NA4-Fn-p52">
-                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <rect key="frame" x="4" y="44" width="410" height="818"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Track title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wdH-MU-qXF">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
+                            <rect key="frame" x="0.0" y="0.0" width="410" height="800"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yA-VX-qA0">
-                            <rect key="frame" x="0.0" y="800" width="414" height="18"/>
+                            <rect key="frame" x="0.0" y="800" width="410" height="18"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -36,10 +36,10 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="NA4-Fn-p52" secondAttribute="trailing" id="Jb2-4S-rho"/>
-                <constraint firstItem="NA4-Fn-p52" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="h3X-Jg-3ii"/>
-                <constraint firstItem="NA4-Fn-p52" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="y2z-n1-wJI"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="NA4-Fn-p52" secondAttribute="bottom" id="yWy-Fh-NLl"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="NA4-Fn-p52" secondAttribute="trailing" id="7Uf-yq-cS9"/>
+                <constraint firstItem="NA4-Fn-p52" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="U5N-bM-Zgq"/>
+                <constraint firstItem="NA4-Fn-p52" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="4" id="cGv-je-bT3"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="NA4-Fn-p52" secondAttribute="bottom" id="wI3-SG-0xC"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
