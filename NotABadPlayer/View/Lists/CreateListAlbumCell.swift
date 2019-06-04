@@ -13,6 +13,7 @@ class CreateListAlbumCell: UITableViewCell
     public static let CELL_IDENTIFIER = "cell"
     public static let SIZE = CGSize(width: 0, height: 48)
     public static let SELECTED_SIZE = CGSize(width: 0, height: 248)
+    public static let COVER_IMAGE_SIZE = CGSize(width: 48, height: 48)
     
     public static let HEADER_HEIGHT: CGFloat = 64
     
