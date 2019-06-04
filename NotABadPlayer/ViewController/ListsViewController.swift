@@ -82,6 +82,10 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         // Start presenter every time, to reload the user playlists
         presenter?.start()
         
+        // Make sure we are not in deletion mode, when resuming
+        baseView?.endDeletingLists()
+        
+        // Attach quick player
         QuickPlayerService.shared.attach(observer: self)
     }
     

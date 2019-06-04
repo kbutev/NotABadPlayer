@@ -156,15 +156,21 @@ class ListsView : UIView
     }
     
     public func startDeletingLists() {
-        playlistsTable.setEditing(true, animated: true)
-        
-        deleteButton.setTitle(Text.value(.ListsDoneButtonName), for: .normal)
+        if !playlistsTable.isEditing
+        {
+            playlistsTable.setEditing(true, animated: true)
+            
+            deleteButton.setTitle(Text.value(.ListsDoneButtonName), for: .normal)
+        }
     }
     
     public func endDeletingLists() {
-        playlistsTable.setEditing(false, animated: true)
-        
-        deleteButton.setTitle(Text.value(.ListsDeleteButtonName), for: .normal)
+        if playlistsTable.isEditing
+        {
+            playlistsTable.setEditing(false, animated: true)
+            
+            deleteButton.setTitle(Text.value(.ListsDeleteButtonName), for: .normal)
+        }
     }
 }
 
@@ -254,6 +260,8 @@ class ListsViewDataSource : NSObject, UITableViewDataSource
         cell.titleLabel.text = item.name
         cell.descriptionLabel.text = getPlaylistDescription(playlist: item)
         
+        cell.selectionStyle = .none
+        
         return cell
     }
     
@@ -281,5 +289,13 @@ class ListsViewDelegate : NSObject, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return ListsItemCell.HEIGHT
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if tableView.isEditing {
+            return .delete
+        }
+        
+        return .none
     }
 }

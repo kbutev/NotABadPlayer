@@ -326,7 +326,7 @@ class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
         
         let item = albums[indexPath.row]
         
-        cell.coverImage.image = item.albumCover?.image(at: cell.coverImage!.frame.size)
+        cell.coverImage.image = item.albumCover?.image(at: CreateListAlbumCell.COVER_IMAGE_SIZE)
         cell.titleLabel.text = item.albumTitle
         
         // Selected album - display, update callbacks and update table data source
@@ -470,6 +470,8 @@ class CreateListViewAlbumsDelegate : NSObject, UITableViewDelegate
 // Table data source
 class CreateListAlbumCellDataSource : NSObject, UITableViewDataSource
 {
+    public static let TEXT_SELECTION_COLOR = UIColor(displayP3Red: 0.37, green: 0.59, blue: 0.94, alpha: 1)
+    
     let tracks: [CreateListAudioTrack]
     
     init(tracks: [CreateListAudioTrack]) {
