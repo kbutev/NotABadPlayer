@@ -9,7 +9,6 @@
 import UIKit
 
 class UIAnimations {
-    public static let CLICK_COLOR = UIColor(red:0.0, green:0.7, blue:0.25, alpha:1.0)
     public static let ANIMATION_DURATION: Double = 0.5
     public static let UPDATE_COUNT: Double = 5
     
@@ -42,7 +41,7 @@ class UIAnimations {
     static func animateImageClicked(_ image: UIImageView) {
         let currentColor = image.tintColor
         
-        image.tintColor = CLICK_COLOR
+        image.tintColor = AppTheme.shared.colorFor(.ANIMATION_CLICK_EFFECT)
         
         UIView.animate(withDuration: ANIMATION_DURATION,
                        delay: ANIMATION_DURATION / UPDATE_COUNT,

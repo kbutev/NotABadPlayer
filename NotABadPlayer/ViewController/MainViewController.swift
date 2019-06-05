@@ -12,7 +12,6 @@ import MediaPlayer
 class MainViewController : UIViewController, BaseViewDelegate {
     public static let DEFAULT_SELECTED_TAB: TabID = .Albums
     public static let TAB_SIZE = CGSize(width: 0, height: 60.0)
-    public static let SELECTED_MENU_BUTTON_COLOR: UIColor = UIColor(displayP3Red: 0.37, green: 0.59, blue: 0.94, alpha: 1)
     
     private var baseView: MainView?
     
@@ -56,6 +55,8 @@ class MainViewController : UIViewController, BaseViewDelegate {
         GeneralStorage.shared.restorePlayerPlayHistoryState()
         
         GeneralStorage.shared.attach(observer: self)
+        
+        updateAppTheme()
         
         setup()
     }
@@ -316,7 +317,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
         
     }
     
-    func onThemeSelect(_ value: AppTheme) {
+    func onThemeSelect(_ value: AppThemeValue) {
         
     }
     
@@ -331,11 +332,42 @@ class MainViewController : UIViewController, BaseViewDelegate {
     func onPlayerErrorEncountered(_ error: Error) {
         
     }
+    
+    private func updateAppTheme() {
+        AppTheme.shared.setAppearance(theme: GeneralStorage.shared.getAppThemeValue())
+    }
 }
 
 extension MainViewController: GeneralStorageObserver {
     func onAppAppearanceChange() {
+        Logging.log(MainViewController.self, "App appearance changed! Reloading current tab and wiping out the tabs cache...")
+        
+        // Update app theme value
+        updateAppTheme()
+        
+        // Reload current tab
+        let currentTab = selectedTabID
+        deselectAllTabs()
+        
         clearTabsCache()
+        
+        switch currentTab {
+        case .Albums:
+            selectAlbumsTab()
+            break
+        case .Lists:
+            selectListsTab()
+            break
+        case .Search:
+            selectSearchTab()
+            break
+        case .Settings:
+            selectSettingsTab()
+            break
+        default:
+            selectSettingsTab()
+            break
+        }
     }
     
     func onTabCachingPolicyChange(_ value: TabsCachingPolicy) {
@@ -378,18 +410,20 @@ extension MainViewController {
     private func updateTabButtonsColor() {
         resetTabButtonsColor()
         
+        let color = AppTheme.shared.colorFor(.NAVIGATION_ITEM_SELECTION)
+        
         switch self.selectedTabID {
         case .Albums:
-            self.baseView?.albumsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
+            self.baseView?.albumsButton.tintColor = color
             break
         case .Lists:
-            self.baseView?.listsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
+            self.baseView?.listsButton.tintColor = color
             break
         case .Search:
-            self.baseView?.searchButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
+            self.baseView?.searchButton.tintColor = color
             break
         case .Settings:
-            self.baseView?.settingsButton.tintColor = MainViewController.SELECTED_MENU_BUTTON_COLOR
+            self.baseView?.settingsButton.tintColor = color
             break
         default:
             break

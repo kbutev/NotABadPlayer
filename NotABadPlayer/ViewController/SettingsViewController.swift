@@ -30,6 +30,8 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
     override func loadView() {
         self.baseView = SettingsView.create(owner: self)
         self.view = self.baseView!
+        
+        self.view.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
     }
     
     override func viewDidLoad() {
@@ -83,7 +85,6 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
     private func selectDefaultPickerValues() {
         baseView?.selectTheme(GeneralStorage.shared.getAppThemeValue())
         baseView?.selectTrackSorting(GeneralStorage.shared.getTrackSortingValue())
-        baseView?.selectShowVolumeBar(GeneralStorage.shared.getShowVolumeBarValue())
         baseView?.selectOpenPlayerOnPlay(GeneralStorage.shared.getOpenPlayerOnPlayValue())
         
         baseView?.selectKeybind(keybind: .PLAYER_VOLUME_UP_BUTTON,
@@ -146,7 +147,7 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onThemeSelect(_ value: AppTheme) {
+    func onThemeSelect(_ value: AppThemeValue) {
         
     }
     

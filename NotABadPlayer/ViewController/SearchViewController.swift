@@ -29,6 +29,8 @@ class SearchViewController: UIViewController, BaseViewDelegate {
     override func loadView() {
         self.baseView = SearchView.create(owner: self)
         self.view = self.baseView!
+        
+        self.view.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
     }
     
     override func viewDidLoad() {
@@ -141,7 +143,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onThemeSelect(_ value: AppTheme) {
+    func onThemeSelect(_ value: AppThemeValue) {
         
     }
     

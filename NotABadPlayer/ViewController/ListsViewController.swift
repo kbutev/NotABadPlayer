@@ -33,12 +33,16 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     override func loadView() {
         self.baseView = ListsView.create(owner: self)
         self.view = self.baseView!
+        
+        self.view.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setup()
+        
+        presenter?.start()
     }
     
     private func setup() {
@@ -79,8 +83,8 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // Start presenter every time, to reload the user playlists
-        presenter?.start()
+        // Request data from the presenter every time we resume
+        presenter?.onPlaylistsChanged()
         
         // Make sure we are not in deletion mode, when resuming
         baseView?.endDeletingLists()
@@ -160,7 +164,7 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onThemeSelect(_ value: AppTheme) {
+    func onThemeSelect(_ value: AppThemeValue) {
         
     }
     

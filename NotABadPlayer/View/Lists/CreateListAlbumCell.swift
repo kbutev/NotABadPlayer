@@ -52,6 +52,8 @@ class CreateListAlbumCell: UITableViewCell
     private func setup() {
         let guide = content!
         
+        self.backgroundColor = .clear
+        
         coverImage.translatesAutoresizingMaskIntoConstraints = false
         coverImage.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         coverImage.leftAnchor.constraint(equalTo: guide.leftAnchor).isActive = true

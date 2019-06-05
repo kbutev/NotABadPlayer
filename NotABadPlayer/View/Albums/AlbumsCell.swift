@@ -28,14 +28,19 @@ class AlbumsCell : UICollectionViewCell
     }
     
     private func setup() {
+        self.backgroundColor = .clear
+        
+        // Cover art setup
         covertArtImage.translatesAutoresizingMaskIntoConstraints = false
         covertArtImage.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         covertArtImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         covertArtImage.bottomAnchor.constraint(equalTo: titleText.topAnchor).isActive = true
         
+        // Title setup
         titleText.translatesAutoresizingMaskIntoConstraints = false
         titleText.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         titleText.heightAnchor.constraint(equalToConstant: 50).isActive = true
         titleText.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        titleText.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
     }
 }

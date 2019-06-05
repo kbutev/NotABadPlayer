@@ -87,7 +87,7 @@ class ListsView : UIView
     private func setup() {
         let guide = self
         
-        // Quick player view
+        // Quick player setup
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
         quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
@@ -95,14 +95,15 @@ class ListsView : UIView
         quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
         quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
         
-        // Header
+        // Header setup
         header.translatesAutoresizingMaskIntoConstraints = false
         header.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: ListsView.HORIZONTAL_MARGIN).isActive = true
         header.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -ListsView.HORIZONTAL_MARGIN).isActive = true
         header.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         header.heightAnchor.constraint(equalToConstant: ListsView.HEADER_HEIGHT).isActive = true
+        header.backgroundColor = .clear
         
-        // Buttons
+        // Buttons setup
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.topAnchor.constraint(equalTo: header.topAnchor).isActive = true
         createButton.leftAnchor.constraint(equalTo: header.leftAnchor).isActive = true
@@ -117,7 +118,7 @@ class ListsView : UIView
         
         deleteButton.addTarget(self, action: #selector(actionDeleteButtonClick), for: .touchUpInside)
         
-        // Table
+        // Table setup
         playlistsTable.translatesAutoresizingMaskIntoConstraints = false
         playlistsTable.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: ListsView.HORIZONTAL_MARGIN).isActive = true
         playlistsTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -ListsView.HORIZONTAL_MARGIN).isActive = true
@@ -133,6 +134,8 @@ class ListsView : UIView
         playlistsTable.delegate = tableActionDelegate
         
         playlistsTable.dataSource = self
+        
+        playlistsTable.backgroundColor = .clear
     }
     
     public func reloadData() {
@@ -256,7 +259,7 @@ class ListsViewDataSource : NSObject, UITableViewDataSource
         let item = playlists[indexPath.row]
         let firstTrack = item.firstTrack
         
-        cell.playlistImage.image = firstTrack.albumCover?.image(at: cell.playlistImage!.frame.size)
+        cell.artCoverImage.image = firstTrack.albumCover?.image(at: cell.artCoverImage!.frame.size)
         cell.titleLabel.text = item.name
         cell.descriptionLabel.text = getPlaylistDescription(playlist: item)
         

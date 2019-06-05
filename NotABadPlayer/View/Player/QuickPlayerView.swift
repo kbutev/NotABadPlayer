@@ -63,6 +63,9 @@ class QuickPlayerView : UIView
     private func setup() {
         let guide = primaryStackView!
         
+        // Background
+        self.backgroundColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BACKGROUND)
+        
         // Constraints
         primaryStackView.translatesAutoresizingMaskIntoConstraints = false
         primaryStackView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
@@ -83,6 +86,7 @@ class QuickPlayerView : UIView
         
         // Customize seek bar
         trackSeekBarSlider.setThumbImage(UIImage(), for: .normal)
+        trackSeekBarSlider.tintColor = AppTheme.shared.colorFor(.QUICK_PLAYER_SEEK_BAR)
         
         // User input
         var gestureTap = UITapGestureRecognizer(target: self, action: #selector(actionPlaylist(sender:)))

@@ -80,6 +80,14 @@ class PlayerPresenter: BasePresenter
         
     }
     
+    func onPlayerVolumeSet(value: Double) {
+        AudioPlayer.shared.volume = Int(value)
+    }
+    
+    func onPlaylistsChanged() {
+        
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         
     }
@@ -96,7 +104,7 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func onAppThemeChange(_ themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppThemeValue) {
         
     }
     

@@ -33,8 +33,6 @@ struct CollectionIndexerSelection {
 class CollectionIndexerView : UIView
 {
     public static let TEXT_FONT = UIFont.systemFont(ofSize: 18)
-    public static let TEXT_COLOR = UIColor.black
-    public static let TEXT_ALPHA: CGFloat = 0.6
     
     public weak var delegate: CollectionIndexerDelegate?
     
@@ -117,14 +115,15 @@ class CollectionIndexerView : UIView
     }
     
     private func buildLabels() {
+        let textColor = AppTheme.shared.colorFor(.INDEXER_CHAR_COLOR)
+        
         for i in 0..<alphabet.count
         {
             let label = UILabel()
             label.text = String(alphabet[i])
             
             label.font = CollectionIndexerView.TEXT_FONT
-            label.textColor = CollectionIndexerView.TEXT_COLOR
-            label.alpha = CollectionIndexerView.TEXT_ALPHA
+            label.textColor = textColor
             label.textAlignment = .center
             
             self.characterLabels.append(label)

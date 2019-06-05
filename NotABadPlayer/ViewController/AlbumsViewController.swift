@@ -29,6 +29,8 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
     override func loadView() {
         self.baseView = AlbumsView.create(owner: self)
         self.view = self.baseView!
+        
+        self.view.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
     }
     
     override func viewDidLoad() {
@@ -140,7 +142,7 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onThemeSelect(_ value: AppTheme) {
+    func onThemeSelect(_ value: AppThemeValue) {
         
     }
     

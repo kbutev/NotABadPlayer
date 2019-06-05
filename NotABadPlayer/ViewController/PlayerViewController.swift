@@ -28,6 +28,8 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     override func loadView() {
         self.baseView = PlayerView.create(owner: self)
         self.view = self.baseView
+        
+        self.view.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
     }
     
     override func viewDidLoad() {
@@ -43,7 +45,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     }
     
     private func setup() {
-        self.baseView?.onPlayerSeekChangedCallback = {(percentage) in
+        self.baseView?.onPlayerSeekCallback = {(percentage) in
             let duration = AudioPlayer.shared.durationSec
             
             AudioPlayer.shared.seekTo(seconds: duration * percentage)
@@ -59,6 +61,14 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
         self.baseView?.onSwipeDownCallback = {[weak self] () in
             self?.goBack()
+        }
+        
+        self.baseView?.onSideVolumeBarSeekCallback = {[weak self] (percentage) in
+            self?.presenter?.onPlayerVolumeSet(value: percentage)
+        }
+        
+        self.baseView?.onSideVolumeBarSpeakerButtonClickCallback = {[weak self] () in
+            self?.presenter?.onPlayerButtonClick(input: .PLAYER_VOLUME)
         }
     }
     
@@ -118,7 +128,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onThemeSelect(_ value: AppTheme) {
+    func onThemeSelect(_ value: AppThemeValue) {
         
     }
     
@@ -132,6 +142,10 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     
     func onPlayerErrorEncountered(_ error: Error) {
         self.encounteredError = error.localizedDescription
+    }
+    
+    private func onSystemVolumeChanged(_ value: Double) {
+        baseView?.onSystemVolumeChanged(value)
     }
 }
 
@@ -158,6 +172,10 @@ extension PlayerViewController : AudioPlayerObserver {
     
     func onPlayOrderChange(order: AudioPlayOrder) {
         self.baseView?.updatePlayOrderButtonState(order: order)
+    }
+    
+    func onVolumeChanged(volume: Double) {
+        self.onSystemVolumeChanged(volume)
     }
 }
 

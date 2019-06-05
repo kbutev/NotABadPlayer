@@ -64,6 +64,8 @@ class CreateListsViewController: UIViewController {
     override func loadView() {
         self.baseView = CreateListView.create(owner: self)
         self.view = self.baseView!
+        
+        self.view.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
     }
     
     override func viewDidLoad() {

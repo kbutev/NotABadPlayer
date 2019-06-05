@@ -12,21 +12,26 @@ class PlayerView : UIView
 {
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
     
-    public var onPlayerSeekChangedCallback: (Double)->Void = {(percentage) in }
+    public var onPlayerSeekCallback: (Double)->Void = {(percentage) in }
     public var onPlayerButtonClickCallback: (ApplicationInput)->Void = {(input) in }
     public var onPlayOrderButtonClickCallback: ()->Void = {() in }
     public var onSwipeDownCallback: ()->Void = {() in }
+    public var onSideVolumeBarSeekCallback: (Double)->Void = {(percentage) in }
+    public var onSideVolumeBarSpeakerButtonClickCallback: ()->Void = {() in }
     
     @IBOutlet weak var primaryStackView: UIStackView!
     
-    @IBOutlet weak var upperStackView: UIStackView!
+    @IBOutlet weak var topStackView: UIStackView!
     @IBOutlet weak var artCoverImage: UIImageView!
     
     @IBOutlet weak var bottomStackView: UIStackView!
+    
+    @IBOutlet weak var textStackView: UIStackView!
     @IBOutlet weak var titleText: UILabel!
     @IBOutlet weak var playlistText: UILabel!
     @IBOutlet weak var artistText: UILabel!
-    @IBOutlet weak var seekBarSlider: UISlider!
+    @IBOutlet weak var seekBarSlider: PlayerSeekBar!
+    
     @IBOutlet weak var mediaButtonsStackView: UIStackView!
     @IBOutlet weak var currentTimeText: UILabel!
     @IBOutlet weak var totalDurationText: UILabel!
@@ -36,6 +41,8 @@ class PlayerView : UIView
     @IBOutlet weak var playMediaButton: UIImageView!
     @IBOutlet weak var nextMediaButton: UIImageView!
     @IBOutlet weak var playOrderMediaButton: UIImageView!
+    
+    private var sideVolumeBar: PlayerSideVolumeBar?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,8 +68,8 @@ class PlayerView : UIView
         let heightAnchor = layoutGuide.heightAnchor
         
         // Constraints - top
-        upperStackView.translatesAutoresizingMaskIntoConstraints = false
-        upperStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
+        topStackView.translatesAutoresizingMaskIntoConstraints = false
+        topStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
         
         // Constraints - bottom
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -118,29 +125,75 @@ class PlayerView : UIView
         self.addGestureRecognizer(gestureSwipe)
     }
     
+    public func enableVolumeBar(leftSide: Bool) {
+        if sideVolumeBar != nil
+        {
+            return
+        }
+        
+        // Create and addd
+        let volumeBar = PlayerSideVolumeBar(frame: .zero)
+        let emptySpace = UIView()
+        
+        if leftSide
+        {
+            topStackView.insertArrangedSubview(volumeBar, at: 0)
+            topStackView.addArrangedSubview(emptySpace)
+        }
+        else
+        {
+            topStackView.addArrangedSubview(volumeBar)
+            topStackView.insertArrangedSubview(emptySpace, at: 0)
+        }
+        
+        // Setup volume bar
+        sideVolumeBar = volumeBar
+        volumeBar.translatesAutoresizingMaskIntoConstraints = false
+        volumeBar.topAnchor.constraint(equalTo: topStackView.topAnchor).isActive = true
+        volumeBar.widthAnchor.constraint(equalToConstant: PlayerSideVolumeBar.SIZE.width).isActive = true
+        volumeBar.heightAnchor.constraint(equalTo: topStackView.heightAnchor).isActive = true
+        
+        // Setup empty space
+        emptySpace.backgroundColor = .clear
+        emptySpace.translatesAutoresizingMaskIntoConstraints = false
+        emptySpace.topAnchor.constraint(equalTo: topStackView.topAnchor).isActive = true
+        emptySpace.widthAnchor.constraint(equalToConstant: PlayerSideVolumeBar.SIZE.width).isActive = true
+        emptySpace.heightAnchor.constraint(equalTo: topStackView.heightAnchor).isActive = true
+        
+        // Interaction
+        sideVolumeBar?.onVolumeSeekCallback = {[weak self] (percentage) -> Void in
+            self?.onSideVolumeBarSeekCallback(percentage)
+        }
+        
+        sideVolumeBar?.onSpeakerButtonClickCallback = {[weak self] () -> Void in
+            self?.onSideVolumeBarSpeakerButtonClickCallback()
+        }
+    }
+    
     public func updateUIState(player: AudioPlayer, track: AudioTrack) {
         updateMediaInfo(player: player, track: track)
         updateSoftUIState(player: player)
     }
     
     public func updateSoftUIState(player: AudioPlayer) {
+        guard let seekBar = self.seekBarSlider else {
+            return
+        }
+        
         // Seek bar update
         let duration = player.durationSec
         let currentPosition = player.currentPositionSec
         let newSeekBarPosition = (currentPosition / duration) * PlayerView.MEDIA_BAR_MAX_VALUE
         
-        if seekBarSlider.value != Float(newSeekBarPosition)
+        if seekBar.progressValue != newSeekBarPosition
         {
-            seekBarSlider.value = Float(newSeekBarPosition)
+            seekBar.progressValue = newSeekBarPosition
         }
         
         currentTimeText.text = AudioTrack.secondsToString(currentPosition)
         
         // Play order button update
         updatePlayOrderButtonState(order: player.playOrder)
-        
-        // Volume bar update
-        
     }
     
     public func updateMediaInfo(player: AudioPlayer, track: AudioTrack) {
@@ -188,18 +241,29 @@ class PlayerView : UIView
         break
         }
     }
+    
+    public func onSystemVolumeChanged(_ value: Double) {
+        if let bar = sideVolumeBar
+        {
+            bar.setProgress(value)
+        }
+    }
 }
 
 // Actions
 extension PlayerView {
     @objc public func actionSeekBarChanged(gesture: UILongPressGestureRecognizer) {
+        guard let seekBar = self.seekBarSlider else {
+            return
+        }
+        
         let minDistance: CGFloat = 2.0
         let pointTapped: CGPoint = gesture.location(in: seekBarSlider)
         let widthOfSlider: CGFloat = seekBarSlider.frame.size.width
         let positionOfSlider: CGPoint = seekBarSlider.frame.origin
         
         // If tap is too near from the slider thumb, cancel
-        let thumbPosition = CGFloat((seekBarSlider.value / seekBarSlider.maximumValue)) * widthOfSlider
+        let thumbPosition = CGFloat((seekBarSlider.progressValue / seekBar.maximumValue)) * widthOfSlider
         let dif = abs(pointTapped.x - thumbPosition)
         
         if dif < minDistance
@@ -208,10 +272,10 @@ extension PlayerView {
         }
         
         // Calculate new value
-        let newValue = ((pointTapped.x - positionOfSlider.x) * CGFloat(seekBarSlider.maximumValue) / widthOfSlider)
+        let newValue = ((pointTapped.x - positionOfSlider.x) * CGFloat(seekBar.maximumValue) / widthOfSlider)
         
         // Notify delegate
-        self.onPlayerSeekChangedCallback(Double(newValue / 100.0))
+        self.onPlayerSeekCallback(Double(newValue / 100.0))
     }
     
     @objc public func actionRecall(sender: Any) {

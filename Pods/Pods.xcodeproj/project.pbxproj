@@ -7,51 +7,98 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3BBA66A6493E9B28293F2098C119B9C8 /* iOSDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA24CCBDEB17D542BBC948FC6C087E3 /* iOSDropDown.swift */; };
-		3E4B757C6FCFED4674CB2BDB6B104335 /* Pods-NotABadPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E343715353E5F2D09A03361444C3AE /* Pods-NotABadPlayer-dummy.m */; };
-		8DB854500009D9B29A9322BFFBC3C022 /* iOSDropDown-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 384E60F9D0A1075A42BDA5F177F1BE30 /* iOSDropDown-dummy.m */; };
-		A7F0EC9E08C4CA960D56A8BC94EF4145 /* Pods-NotABadPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D93CCADDFBEE25101339D477AF7E4789 /* Pods-NotABadPlayer-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		DA759B0E8B83FE3FF7DE01FB5725A698 /* iOSDropDown-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C15D8C27AA1C28E6F7542B2DF4171C8A /* iOSDropDown-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		0857494224E211636F36D725B6EDF3EA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73341D322FF929FF33B82D680D27577E /* UIKit.framework */; };
+		093767B46CF63BA0C54E67B0ABAE12AD /* GTProgressBar-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 708733A0B9D7CC576FE4035F59FEA846 /* GTProgressBar-dummy.m */; };
+		0AAC13892E5AEFD6E8E3394734C27217 /* iOSDropDown-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1323905479F3A1BFBF284E14D4DA831B /* iOSDropDown-dummy.m */; };
+		0E59E62EB0DC02C352461476F6DE3D30 /* GTProgressBar-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E108AEE9FA2A2B29CE5438DB39F04840 /* GTProgressBar-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		1028F51F8BCA689AD8B6F4F3F360F9D6 /* GTProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2288249C4EBD41FA396D4B4091293D /* GTProgressBar.swift */; };
+		18B8A263DEF2A011082560984446D090 /* VerticalLabelPositionFrameCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029D7372136E2756364B05448809746D /* VerticalLabelPositionFrameCalculator.swift */; };
+		2AF89ABE4229E83482AF0BA88EBE3C60 /* GTProgressBarOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20786AAB0B49C3106D36914A9BA05D35 /* GTProgressBarOrientation.swift */; };
+		3A6E3E6C6DAE8E69978940AFD5230FDE /* Pods-NotABadPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D90DB8F18DCFDD791E194ABF8AC02E7 /* Pods-NotABadPlayer-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		46CC2B9781C7A370F70BF58E022A27B2 /* GTProgressBarCornerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A071C6267331F3309C0660F0B5A19151 /* GTProgressBarCornerType.swift */; };
+		586508F2683A4BA52924FA7351D39DFB /* UILabelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB4763607626D445A486DAF95AC102 /* UILabelExtensions.swift */; };
+		7B949FC917AB9253C7B4702FC30D3B8B /* Pods-NotABadPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0E2CE8C9DE1DFEDFD20B6C4A4E88F8 /* Pods-NotABadPlayer-dummy.m */; };
+		88969362DAE4B8710743B79CBAC0BE8E /* HorizontalLabelPositionFrameCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81588FF3C83075A7A6CF1954A4B6E0A /* HorizontalLabelPositionFrameCalculator.swift */; };
+		8A4382D6DB68A9095AE38E743EEBA078 /* FrameCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0804BAC4E980AE8E25D197DF60EDAEC1 /* FrameCalculator.swift */; };
+		95F9A9B6438C104E03EAA04811C855F5 /* GTProgressBarLabelPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A564C2D8C3962714DC4DDE42E34CEF09 /* GTProgressBarLabelPosition.swift */; };
+		AB44759ABF3A7CA5915210AF2950C373 /* iOSDropDown-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DC9912E29AEC1075B7590D1DE3F1F5A7 /* iOSDropDown-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		C4B4B4373453D441DA8A4FA7035044F6 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554B6991B51CBFE8E8ADD25D85149D2F /* UIViewExtensions.swift */; };
+		D93108BA80643925E6D8447A836ABF14 /* iOSDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA992897B4B6F086E52C2C3464A8CFBB /* iOSDropDown.swift */; };
+		E8D4CC395AEF7E33F83854509A7893BA /* GTProgressBarDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47C25F9C9AC9B2C7C816919B448F5AD /* GTProgressBarDirection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		146C3E7591DDF477D0BA5FEA1EF73E7D /* PBXContainerItemProxy */ = {
+		99AE4F992E8FAB663D89B3B71FDADC9A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4575B6B8BD79813E0A6C49248D368E37;
+			remoteGlobalIDString = BCC0FB8986B869EF43A95EA4FE5A328E;
+			remoteInfo = GTProgressBar;
+		};
+		CF295C750F84B0CE6FD8568CF48C2686 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 144A0A237FF17F65FAF95D6ACEFE6B7F;
 			remoteInfo = iOSDropDown;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		132745ABE57BCA6CC0DD398999423691 /* Pods-NotABadPlayer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NotABadPlayer-acknowledgements.markdown"; sourceTree = "<group>"; };
-		16F071FF023E63FC87939F4767F1219D /* iOSDropDown-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDropDown-prefix.pch"; sourceTree = "<group>"; };
-		17E1FB084AD41BC64EF1C7B89428F6CC /* iOSDropDown.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iOSDropDown.xcconfig; sourceTree = "<group>"; };
-		384E60F9D0A1075A42BDA5F177F1BE30 /* iOSDropDown-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "iOSDropDown-dummy.m"; sourceTree = "<group>"; };
-		52983383B48E7112AA5EA48F1FB3936E /* libPods-NotABadPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-NotABadPlayer.a"; path = "libPods-NotABadPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		60B089A33A58C945A4511ABAB8A00DAB /* Pods-NotABadPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NotABadPlayer.release.xcconfig"; sourceTree = "<group>"; };
-		6963158D302D8761A80521B9B95F9B4D /* Pods-NotABadPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-NotABadPlayer.modulemap"; sourceTree = "<group>"; };
-		746AC69789C47D8B6AF4280331AEB02B /* libiOSDropDown.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libiOSDropDown.a; path = libiOSDropDown.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		99BA0721664D68D72CC5418B1F8AFDEB /* Pods-NotABadPlayer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NotABadPlayer-acknowledgements.plist"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A32C6413B4B6671777C57ED5FBE55D92 /* iOSDropDown.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = iOSDropDown.modulemap; sourceTree = "<group>"; };
-		A4E343715353E5F2D09A03361444C3AE /* Pods-NotABadPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NotABadPlayer-dummy.m"; sourceTree = "<group>"; };
-		C15D8C27AA1C28E6F7542B2DF4171C8A /* iOSDropDown-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDropDown-umbrella.h"; sourceTree = "<group>"; };
-		D93CCADDFBEE25101339D477AF7E4789 /* Pods-NotABadPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-NotABadPlayer-umbrella.h"; sourceTree = "<group>"; };
-		DFA24CCBDEB17D542BBC948FC6C087E3 /* iOSDropDown.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = iOSDropDown.swift; path = iOSDropDown/Classes/iOSDropDown.swift; sourceTree = "<group>"; };
-		F71C224624E662E09FB07FCB81AA58A1 /* Pods-NotABadPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NotABadPlayer.debug.xcconfig"; sourceTree = "<group>"; };
+		029D7372136E2756364B05448809746D /* VerticalLabelPositionFrameCalculator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VerticalLabelPositionFrameCalculator.swift; path = GTProgressBar/Classes/VerticalLabelPositionFrameCalculator.swift; sourceTree = "<group>"; };
+		05D04DC80A387947710F85DEAFCAD592 /* libGTProgressBar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libGTProgressBar.a; path = libGTProgressBar.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0804BAC4E980AE8E25D197DF60EDAEC1 /* FrameCalculator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameCalculator.swift; path = GTProgressBar/Classes/FrameCalculator.swift; sourceTree = "<group>"; };
+		0B2288249C4EBD41FA396D4B4091293D /* GTProgressBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GTProgressBar.swift; path = GTProgressBar/Classes/GTProgressBar.swift; sourceTree = "<group>"; };
+		0D90DB8F18DCFDD791E194ABF8AC02E7 /* Pods-NotABadPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-NotABadPlayer-umbrella.h"; sourceTree = "<group>"; };
+		1323905479F3A1BFBF284E14D4DA831B /* iOSDropDown-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "iOSDropDown-dummy.m"; sourceTree = "<group>"; };
+		1EFFB75C6D891EDA13005197E801F2BB /* libPods-NotABadPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-NotABadPlayer.a"; path = "libPods-NotABadPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		20786AAB0B49C3106D36914A9BA05D35 /* GTProgressBarOrientation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GTProgressBarOrientation.swift; path = GTProgressBar/Classes/GTProgressBarOrientation.swift; sourceTree = "<group>"; };
+		24390EFD555DD124430DFF9724065945 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		3E47E8FF11C2BDC523AC1E692E07E76E /* Pods-NotABadPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NotABadPlayer.debug.xcconfig"; sourceTree = "<group>"; };
+		4FBB4763607626D445A486DAF95AC102 /* UILabelExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UILabelExtensions.swift; path = GTProgressBar/Classes/UILabelExtensions.swift; sourceTree = "<group>"; };
+		554B6991B51CBFE8E8ADD25D85149D2F /* UIViewExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIViewExtensions.swift; path = GTProgressBar/Classes/UIViewExtensions.swift; sourceTree = "<group>"; };
+		60AD85E474BA3E64A6B6AAC71C3564BB /* GTProgressBar-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GTProgressBar-prefix.pch"; sourceTree = "<group>"; };
+		620F06D3B8370BDCDD38173DBD0CAA95 /* Pods-NotABadPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-NotABadPlayer.modulemap"; sourceTree = "<group>"; };
+		708733A0B9D7CC576FE4035F59FEA846 /* GTProgressBar-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "GTProgressBar-dummy.m"; sourceTree = "<group>"; };
+		73341D322FF929FF33B82D680D27577E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		75DB3784472C3C73224EE7048998D7A6 /* Pods-NotABadPlayer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NotABadPlayer-acknowledgements.plist"; sourceTree = "<group>"; };
+		7C0E2CE8C9DE1DFEDFD20B6C4A4E88F8 /* Pods-NotABadPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NotABadPlayer-dummy.m"; sourceTree = "<group>"; };
+		886126ECC5BAF30EFA0DD634E7B6FE1D /* libiOSDropDown.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libiOSDropDown.a; path = libiOSDropDown.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B6D0B8336AA063DB7E0E44948E8B864 /* Pods-NotABadPlayer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NotABadPlayer-resources.sh"; sourceTree = "<group>"; };
+		8C1EA79773DE8CBBCA4D0A89F1E9C5C6 /* Pods-NotABadPlayer-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NotABadPlayer-frameworks.sh"; sourceTree = "<group>"; };
+		98DCE4C547243A45CBB148DA6E934694 /* GTProgressBar.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GTProgressBar.xcconfig; sourceTree = "<group>"; };
+		9A71E040F2AFE55BF3E5399C8DFC64A1 /* iOSDropDown.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; name = iOSDropDown.modulemap; path = ../../Headers/Public/iOSDropDown/iOSDropDown.modulemap; sourceTree = "<group>"; };
+		A071C6267331F3309C0660F0B5A19151 /* GTProgressBarCornerType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GTProgressBarCornerType.swift; path = GTProgressBar/Classes/GTProgressBarCornerType.swift; sourceTree = "<group>"; };
+		A564C2D8C3962714DC4DDE42E34CEF09 /* GTProgressBarLabelPosition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GTProgressBarLabelPosition.swift; path = GTProgressBar/Classes/GTProgressBarLabelPosition.swift; sourceTree = "<group>"; };
+		A5B481731AC20D37C10C4E31CF4C2F0E /* Pods-NotABadPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NotABadPlayer.release.xcconfig"; sourceTree = "<group>"; };
+		BE2BB64C375AEFF5F7183522D25D5C1C /* GTProgressBar.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; name = GTProgressBar.modulemap; path = ../../Headers/Public/GTProgressBar/GTProgressBar.modulemap; sourceTree = "<group>"; };
+		C81588FF3C83075A7A6CF1954A4B6E0A /* HorizontalLabelPositionFrameCalculator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HorizontalLabelPositionFrameCalculator.swift; path = GTProgressBar/Classes/HorizontalLabelPositionFrameCalculator.swift; sourceTree = "<group>"; };
+		CA992897B4B6F086E52C2C3464A8CFBB /* iOSDropDown.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = iOSDropDown.swift; path = iOSDropDown/Classes/iOSDropDown.swift; sourceTree = "<group>"; };
+		D0CD6E088DDCE246830C91AAC4AAAE25 /* iOSDropDown-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDropDown-prefix.pch"; sourceTree = "<group>"; };
+		DC9912E29AEC1075B7590D1DE3F1F5A7 /* iOSDropDown-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "iOSDropDown-umbrella.h"; path = "../../Headers/Public/iOSDropDown/iOSDropDown-umbrella.h"; sourceTree = "<group>"; };
+		E01BC028CDE9548FE4FE925A0E5E9B53 /* iOSDropDown.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iOSDropDown.xcconfig; sourceTree = "<group>"; };
+		E108AEE9FA2A2B29CE5438DB39F04840 /* GTProgressBar-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "GTProgressBar-umbrella.h"; path = "../../Headers/Public/GTProgressBar/GTProgressBar-umbrella.h"; sourceTree = "<group>"; };
+		E47C25F9C9AC9B2C7C816919B448F5AD /* GTProgressBarDirection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GTProgressBarDirection.swift; path = GTProgressBar/Classes/GTProgressBarDirection.swift; sourceTree = "<group>"; };
+		F58042DAE27B9D6ED90E5673B8819353 /* Pods-NotABadPlayer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NotABadPlayer-acknowledgements.markdown"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		DDA01CA79137DBFDA25A317CD6024B43 /* Frameworks */ = {
+		5C1EC0FB976156A6133F8ABF11F74BFF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EAF107774FD7443B092A951C697A41E4 /* Frameworks */ = {
+		6DBD43FBCD0B8F0B3287CB7AA6138F7B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0857494224E211636F36D725B6EDF3EA /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC7FF22D888E90E5156EFEBF9B80F7DE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -61,83 +108,128 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0CFEC115F12DA37FE8EA28A3DC6CDFF8 /* Products */ = {
+		54111DD4A5F371D731F82A3D6F7F4569 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				746AC69789C47D8B6AF4280331AEB02B /* libiOSDropDown.a */,
-				52983383B48E7112AA5EA48F1FB3936E /* libPods-NotABadPlayer.a */,
+				9A214986C59086B89E9C18C2BAEBE508 /* GTProgressBar */,
+				71FCC6BCAFC23824814463882D2CBD40 /* iOSDropDown */,
 			);
-			name = Products;
+			name = Pods;
 			sourceTree = "<group>";
 		};
-		422E80411CDDE7A9AA3779BFD82C69F4 /* Support Files */ = {
+		5B449DE84142ADA44345F7BFA303871D /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				A32C6413B4B6671777C57ED5FBE55D92 /* iOSDropDown.modulemap */,
-				17E1FB084AD41BC64EF1C7B89428F6CC /* iOSDropDown.xcconfig */,
-				384E60F9D0A1075A42BDA5F177F1BE30 /* iOSDropDown-dummy.m */,
-				16F071FF023E63FC87939F4767F1219D /* iOSDropDown-prefix.pch */,
-				C15D8C27AA1C28E6F7542B2DF4171C8A /* iOSDropDown-umbrella.h */,
+				73341D322FF929FF33B82D680D27577E /* UIKit.framework */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/iOSDropDown";
+			name = iOS;
 			sourceTree = "<group>";
 		};
-		5099492A94F788D545E433E04A611A17 /* Pods-NotABadPlayer */ = {
+		71FCC6BCAFC23824814463882D2CBD40 /* iOSDropDown */ = {
 			isa = PBXGroup;
 			children = (
-				6963158D302D8761A80521B9B95F9B4D /* Pods-NotABadPlayer.modulemap */,
-				132745ABE57BCA6CC0DD398999423691 /* Pods-NotABadPlayer-acknowledgements.markdown */,
-				99BA0721664D68D72CC5418B1F8AFDEB /* Pods-NotABadPlayer-acknowledgements.plist */,
-				A4E343715353E5F2D09A03361444C3AE /* Pods-NotABadPlayer-dummy.m */,
-				D93CCADDFBEE25101339D477AF7E4789 /* Pods-NotABadPlayer-umbrella.h */,
-				F71C224624E662E09FB07FCB81AA58A1 /* Pods-NotABadPlayer.debug.xcconfig */,
-				60B089A33A58C945A4511ABAB8A00DAB /* Pods-NotABadPlayer.release.xcconfig */,
-			);
-			name = "Pods-NotABadPlayer";
-			path = "Target Support Files/Pods-NotABadPlayer";
-			sourceTree = "<group>";
-		};
-		54D7EE6DC35A057EE1A04BCA614348C6 /* iOSDropDown */ = {
-			isa = PBXGroup;
-			children = (
-				DFA24CCBDEB17D542BBC948FC6C087E3 /* iOSDropDown.swift */,
-				422E80411CDDE7A9AA3779BFD82C69F4 /* Support Files */,
+				CA992897B4B6F086E52C2C3464A8CFBB /* iOSDropDown.swift */,
+				B1C11E9D8AE52D8F572E056EAD2A7333 /* Support Files */,
 			);
 			name = iOSDropDown;
 			path = iOSDropDown;
 			sourceTree = "<group>";
 		};
-		60E09F58A4B6EF1F34AC349248B764C0 /* Pods */ = {
+		9A214986C59086B89E9C18C2BAEBE508 /* GTProgressBar */ = {
 			isa = PBXGroup;
 			children = (
-				54D7EE6DC35A057EE1A04BCA614348C6 /* iOSDropDown */,
+				0804BAC4E980AE8E25D197DF60EDAEC1 /* FrameCalculator.swift */,
+				0B2288249C4EBD41FA396D4B4091293D /* GTProgressBar.swift */,
+				A071C6267331F3309C0660F0B5A19151 /* GTProgressBarCornerType.swift */,
+				E47C25F9C9AC9B2C7C816919B448F5AD /* GTProgressBarDirection.swift */,
+				A564C2D8C3962714DC4DDE42E34CEF09 /* GTProgressBarLabelPosition.swift */,
+				20786AAB0B49C3106D36914A9BA05D35 /* GTProgressBarOrientation.swift */,
+				C81588FF3C83075A7A6CF1954A4B6E0A /* HorizontalLabelPositionFrameCalculator.swift */,
+				4FBB4763607626D445A486DAF95AC102 /* UILabelExtensions.swift */,
+				554B6991B51CBFE8E8ADD25D85149D2F /* UIViewExtensions.swift */,
+				029D7372136E2756364B05448809746D /* VerticalLabelPositionFrameCalculator.swift */,
+				9F4F8420C4367BB30437E2D745FF2F9B /* Support Files */,
 			);
-			name = Pods;
+			name = GTProgressBar;
+			path = GTProgressBar;
 			sourceTree = "<group>";
 		};
-		9E4ECD279B21EA3F7E015B02290F88AA /* Targets Support Files */ = {
+		9F4F8420C4367BB30437E2D745FF2F9B /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				5099492A94F788D545E433E04A611A17 /* Pods-NotABadPlayer */,
+				BE2BB64C375AEFF5F7183522D25D5C1C /* GTProgressBar.modulemap */,
+				98DCE4C547243A45CBB148DA6E934694 /* GTProgressBar.xcconfig */,
+				708733A0B9D7CC576FE4035F59FEA846 /* GTProgressBar-dummy.m */,
+				60AD85E474BA3E64A6B6AAC71C3564BB /* GTProgressBar-prefix.pch */,
+				E108AEE9FA2A2B29CE5438DB39F04840 /* GTProgressBar-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/GTProgressBar";
+			sourceTree = "<group>";
+		};
+		A9EC3762147CC0207C0C589E5019F441 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				05D04DC80A387947710F85DEAFCAD592 /* libGTProgressBar.a */,
+				886126ECC5BAF30EFA0DD634E7B6FE1D /* libiOSDropDown.a */,
+				1EFFB75C6D891EDA13005197E801F2BB /* libPods-NotABadPlayer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B1C11E9D8AE52D8F572E056EAD2A7333 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9A71E040F2AFE55BF3E5399C8DFC64A1 /* iOSDropDown.modulemap */,
+				E01BC028CDE9548FE4FE925A0E5E9B53 /* iOSDropDown.xcconfig */,
+				1323905479F3A1BFBF284E14D4DA831B /* iOSDropDown-dummy.m */,
+				D0CD6E088DDCE246830C91AAC4AAAE25 /* iOSDropDown-prefix.pch */,
+				DC9912E29AEC1075B7590D1DE3F1F5A7 /* iOSDropDown-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/iOSDropDown";
+			sourceTree = "<group>";
+		};
+		B79E04BB792353FF9E1D6204C79AAEA2 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C1420404E0A1264264F0C25C736E1B71 /* Pods-NotABadPlayer */,
 			);
 			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		C1420404E0A1264264F0C25C736E1B71 /* Pods-NotABadPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				620F06D3B8370BDCDD38173DBD0CAA95 /* Pods-NotABadPlayer.modulemap */,
+				F58042DAE27B9D6ED90E5673B8819353 /* Pods-NotABadPlayer-acknowledgements.markdown */,
+				75DB3784472C3C73224EE7048998D7A6 /* Pods-NotABadPlayer-acknowledgements.plist */,
+				7C0E2CE8C9DE1DFEDFD20B6C4A4E88F8 /* Pods-NotABadPlayer-dummy.m */,
+				8C1EA79773DE8CBBCA4D0A89F1E9C5C6 /* Pods-NotABadPlayer-frameworks.sh */,
+				8B6D0B8336AA063DB7E0E44948E8B864 /* Pods-NotABadPlayer-resources.sh */,
+				0D90DB8F18DCFDD791E194ABF8AC02E7 /* Pods-NotABadPlayer-umbrella.h */,
+				3E47E8FF11C2BDC523AC1E692E07E76E /* Pods-NotABadPlayer.debug.xcconfig */,
+				A5B481731AC20D37C10C4E31CF4C2F0E /* Pods-NotABadPlayer.release.xcconfig */,
+			);
+			name = "Pods-NotABadPlayer";
+			path = "Target Support Files/Pods-NotABadPlayer";
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
 			isa = PBXGroup;
 			children = (
-				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
-				60E09F58A4B6EF1F34AC349248B764C0 /* Pods */,
-				0CFEC115F12DA37FE8EA28A3DC6CDFF8 /* Products */,
-				9E4ECD279B21EA3F7E015B02290F88AA /* Targets Support Files */,
+				24390EFD555DD124430DFF9724065945 /* Podfile */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				54111DD4A5F371D731F82A3D6F7F4569 /* Pods */,
+				A9EC3762147CC0207C0C589E5019F441 /* Products */,
+				B79E04BB792353FF9E1D6204C79AAEA2 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		D89477F20FB1DE18A04690586D7808C4 /* Frameworks */ = {
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5B449DE84142ADA44345F7BFA303871D /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -145,51 +237,41 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		116DF7FBBAB9ED9B0222165C4C506A75 /* Headers */ = {
+		08AA7685829A862D22828E68B90F09D0 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7F0EC9E08C4CA960D56A8BC94EF4145 /* Pods-NotABadPlayer-umbrella.h in Headers */,
+				0E59E62EB0DC02C352461476F6DE3D30 /* GTProgressBar-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		94D8A2752D40DD0F9297E9BD29794BA4 /* Headers */ = {
+		095AA33AF586BA66EE598E2CEC01AA21 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA759B0E8B83FE3FF7DE01FB5725A698 /* iOSDropDown-umbrella.h in Headers */,
+				3A6E3E6C6DAE8E69978940AFD5230FDE /* Pods-NotABadPlayer-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F016A3B36C680F4F65E57906B3BEA90 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB44759ABF3A7CA5915210AF2950C373 /* iOSDropDown-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		315B43683D88608C89D13A537EAA694B /* Pods-NotABadPlayer */ = {
+		144A0A237FF17F65FAF95D6ACEFE6B7F /* iOSDropDown */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3D6A6CCD5AE3B95CB4D07C2A1AED63BB /* Build configuration list for PBXNativeTarget "Pods-NotABadPlayer" */;
+			buildConfigurationList = 256F4D56C1A5BFD9E08D9043F4AD6887 /* Build configuration list for PBXNativeTarget "iOSDropDown" */;
 			buildPhases = (
-				116DF7FBBAB9ED9B0222165C4C506A75 /* Headers */,
-				94B975CD63896769A45E8A4817DFE8CD /* Sources */,
-				DDA01CA79137DBFDA25A317CD6024B43 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				957C9271B39644B69C382FB7141AD6B7 /* PBXTargetDependency */,
-			);
-			name = "Pods-NotABadPlayer";
-			productName = "Pods-NotABadPlayer";
-			productReference = 52983383B48E7112AA5EA48F1FB3936E /* libPods-NotABadPlayer.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		4575B6B8BD79813E0A6C49248D368E37 /* iOSDropDown */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BE9AC5735CF0768F2ACBA0B231A996F2 /* Build configuration list for PBXNativeTarget "iOSDropDown" */;
-			buildPhases = (
-				94D8A2752D40DD0F9297E9BD29794BA4 /* Headers */,
-				F2DF29C18258D9B19C628A2B243B9ECF /* Sources */,
-				EAF107774FD7443B092A951C697A41E4 /* Frameworks */,
-				422C9FEA8243D4615C1B285F02AD5083 /* Copy generated compatibility header */,
+				9F016A3B36C680F4F65E57906B3BEA90 /* Headers */,
+				5E063E87EE13C61AFC5C0E75E73F02BB /* Sources */,
+				6DBD43FBCD0B8F0B3287CB7AA6138F7B /* Frameworks */,
+				D78C62C0A1983B1F21E7BE98B7358382 /* Copy generated compatibility header */,
 			);
 			buildRules = (
 			);
@@ -197,7 +279,44 @@
 			);
 			name = iOSDropDown;
 			productName = iOSDropDown;
-			productReference = 746AC69789C47D8B6AF4280331AEB02B /* libiOSDropDown.a */;
+			productReference = 886126ECC5BAF30EFA0DD634E7B6FE1D /* libiOSDropDown.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		9FFCE5182AE6662EF397979237A48A01 /* Pods-NotABadPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC6255B65A97DF988CD36B07C517D041 /* Build configuration list for PBXNativeTarget "Pods-NotABadPlayer" */;
+			buildPhases = (
+				095AA33AF586BA66EE598E2CEC01AA21 /* Headers */,
+				B98253AB5225221D27C16DDD5A1339C0 /* Sources */,
+				5C1EC0FB976156A6133F8ABF11F74BFF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3D54F5938814FA152B280E85BEE9C967 /* PBXTargetDependency */,
+				38D26665E939AE85ADBB81848BAE3E0B /* PBXTargetDependency */,
+			);
+			name = "Pods-NotABadPlayer";
+			productName = "Pods-NotABadPlayer";
+			productReference = 1EFFB75C6D891EDA13005197E801F2BB /* libPods-NotABadPlayer.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		BCC0FB8986B869EF43A95EA4FE5A328E /* GTProgressBar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF71BDF2AF991287AB8F3340B0477D82 /* Build configuration list for PBXNativeTarget "GTProgressBar" */;
+			buildPhases = (
+				08AA7685829A862D22828E68B90F09D0 /* Headers */,
+				8E17D2832D622AEB09F62E6E10E79520 /* Sources */,
+				AC7FF22D888E90E5156EFEBF9B80F7DE /* Frameworks */,
+				9C86CC8843966DEFB38F20584728BE6F /* Copy generated compatibility header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GTProgressBar;
+			productName = GTProgressBar;
+			productReference = 05D04DC80A387947710F85DEAFCAD592 /* libGTProgressBar.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -217,18 +336,43 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 0CFEC115F12DA37FE8EA28A3DC6CDFF8 /* Products */;
+			productRefGroup = A9EC3762147CC0207C0C589E5019F441 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4575B6B8BD79813E0A6C49248D368E37 /* iOSDropDown */,
-				315B43683D88608C89D13A537EAA694B /* Pods-NotABadPlayer */,
+				BCC0FB8986B869EF43A95EA4FE5A328E /* GTProgressBar */,
+				144A0A237FF17F65FAF95D6ACEFE6B7F /* iOSDropDown */,
+				9FFCE5182AE6662EF397979237A48A01 /* Pods-NotABadPlayer */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		422C9FEA8243D4615C1B285F02AD5083 /* Copy generated compatibility header */ = {
+		9C86CC8843966DEFB38F20584728BE6F /* Copy generated compatibility header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DERIVED_SOURCES_DIR}/${PRODUCT_MODULE_NAME}-Swift.h",
+				"${PODS_ROOT}/Headers/Public/GTProgressBar/GTProgressBar.modulemap",
+				"${PODS_ROOT}/Headers/Public/GTProgressBar/GTProgressBar-umbrella.h",
+			);
+			name = "Copy generated compatibility header";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/${PRODUCT_MODULE_NAME}.modulemap",
+				"${BUILT_PRODUCTS_DIR}/GTProgressBar-umbrella.h",
+				"${BUILT_PRODUCTS_DIR}/Swift Compatibility Header/${PRODUCT_MODULE_NAME}-Swift.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "COMPATIBILITY_HEADER_PATH=\"${BUILT_PRODUCTS_DIR}/Swift Compatibility Header/${PRODUCT_MODULE_NAME}-Swift.h\"\nMODULE_MAP_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_MODULE_NAME}.modulemap\"\n\nditto \"${DERIVED_SOURCES_DIR}/${PRODUCT_MODULE_NAME}-Swift.h\" \"${COMPATIBILITY_HEADER_PATH}\"\nditto \"${PODS_ROOT}/Headers/Public/GTProgressBar/GTProgressBar.modulemap\" \"${MODULE_MAP_PATH}\"\nditto \"${PODS_ROOT}/Headers/Public/GTProgressBar/GTProgressBar-umbrella.h\" \"${BUILT_PRODUCTS_DIR}\"\nprintf \"\\n\\nmodule ${PRODUCT_MODULE_NAME}.Swift {\\n  header \\\"${COMPATIBILITY_HEADER_PATH}\\\"\\n  requires objc\\n}\\n\" >> \"${MODULE_MAP_PATH}\"\n";
+		};
+		D78C62C0A1983B1F21E7BE98B7358382 /* Copy generated compatibility header */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -255,61 +399,62 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		94B975CD63896769A45E8A4817DFE8CD /* Sources */ = {
+		5E063E87EE13C61AFC5C0E75E73F02BB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E4B757C6FCFED4674CB2BDB6B104335 /* Pods-NotABadPlayer-dummy.m in Sources */,
+				0AAC13892E5AEFD6E8E3394734C27217 /* iOSDropDown-dummy.m in Sources */,
+				D93108BA80643925E6D8447A836ABF14 /* iOSDropDown.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F2DF29C18258D9B19C628A2B243B9ECF /* Sources */ = {
+		8E17D2832D622AEB09F62E6E10E79520 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DB854500009D9B29A9322BFFBC3C022 /* iOSDropDown-dummy.m in Sources */,
-				3BBA66A6493E9B28293F2098C119B9C8 /* iOSDropDown.swift in Sources */,
+				8A4382D6DB68A9095AE38E743EEBA078 /* FrameCalculator.swift in Sources */,
+				093767B46CF63BA0C54E67B0ABAE12AD /* GTProgressBar-dummy.m in Sources */,
+				1028F51F8BCA689AD8B6F4F3F360F9D6 /* GTProgressBar.swift in Sources */,
+				46CC2B9781C7A370F70BF58E022A27B2 /* GTProgressBarCornerType.swift in Sources */,
+				E8D4CC395AEF7E33F83854509A7893BA /* GTProgressBarDirection.swift in Sources */,
+				95F9A9B6438C104E03EAA04811C855F5 /* GTProgressBarLabelPosition.swift in Sources */,
+				2AF89ABE4229E83482AF0BA88EBE3C60 /* GTProgressBarOrientation.swift in Sources */,
+				88969362DAE4B8710743B79CBAC0BE8E /* HorizontalLabelPositionFrameCalculator.swift in Sources */,
+				586508F2683A4BA52924FA7351D39DFB /* UILabelExtensions.swift in Sources */,
+				C4B4B4373453D441DA8A4FA7035044F6 /* UIViewExtensions.swift in Sources */,
+				18B8A263DEF2A011082560984446D090 /* VerticalLabelPositionFrameCalculator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B98253AB5225221D27C16DDD5A1339C0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B949FC917AB9253C7B4702FC30D3B8B /* Pods-NotABadPlayer-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		957C9271B39644B69C382FB7141AD6B7 /* PBXTargetDependency */ = {
+		38D26665E939AE85ADBB81848BAE3E0B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = iOSDropDown;
-			target = 4575B6B8BD79813E0A6C49248D368E37 /* iOSDropDown */;
-			targetProxy = 146C3E7591DDF477D0BA5FEA1EF73E7D /* PBXContainerItemProxy */;
+			target = 144A0A237FF17F65FAF95D6ACEFE6B7F /* iOSDropDown */;
+			targetProxy = CF295C750F84B0CE6FD8568CF48C2686 /* PBXContainerItemProxy */;
+		};
+		3D54F5938814FA152B280E85BEE9C967 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GTProgressBar;
+			target = BCC0FB8986B869EF43A95EA4FE5A328E /* GTProgressBar */;
+			targetProxy = 99AE4F992E8FAB663D89B3B71FDADC9A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		22648576E04801D53EB19419DEEFBE01 /* Debug */ = {
+		00A2D45A8F166D3C516A042B3599B496 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F71C224624E662E09FB07FCB81AA58A1 /* Pods-NotABadPlayer.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		3182ED6A7A7D151F19BAD7BF98146E86 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60B089A33A58C945A4511ABAB8A00DAB /* Pods-NotABadPlayer.release.xcconfig */;
+			baseConfigurationReference = A5B481731AC20D37C10C4E31CF4C2F0E /* Pods-NotABadPlayer.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -331,33 +476,33 @@
 			};
 			name = Release;
 		};
-		3D70BC3BC895B5ADE25E46419F30512A /* Release */ = {
+		4CDAF6C7AEB1B28A69BE220486AFA6B6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 17E1FB084AD41BC64EF1C7B89428F6CC /* iOSDropDown.xcconfig */;
+			baseConfigurationReference = 98DCE4C547243A45CBB148DA6E934694 /* GTProgressBar.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/iOSDropDown/iOSDropDown-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MODULEMAP_FILE = Headers/Public/iOSDropDown/iOSDropDown.modulemap;
+				GCC_PREFIX_HEADER = "Target Support Files/GTProgressBar/GTProgressBar-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MODULEMAP_FILE = Headers/Public/GTProgressBar/GTProgressBar.modulemap;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = iOSDropDown;
-				PRODUCT_NAME = iOSDropDown;
+				PRODUCT_MODULE_NAME = GTProgressBar;
+				PRODUCT_NAME = GTProgressBar;
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		4CE281642D6EE9FAB113046B4B6328A0 /* Release */ = {
+		6C5ED2858717A79652C8E2D69CFE7F88 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -389,66 +534,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"POD_CONFIGURATION_RELEASE=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 4.2;
-				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Release;
-		};
-		6DFA1578582149B7E24AD55CBA30F07A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -481,9 +568,83 @@
 			};
 			name = Debug;
 		};
-		F1366E504E2DE972E62F3C1651624638 /* Debug */ = {
+		6E4878CD664D536AE5A17D10E32F9739 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 17E1FB084AD41BC64EF1C7B89428F6CC /* iOSDropDown.xcconfig */;
+			baseConfigurationReference = E01BC028CDE9548FE4FE925A0E5E9B53 /* iOSDropDown.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/iOSDropDown/iOSDropDown-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MODULEMAP_FILE = Headers/Public/iOSDropDown/iOSDropDown.modulemap;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = iOSDropDown;
+				PRODUCT_NAME = iOSDropDown;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8ED3A64EDFA18FEEAEBFE0F339AE76CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98DCE4C547243A45CBB148DA6E934694 /* GTProgressBar.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/GTProgressBar/GTProgressBar-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MODULEMAP_FILE = Headers/Public/GTProgressBar/GTProgressBar.modulemap;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = GTProgressBar;
+				PRODUCT_NAME = GTProgressBar;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C88E97074134AE4A94683EBC95949AC9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E47E8FF11C2BDC523AC1E692E07E76E /* Pods-NotABadPlayer.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D3EDDB17CB30D2DA4234AEB004F769E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E01BC028CDE9548FE4FE925A0E5E9B53 /* iOSDropDown.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -506,14 +667,76 @@
 			};
 			name = Debug;
 		};
+		EF5BFA818FC42461784455EDD41279F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3D6A6CCD5AE3B95CB4D07C2A1AED63BB /* Build configuration list for PBXNativeTarget "Pods-NotABadPlayer" */ = {
+		256F4D56C1A5BFD9E08D9043F4AD6887 /* Build configuration list for PBXNativeTarget "iOSDropDown" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				22648576E04801D53EB19419DEEFBE01 /* Debug */,
-				3182ED6A7A7D151F19BAD7BF98146E86 /* Release */,
+				D3EDDB17CB30D2DA4234AEB004F769E9 /* Debug */,
+				6E4878CD664D536AE5A17D10E32F9739 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -521,17 +744,26 @@
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6DFA1578582149B7E24AD55CBA30F07A /* Debug */,
-				4CE281642D6EE9FAB113046B4B6328A0 /* Release */,
+				6C5ED2858717A79652C8E2D69CFE7F88 /* Debug */,
+				EF5BFA818FC42461784455EDD41279F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BE9AC5735CF0768F2ACBA0B231A996F2 /* Build configuration list for PBXNativeTarget "iOSDropDown" */ = {
+		CC6255B65A97DF988CD36B07C517D041 /* Build configuration list for PBXNativeTarget "Pods-NotABadPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F1366E504E2DE972E62F3C1651624638 /* Debug */,
-				3D70BC3BC895B5ADE25E46419F30512A /* Release */,
+				C88E97074134AE4A94683EBC95949AC9 /* Debug */,
+				00A2D45A8F166D3C516A042B3599B496 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF71BDF2AF991287AB8F3340B0477D82 /* Build configuration list for PBXNativeTarget "GTProgressBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8ED3A64EDFA18FEEAEBFE0F339AE76CB /* Debug */,
+				4CDAF6C7AEB1B28A69BE220486AFA6B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

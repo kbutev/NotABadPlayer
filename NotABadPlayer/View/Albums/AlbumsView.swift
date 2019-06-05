@@ -95,7 +95,7 @@ class AlbumsView : UIView
     private func setup() {
         let guide = self
         
-        // Quick player view
+        // Quick player setup
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
         quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
@@ -103,7 +103,7 @@ class AlbumsView : UIView
         quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
         quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
         
-        // Collection view
+        // Collection setup
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: AlbumsView.COLLECTION_HORIZONTAL_MARGIN).isActive = true
         collectionView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -AlbumsView.COLLECTION_HORIZONTAL_MARGIN).isActive = true
@@ -118,7 +118,9 @@ class AlbumsView : UIView
         self.collectionActionDelegate = AlbumsViewActionDelegate(view: self)
         collectionView.delegate = collectionActionDelegate
         
-        // Indexer view initialize and setup
+        collectionView.backgroundColor = .clear
+        
+        // Indexer view setup
         collectionIndexerView.delegate = self
         self.addSubview(collectionIndexerView)
         
@@ -128,7 +130,7 @@ class AlbumsView : UIView
         collectionIndexerView.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
         collectionIndexerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
         
-        // Indexer center character
+        // Indexer center character setup
         indexerCenterCharacter.translatesAutoresizingMaskIntoConstraints = false
         indexerCenterCharacter.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
         indexerCenterCharacter.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor).isActive = true

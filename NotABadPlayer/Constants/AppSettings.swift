@@ -27,7 +27,7 @@ enum TabID: String, CaseIterable {
     }
 }
 
-enum AppTheme: String, CaseIterable {
+enum AppThemeValue: String, CaseIterable {
     case LIGHT;
     case DARK;
     case MIX;
@@ -35,7 +35,7 @@ enum AppTheme: String, CaseIterable {
     static func stringValues() -> [String] {
         var strings: [String] = []
         
-        for value in AppTheme.allCases
+        for value in AppThemeValue.allCases
         {
             strings.append(value.rawValue)
         }

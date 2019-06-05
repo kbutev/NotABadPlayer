@@ -34,6 +34,9 @@ class PlaylistHeaderView : UICollectionReusableView
     private func setup() {
         let guide = stackView!
         
+        self.backgroundColor = .clear
+        
+        // Art cover setup
         artCoverImage.translatesAutoresizingMaskIntoConstraints = false
         artCoverImage.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
         artCoverImage.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.7).isActive = true
