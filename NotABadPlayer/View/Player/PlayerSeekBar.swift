@@ -12,6 +12,8 @@ import GTProgressBar
 class PlayerSeekBar: UIView
 {
     public static let MAX_VALUE: Double = 100
+    public static let HORIZONTAL_MARGIN: CGFloat = 10
+    public static let THUMB_SIZE: CGSize = CGSize(width: 16, height: 32)
     
     public var onSeekCallback: (Double)->Void = {(percentage) in }
     
@@ -22,6 +24,8 @@ class PlayerSeekBar: UIView
         
         set {
             progressBar.progress = CGFloat(newValue / PlayerSeekBar.MAX_VALUE)
+            
+            self.updateThumbView()
         }
     }
     
@@ -39,8 +43,17 @@ class PlayerSeekBar: UIView
         bar.barBackgroundColor = AppTheme.shared.colorFor(.PLAYER_SEEK_BAR_BACKGROUND)
         bar.barBorderColor = AppTheme.shared.colorFor(.PLAYER_SEEK_BAR_BORDER)
         bar.barFillInset = 0
+        bar.cornerType = GTProgressBarCornerType.square
         bar.displayLabel = false
         return bar
+    }()
+    
+    private let thumbView: UIView = {
+        let thumb = UIView()
+        thumb.backgroundColor = AppTheme.shared.colorFor(.PLAYER_SEEK_BAR_THUMB)
+        thumb.layer.borderColor = AppTheme.shared.colorFor(.PLAYER_SEEK_BAR_THUMB_BORDER).cgColor
+        thumb.layer.borderWidth = 1
+        return thumb
     }()
     
     override init(frame: CGRect) {
@@ -59,15 +72,21 @@ class PlayerSeekBar: UIView
         let guide = self
         
         self.addSubview(progressBar)
+        self.addSubview(thumbView)
         
-        // Setup progress bar constraints
+        // Progress bar setup
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         progressBar.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         progressBar.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        progressBar.leftAnchor.constraint(equalTo: guide.leftAnchor).isActive = true
-        progressBar.rightAnchor.constraint(equalTo: guide.rightAnchor).isActive = true
+        progressBar.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: PlayerSeekBar.HORIZONTAL_MARGIN).isActive = true
+        progressBar.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -PlayerSeekBar.HORIZONTAL_MARGIN).isActive = true
         
-        // Interaction
+        // Progress bar thumb setup
+        thumbView.frame.size.width = PlayerSeekBar.THUMB_SIZE.width
+        thumbView.frame.size.height = progressBar.frame.height
+        updateThumbView()
+        
+        // Interaction setup
         let barTapGesture = UITapGestureRecognizer(target: self, action: #selector(actionSeek(gesture:)))
         barTapGesture.numberOfTapsRequired = 1
         progressBar.addGestureRecognizer(barTapGesture)
@@ -76,8 +95,14 @@ class PlayerSeekBar: UIView
         progressBar.addGestureRecognizer(barHoldGesture)
     }
     
-    public func setProgress(_ value: Double) {
-        progressBar.progress = CGFloat(value)
+    private func updateThumbView() {
+        if thumbView.frame.height != progressBar.frame.height
+        {
+            thumbView.frame.size.height = progressBar.frame.height
+        }
+        
+        thumbView.frame.origin.x = (progressBar.frame.width * progressBar.progress)
+        thumbView.frame.origin.y = progressBar.frame.origin.y
     }
 }
 
@@ -86,11 +111,21 @@ extension PlayerSeekBar {
     @objc func actionSeek(gesture: UIGestureRecognizer) {
         let location = gesture.location(in: self.progressBar)
         
-        let invertY = abs(location.y - self.progressBar.frame.height)
+        var percentage = location.x / self.progressBar.frame.width
         
-        let percentage = invertY / self.progressBar.frame.height
+        if percentage >= 1.0
+        {
+            percentage = 0.99
+        }
+        
+        if percentage < 0.0
+        {
+            percentage = 0
+        }
         
         self.progressBar.progress = percentage
+        
+        self.updateThumbView()
         
         self.onSeekCallback(Double(percentage))
     }

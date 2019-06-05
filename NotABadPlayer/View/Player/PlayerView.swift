@@ -26,13 +26,13 @@ class PlayerView : UIView
     
     @IBOutlet weak var bottomStackView: UIStackView!
     
-    @IBOutlet weak var textStackView: UIStackView!
-    @IBOutlet weak var titleText: UILabel!
-    @IBOutlet weak var playlistText: UILabel!
-    @IBOutlet weak var artistText: UILabel!
-    @IBOutlet weak var seekBarSlider: PlayerSeekBar!
+    @IBOutlet weak var textLayoutView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var playlistLabel: UILabel!
+    @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var seekBar: PlayerSeekBar!
     
-    @IBOutlet weak var mediaButtonsStackView: UIStackView!
+    @IBOutlet weak var mediaSeekBarInfoStackView: UIStackView!
     @IBOutlet weak var currentTimeText: UILabel!
     @IBOutlet weak var totalDurationText: UILabel!
     @IBOutlet weak var mediaButtonStack: UIStackView!
@@ -54,9 +54,9 @@ class PlayerView : UIView
     
     override func awakeFromNib() {
         // Text default values
-        self.titleText.text = ""
-        self.playlistText.text = ""
-        self.artistText.text = ""
+        self.titleLabel.text = ""
+        self.playlistLabel.text = ""
+        self.artistLabel.text = ""
         self.currentTimeText.text = Text.value(.ZeroTimer)
         self.totalDurationText.text = Text.value(.ZeroTimer)
         
@@ -67,25 +67,41 @@ class PlayerView : UIView
         let layoutGuide = self.safeAreaLayoutGuide
         let heightAnchor = layoutGuide.heightAnchor
         
-        // Constraints - top
+        // Top stack setup
         topStackView.translatesAutoresizingMaskIntoConstraints = false
         topStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
         
-        // Constraints - bottom
+        // Bottom stack setup
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
         bottomStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
         
-        mediaButtonsStackView.translatesAutoresizingMaskIntoConstraints = false
-        mediaButtonsStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.1).isActive = true
+        // Title label setup
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: textLayoutView.topAnchor).isActive = true
+        titleLabel.widthAnchor.constraint(equalTo: textLayoutView.widthAnchor).isActive = true
         
+        // Playlist label setup
+        playlistLabel.translatesAutoresizingMaskIntoConstraints = false
+        playlistLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
+        playlistLabel.widthAnchor.constraint(equalTo: textLayoutView.widthAnchor).isActive = true
+        
+        // Artist label setup
+        artistLabel.translatesAutoresizingMaskIntoConstraints = false
+        artistLabel.topAnchor.constraint(equalTo: playlistLabel.bottomAnchor).isActive = true
+        artistLabel.widthAnchor.constraint(equalTo: textLayoutView.widthAnchor).isActive = true
+        
+        // Media seek bar info stack setup
+        mediaSeekBarInfoStackView.translatesAutoresizingMaskIntoConstraints = false
+        mediaSeekBarInfoStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.1).isActive = true
+        
+        // Media buttons stack setup
         mediaButtonStack.translatesAutoresizingMaskIntoConstraints = false
         mediaButtonStack.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2).isActive = true
         
-        // User input
-        let gestureSeekBar = UILongPressGestureRecognizer(target: self, action: #selector(actionSeekBarChanged(gesture:)))
-        gestureSeekBar.minimumPressDuration = 0
-        self.seekBarSlider.isUserInteractionEnabled = true
-        self.seekBarSlider.addGestureRecognizer(gestureSeekBar)
+        // User input setup
+        seekBar.onSeekCallback = {[weak self] (progress) in
+            self?.onPlayerSeekCallback(progress)
+        }
         
         var gestureTap = UITapGestureRecognizer(target: self, action: #selector(actionRecall(sender:)))
         gestureTap.numberOfTapsRequired = 1
@@ -176,7 +192,7 @@ class PlayerView : UIView
     }
     
     public func updateSoftUIState(player: AudioPlayer) {
-        guard let seekBar = self.seekBarSlider else {
+        guard let seekBar = self.seekBar else {
             return
         }
         
@@ -200,9 +216,9 @@ class PlayerView : UIView
         let imageSize = CGSize(width: self.artCoverImage.frame.width, height: self.artCoverImage.frame.height)
         self.artCoverImage.image = track.albumCover?.image(at: imageSize)
         
-        self.titleText.text = track.title
-        self.playlistText.text = track.albumTitle
-        self.artistText.text = track.artist
+        self.titleLabel.text = track.title
+        self.playlistLabel.text = track.albumTitle
+        self.artistLabel.text = track.artist
         
         self.totalDurationText.text = track.duration
         
@@ -252,32 +268,6 @@ class PlayerView : UIView
 
 // Actions
 extension PlayerView {
-    @objc public func actionSeekBarChanged(gesture: UILongPressGestureRecognizer) {
-        guard let seekBar = self.seekBarSlider else {
-            return
-        }
-        
-        let minDistance: CGFloat = 2.0
-        let pointTapped: CGPoint = gesture.location(in: seekBarSlider)
-        let widthOfSlider: CGFloat = seekBarSlider.frame.size.width
-        let positionOfSlider: CGPoint = seekBarSlider.frame.origin
-        
-        // If tap is too near from the slider thumb, cancel
-        let thumbPosition = CGFloat((seekBarSlider.progressValue / seekBar.maximumValue)) * widthOfSlider
-        let dif = abs(pointTapped.x - thumbPosition)
-        
-        if dif < minDistance
-        {
-            return
-        }
-        
-        // Calculate new value
-        let newValue = ((pointTapped.x - positionOfSlider.x) * CGFloat(seekBar.maximumValue) / widthOfSlider)
-        
-        // Notify delegate
-        self.onPlayerSeekCallback(Double(newValue / 100.0))
-    }
-    
     @objc public func actionRecall(sender: Any) {
         UIAnimations.animateImageClicked(self.recallMediaButton)
         
