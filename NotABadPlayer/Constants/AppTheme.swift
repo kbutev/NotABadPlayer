@@ -81,6 +81,8 @@ class AppAppearanceColors
         .PLAYER_SEEK_BAR : Colors.GREEN,
         .PLAYER_SEEK_BAR_BACKGROUND : Colors.DARK_GRAY,
         .PLAYER_SEEK_BAR_BORDER : Colors.DARK_GRAY,
+        .PLAYER_SEEK_BAR_THUMB : Colors.WHITE,
+        .PLAYER_SEEK_BAR_THUMB_BORDER : Colors.BLACK,
         .PLAYER_SIDE_VOLUME_BAR : Colors.BLUE,
         .QUICK_PLAYER_SEEK_BAR : Colors.ORANGE,
         .INDEXER_CHAR_COLOR : Colors.DARK_GRAY,

@@ -30,37 +30,41 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qpH-qD-OrJ">
                             <rect key="frame" x="0.0" y="48" width="406" height="770"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="gLF-yv-8TJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="406" height="72"/>
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vzl-Kb-tKP">
+                                    <rect key="frame" x="0.0" y="0.0" width="406" height="128"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-dq-uhZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="406" height="24"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-dq-uhZ">
+                                            <rect key="frame" x="0.0" y="50" width="406" height="26.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbx-Vc-Okd">
-                                            <rect key="frame" x="0.0" y="24" width="406" height="24"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbx-Vc-Okd">
+                                            <rect key="frame" x="0.0" y="54" width="406" height="19.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-Zk-IQF">
-                                            <rect key="frame" x="0.0" y="48" width="406" height="24"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-Zk-IQF">
+                                            <rect key="frame" x="0.0" y="54" width="406" height="19.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="1" green="0.93849887456700354" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                </stackView>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vax-AW-0TH">
-                                    <rect key="frame" x="0.0" y="72" width="406" height="148.5"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vax-AW-0TH">
+                                    <rect key="frame" x="0.0" y="128" width="406" height="148.5"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X6l-cp-baX" customClass="PlayerSeekBar" customModule="NotABadPlayer" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X6l-cp-baX" customClass="PlayerSeekBar" customModule="NotABadPlayer" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="406" height="128"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
-                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dk9-jt-ttd">
+                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dk9-jt-ttd">
                                             <rect key="frame" x="0.0" y="128" width="406" height="20.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hdb-qE-dXh">
@@ -80,26 +84,26 @@
                                     </subviews>
                                 </stackView>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mrj-RN-2OL">
-                                    <rect key="frame" x="0.0" y="220.5" width="406" height="549.5"/>
+                                    <rect key="frame" x="0.0" y="276.5" width="406" height="493.5"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_recall" translatesAutoresizingMaskIntoConstraints="NO" id="Bji-m9-xUQ">
-                                            <rect key="frame" x="0.0" y="251" width="81" height="48"/>
+                                            <rect key="frame" x="0.0" y="223" width="81" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_previous" translatesAutoresizingMaskIntoConstraints="NO" id="QxD-S3-QDA">
-                                            <rect key="frame" x="81" y="251" width="81.5" height="48"/>
+                                            <rect key="frame" x="81" y="223" width="81.5" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_play" translatesAutoresizingMaskIntoConstraints="NO" id="CXe-ug-Hj2">
-                                            <rect key="frame" x="162.5" y="251" width="81" height="48"/>
+                                            <rect key="frame" x="162.5" y="223" width="81" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_next" translatesAutoresizingMaskIntoConstraints="NO" id="Q19-uJ-v5I">
-                                            <rect key="frame" x="243.5" y="251" width="81.5" height="48"/>
+                                            <rect key="frame" x="243.5" y="223" width="81.5" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_order_forwards" translatesAutoresizingMaskIntoConstraints="NO" id="abI-Cf-mKz">
-                                            <rect key="frame" x="325" y="251" width="81" height="48"/>
+                                            <rect key="frame" x="325" y="223" width="81" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                     </subviews>
@@ -119,21 +123,21 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="artCoverImage" destination="vG5-cc-mwB" id="qWV-gC-4AY"/>
-                <outlet property="artistText" destination="Lxf-Zk-IQF" id="B52-Ul-Ynh"/>
+                <outlet property="artistLabel" destination="Lxf-Zk-IQF" id="B52-Ul-Ynh"/>
                 <outlet property="bottomStackView" destination="qpH-qD-OrJ" id="DJg-Yu-QI3"/>
                 <outlet property="currentTimeText" destination="Hdb-qE-dXh" id="0ah-bu-GIy"/>
                 <outlet property="mediaButtonStack" destination="mrj-RN-2OL" id="wfW-s5-Hnz"/>
-                <outlet property="mediaButtonsStackView" destination="vax-AW-0TH" id="AlF-wv-SmS"/>
+                <outlet property="mediaSeekBarInfoStackView" destination="vax-AW-0TH" id="AlF-wv-SmS"/>
                 <outlet property="nextMediaButton" destination="Q19-uJ-v5I" id="JQG-5G-lcq"/>
                 <outlet property="playMediaButton" destination="CXe-ug-Hj2" id="irn-aN-iJb"/>
                 <outlet property="playOrderMediaButton" destination="abI-Cf-mKz" id="xfE-aX-MQ1"/>
-                <outlet property="playlistText" destination="Wbx-Vc-Okd" id="ZpJ-6I-qqf"/>
+                <outlet property="playlistLabel" destination="Wbx-Vc-Okd" id="ZpJ-6I-qqf"/>
                 <outlet property="previousMediaButton" destination="QxD-S3-QDA" id="kAM-sl-CQE"/>
                 <outlet property="primaryStackView" destination="wau-q1-oXw" id="pFm-FW-e4c"/>
                 <outlet property="recallMediaButton" destination="Bji-m9-xUQ" id="ns6-SC-1kz"/>
-                <outlet property="seekBarSlider" destination="X6l-cp-baX" id="Hg6-Km-6Va"/>
-                <outlet property="textStackView" destination="gLF-yv-8TJ" id="Uyg-V4-aT2"/>
-                <outlet property="titleText" destination="CPg-dq-uhZ" id="moO-Wn-tLC"/>
+                <outlet property="seekBar" destination="X6l-cp-baX" id="Hg6-Km-6Va"/>
+                <outlet property="textLayoutView" destination="vzl-Kb-tKP" id="D4W-0Y-YsH"/>
+                <outlet property="titleLabel" destination="CPg-dq-uhZ" id="moO-Wn-tLC"/>
                 <outlet property="topStackView" destination="bMV-jH-T6Y" id="uT3-Vl-3gV"/>
                 <outlet property="totalDurationText" destination="KIo-gR-kr2" id="Lqu-wb-Hzm"/>
             </connections>
