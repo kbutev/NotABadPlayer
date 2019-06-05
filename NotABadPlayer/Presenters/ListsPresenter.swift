@@ -29,16 +29,7 @@ class ListsPresenter: BasePresenter
     }
     
     func start() {
-        self.playlists = GeneralStorage.shared.getUserPlaylists()
-        
-        let recentlyPlayed = AudioPlayer.shared.playHistory
-        self.recentlyPlayedPlaylist = recentlyPlayed.count > 0 ? AudioPlaylist(name: Text.value(.PlaylistRecentlyPlayed), tracks: recentlyPlayed) : nil
-        
-        if let recentlyPlayed = recentlyPlayedPlaylist
-        {
-            playlists.insert(recentlyPlayed, at: 0)
-        }
-        
+        self.updateData()
         self.updateDataSource()
     }
     
@@ -91,6 +82,15 @@ class ListsPresenter: BasePresenter
         }
     }
     
+    func onPlayerVolumeSet(value: Double) {
+        
+    }
+    
+    func onPlaylistsChanged() {
+        self.updateData()
+        self.updateDataSource()
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         if index >= self.playlists.count
         {
@@ -134,7 +134,7 @@ class ListsPresenter: BasePresenter
         
     }
     
-    func onAppThemeChange(_ themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppThemeValue) {
         
     }
     
@@ -152,6 +152,18 @@ class ListsPresenter: BasePresenter
     
     func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         
+    }
+    
+    private func updateData() {
+        self.playlists = GeneralStorage.shared.getUserPlaylists()
+        
+        let recentlyPlayed = AudioPlayer.shared.playHistory
+        self.recentlyPlayedPlaylist = recentlyPlayed.count > 0 ? AudioPlaylist(name: Text.value(.PlaylistRecentlyPlayed), tracks: recentlyPlayed) : nil
+        
+        if let recentlyPlayed = recentlyPlayedPlaylist
+        {
+            playlists.insert(recentlyPlayed, at: 0)
+        }
     }
     
     private func updateDataSource() {

@@ -1,16 +1,20 @@
 PODS:
+  - GTProgressBar (0.3.3)
   - iOSDropDown (0.2.7)
 
 DEPENDENCIES:
+  - GTProgressBar
   - iOSDropDown
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - GTProgressBar
     - iOSDropDown
 
 SPEC CHECKSUMS:
+  GTProgressBar: a480283ecb0ada50de16c71e634892826928f640
   iOSDropDown: 7a4cfc67d5166f319858747b63cd2f7760c4fb4b
 
-PODFILE CHECKSUM: 9bd6cace683ffa5a8621f6afafabf6ef1deb5e12
+PODFILE CHECKSUM: 20c722b79df10ec3c48430db61800ff06b224239
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.5.3

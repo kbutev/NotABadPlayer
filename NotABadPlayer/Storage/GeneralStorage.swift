@@ -260,10 +260,10 @@ class GeneralStorage {
         }
     }
     
-    func getAppThemeValue() -> AppTheme {
+    func getAppThemeValue() -> AppThemeValue {
         if let value = storage.string(forKey: "app_theme")
         {
-            if let result = AppTheme(rawValue: value)
+            if let result = AppThemeValue(rawValue: value)
             {
                 return result
             }
@@ -274,7 +274,7 @@ class GeneralStorage {
         return .LIGHT
     }
     
-    func saveAppThemeValue(_ theme: AppTheme) {
+    func saveAppThemeValue(_ theme: AppThemeValue) {
         storage.set(theme.rawValue, forKey: "app_theme")
         
         // Observers alert

@@ -178,4 +178,8 @@ extension QuickPlayerService : AudioPlayerObserver {
             observer.value?.updatePlayOrderButtonState(order: order)
         }
     }
+    
+    func onVolumeChanged(volume: Double) {
+        
+    }
 }

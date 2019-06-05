@@ -31,4 +31,5 @@ protocol AudioPlayerObserver : class {
     func onPlayerPause(track: AudioTrack)
     func onPlayerResume(track: AudioTrack)
     func onPlayOrderChange(order: AudioPlayOrder)
+    func onVolumeChanged(volume: Double)
 }

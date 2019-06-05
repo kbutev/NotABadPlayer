@@ -9,7 +9,7 @@
 import Foundation
 
 struct AppThemeSetter {
-    public static func setTheme(_ value: AppTheme) {
+    public static func setTheme(_ value: AppThemeValue) {
         switch value
         {
         case .LIGHT:

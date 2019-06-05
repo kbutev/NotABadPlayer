@@ -31,11 +31,19 @@ class CreateListAddedTrackCell: UITableViewCell
     }
     
     private func setup() {
+        self.backgroundColor = .clear
+        
+        // Cover setup
         coverImage.translatesAutoresizingMaskIntoConstraints = false
         coverImage.widthAnchor.constraint(equalToConstant: 48).isActive = true
         coverImage.heightAnchor.constraint(equalToConstant: CreateListAddedTrackCell.SIZE.height).isActive = true
         
+        // Text stack setup
         textStackView.layoutMargins = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
         textStackView.isLayoutMarginsRelativeArrangement = true
+        
+        // Text labels setup
+        titleLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        descriptionLabel.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
     }
 }

@@ -107,6 +107,14 @@ class AlbumsPresenter: BasePresenter
         delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
     }
     
+    func onPlayerVolumeSet(value: Double) {
+        
+    }
+    
+    func onPlaylistsChanged() {
+        
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         
     }
@@ -123,7 +131,7 @@ class AlbumsPresenter: BasePresenter
         
     }
     
-    func onAppThemeChange(_ themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppThemeValue) {
         
     }
     

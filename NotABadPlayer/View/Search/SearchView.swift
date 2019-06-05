@@ -89,7 +89,7 @@ class SearchView: UIView
     private func setup() {
         let guide = self
         
-        // Quick player view
+        // Quick player setup
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
         quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
@@ -97,14 +97,14 @@ class SearchView: UIView
         quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
         quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
         
-        // Stack view
+        // Stack setup
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: SearchView.HORIZONTAL_MARGIN).isActive = true
         stackView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -SearchView.HORIZONTAL_MARGIN).isActive = true
         stackView.topAnchor.constraint(equalTo: guide.topAnchor, constant: SearchView.TOP_MARGIN).isActive = true
         stackView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
         
-        // Collection
+        // Collection setup
         let cellNib = UINib(nibName: String(describing: SearchItemCell.self), bundle: nil)
         collectionView.register(cellNib, forCellWithReuseIdentifier: SearchView.CELL_IDENTIFIER)
         
@@ -115,7 +115,9 @@ class SearchView: UIView
         self.collectionActionDelegate = SearchViewActionDelegate(view: self)
         collectionView.delegate = self.collectionActionDelegate
         
-        // Search field interaction
+        collectionView.backgroundColor = .clear
+        
+        // Search field interaction setup
         searchField.delegate = self
     }
     

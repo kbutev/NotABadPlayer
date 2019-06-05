@@ -35,6 +35,8 @@ class SearchItemCell : UICollectionViewCell
     private func setup() {
         let guide = self
         
+        self.backgroundColor = .clear
+        
         trackAlbumCover.translatesAutoresizingMaskIntoConstraints = false
         trackAlbumCover.widthAnchor.constraint(equalToConstant: 48).isActive = true
         trackAlbumCover.heightAnchor.constraint(equalTo: guide.heightAnchor).isActive = true

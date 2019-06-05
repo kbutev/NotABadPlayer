@@ -52,6 +52,14 @@ class SettingsPresenter: BasePresenter
         
     }
     
+    func onPlayerVolumeSet(value: Double) {
+        
+    }
+    
+    func onPlaylistsChanged() {
+        
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         
     }
@@ -73,7 +81,7 @@ class SettingsPresenter: BasePresenter
         AudioPlayer.shared.pause()
     }
     
-    func onAppThemeChange(_ themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppThemeValue) {
         if GeneralStorage.shared.getAppThemeValue() == themeValue
         {
             return

@@ -28,6 +28,6 @@ class CreateListAlbumTrackCell: UITableViewCell
     }
     
     private func setup() {
-        
+        self.backgroundColor = .clear
     }
 }

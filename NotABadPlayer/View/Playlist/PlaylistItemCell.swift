@@ -34,6 +34,9 @@ class PlaylistItemCell : UICollectionViewCell
     private func setup() {
         let guide = self
         
+        self.backgroundColor = .clear
+        
+        // Track num setup
         trackNumText.translatesAutoresizingMaskIntoConstraints = false
         trackNumText.widthAnchor.constraint(equalToConstant: 32).isActive = true
         trackNumText.heightAnchor.constraint(equalTo: guide.heightAnchor).isActive = true

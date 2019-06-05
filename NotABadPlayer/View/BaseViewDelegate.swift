@@ -25,7 +25,7 @@ protocol BaseViewDelegate : class {
     func searchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?)
     
     func onResetSettingsDefaults()
-    func onThemeSelect(_ value: AppTheme)
+    func onThemeSelect(_ value: AppThemeValue)
     func onTrackSortingSelect(_ value: TrackSorting)
     func onShowVolumeBarSelect(_ value: ShowVolumeBar)
     

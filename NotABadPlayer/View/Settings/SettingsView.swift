@@ -10,13 +10,13 @@ import UIKit
 import iOSDropDown
 
 enum SettingsPickerValue {
-    case Theme; case TrackSorting; case ShowVolumeBar; case OpenPlayerOnPlay;
+    case Theme; case TrackSorting; case OpenPlayerOnPlay;
     case PlayerVolumeUp; case PlayerVolumeDown; case PlayerVolume; case PlayerRecall; case PlayerPrevious; case PlayerNext; case PlayerSwipeL; case PlayerSwipeR;
     case QPlayerVolumeUp; case QPlayerVolumeDown; case QPlayerPrevious; case QPlayerNext;
 }
 
 protocol SettingsActionDelegate: class {
-    func onThemeSelect(_ value: AppTheme)
+    func onThemeSelect(_ value: AppThemeValue)
     func onTrackSortingSelect(_ value: TrackSorting)
     func onShowVolumeBarSelect(_ value: ShowVolumeBar)
     func onOpenPlayerOnPlaySelect(_ value: OpenPlayerOnPlay)
@@ -33,7 +33,7 @@ class SettingsView : UIView
     
     private var initialized: Bool = false
     
-    public var onAppThemeSelectCallback: (AppTheme)->Void = {(value) in }
+    public var onAppThemeSelectCallback: (AppThemeValue)->Void = {(value) in }
     public var onTrackSortingSelectCallback: (TrackSorting)->Void = {(value) in }
     public var onShowVolumeBarSelectCallback: (ShowVolumeBar)->Void = {(value) in }
     public var onOpenPlayerOnPlaySelectCallback: (OpenPlayerOnPlay)->Void = {(value) in }
@@ -42,11 +42,12 @@ class SettingsView : UIView
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var appearanceLabel: UILabel!
     @IBOutlet weak var pickAppTheme: SettingsPickView!
     @IBOutlet weak var pickTrackSorting: SettingsPickView!
-    @IBOutlet weak var pickShowVolumeBar: SettingsPickView!
     @IBOutlet weak var pickOpenPlayerOnPlay: SettingsPickView!
     
+    @IBOutlet weak var keyBindsLabel: UILabel!
     @IBOutlet weak var pickKeybindPlayerVolumeUp: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerVolumeDown: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerVolume: SettingsPickView!
@@ -60,7 +61,10 @@ class SettingsView : UIView
     @IBOutlet weak var pickKeybindQPlayerPrevious: SettingsPickView!
     @IBOutlet weak var pickKeybindQPlayerNext: SettingsPickView!
     
+    @IBOutlet weak var resetLabel: UILabel!
     @IBOutlet weak var resetDefaultsButton: UIButton!
+    @IBOutlet weak var aboutLabel: UILabel!
+    @IBOutlet weak var aboutInfoView: UITextView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,7 +78,6 @@ class SettingsView : UIView
         // Picker views setup
         setupPickerValues(.Theme)
         setupPickerValues(.TrackSorting)
-        setupPickerValues(.ShowVolumeBar)
         setupPickerValues(.OpenPlayerOnPlay)
         setupPickerValues(.PlayerVolumeUp)
         setupPickerValues(.PlayerVolumeDown)
@@ -103,7 +106,7 @@ class SettingsView : UIView
     private func setup() {
         let guide = self
         
-        // Base
+        // Scroll setup
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: SettingsView.HORIZONTAL_MARGIN).isActive = true
         scrollView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -SettingsView.HORIZONTAL_MARGIN).isActive = true
@@ -113,10 +116,19 @@ class SettingsView : UIView
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
         
-        // Set scroll content size of the scroll view
         resizeScrollViewContentSize()
         
-        // User interaction
+        // Text labels setup
+        appearanceLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        keyBindsLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        resetLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        aboutLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        
+        // About info setup
+        aboutInfoView.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        aboutInfoView.backgroundColor = .clear
+        
+        // User interaction setup
         resetDefaultsButton.addTarget(self, action: #selector(actionResetDefaultsButton), for: .touchUpInside)
     }
     
@@ -135,8 +147,8 @@ class SettingsView : UIView
         })
     }
     
-    public func selectTheme(_ value: AppTheme) {
-        if let index = AppTheme.allCases.firstIndex(of: value)
+    public func selectTheme(_ value: AppThemeValue) {
+        if let index = AppThemeValue.allCases.firstIndex(of: value)
         {
             pickAppTheme.selectOption(index: UInt(index))
         }
@@ -146,13 +158,6 @@ class SettingsView : UIView
         if let index = TrackSorting.allCases.firstIndex(of: value)
         {
             pickTrackSorting.selectOption(index: UInt(index))
-        }
-    }
-    
-    public func selectShowVolumeBar(_ value: ShowVolumeBar) {
-        if let index = ShowVolumeBar.allCases.firstIndex(of: value)
-        {
-            pickAppTheme.selectOption(index: UInt(index))
         }
     }
     
@@ -219,8 +224,6 @@ extension SettingsView {
             return pickAppTheme
         case .TrackSorting:
             return pickTrackSorting
-        case .ShowVolumeBar:
-            return pickShowVolumeBar
         case .OpenPlayerOnPlay:
             return pickOpenPlayerOnPlay
         case .PlayerVolumeUp:
@@ -260,7 +263,7 @@ extension SettingsView {
         switch type {
         case .Theme:
             title = Text.value(.SettingsTheme)
-            for option in AppTheme.stringValues()
+            for option in AppThemeValue.stringValues()
             {
                 options.append(option.replacingOccurrences(of: "_", with: " "))
             }
@@ -268,13 +271,6 @@ extension SettingsView {
         case .TrackSorting:
             title = Text.value(.SettingsTrackSorting)
             for option in TrackSorting.stringValues()
-            {
-                options.append(option.replacingOccurrences(of: "_", with: " "))
-            }
-            break
-        case .ShowVolumeBar:
-            title = Text.value(.SettingsShowVolumeBar)
-            for option in ShowVolumeBar.stringValues()
             {
                 options.append(option.replacingOccurrences(of: "_", with: " "))
             }
@@ -353,7 +349,6 @@ extension SettingsView {
     private func setUserInteractionStateForAllPickerViews(_ value: Bool) {
         getPickerView(for: .Theme).isUserInteractionEnabled = value
         getPickerView(for: .TrackSorting).isUserInteractionEnabled = value
-        getPickerView(for: .ShowVolumeBar).isUserInteractionEnabled = value
         getPickerView(for: .PlayerVolumeUp).isUserInteractionEnabled = value
         getPickerView(for: .PlayerVolumeDown).isUserInteractionEnabled = value
         getPickerView(for: .PlayerVolume).isUserInteractionEnabled = value
@@ -403,21 +398,15 @@ extension SettingsView: SettingsPickActionDelegate {
         // Forward to delegate
         switch source {
         case .Theme:
-            if index < AppTheme.allCases.count
+            if index < AppThemeValue.allCases.count
             {
-                self.onAppThemeSelectCallback(AppTheme.allCases[Int(index)])
+                self.onAppThemeSelectCallback(AppThemeValue.allCases[Int(index)])
             }
             break
         case .TrackSorting:
             if index < TrackSorting.allCases.count
             {
                 self.onTrackSortingSelectCallback(TrackSorting.allCases[Int(index)])
-            }
-            break
-        case .ShowVolumeBar:
-            if index < ShowVolumeBar.allCases.count
-            {
-                self.onShowVolumeBarSelectCallback(ShowVolumeBar.allCases[Int(index)])
             }
             break
         case .OpenPlayerOnPlay:

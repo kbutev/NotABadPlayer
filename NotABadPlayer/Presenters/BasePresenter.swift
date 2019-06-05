@@ -24,14 +24,16 @@ protocol BasePresenter
     func onPlayerButtonClick(input: ApplicationInput)
     func onPlayOrderButtonClick()
     func onOpenPlaylistButtonClick()
+    func onPlayerVolumeSet(value: Double)
     
+    func onPlaylistsChanged()
     func onPlaylistItemDelete(index: UInt)
     
     func onSearchResultClick(index: UInt)
     func onSearchQuery(_ query: String)
     
     func onAppSettingsReset()
-    func onAppThemeChange(_ themeValue: AppTheme);
+    func onAppThemeChange(_ themeValue: AppThemeValue);
     func onTrackSortingSettingChange(_ trackSorting: TrackSorting)
     func onShowVolumeBarSettingChange(_ value: ShowVolumeBar)
     func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay)

@@ -85,7 +85,7 @@ class PlaylistView : UIView
     private func setup() {
         let guide = self.superview!
         
-        // Quick player view
+        // Quick player setup
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
         quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
@@ -93,7 +93,7 @@ class PlaylistView : UIView
         quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
         quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
         
-        // Collection view
+        // Collection setup
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
         collectionView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
@@ -115,14 +115,14 @@ class PlaylistView : UIView
         self.collectionActionDelegate = PlaylistViewActionDelegate(view: self)
         collectionView.delegate = collectionActionDelegate
         
-        // Album title overlay label
+        // Album title overlay setup
         albumTitleOverlayLabel.translatesAutoresizingMaskIntoConstraints = false
         albumTitleOverlayLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
         albumTitleOverlayLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
         albumTitleOverlayLabel.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
         albumTitleOverlayLabel.heightAnchor.constraint(equalToConstant: PlaylistView.ALBUM_TITLE_OVERLAY_HEIGHT).isActive = true
         
-        // User input
+        // User input setup
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeRight(gesture:)))
         gesture.direction = .right
         self.addGestureRecognizer(gesture)

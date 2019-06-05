@@ -1,0 +1,6 @@
+module GTProgressBar {
+  umbrella header "GTProgressBar-umbrella.h"
+
+  export *
+  module * { export * }
+}

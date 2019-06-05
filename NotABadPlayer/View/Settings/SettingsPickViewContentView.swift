@@ -46,17 +46,20 @@ class SettingsPickContentView : UIView {
     func setup() {
         let parent = superview!
         
-        backgroundColor = .clear
+        self.backgroundColor = .clear
         
+        // Title setup
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: parent.leftAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: SettingsPickContentView.TITLE_WIDTH).isActive = true
+        titleLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         
+        // Drop down setup
         dropDownView.translatesAutoresizingMaskIntoConstraints = false
         dropDownView.topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
         dropDownView.rightAnchor.constraint(equalTo: parent.rightAnchor).isActive = true
         dropDownView.widthAnchor.constraint(equalToConstant: SettingsPickContentView.DROP_DOWN_WIDTH).isActive = true
-        dropDownView.selectedRowColor = .orange
+        dropDownView.selectedRowColor = AppTheme.shared.colorFor(.SETTINGS_DROP_DOWN_SELECTION)
     }
 }

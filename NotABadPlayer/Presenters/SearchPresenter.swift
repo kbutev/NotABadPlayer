@@ -77,6 +77,14 @@ class SearchPresenter: BasePresenter
         }
     }
     
+    func onPlayerVolumeSet(value: Double) {
+        
+    }
+    
+    func onPlaylistsChanged() {
+        
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         
     }
@@ -145,7 +153,7 @@ class SearchPresenter: BasePresenter
         
     }
     
-    func onAppThemeChange(_ themeValue: AppTheme) {
+    func onAppThemeChange(_ themeValue: AppThemeValue) {
         
     }
     
