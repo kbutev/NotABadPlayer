@@ -342,6 +342,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
     }
 }
 
+// Storage observer
 extension MainViewController: GeneralStorageObserver {
     func onAppAppearanceChange() {
         Logging.log(MainViewController.self, "App appearance changed! Reloading current tab and wiping out the tabs cache...")
