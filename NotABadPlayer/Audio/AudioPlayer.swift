@@ -669,4 +669,8 @@ extension AudioPlayer : AVAudioPlayerDelegate {
         self.onFinish()
         self.playNextBasedOnPlayOrder()
     }
+    
+    func audioPlayerBeginInterruption(_ player: AVAudioPlayer) {
+        self.onStop()
+    }
 }
