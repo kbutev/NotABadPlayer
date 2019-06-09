@@ -9,10 +9,14 @@
 import Foundation
 import AVFoundation
 
+// Standart audio player for the app.
+// Before using the player, you MUST call start().
+// Dependant on @GeneralStorage (must be initialized before using the player).
+// Dependant on storage access permission.
 class AudioPlayer : NSObject {
     static let shared = AudioPlayer()
     
-    var initialized: Bool {
+    var running: Bool {
         get {
             return self._audioInfo != nil
         }
@@ -138,9 +142,9 @@ class AudioPlayer : NSObject {
         
     }
     
-    func initialize(audioInfo: AudioInfo) {
-        if initialized {
-            fatalError("[\(String(describing: AudioPlayer.self))] must not call initialize() twice")
+    func start(audioInfo: AudioInfo) {
+        if running {
+            fatalError("[\(String(describing: AudioPlayer.self))] must not call start() twice")
         }
         
         self._audioInfo = audioInfo
@@ -148,7 +152,7 @@ class AudioPlayer : NSObject {
         do {
             try self.audioSession.setCategory(.playback)
         } catch let e {
-            fatalError("[\(String(describing: AudioPlayer.self))] could not initialize audio session properly: \(e.localizedDescription)")
+            fatalError("[\(String(describing: AudioPlayer.self))] could not start audio session properly: \(e.localizedDescription)")
         }
         
         Looper.shared.subscribe(self)
@@ -210,6 +214,7 @@ class AudioPlayer : NSObject {
         if isCompletelyStopped {
             do {
                 try play(track: playlist.playingTrack)
+                Logging.log(AudioPlayer.self, "Resume")
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not resume, \(error.localizedDescription)")
                 return
@@ -240,6 +245,8 @@ class AudioPlayer : NSObject {
         {
             self.player?.pause()
             
+            Logging.log(AudioPlayer.self, "Pause")
+            
             self.onPause(track: playlist.playingTrack)
         }
     }
@@ -255,6 +262,8 @@ class AudioPlayer : NSObject {
         if currentPositionMSec > 0
         {
             self.player?.stop()
+            
+            Logging.log(AudioPlayer.self, "Stop")
             
             self.onStop()
         }
@@ -523,7 +532,7 @@ class AudioPlayer : NSObject {
     }
     
     private func checkIfPlayerIsInitialized() {
-        if !self.initialized
+        if !self.running
         {
             fatalError("[\(String(describing: AudioPlayer.self))] being used before being initialized, initialize() has never been called")
         }

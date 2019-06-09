@@ -8,6 +8,8 @@
 
 import Foundation
 
+// Provides simple interface to the user defaults (built in storage).
+// Before using the general storage, you MUST call initialize().
 class GeneralStorage {
     public static let shared = GeneralStorage()
     

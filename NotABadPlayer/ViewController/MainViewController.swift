@@ -15,7 +15,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
     
     private var baseView: MainView?
     
-    private var audioStorage: AudioStorage = AudioStorage()
+    private var audioStorage: AudioLibrary = AudioLibrary()
     
     private var _selectedTab: UIViewController?
     
@@ -49,7 +49,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
         super.viewDidLoad()
         
         GeneralStorage.shared.initialize()
-        AudioPlayer.shared.initialize(audioInfo: audioStorage)
+        AudioPlayer.shared.start(audioInfo: audioStorage)
         QuickPlayerService.shared.initialize(audioPlayer: AudioPlayer.shared)
         GeneralStorage.shared.restorePlayerState()
         GeneralStorage.shared.restorePlayerPlayHistoryState()

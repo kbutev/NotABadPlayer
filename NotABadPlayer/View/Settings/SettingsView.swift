@@ -106,6 +106,9 @@ class SettingsView : UIView
     private func setup() {
         let guide = self
         
+        // App theme setup
+        setupAppTheme()
+        
         // Scroll setup
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: SettingsView.HORIZONTAL_MARGIN).isActive = true
@@ -118,18 +121,19 @@ class SettingsView : UIView
         
         resizeScrollViewContentSize()
         
-        // Text labels setup
+        // User interaction setup
+        resetDefaultsButton.addTarget(self, action: #selector(actionResetDefaultsButton), for: .touchUpInside)
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
+        
         appearanceLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         keyBindsLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         resetLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         aboutLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
-        
-        // About info setup
         aboutInfoView.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         aboutInfoView.backgroundColor = .clear
-        
-        // User interaction setup
-        resetDefaultsButton.addTarget(self, action: #selector(actionResetDefaultsButton), for: .touchUpInside)
     }
     
     private func resizeScrollViewContentSize() {

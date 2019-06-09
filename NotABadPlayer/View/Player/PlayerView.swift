@@ -30,11 +30,13 @@ class PlayerView : UIView
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var playlistLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
-    @IBOutlet weak var seekBar: PlayerSeekBar!
     
-    @IBOutlet weak var mediaSeekBarInfoStackView: UIStackView!
-    @IBOutlet weak var currentTimeText: UILabel!
-    @IBOutlet weak var totalDurationText: UILabel!
+    @IBOutlet weak var mediaSeekLayout: UIView!
+    @IBOutlet weak var seekBar: PlayerSeekBar!
+    @IBOutlet weak var seekTimeStackView: UIStackView!
+    @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var totalDurationLabel: UILabel!
+    
     @IBOutlet weak var mediaButtonStack: UIStackView!
     @IBOutlet weak var recallMediaButton: UIImageView!
     @IBOutlet weak var previousMediaButton: UIImageView!
@@ -57,23 +59,42 @@ class PlayerView : UIView
         self.titleLabel.text = ""
         self.playlistLabel.text = ""
         self.artistLabel.text = ""
-        self.currentTimeText.text = Text.value(.ZeroTimer)
-        self.totalDurationText.text = Text.value(.ZeroTimer)
+        self.currentTimeLabel.text = Text.value(.ZeroTimer)
+        self.totalDurationLabel.text = Text.value(.ZeroTimer)
         
         setup()
     }
     
     private func setup() {
-        let layoutGuide = self.safeAreaLayoutGuide
-        let heightAnchor = layoutGuide.heightAnchor
+        let heightAnchor = primaryStackView.heightAnchor
+        
+        // App theme setup
+        setupAppTheme()
         
         // Top stack setup
         topStackView.translatesAutoresizingMaskIntoConstraints = false
+        topStackView.widthAnchor.constraint(equalTo: primaryStackView.widthAnchor).isActive = true
         topStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
         
         // Bottom stack setup
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
+        bottomStackView.widthAnchor.constraint(equalTo: primaryStackView.widthAnchor).isActive = true
         bottomStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
+        
+        // Text layout setup (is inside the bottom stack)
+        textLayoutView.translatesAutoresizingMaskIntoConstraints = false
+        textLayoutView.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
+        textLayoutView.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.3).isActive = true
+        
+        // Media seek layout setup (is inside the bottom stack)
+        mediaSeekLayout.translatesAutoresizingMaskIntoConstraints = false
+        mediaSeekLayout.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
+        mediaSeekLayout.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.4).isActive = true
+        
+        // Media buttons stack setup (is inside the bottom stack)
+        mediaButtonStack.translatesAutoresizingMaskIntoConstraints = false
+        mediaButtonStack.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
+        mediaButtonStack.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.3).isActive = true
         
         // Title label setup
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -90,13 +111,15 @@ class PlayerView : UIView
         artistLabel.topAnchor.constraint(equalTo: playlistLabel.bottomAnchor).isActive = true
         artistLabel.widthAnchor.constraint(equalTo: textLayoutView.widthAnchor).isActive = true
         
-        // Media seek bar info stack setup
-        mediaSeekBarInfoStackView.translatesAutoresizingMaskIntoConstraints = false
-        mediaSeekBarInfoStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.1).isActive = true
+        // Seek bar setup
+        seekBar.translatesAutoresizingMaskIntoConstraints = false
+        seekBar.widthAnchor.constraint(equalTo: mediaSeekLayout.widthAnchor).isActive = true
+        seekBar.bottomAnchor.constraint(equalTo: seekTimeStackView.topAnchor).isActive = true
         
-        // Media buttons stack setup
-        mediaButtonStack.translatesAutoresizingMaskIntoConstraints = false
-        mediaButtonStack.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2).isActive = true
+        // Seek time stack setup
+        seekTimeStackView.translatesAutoresizingMaskIntoConstraints = false
+        seekTimeStackView.widthAnchor.constraint(equalTo: mediaSeekLayout.widthAnchor).isActive = true
+        seekTimeStackView.bottomAnchor.constraint(equalTo: mediaSeekLayout.bottomAnchor).isActive = true
         
         // User input setup
         seekBar.onSeekCallback = {[weak self] (progress) in
@@ -141,15 +164,37 @@ class PlayerView : UIView
         self.addGestureRecognizer(gestureSwipe)
     }
     
+    public func setupAppTheme() {
+        self.backgroundColor = AppTheme.shared.colorFor(.PLAYER_BACKGROUND)
+        
+        textLayoutView.backgroundColor = .clear
+        
+        titleLabel.textColor = AppTheme.shared.colorFor(.PLAYER_TRACK_TITLE)
+        playlistLabel.textColor = AppTheme.shared.colorFor(.PLAYER_PLAYLIST_TITLE)
+        artistLabel.textColor = AppTheme.shared.colorFor(.PLAYER_ARTIST)
+        
+        mediaSeekLayout.backgroundColor = .clear
+        
+        currentTimeLabel.textColor = AppTheme.shared.colorFor(.PLAYER_TEXT)
+        totalDurationLabel.textColor = AppTheme.shared.colorFor(.PLAYER_TEXT)
+        
+        recallMediaButton.tintColor = AppTheme.shared.colorFor(.PLAYER_BUTTON)
+        previousMediaButton.tintColor = AppTheme.shared.colorFor(.PLAYER_BUTTON)
+        playMediaButton.tintColor = AppTheme.shared.colorFor(.PLAYER_BUTTON)
+        nextMediaButton.tintColor = AppTheme.shared.colorFor(.PLAYER_BUTTON)
+        playOrderMediaButton.tintColor = AppTheme.shared.colorFor(.PLAYER_BUTTON)
+    }
+    
     public func enableVolumeBar(leftSide: Bool) {
         if sideVolumeBar != nil
         {
             return
         }
         
-        // Create and addd
+        // Create and add
         let volumeBar = PlayerSideVolumeBar(frame: .zero)
         let emptySpace = UIView()
+        emptySpace.backgroundColor = .clear
         
         if leftSide
         {
@@ -170,7 +215,6 @@ class PlayerView : UIView
         volumeBar.heightAnchor.constraint(equalTo: topStackView.heightAnchor).isActive = true
         
         // Setup empty space
-        emptySpace.backgroundColor = .clear
         emptySpace.translatesAutoresizingMaskIntoConstraints = false
         emptySpace.topAnchor.constraint(equalTo: topStackView.topAnchor).isActive = true
         emptySpace.widthAnchor.constraint(equalToConstant: PlayerSideVolumeBar.SIZE.width).isActive = true
@@ -206,7 +250,7 @@ class PlayerView : UIView
             seekBar.progressValue = newSeekBarPosition
         }
         
-        currentTimeText.text = AudioTrack.secondsToString(currentPosition)
+        currentTimeLabel.text = AudioTrack.secondsToString(currentPosition)
         
         // Play order button update
         updatePlayOrderButtonState(order: player.playOrder)
@@ -220,7 +264,7 @@ class PlayerView : UIView
         self.playlistLabel.text = track.albumTitle
         self.artistLabel.text = track.artist
         
-        self.totalDurationText.text = track.duration
+        self.totalDurationLabel.text = track.duration
         
         // Update play button state
         updatePlayButtonState(player: player)

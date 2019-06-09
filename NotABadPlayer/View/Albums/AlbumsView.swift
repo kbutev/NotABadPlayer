@@ -10,10 +10,10 @@ import UIKit
 
 class AlbumsView : UIView
 {
-    static let CELL_IDENTIFIER = "cell"
-    static let CELLS_PER_COLUMN: Int = 2
-    static let INDEXER_VIEW_WIDTH: CGFloat = 16
-    static let COLLECTION_HORIZONTAL_MARGIN: CGFloat = INDEXER_VIEW_WIDTH
+    public static let CELL_IDENTIFIER = "cell"
+    public static let CELLS_PER_COLUMN: Int = 2
+    public static let INDEXER_VIEW_WIDTH: CGFloat = 16
+    public static let COLLECTION_HORIZONTAL_MARGIN: CGFloat = INDEXER_VIEW_WIDTH
     
     private var initialized: Bool = false
     
@@ -95,6 +95,9 @@ class AlbumsView : UIView
     private func setup() {
         let guide = self
         
+        // App theme setup
+        setupAppTheme()
+        
         // Quick player setup
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
@@ -118,8 +121,6 @@ class AlbumsView : UIView
         self.collectionActionDelegate = AlbumsViewActionDelegate(view: self)
         collectionView.delegate = collectionActionDelegate
         
-        collectionView.backgroundColor = .clear
-        
         // Indexer view setup
         collectionIndexerView.delegate = self
         self.addSubview(collectionIndexerView)
@@ -136,6 +137,12 @@ class AlbumsView : UIView
         indexerCenterCharacter.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor).isActive = true
         indexerCenterCharacter.widthAnchor.constraint(equalToConstant: 96).isActive = true
         indexerCenterCharacter.heightAnchor.constraint(equalToConstant: 96).isActive = true
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
+        
+        collectionView.backgroundColor = .clear
     }
     
     public func reloadData() {

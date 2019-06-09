@@ -18,8 +18,6 @@ class PlaylistView : UIView
     
     private var flowLayout: PlaylistFlowLayout?
     
-    private var collectionViewHeaderHeight: CGFloat = 0
-    
     private var collectionActionDelegate: PlaylistViewActionDelegate?
     
     public var collectionDataSource : PlaylistViewDataSource? {
@@ -85,6 +83,9 @@ class PlaylistView : UIView
     private func setup() {
         let guide = self.superview!
         
+        // App theme setup
+        setupAppTheme()
+        
         // Quick player setup
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
@@ -126,6 +127,14 @@ class PlaylistView : UIView
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeRight(gesture:)))
         gesture.direction = .right
         self.addGestureRecognizer(gesture)
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
+        
+        collectionView.backgroundColor = .clear
+        albumTitleOverlayLabel.textColor = AppTheme.shared.colorFor(.QUICK_PLAYER_TEXT)
+        albumTitleOverlayLabel.backgroundColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BACKGROUND)
     }
     
     public func reloadData() {
@@ -176,21 +185,19 @@ class PlaylistView : UIView
     }
     
     public func updateScrollState() {
-        if collectionViewHeaderHeight == 0
+        if let dataSource = collectionDataSource
         {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
-                                                                         withReuseIdentifier: PlaylistView.HEADER_IDENTIFIER,
-                                                                         for: IndexPath(row: 0, section: 0))
-            self.collectionViewHeaderHeight = header.frame.height
-        }
-        
-        if collectionView.bounds.origin.y > collectionViewHeaderHeight
-        {
-            showAlbumTitleOverlay()
-        }
-        else
-        {
-            hideAlbumTitleOverlay()
+            if dataSource.headerSize.height != 0
+            {
+                if collectionView.bounds.origin.y > dataSource.headerSize.height
+                {
+                    showAlbumTitleOverlay()
+                }
+                else
+                {
+                    hideAlbumTitleOverlay()
+                }
+            }
         }
     }
 }
@@ -224,10 +231,10 @@ extension PlaylistView {
 // Collection data source
 class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
 {
-    public static let HIGHLIGHT_COLOR = UIColor.yellow
-    
     let audioInfo: AudioInfo
     let playlist: AudioPlaylist
+    
+    var headerSize: CGSize = .zero
     
     init(audioInfo: AudioInfo, playlist: AudioPlaylist) {
         self.audioInfo = audioInfo
@@ -237,11 +244,13 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerV = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
                                                                       withReuseIdentifier: PlaylistView.HEADER_IDENTIFIER,
-                                                                      for: indexPath)
+                                                                      for: IndexPath(row: 0, section: 0))
         
         guard let header = headerV as? PlaylistHeaderView else {
             return headerV
         }
+        
+        headerSize = header.frame.size
         
         let isAlbum = playlist.isAlbumPlaylist()
         
@@ -294,7 +303,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         {
             if playerPlaylist.playingTrack == item
             {
-                cell.backgroundColor = PlaylistViewDataSource.HIGHLIGHT_COLOR
+                cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
             }
         }
         

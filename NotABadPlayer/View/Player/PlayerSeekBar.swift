@@ -11,9 +11,10 @@ import GTProgressBar
 
 class PlayerSeekBar: UIView
 {
+    public static let SIZE: CGSize = CGSize(width: 0, height: 28)
     public static let MAX_VALUE: Double = 100
     public static let HORIZONTAL_MARGIN: CGFloat = 10
-    public static let THUMB_SIZE: CGSize = CGSize(width: 16, height: 32)
+    public static let THUMB_SIZE: CGSize = CGSize(width: 16, height: 28)
     
     public var onSeekCallback: (Double)->Void = {(percentage) in }
     
@@ -42,6 +43,7 @@ class PlayerSeekBar: UIView
         bar.barFillColor = AppTheme.shared.colorFor(.PLAYER_SEEK_BAR)
         bar.barBackgroundColor = AppTheme.shared.colorFor(.PLAYER_SEEK_BAR_BACKGROUND)
         bar.barBorderColor = AppTheme.shared.colorFor(.PLAYER_SEEK_BAR_BORDER)
+        bar.barBorderWidth = 1
         bar.barFillInset = 0
         bar.cornerType = GTProgressBarCornerType.square
         bar.displayLabel = false
@@ -71,6 +73,14 @@ class PlayerSeekBar: UIView
     private func setup() {
         let guide = self
         
+        // App theme setup
+        setupAppTheme()
+        
+        // Self setup
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.heightAnchor.constraint(equalToConstant: PlayerSeekBar.SIZE.height).isActive = true
+        
+        // Add the views are manually created
         self.addSubview(progressBar)
         self.addSubview(thumbView)
         
@@ -93,6 +103,10 @@ class PlayerSeekBar: UIView
         
         let barHoldGesture = UIPanGestureRecognizer(target: self, action: #selector(actionSeek(gesture:)))
         progressBar.addGestureRecognizer(barHoldGesture)
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = .clear
     }
     
     private func updateThumbView() {

@@ -30,8 +30,6 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
     override func loadView() {
         self.baseView = SettingsView.create(owner: self)
         self.view = self.baseView!
-        
-        self.view.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
     }
     
     override func viewDidLoad() {

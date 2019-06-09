@@ -1,5 +1,5 @@
 //
-//  AudioStorage.swift
+//  AudioLibrary.swift
 //  NotABadPlayer
 //
 //  Created by Kristiyan Butev on 12.04.19.
@@ -9,7 +9,10 @@
 import Foundation
 import MediaPlayer
 
-class AudioStorage : AudioInfo {
+// Provides simple interface to the audio library of the user.
+// Dependant on storage access permission:
+// Make sure you have access to user storage before using the audio library.
+class AudioLibrary : AudioInfo {
     private var albums : [AudioAlbum] = []
     
     init() {
@@ -25,7 +28,7 @@ class AudioStorage : AudioInfo {
         }
         
         // Load albums
-        Logging.log(AudioStorage.self, "Loading albums from MP media...")
+        Logging.log(AudioLibrary.self, "Loading albums from MP media...")
         
         albums.removeAll()
         
@@ -54,7 +57,7 @@ class AudioStorage : AudioInfo {
             }
         }
         
-        Logging.log(AudioStorage.self, "Successfully loaded \(albums.count) albums from MP media.")
+        Logging.log(AudioLibrary.self, "Successfully loaded \(albums.count) albums from MP media.")
     }
     
     func getAlbums() -> [AudioAlbum] {
