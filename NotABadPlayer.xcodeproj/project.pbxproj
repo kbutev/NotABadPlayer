@@ -66,7 +66,7 @@
 		99761BC222898D94004577E0 /* QuickPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99761BC122898D94004577E0 /* QuickPlayerView.swift */; };
 		997C9448229AD68B00601D12 /* SettingsDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997C9447229AD68B00601D12 /* SettingsDropDownView.swift */; };
 		997C944A229AE30E00601D12 /* SettingsPickViewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997C9449229AE30D00601D12 /* SettingsPickViewContentView.swift */; };
-		999382E722806D5A00B8C8D9 /* PermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999382E622806D5A00B8C8D9 /* PermissionsViewController.swift */; };
+		999382E722806D5A00B8C8D9 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999382E622806D5A00B8C8D9 /* LaunchViewController.swift */; };
 		999382EB22807DCA00B8C8D9 /* AlbumsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 999382EA22807DCA00B8C8D9 /* AlbumsCell.xib */; };
 		999F7A652291B2B10065E360 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999F7A642291B2B10065E360 /* Text.swift */; };
 		999F7A672291B5200065E360 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999F7A662291B5200065E360 /* StringExtensions.swift */; };
@@ -96,7 +96,6 @@
 		99D69D5A22998733007D79F8 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D69D5922998733007D79F8 /* MainTabView.swift */; };
 		99DE0087229D7D7D00ADB539 /* GeneralStorageObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */; };
 		99F2C26122898B35000F6AA7 /* QuickPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F2C26022898B35000F6AA7 /* QuickPlayerView.xib */; };
-		99F33F6A22A410A60049DA68 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F33F6922A410A60049DA68 /* AppState.swift */; };
 		99F33F6C22A413840049DA68 /* ListsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F33F6B22A413840049DA68 /* ListsView.xib */; };
 		99F33F6E22A414F70049DA68 /* ListsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F33F6D22A414F70049DA68 /* ListsPresenter.swift */; };
 		99F33F7022A419070049DA68 /* ListsItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F33F6F22A419070049DA68 /* ListsItemCell.swift */; };
@@ -187,7 +186,7 @@
 		99761BC122898D94004577E0 /* QuickPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPlayerView.swift; sourceTree = "<group>"; };
 		997C9447229AD68B00601D12 /* SettingsDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDropDownView.swift; sourceTree = "<group>"; };
 		997C9449229AE30D00601D12 /* SettingsPickViewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPickViewContentView.swift; sourceTree = "<group>"; };
-		999382E622806D5A00B8C8D9 /* PermissionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsViewController.swift; sourceTree = "<group>"; };
+		999382E622806D5A00B8C8D9 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		999382EA22807DCA00B8C8D9 /* AlbumsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlbumsCell.xib; sourceTree = "<group>"; };
 		999F7A642291B2B10065E360 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		999F7A662291B5200065E360 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -217,7 +216,6 @@
 		99D69D5922998733007D79F8 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralStorageObserver.swift; sourceTree = "<group>"; };
 		99F2C26022898B35000F6AA7 /* QuickPlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickPlayerView.xib; sourceTree = "<group>"; };
-		99F33F6922A410A60049DA68 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		99F33F6B22A413840049DA68 /* ListsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListsView.xib; sourceTree = "<group>"; };
 		99F33F6D22A414F70049DA68 /* ListsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsPresenter.swift; sourceTree = "<group>"; };
 		99F33F6F22A419070049DA68 /* ListsItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsItemCell.swift; sourceTree = "<group>"; };
@@ -393,6 +391,7 @@
 		992EC1E9225B6EB1007DDD9D /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				999382E622806D5A00B8C8D9 /* LaunchViewController.swift */,
 				99D69D5122998522007D79F8 /* MainViewController.swift */,
 				992EC1B6225B6A5C007DDD9D /* AlbumsViewController.swift */,
 				992EC1B8225B6A5C007DDD9D /* ListsViewController.swift */,
@@ -401,7 +400,6 @@
 				992EC1EC225B6ED9007DDD9D /* SettingsViewController.swift */,
 				99021E452281EE2A007B2BF7 /* PlaylistViewController.swift */,
 				99C633E622849E2E00A2BF25 /* PlayerViewController.swift */,
-				999382E622806D5A00B8C8D9 /* PermissionsViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -531,7 +529,6 @@
 			isa = PBXGroup;
 			children = (
 				99A6CA7B22677C850071DC0D /* AppSettings.swift */,
-				99F33F6922A410A60049DA68 /* AppState.swift */,
 				999F7A642291B2B10065E360 /* Text.swift */,
 				996F260722A7C61B00BE199E /* AppTheme.swift */,
 				996F260322A7C5BB00BE199E /* Colors.swift */,
@@ -773,7 +770,7 @@
 				992EC1B7225B6A5C007DDD9D /* AlbumsViewController.swift in Sources */,
 				99A6CA7922677C0C0071DC0D /* MediaSorting.swift in Sources */,
 				99A0140922820A7E0084E830 /* NavigationHelpers.swift in Sources */,
-				999382E722806D5A00B8C8D9 /* PermissionsViewController.swift in Sources */,
+				999382E722806D5A00B8C8D9 /* LaunchViewController.swift in Sources */,
 				996392FB2260ABFA0050F82A /* AudioTrackSource.swift in Sources */,
 				999F7A672291B5200065E360 /* StringExtensions.swift in Sources */,
 				99B8617F2287614500344C17 /* UIAnimations.swift in Sources */,
@@ -783,7 +780,6 @@
 				999F7A652291B2B10065E360 /* Text.swift in Sources */,
 				99C633ED2284A36800A2BF25 /* PlayerPresenter.swift in Sources */,
 				996392FD2260ACEB0050F82A /* AudioPlaylist.swift in Sources */,
-				99F33F6A22A410A60049DA68 /* AppState.swift in Sources */,
 				996F260E22A7F6AA00BE199E /* PlayerSeekBar.swift in Sources */,
 				992EA212228FF7C7000C5592 /* AlertWindows.swift in Sources */,
 				99021E462281EE2A007B2BF7 /* PlaylistViewController.swift in Sources */,

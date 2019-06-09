@@ -29,5 +29,6 @@ protocol BaseViewDelegate : class {
     func onTrackSortingSelect(_ value: TrackSorting)
     func onShowVolumeBarSelect(_ value: ShowVolumeBar)
     
+    func onFetchDataErrorEncountered(_ error: Error)
     func onPlayerErrorEncountered(_ error: Error)
 }

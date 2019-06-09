@@ -143,6 +143,9 @@ class ListsView : UIView
         
         header.backgroundColor = .clear
         playlistsTable.backgroundColor = .clear
+        
+        createButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
+        deleteButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
     }
     
     public func reloadData() {

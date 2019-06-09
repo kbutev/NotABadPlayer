@@ -157,6 +157,11 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func onFetchDataErrorEncountered(_ error: Error) {
+        // Fetch data again until successful
+        presenter?.fetchData()
+    }
+    
     func onPlayerErrorEncountered(_ error: Error) {
         
     }

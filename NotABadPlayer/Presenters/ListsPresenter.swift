@@ -29,12 +29,35 @@ class ListsPresenter: BasePresenter
     }
     
     func start() {
-        self.updateData()
-        self.updateDataSource()
+        fetchData()
     }
     
-    func onAppStateChange(state: AppState) {
+    func fetchData() {
+        Logging.log(ListsPresenter.self, "Retrieving user playlists...")
         
+        // Perform work on background thread
+        DispatchQueue.global().async {
+            var playlists = GeneralStorage.shared.getUserPlaylists()
+            let recentlyPlayedTracks = AudioPlayer.shared.playHistory
+            var recentlyPlayedPlaylist: AudioPlaylist?
+            
+            if recentlyPlayedTracks.count > 0
+            {
+                recentlyPlayedPlaylist = AudioPlaylist(name: Text.value(.PlaylistRecentlyPlayed), tracks: recentlyPlayedTracks)
+                playlists.insert(recentlyPlayedPlaylist!, at: 0)
+            }
+            
+            // Then, update on main thread
+            DispatchQueue.main.async {
+                Logging.log(ListsPresenter.self, "Retrieved user playlists, updating view")
+                
+                self.playlists = playlists
+                self.recentlyPlayedPlaylist = recentlyPlayedPlaylist
+                self.collectionDataSource = ListsViewDataSource(audioInfo: self.audioInfo, playlists: self.playlists)
+                
+                self.delegate?.onUserPlaylistsLoad(audioInfo: self.audioInfo, dataSource: self.collectionDataSource)
+            }
+        }
     }
     
     func onAlbumClick(index: UInt) {
@@ -84,11 +107,6 @@ class ListsPresenter: BasePresenter
     
     func onPlayerVolumeSet(value: Double) {
         
-    }
-    
-    func onPlaylistsChanged() {
-        self.updateData()
-        self.updateDataSource()
     }
     
     func onPlaylistItemDelete(index: UInt) {
@@ -152,18 +170,6 @@ class ListsPresenter: BasePresenter
     
     func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         
-    }
-    
-    private func updateData() {
-        self.playlists = GeneralStorage.shared.getUserPlaylists()
-        
-        let recentlyPlayed = AudioPlayer.shared.playHistory
-        self.recentlyPlayedPlaylist = recentlyPlayed.count > 0 ? AudioPlaylist(name: Text.value(.PlaylistRecentlyPlayed), tracks: recentlyPlayed) : nil
-        
-        if let recentlyPlayed = recentlyPlayedPlaylist
-        {
-            playlists.insert(recentlyPlayed, at: 0)
-        }
     }
     
     private func updateDataSource() {
