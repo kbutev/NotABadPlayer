@@ -27,6 +27,31 @@ class SettingsDropDownView: DropDown {
         }
     }
     
+    public var optionsFormatted: [String] {
+        get {
+            var values: [String] = []
+            
+            for string in self.optionArray
+            {
+                values.append(string.replacingOccurrences(of: "_", with: optionsUnderscoreReplacement))
+            }
+            
+            return values
+        }
+    }
+    
+    public var options: [String] {
+        get {
+            return self.optionArray
+        }
+        
+        set {
+            self.optionArray = newValue
+        }
+    }
+    
+    public var optionsUnderscoreReplacement = " "
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -54,5 +79,13 @@ class SettingsDropDownView: DropDown {
                 return
             }
         }
+    }
+    
+    public func option(at index: UInt) -> String {
+        return options[Int(index)]
+    }
+    
+    public func option(at index: Int, equalsAction action: ApplicationAction) -> Bool {
+        return options[index] == action.rawValue
     }
 }

@@ -21,7 +21,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Yug-el-zGD">
-                            <rect key="frame" x="0.0" y="0.0" width="339" height="974.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="339" height="1074.5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Appearance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p4a-cO-weQ">
@@ -96,25 +96,33 @@
                                     <rect key="frame" x="0.0" y="763" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VxM-Rn-tVP" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="813" width="339" height="50"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u7J-MT-hLO" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="863" width="339" height="50"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Reset" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNN-Ip-Yvp">
-                                    <rect key="frame" x="134.5" y="813" width="70" height="31.5"/>
+                                    <rect key="frame" x="134.5" y="913" width="70" height="31.5"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XTs-jf-OEZ">
-                                    <rect key="frame" x="103.5" y="844.5" width="132" height="32"/>
+                                    <rect key="frame" x="103.5" y="944.5" width="132" height="32"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                     <state key="normal" title="Reset to defaults"/>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="About" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Y3-da-2Nd">
-                                    <rect key="frame" x="132.5" y="876.5" width="74.5" height="31.5"/>
+                                    <rect key="frame" x="132.5" y="976.5" width="74.5" height="31.5"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="RZu-v4-vy6">
-                                    <rect key="frame" x="0.0" y="908" width="339" height="66.5"/>
+                                    <rect key="frame" x="0.0" y="1008" width="339" height="66.5"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <string key="text">Version 1.0 (1)
 Released 2019.06.4
@@ -135,6 +143,8 @@ Programmed, designed &amp; tested by Kristiyan Butev</string>
                 <outlet property="appearanceLabel" destination="p4a-cO-weQ" id="Fxe-t3-2ZC"/>
                 <outlet property="keyBindsLabel" destination="yHE-Zt-nwq" id="bg5-xo-QzK"/>
                 <outlet property="pickAppTheme" destination="nDR-Aq-Cpd" id="5ee-ir-usY"/>
+                <outlet property="pickKeybindLockPlayerNext" destination="u7J-MT-hLO" id="bU4-5z-iZl"/>
+                <outlet property="pickKeybindLockPlayerPrevious" destination="VxM-Rn-tVP" id="tFi-T0-9zl"/>
                 <outlet property="pickKeybindPlayerNext" destination="x0c-4K-d5Z" id="5HH-7i-8vh"/>
                 <outlet property="pickKeybindPlayerPrevious" destination="9qy-uu-hq8" id="Bsc-DB-l21"/>
                 <outlet property="pickKeybindPlayerRecall" destination="hc5-P9-F1T" id="gaI-1i-bWh"/>

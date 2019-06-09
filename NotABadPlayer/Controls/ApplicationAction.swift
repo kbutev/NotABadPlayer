@@ -21,14 +21,14 @@ enum ApplicationAction: String, CaseIterable, Codable {
     case VOLUME_DOWN;
     case MUTE_OR_UNMUTE;
     case MUTE;
-    case FORWARDS_5;
     case FORWARDS_8;
-    case FORWARDS_10;
     case FORWARDS_15;
-    case BACKWARDS_5;
+    case FORWARDS_30;
+    case FORWARDS_60;
     case BACKWARDS_8;
-    case BACKWARDS_10;
     case BACKWARDS_15;
+    case BACKWARDS_30;
+    case BACKWARDS_60;
     case CHANGE_PLAY_ORDER;
     case RECALL;
     

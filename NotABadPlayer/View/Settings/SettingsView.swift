@@ -13,6 +13,7 @@ enum SettingsPickerValue {
     case Theme; case TrackSorting; case OpenPlayerOnPlay;
     case PlayerVolumeUp; case PlayerVolumeDown; case PlayerVolume; case PlayerRecall; case PlayerPrevious; case PlayerNext; case PlayerSwipeL; case PlayerSwipeR;
     case QPlayerVolumeUp; case QPlayerVolumeDown; case QPlayerPrevious; case QPlayerNext;
+    case LockPlayerPrevious; case LockPlayerNext;
 }
 
 protocol SettingsActionDelegate: class {
@@ -60,6 +61,8 @@ class SettingsView : UIView
     @IBOutlet weak var pickKeybindQPlayerVolumeDown: SettingsPickView!
     @IBOutlet weak var pickKeybindQPlayerPrevious: SettingsPickView!
     @IBOutlet weak var pickKeybindQPlayerNext: SettingsPickView!
+    @IBOutlet weak var pickKeybindLockPlayerPrevious: SettingsPickView!
+    @IBOutlet weak var pickKeybindLockPlayerNext: SettingsPickView!
     
     @IBOutlet weak var resetLabel: UILabel!
     @IBOutlet weak var resetDefaultsButton: UIButton!
@@ -91,6 +94,8 @@ class SettingsView : UIView
         setupPickerValues(.QPlayerVolumeDown)
         setupPickerValues(.QPlayerPrevious)
         setupPickerValues(.QPlayerNext)
+        setupPickerValues(.LockPlayerPrevious)
+        setupPickerValues(.LockPlayerNext)
     }
     
     override func didMoveToSuperview() {
@@ -178,46 +183,48 @@ class SettingsView : UIView
     }
     
     public func selectKeybind(keybind: ApplicationInput, action: ApplicationAction) {
-        guard let index = ApplicationAction.allCases.index(of: action) else {
-            return
-        }
-        
         switch keybind {
         case .PLAYER_VOLUME_UP_BUTTON:
-            pickKeybindPlayerVolumeUp.selectOption(index: UInt(index))
+            pickKeybindPlayerVolumeUp.selectOption(action: action)
             break
         case .PLAYER_VOLUME_DOWN_BUTTON:
-            pickKeybindPlayerVolumeDown.selectOption(index: UInt(index))
+            pickKeybindPlayerVolumeDown.selectOption(action: action)
             break
         case .PLAYER_VOLUME:
-            pickKeybindPlayerVolume.selectOption(index: UInt(index))
+            pickKeybindPlayerVolume.selectOption(action: action)
             break
         case .PLAYER_RECALL:
-            pickKeybindPlayerRecall.selectOption(index: UInt(index))
+            pickKeybindPlayerRecall.selectOption(action: action)
             break
         case .PLAYER_PREVIOUS_BUTTON:
-            pickKeybindPlayerPrevious.selectOption(index: UInt(index))
+            pickKeybindPlayerPrevious.selectOption(action: action)
             break
         case .PLAYER_NEXT_BUTTON:
-            pickKeybindPlayerNext.selectOption(index: UInt(index))
+            pickKeybindPlayerNext.selectOption(action: action)
             break
         case .PLAYER_SWIPE_LEFT:
-            pickKeybindPlayerSwipeL.selectOption(index: UInt(index))
+            pickKeybindPlayerSwipeL.selectOption(action: action)
             break
         case .PLAYER_SWIPE_RIGHT:
-            pickKeybindPlayerSwipeR.selectOption(index: UInt(index))
+            pickKeybindPlayerSwipeR.selectOption(action: action)
             break
         case .QUICK_PLAYER_VOLUME_UP_BUTTON:
-            pickKeybindQPlayerVolumeUp.selectOption(index: UInt(index))
+            pickKeybindQPlayerVolumeUp.selectOption(action: action)
             break
         case .QUICK_PLAYER_VOLUME_DOWN_BUTTON:
-            pickKeybindQPlayerVolumeDown.selectOption(index: UInt(index))
+            pickKeybindQPlayerVolumeDown.selectOption(action: action)
             break
         case .QUICK_PLAYER_PREVIOUS_BUTTON:
-            pickKeybindQPlayerPrevious.selectOption(index: UInt(index))
+            pickKeybindQPlayerPrevious.selectOption(action: action)
             break
         case .QUICK_PLAYER_NEXT_BUTTON:
-            pickKeybindQPlayerNext.selectOption(index: UInt(index))
+            pickKeybindQPlayerNext.selectOption(action: action)
+            break
+        case .LOCK_PLAYER_PREVIOUS_BUTTON:
+            pickKeybindLockPlayerPrevious.selectOption(action: action)
+            break
+        case .LOCK_PLAYER_NEXT_BUTTON:
+            pickKeybindLockPlayerNext.selectOption(action: action)
             break
         default:
             break
@@ -259,6 +266,10 @@ extension SettingsView {
             return pickKeybindQPlayerPrevious
         case .QPlayerNext:
             return pickKeybindQPlayerNext
+        case .LockPlayerPrevious:
+            return pickKeybindLockPlayerPrevious
+        case .LockPlayerNext:
+            return pickKeybindLockPlayerNext
         }
     }
     
@@ -272,24 +283,15 @@ extension SettingsView {
         switch type {
         case .Theme:
             title = Text.value(.SettingsTheme)
-            for option in AppThemeValue.stringValues()
-            {
-                options.append(option.replacingOccurrences(of: "_", with: " "))
-            }
+            options = AppThemeValue.stringValues()
             break
         case .TrackSorting:
             title = Text.value(.SettingsTrackSorting)
-            for option in TrackSorting.stringValues()
-            {
-                options.append(option.replacingOccurrences(of: "_", with: " "))
-            }
+            options = TrackSorting.stringValues()
             break
         case .OpenPlayerOnPlay:
             title = Text.value(.SettingsPlayOpensPlayer)
-            for option in OpenPlayerOnPlay.stringValues()
-            {
-                options.append(option.replacingOccurrences(of: "_", with: " "))
-            }
+            options = OpenPlayerOnPlay.stringValues()
             break
         case .PlayerVolumeUp:
             title = Text.value(.SettingsPlayerVolumeUp)
@@ -339,6 +341,14 @@ extension SettingsView {
             title = Text.value(.SettingsQPlayerNext)
             options = applicationActionsAsStrings()
             break
+        case .LockPlayerPrevious:
+            title = Text.value(.SettingsLockPlayerPrevious)
+            options = applicationLPlayerPreviousActionsAsStrings()
+            break
+        case .LockPlayerNext:
+            title = Text.value(.SettingsLockPlayerNext)
+            options = applicationLPlayerNextActionsAsStrings()
+            break
         }
         
         pickerView.type = type
@@ -370,17 +380,28 @@ extension SettingsView {
         getPickerView(for: .QPlayerVolumeDown).isUserInteractionEnabled = value
         getPickerView(for: .QPlayerPrevious).isUserInteractionEnabled = value
         getPickerView(for: .QPlayerNext).isUserInteractionEnabled = value
+        getPickerView(for: .LockPlayerPrevious).isUserInteractionEnabled = value
+        getPickerView(for: .LockPlayerNext).isUserInteractionEnabled = value
     }
     
     private func applicationActionsAsStrings() -> [String] {
-        var options: [String] = []
-        
-        for option in ApplicationAction.stringValues()
-        {
-            options.append(option.replacingOccurrences(of: "_", with: " "))
-        }
-        
-        return options
+        return ApplicationAction.stringValues()
+    }
+    
+    private func applicationLPlayerPreviousActionsAsStrings() -> [String] {
+        return [ApplicationAction.PREVIOUS.rawValue,
+                ApplicationAction.BACKWARDS_8.rawValue,
+                ApplicationAction.BACKWARDS_15.rawValue,
+                ApplicationAction.BACKWARDS_30.rawValue,
+                ApplicationAction.BACKWARDS_60.rawValue]
+    }
+    
+    private func applicationLPlayerNextActionsAsStrings() -> [String] {
+        return [ApplicationAction.NEXT.rawValue,
+                ApplicationAction.FORWARDS_8.rawValue,
+                ApplicationAction.FORWARDS_15.rawValue,
+                ApplicationAction.FORWARDS_30.rawValue,
+                ApplicationAction.FORWARDS_60.rawValue]
     }
 }
 
@@ -401,6 +422,14 @@ extension SettingsView: SettingsPickActionDelegate {
         
         disableAllPickerViews()
         pview.isUserInteractionEnabled = true
+    }
+    
+    private func getKeybindOptionAction(options: [String], at index: UInt) -> ApplicationAction? {
+        guard index < options.count else {
+            return nil
+        }
+        
+        return ApplicationAction(rawValue: options[Int(index)])
     }
     
     func onSelect(source: SettingsPickerValue, index: UInt) {
@@ -425,75 +454,87 @@ extension SettingsView: SettingsPickActionDelegate {
             }
             break
         case .PlayerVolumeUp:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindPlayerVolumeUp.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.PLAYER_VOLUME_UP_BUTTON, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_VOLUME_UP_BUTTON, option)
             }
             break
         case .PlayerVolumeDown:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindPlayerVolumeDown.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.PLAYER_VOLUME_DOWN_BUTTON, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_VOLUME_DOWN_BUTTON, option)
             }
             break
         case .PlayerVolume:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindPlayerVolume.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.PLAYER_VOLUME, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_VOLUME, option)
             }
             break
         case .PlayerRecall:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindPlayerRecall.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.PLAYER_RECALL, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_RECALL, option)
             }
             break
         case .PlayerPrevious:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindPlayerPrevious.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.PLAYER_PREVIOUS_BUTTON, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_PREVIOUS_BUTTON, option)
             }
             break
         case .PlayerNext:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindPlayerNext.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.PLAYER_NEXT_BUTTON, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_NEXT_BUTTON, option)
             }
             break
         case .PlayerSwipeL:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindPlayerSwipeL.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.PLAYER_SWIPE_LEFT, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_SWIPE_LEFT, option)
             }
             break
         case .PlayerSwipeR:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindPlayerSwipeR.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.PLAYER_SWIPE_RIGHT, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.PLAYER_SWIPE_RIGHT, option)
             }
             break
         case .QPlayerVolumeUp:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindQPlayerVolumeUp.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.QUICK_PLAYER_VOLUME_UP_BUTTON, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.QUICK_PLAYER_VOLUME_UP_BUTTON, option)
             }
             break
         case .QPlayerVolumeDown:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindQPlayerVolumeDown.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.QUICK_PLAYER_VOLUME_DOWN_BUTTON, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.QUICK_PLAYER_VOLUME_DOWN_BUTTON, option)
             }
             break
         case .QPlayerPrevious:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindQPlayerPrevious.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.QUICK_PLAYER_PREVIOUS_BUTTON, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.QUICK_PLAYER_PREVIOUS_BUTTON, option)
             }
             break
         case .QPlayerNext:
-            if index < ApplicationAction.allCases.count
+            if let option = getKeybindOptionAction(options: pickKeybindQPlayerNext.dropDownView.optionArray, at: index)
             {
-                self.onKeybindSelectCallback(.QUICK_PLAYER_NEXT_BUTTON, ApplicationAction.allCases[Int(index)])
+                self.onKeybindSelectCallback(.QUICK_PLAYER_NEXT_BUTTON, option)
+            }
+            break
+        case .LockPlayerPrevious:
+            if let option = getKeybindOptionAction(options: pickKeybindLockPlayerPrevious.dropDownView.optionArray, at: index)
+            {
+                self.onKeybindSelectCallback(.LOCK_PLAYER_PREVIOUS_BUTTON, option)
+            }
+            break
+        case .LockPlayerNext:
+            if let option = getKeybindOptionAction(options: pickKeybindLockPlayerNext.dropDownView.optionArray, at: index)
+            {
+                self.onKeybindSelectCallback(.LOCK_PLAYER_NEXT_BUTTON, option)
             }
             break
         }
