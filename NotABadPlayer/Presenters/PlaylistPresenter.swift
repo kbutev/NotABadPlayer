@@ -60,7 +60,7 @@ class PlaylistPresenter: BasePresenter
         delegate.onPlaylistSongsLoad(name: playlist.name, dataSource: dataSource, playingTrackIndex: scrollIndex)
     }
     
-    func onAppStateChange(state: AppState) {
+    func fetchData() {
         
     }
     
@@ -114,10 +114,6 @@ class PlaylistPresenter: BasePresenter
     }
     
     func onPlayerVolumeSet(value: Double) {
-        
-    }
-    
-    func onPlaylistsChanged() {
         
     }
     

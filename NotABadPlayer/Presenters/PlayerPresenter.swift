@@ -46,7 +46,7 @@ class PlayerPresenter: BasePresenter
         playFirstTime(playlist: self.playlist)
     }
     
-    func onAppStateChange(state: AppState) {
+    func fetchData() {
         
     }
     
@@ -82,10 +82,6 @@ class PlayerPresenter: BasePresenter
     
     func onPlayerVolumeSet(value: Double) {
         AudioPlayer.shared.volume = Int(value)
-    }
-    
-    func onPlaylistsChanged() {
-        
     }
     
     func onPlaylistItemDelete(index: UInt) {

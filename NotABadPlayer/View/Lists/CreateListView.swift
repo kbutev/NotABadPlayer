@@ -169,10 +169,14 @@ class CreateListView : UIView
     
     public func setupAppTheme() {
         self.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
+        
         addedTracksTable.backgroundColor = .clear
         albumsTable.backgroundColor = .clear
         addedTracksLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         tracksLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        
+        cancelButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
+        doneButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
     }
     
     public func reloadAddedTracksData() {

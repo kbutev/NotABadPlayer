@@ -129,11 +129,16 @@ class SettingsView : UIView
         self.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
         
         appearanceLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        
         keyBindsLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        
         resetLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        
         aboutLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         aboutInfoView.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         aboutInfoView.backgroundColor = .clear
+        
+        resetDefaultsButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
     }
     
     private func resizeScrollViewContentSize() {

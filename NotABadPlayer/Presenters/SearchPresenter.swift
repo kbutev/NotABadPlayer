@@ -38,7 +38,7 @@ class SearchPresenter: BasePresenter
         }
     }
     
-    func onAppStateChange(state: AppState) {
+    func fetchData() {
         
     }
     
@@ -81,10 +81,6 @@ class SearchPresenter: BasePresenter
         
     }
     
-    func onPlaylistsChanged() {
-        
-    }
-    
     func onPlaylistItemDelete(index: UInt) {
         
     }
@@ -121,9 +117,9 @@ class SearchPresenter: BasePresenter
             }
         }
         
-        lastSearchQuery = query
+        Logging.log(SearchPresenter.self, "Searching for '\(query)' ...")
         
-        Logging.log(SearchPresenter.self, "Searching for tracks by query '\(query)'")
+        lastSearchQuery = query
         
         // Save query to storage
         GeneralStorage.shared.saveSearchQuery(query)
@@ -141,6 +137,8 @@ class SearchPresenter: BasePresenter
             self.dataSource = dataSource
             
             DispatchQueue.main.async {
+                Logging.log(SearchPresenter.self, "Retrieved search results, updating view")
+                
                 self.delegate?.searchQueryResults(query: query,
                                                   dataSource: dataSource,
                                                   resultsCount: UInt(results.count),

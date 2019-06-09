@@ -39,27 +39,40 @@ class AlbumsPresenter: BasePresenter
     }
     
     func start() {
-        guard let delegate = self.delegate else {
+        guard self.delegate != nil else {
             fatalError("Delegate is not set for \(String(describing: AlbumsPresenter.self))")
         }
         
-        self.albums = audioInfo.getAlbums()
-        
-        let dataSource = AlbumsViewDataSource(audioInfo: audioInfo, albums: albums)
-        self.collectionDataSource = dataSource
-        
-        var albumTitles: [String] = []
-        
-        for album in self.albums
-        {
-            albumTitles.append(album.albumTitle)
-        }
-        
-        delegate.onMediaAlbumsLoad(dataSource: dataSource, albumTitles: albumTitles)
+        fetchData()
     }
     
-    func onAppStateChange(state: AppState) {
+    func fetchData() {
+        Logging.log(AlbumsPresenter.self, "Retrieving albums...")
         
+        // Perform work on background thread
+        DispatchQueue.global().async {
+            let audioInfo = self.audioInfo
+            
+            let albums = audioInfo.getAlbums()
+            
+            let dataSource = AlbumsViewDataSource(audioInfo: audioInfo, albums: albums)
+            
+            var albumTitles: [String] = []
+            
+            for album in albums
+            {
+                albumTitles.append(album.albumTitle)
+            }
+            
+            // Then, update on main thread
+            DispatchQueue.main.async {
+                Logging.log(AlbumsPresenter.self, "Retrieved albums, updating view")
+                
+                self.albums = albums
+                self.collectionDataSource = dataSource
+                self.delegate?.onMediaAlbumsLoad(dataSource: dataSource, albumTitles: albumTitles)
+            }
+        }
     }
     
     func onAlbumClick(index: UInt) {
@@ -108,10 +121,6 @@ class AlbumsPresenter: BasePresenter
     }
     
     func onPlayerVolumeSet(value: Double) {
-        
-    }
-    
-    func onPlaylistsChanged() {
         
     }
     

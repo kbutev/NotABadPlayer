@@ -138,6 +138,10 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func onFetchDataErrorEncountered(_ error: Error) {
+        
+    }
+    
     func onPlayerErrorEncountered(_ error: Error) {
         self.encounteredError = error.localizedDescription
     }

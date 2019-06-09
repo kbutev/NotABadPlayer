@@ -81,8 +81,7 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // Request data from the presenter every time we resume
-        presenter?.onPlaylistsChanged()
+        presenter?.fetchData()
         
         // Make sure we are not in deletion mode, when resuming
         baseView?.endDeletingLists()
@@ -172,6 +171,11 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     
     func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
         
+    }
+    
+    func onFetchDataErrorEncountered(_ error: Error) {
+        // Fetch data again until successful
+        presenter?.fetchData()
     }
     
     func onPlayerErrorEncountered(_ error: Error) {

@@ -24,7 +24,7 @@ class SettingsPresenter: BasePresenter
         
     }
     
-    func onAppStateChange(state: AppState) {
+    func fetchData() {
         
     }
     
@@ -53,10 +53,6 @@ class SettingsPresenter: BasePresenter
     }
     
     func onPlayerVolumeSet(value: Double) {
-        
-    }
-    
-    func onPlaylistsChanged() {
         
     }
     

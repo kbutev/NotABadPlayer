@@ -329,6 +329,10 @@ class MainViewController : UIViewController, BaseViewDelegate {
         
     }
     
+    func onFetchDataErrorEncountered(_ error: Error) {
+        
+    }
+    
     func onPlayerErrorEncountered(_ error: Error) {
         
     }

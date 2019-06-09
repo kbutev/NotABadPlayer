@@ -35,6 +35,7 @@ enum ColorValue
     
     case STANDART_TEXT;
     case STANDART_SUBTEXT;
+    case STANDART_BUTTON;
     
     case QUICK_PLAYER_TEXT;
     case QUICK_PLAYER_SUBTEXT;
