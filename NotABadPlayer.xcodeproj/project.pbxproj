@@ -614,6 +614,11 @@
 					992EC1B0225B6A5C007DDD9D = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					992EC1C6225B6A5E007DDD9D = {
 						CreatedOnToolsVersion = 10.1;

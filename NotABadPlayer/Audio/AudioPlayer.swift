@@ -23,7 +23,6 @@ class AudioPlayer : NSObject {
     }
     
     private var audioSession: AVAudioSession = AVAudioSession.sharedInstance()
-    private var audioSessionVolumeCache: Float = 0
     
     private var player: AVAudioPlayer?
     
@@ -143,7 +142,8 @@ class AudioPlayer : NSObject {
     }
     
     func start(audioInfo: AudioInfo) {
-        if running {
+        if running
+        {
             fatalError("[\(String(describing: AudioPlayer.self))] must not call start() twice")
         }
         
@@ -151,11 +151,10 @@ class AudioPlayer : NSObject {
         
         do {
             try self.audioSession.setCategory(.playback)
+            try self.audioSession.setActive(true)
         } catch let e {
             fatalError("[\(String(describing: AudioPlayer.self))] could not start audio session properly: \(e.localizedDescription)")
         }
-        
-        Looper.shared.subscribe(self)
     }
     
     func play(playlist: AudioPlaylist) throws {
@@ -669,16 +668,5 @@ extension AudioPlayer : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         self.onFinish()
         self.playNextBasedOnPlayOrder()
-    }
-}
-
-// Looper extension
-extension AudioPlayer : LooperClient {
-    func loop() {
-        if self.audioSessionVolumeCache != self.audioSession.outputVolume
-        {
-            self.audioSessionVolumeCache = self.audioSession.outputVolume
-            self.onVolumeChanged(volume: Double(self.audioSessionVolumeCache))
-        }
     }
 }
