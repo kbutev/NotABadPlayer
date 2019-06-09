@@ -56,7 +56,14 @@ class AppTheme
         }
         
         // If it's not overriden, check the default colors
-        return AppAppearanceColors.DEFAULT[value] ?? UIColor.black
+        if let color = AppAppearanceColors.DEFAULT[value]
+        {
+            return color
+        }
+        
+        Logging.log(AppTheme.self, "Error: Undefined color for color value \(value.hashValue)")
+        
+        return UIColor.black
     }
     
     private func lockEnter(_ lock: Any) {
@@ -71,33 +78,72 @@ class AppTheme
 class AppAppearanceColors
 {
     public static let DEFAULT : [ColorValue:UIColor] = [
+        .NAVIGATION_ITEM_SELECTION : Colors.LIGHT_BLUE,
         .STANDART_BACKGROUND : Colors.PAPER_WHITE,
+        .PLAYER_BACKGROUND : Colors.PAPER_WHITE,
         .QUICK_PLAYER_BACKGROUND : Colors.GRAY,
         .STANDART_TEXT : Colors.BLACK,
-        .QUICK_PLAYER_TEXT : Colors.BLACK,
         .STANDART_SUBTEXT : Colors.DARK_GRAY,
-        .QUICK_PLAYER_SUBTEXT : Colors.DARK_GRAY,
-        .NAVIGATION_ITEM_SELECTION : Colors.LIGHT_BLUE,
+        .QUICK_PLAYER_TEXT : Colors.WHITE,
+        .QUICK_PLAYER_SUBTEXT : Colors.PAPER_WHITE,
+        .QUICK_PLAYER_BUTTON : Colors.PAPER_WHITE,
+        .QUICK_PLAYER_SEEK_BAR : Colors.ORANGE,
+        .ALBUM_COVER_TITLE : Colors.BLACK,
+        .ALBUM_COVER_ARTIST : Colors.DARK_GRAY,
+        .ALBUM_COVER_DESCRIPTION : Colors.GRAY,
+        .PLAYER_TEXT : Colors.BLACK,
+        .PLAYER_BUTTON : Colors.BLACK,
+        .PLAYER_TRACK_TITLE : Colors.BLACK,
+        .PLAYER_PLAYLIST_TITLE : Colors.BLACK,
+        .PLAYER_ARTIST : Colors.ORANGE,
         .PLAYER_SEEK_BAR : Colors.GREEN,
         .PLAYER_SEEK_BAR_BACKGROUND : Colors.DARK_GRAY,
         .PLAYER_SEEK_BAR_BORDER : Colors.DARK_GRAY,
         .PLAYER_SEEK_BAR_THUMB : Colors.WHITE,
         .PLAYER_SEEK_BAR_THUMB_BORDER : Colors.BLACK,
-        .PLAYER_SIDE_VOLUME_BAR : Colors.BLUE,
-        .QUICK_PLAYER_SEEK_BAR : Colors.ORANGE,
+        .PLAYLIST_PLAYING_TRACK : Colors.LIGHT_BLUE,
         .INDEXER_CHAR_COLOR : Colors.DARK_GRAY,
+        .CREATE_LIST_SELECTED_TRACK : Colors.LIGHT_BLUE,
         .ANIMATION_CLICK_EFFECT : Colors.GREEN,
         .SETTINGS_DROP_DOWN_SELECTION : Colors.ORANGE
     ]
     public static let LIGHT : [ColorValue:UIColor] = [:]
     public static let DARK : [ColorValue:UIColor] = [
         .STANDART_BACKGROUND : Colors.DARK_GRAY,
+        .PLAYER_BACKGROUND : Colors.DARK_GRAY,
         .QUICK_PLAYER_BACKGROUND : Colors.WHITE,
         .STANDART_TEXT : Colors.WHITE,
-        .QUICK_PLAYER_TEXT : Colors.WHITE,
         .STANDART_SUBTEXT : Colors.PAPER_WHITE,
+        .QUICK_PLAYER_TEXT : Colors.BLACK,
         .QUICK_PLAYER_SUBTEXT : Colors.DARK_GRAY,
-        .INDEXER_CHAR_COLOR : Colors.WHITE
+        .QUICK_PLAYER_BUTTON : Colors.DARK_GRAY,
+        .PLAYER_TEXT : Colors.WHITE,
+        .PLAYER_BUTTON : Colors.PAPER_WHITE,
+        .PLAYER_TRACK_TITLE : Colors.WHITE,
+        .PLAYER_PLAYLIST_TITLE : Colors.WHITE,
+        .PLAYER_ARTIST : Colors.YELLOW,
+        .PLAYER_SEEK_BAR : Colors.GREEN,
+        .PLAYER_SEEK_BAR_BACKGROUND : Colors.GRAY,
+        .PLAYER_SEEK_BAR_BORDER : Colors.DARK_GRAY,
+        .PLAYER_SEEK_BAR_THUMB : Colors.WHITE,
+        .PLAYER_SEEK_BAR_THUMB_BORDER : Colors.BLACK,
+        .PLAYLIST_PLAYING_TRACK : Colors.GREEN,
+        .INDEXER_CHAR_COLOR : Colors.WHITE,
+        .ALBUM_COVER_TITLE : Colors.WHITE,
+        .ALBUM_COVER_ARTIST : Colors.WHITE,
+        .ALBUM_COVER_DESCRIPTION : Colors.PAPER_WHITE
     ]
-    public static let MIX : [ColorValue:UIColor] = [:]
+    public static let MIX : [ColorValue:UIColor] = [
+        .PLAYER_BACKGROUND : Colors.DARK_GRAY,
+        .PLAYER_TEXT : Colors.WHITE,
+        .PLAYER_BUTTON : Colors.PAPER_WHITE,
+        .PLAYER_TRACK_TITLE : Colors.WHITE,
+        .PLAYER_PLAYLIST_TITLE : Colors.WHITE,
+        .PLAYER_ARTIST : Colors.YELLOW,
+        .PLAYER_SEEK_BAR : Colors.GREEN,
+        .PLAYER_SEEK_BAR_BACKGROUND : Colors.GRAY,
+        .PLAYER_SEEK_BAR_BORDER : Colors.DARK_GRAY,
+        .PLAYER_SEEK_BAR_THUMB : Colors.WHITE,
+        .PLAYER_SEEK_BAR_THUMB_BORDER : Colors.BLACK
+    ]
 }

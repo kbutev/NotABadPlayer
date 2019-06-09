@@ -96,6 +96,9 @@ class CreateListView : UIView
         let entireContentSize = self.frame
         var top = self.bottomAnchor
         
+        // App theme setup
+        setupAppTheme()
+        
         // Header
         header.translatesAutoresizingMaskIntoConstraints = false
         header.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
@@ -162,6 +165,14 @@ class CreateListView : UIView
         
         self.albumsTableDelegate = CreateListViewAlbumsDelegate(view: self)
         albumsTable.delegate = self.albumsTableDelegate
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
+        addedTracksTable.backgroundColor = .clear
+        albumsTable.backgroundColor = .clear
+        addedTracksLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        tracksLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
     }
     
     public func reloadAddedTracksData() {

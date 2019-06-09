@@ -31,8 +31,9 @@ class CreateListAddedTrackCell: UITableViewCell
     }
     
     private func setup() {
-        self.backgroundColor = .clear
-        
+        // App theme setup
+        setupAppTheme()
+
         // Cover setup
         coverImage.translatesAutoresizingMaskIntoConstraints = false
         coverImage.widthAnchor.constraint(equalToConstant: 48).isActive = true
@@ -41,8 +42,10 @@ class CreateListAddedTrackCell: UITableViewCell
         // Text stack setup
         textStackView.layoutMargins = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
         textStackView.isLayoutMarginsRelativeArrangement = true
-        
-        // Text labels setup
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = .clear
         titleLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         descriptionLabel.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
     }

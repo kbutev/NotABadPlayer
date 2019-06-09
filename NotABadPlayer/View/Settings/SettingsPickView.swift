@@ -61,7 +61,6 @@ class SettingsPickView : UIView {
     private func initialize() {
         content = SettingsPickContentView.create(owner: self)
         addSubview(content)
-        backgroundColor = .clear
     }
     
     override func awakeFromNib() {
@@ -71,9 +70,17 @@ class SettingsPickView : UIView {
     private func setup() {
         let parent = superview!
         
+        // App theme setup
+        setupAppTheme()
+        
+        // Self setup
         self.translatesAutoresizingMaskIntoConstraints = false
         self.widthAnchor.constraint(equalTo: parent.widthAnchor).isActive = true
         self.heightAnchor.constraint(equalToConstant: SettingsPickView.HEIGHT).isActive = true
+    }
+    
+    public func setupAppTheme() {
+        backgroundColor = .clear
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

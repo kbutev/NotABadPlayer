@@ -10,7 +10,7 @@ import UIKit
 
 class SearchItemCell : UICollectionViewCell
 {
-    public static let SIZE = CGSize(width: 0, height: 64)
+    public static let SIZE = CGSize(width: 0, height: 56)
     
     @IBOutlet weak var horizontalStackView: UIStackView!
     @IBOutlet weak var trackAlbumCover: UIImageView!
@@ -35,13 +35,23 @@ class SearchItemCell : UICollectionViewCell
     private func setup() {
         let guide = self
         
-        self.backgroundColor = .clear
+        // App theme setup
+        setupAppTheme()
         
+        // Track album setup
         trackAlbumCover.translatesAutoresizingMaskIntoConstraints = false
         trackAlbumCover.widthAnchor.constraint(equalToConstant: 48).isActive = true
         trackAlbumCover.heightAnchor.constraint(equalTo: guide.heightAnchor).isActive = true
         
+        // Text stack setup
         textStackView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         textStackView.isLayoutMarginsRelativeArrangement = true
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = .clear
+        titleText.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        albumTitle.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
+        durationText.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
     }
 }

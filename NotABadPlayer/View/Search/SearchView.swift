@@ -89,6 +89,9 @@ class SearchView: UIView
     private func setup() {
         let guide = self
         
+        // App theme setup
+        setupAppTheme()
+        
         // Quick player setup
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
@@ -115,10 +118,15 @@ class SearchView: UIView
         self.collectionActionDelegate = SearchViewActionDelegate(view: self)
         collectionView.delegate = self.collectionActionDelegate
         
-        collectionView.backgroundColor = .clear
-        
         // Search field interaction setup
         searchField.delegate = self
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
+        
+        collectionView.backgroundColor = .clear
+        searchDescription.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
     }
     
     public func reloadData() {
@@ -242,7 +250,7 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
         {
             if playerPlaylist.playingTrack == item
             {
-                cell.backgroundColor = PlaylistViewDataSource.HIGHLIGHT_COLOR
+                cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
             }
         }
         

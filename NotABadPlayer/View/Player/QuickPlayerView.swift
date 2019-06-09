@@ -63,8 +63,8 @@ class QuickPlayerView : UIView
     private func setup() {
         let guide = primaryStackView!
         
-        // Background
-        self.backgroundColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BACKGROUND)
+        // App theme setup
+        appThemeSetup()
         
         // Constraints
         primaryStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -125,6 +125,19 @@ class QuickPlayerView : UIView
         gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeUp(sender:)))
         gestureSwipe.direction = .up
         self.addGestureRecognizer(gestureSwipe)
+    }
+    
+    public func appThemeSetup() {
+        self.backgroundColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BACKGROUND)
+        
+        trackInfoTitleText.textColor = AppTheme.shared.colorFor(.QUICK_PLAYER_TEXT)
+        trackInfoDurationText.textColor = AppTheme.shared.colorFor(.QUICK_PLAYER_SUBTEXT)
+        
+        playlistMediaButton.tintColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BUTTON)
+        previousMediaButton.tintColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BUTTON)
+        playMediaButton.tintColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BUTTON)
+        nextMediaButton.tintColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BUTTON)
+        playOrderMediaButton.tintColor = AppTheme.shared.colorFor(.QUICK_PLAYER_BUTTON)
     }
     
     func updateTime(currentTime: Double, totalDuration: Double) {

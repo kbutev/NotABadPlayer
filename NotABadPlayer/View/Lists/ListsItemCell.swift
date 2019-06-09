@@ -33,7 +33,8 @@ class ListsItemCell : UITableViewCell
     private func setup() {
         let guide = self
         
-        self.backgroundColor = .clear
+        // App theme setup
+        setupAppTheme()
         
         // Art cover setup
         artCoverImage.translatesAutoresizingMaskIntoConstraints = false
@@ -41,11 +42,15 @@ class ListsItemCell : UITableViewCell
         artCoverImage.heightAnchor.constraint(equalTo: guide.heightAnchor).isActive = true
         
         // Text stack setup
-        textStackView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+        textStackView.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 0)
         textStackView.isLayoutMarginsRelativeArrangement = true
         
         // Text labels setup
         titleLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = .clear
         descriptionLabel.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
     }
 }

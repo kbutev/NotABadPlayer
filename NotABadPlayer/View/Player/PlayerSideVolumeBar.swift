@@ -23,7 +23,7 @@ class PlayerSideVolumeBar: UIStackView
         let bar = GTProgressBar()
         bar.orientation = .vertical
         bar.progress = 1
-        bar.barFillColor = AppTheme.shared.colorFor(.PLAYER_SIDE_VOLUME_BAR)
+        bar.barFillColor = Colors.BLUE
         bar.displayLabel = false
         return bar
     }()

@@ -29,8 +29,6 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
     override func loadView() {
         self.baseView = PlaylistView.create(owner: self)
         self.view = self.baseView
-        
-        self.view.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
     }
     
     override func viewDidLoad() {

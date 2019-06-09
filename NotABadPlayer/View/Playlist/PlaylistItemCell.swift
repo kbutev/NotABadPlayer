@@ -10,7 +10,7 @@ import UIKit
 
 class PlaylistItemCell : UICollectionViewCell
 {
-    public static let SIZE = CGSize(width: 0, height: 48)
+    public static let SIZE = CGSize(width: 0, height: 56)
     
     @IBOutlet weak var horizontalStackView: UIStackView!
     @IBOutlet weak var trackNumText: UILabel!
@@ -34,11 +34,19 @@ class PlaylistItemCell : UICollectionViewCell
     private func setup() {
         let guide = self
         
-        self.backgroundColor = .clear
+        // App theme setup
+        setupAppTheme()
         
         // Track num setup
         trackNumText.translatesAutoresizingMaskIntoConstraints = false
         trackNumText.widthAnchor.constraint(equalToConstant: 32).isActive = true
         trackNumText.heightAnchor.constraint(equalTo: guide.heightAnchor).isActive = true
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = .clear
+        trackNumText.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        titleText.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        descriptionText.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
     }
 }

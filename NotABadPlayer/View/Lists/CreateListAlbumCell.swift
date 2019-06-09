@@ -52,8 +52,10 @@ class CreateListAlbumCell: UITableViewCell
     private func setup() {
         let guide = content!
         
-        self.backgroundColor = .clear
+        // App theme setup
+        setupAppTheme()
         
+        // Cover image setup
         coverImage.translatesAutoresizingMaskIntoConstraints = false
         coverImage.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         coverImage.leftAnchor.constraint(equalTo: guide.leftAnchor).isActive = true
@@ -78,6 +80,13 @@ class CreateListAlbumCell: UITableViewCell
         
         self.delegate = CreateListAlbumCellDelegate(view: self)
         tracksTable.delegate = self.delegate
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = .clear
+        content.backgroundColor = .clear
+        tracksTable.backgroundColor = .clear
+        titleLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
     }
     
     public func selectAlbumTrack(at index: UInt) {

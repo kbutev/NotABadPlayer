@@ -87,6 +87,9 @@ class ListsView : UIView
     private func setup() {
         let guide = self
         
+        // App theme setup
+        setupAppTheme()
+        
         // Quick player setup
         addSubview(quickPlayerView)
         quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +104,6 @@ class ListsView : UIView
         header.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -ListsView.HORIZONTAL_MARGIN).isActive = true
         header.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         header.heightAnchor.constraint(equalToConstant: ListsView.HEADER_HEIGHT).isActive = true
-        header.backgroundColor = .clear
         
         // Buttons setup
         createButton.translatesAutoresizingMaskIntoConstraints = false
@@ -134,7 +136,12 @@ class ListsView : UIView
         playlistsTable.delegate = tableActionDelegate
         
         playlistsTable.dataSource = self
+    }
+    
+    public func setupAppTheme() {
+        self.backgroundColor = AppTheme.shared.colorFor(.STANDART_BACKGROUND)
         
+        header.backgroundColor = .clear
         playlistsTable.backgroundColor = .clear
     }
     

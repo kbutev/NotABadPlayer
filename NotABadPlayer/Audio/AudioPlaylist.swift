@@ -106,6 +106,14 @@ struct AudioPlaylist: Codable {
         return nil
     }
     
+    func isPlayingFirstTrack() -> Bool {
+        return playingTrackPosition == 0
+    }
+    
+    func isPlayingLastTrack() -> Bool {
+        return playingTrackPosition == 0
+    }
+    
     mutating func playCurrent() {
         isPlaying = true
     }
@@ -135,7 +143,8 @@ struct AudioPlaylist: Codable {
     mutating func goToNextPlayingTrack() {
         isPlaying = true
         
-        if (playingTrackPosition + 1 == tracks.count)
+        // Stop playing upon reaching the end
+        if (isPlayingLastTrack())
         {
             isPlaying = false
         }
@@ -148,7 +157,9 @@ struct AudioPlaylist: Codable {
     mutating func goToNextPlayingTrackRepeat() {
         isPlaying = true
         
-        if (playingTrackPosition + 1 < tracks.count)
+        // Keep going until reaching the end
+        // Once the end is reached, jump to the first track to loop the list again
+        if (!isPlayingLastTrack())
         {
             goToNextPlayingTrack()
         }
@@ -161,7 +172,7 @@ struct AudioPlaylist: Codable {
     mutating func goToPreviousPlayingTrack() {
         isPlaying = true
         
-        if (playingTrackPosition - 1 < 0)
+        if (isPlayingFirstTrack())
         {
             playingTrackPosition = 0
             isPlaying = false
