@@ -108,7 +108,7 @@ class SettingsPickView : UIView {
     public func setPickOptions(options: [String]) {
         let wasEmpty = dropDownView.optionArray.count == 0
         
-        dropDownView.optionArray = options
+        dropDownView.options = options
         dropDownView.text = dropDownView.optionArray.first
         
         if wasEmpty
@@ -120,6 +120,17 @@ class SettingsPickView : UIView {
     public func selectOption(index: UInt) {
         dropDownView.text = dropDownView.optionArray[Int(index)]
         dropDownView.selectedIndex = Int(index)
+    }
+    
+    public func selectOption(action: ApplicationAction) {
+        for e in 0..<dropDownView.options.count
+        {
+            if dropDownView.option(at: e, equalsAction: action)
+            {
+                dropDownView.text = dropDownView.optionsFormatted[e]
+                dropDownView.selectedIndex = e
+            }
+        }
     }
     
     public func showPickerView() {

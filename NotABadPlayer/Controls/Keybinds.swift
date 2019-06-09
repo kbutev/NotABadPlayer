@@ -16,7 +16,7 @@ class Keybinds {
     }
     
     func getActionFor(input: ApplicationInput) -> ApplicationAction {
-        return GeneralStorage.shared.getSettingsAction(forInput: input)
+        return GeneralStorage.shared.getKeybindAction(forInput: input)
     }
     
     func evaluateInput(input: ApplicationInput) -> ApplicationAction {
@@ -61,29 +61,29 @@ class Keybinds {
         case .MUTE:
             AudioPlayer.shared.mute();
             break
-        case .FORWARDS_5:
-            AudioPlayer.shared.jumpForwards(5);
-            break
         case .FORWARDS_8:
-            AudioPlayer.shared.jumpForwards(8);
-            break
-        case .FORWARDS_10:
-            AudioPlayer.shared.jumpForwards(10);
+            AudioPlayer.shared.jumpForwards(seconds: 8);
             break
         case .FORWARDS_15:
-            AudioPlayer.shared.jumpForwards(15);
+            AudioPlayer.shared.jumpForwards(seconds: 15);
             break
-        case .BACKWARDS_5:
-            AudioPlayer.shared.jumpBackwards(5);
+        case .FORWARDS_30:
+            AudioPlayer.shared.jumpForwards(seconds: 30);
+            break
+        case .FORWARDS_60:
+            AudioPlayer.shared.jumpForwards(seconds: 60);
             break
         case .BACKWARDS_8:
-            AudioPlayer.shared.jumpBackwards(8);
-            break
-        case .BACKWARDS_10:
-            AudioPlayer.shared.jumpBackwards(10);
+            AudioPlayer.shared.jumpBackwards(seconds: 8);
             break
         case .BACKWARDS_15:
-            AudioPlayer.shared.jumpBackwards(15);
+            AudioPlayer.shared.jumpBackwards(seconds: 15);
+            break
+        case .BACKWARDS_30:
+            AudioPlayer.shared.jumpBackwards(seconds: 30);
+            break
+        case .BACKWARDS_60:
+            AudioPlayer.shared.jumpBackwards(seconds: 60);
             break
         case .CHANGE_PLAY_ORDER:
             let player = AudioPlayer.shared

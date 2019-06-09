@@ -27,5 +27,6 @@ struct GeneralStorageObserverValue
 protocol GeneralStorageObserver : class {
     func onAppAppearanceChange()
     func onTabCachingPolicyChange(_ value: TabsCachingPolicy)
+    func onKeybindChange(forInput: ApplicationInput)
     func onResetDefaultSettings()
 }

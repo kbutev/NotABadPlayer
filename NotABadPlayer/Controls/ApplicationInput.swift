@@ -26,4 +26,6 @@ enum ApplicationInput: String, Codable {
     case QUICK_PLAYER_PLAY_BUTTON;
     case QUICK_PLAYER_NEXT_BUTTON;
     case QUICK_PLAYER_PREVIOUS_BUTTON;
+    case LOCK_PLAYER_NEXT_BUTTON;
+    case LOCK_PLAYER_PREVIOUS_BUTTON;
 }

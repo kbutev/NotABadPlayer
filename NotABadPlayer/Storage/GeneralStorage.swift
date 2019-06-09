@@ -89,21 +89,23 @@ class GeneralStorage {
         saveOpenPlayerOnPlayValue(.NO)
         saveCachingPolicy(.ALBUMS_ONLY)
         
-        saveSettingsAction(action: .VOLUME_UP, forInput: .PLAYER_VOLUME_UP_BUTTON)
-        saveSettingsAction(action: .VOLUME_DOWN, forInput: .PLAYER_VOLUME_DOWN_BUTTON)
-        saveSettingsAction(action: .MUTE_OR_UNMUTE, forInput: .PLAYER_VOLUME)
-        saveSettingsAction(action: .PAUSE_OR_RESUME, forInput: .PLAYER_PLAY_BUTTON)
-        saveSettingsAction(action: .RECALL, forInput: .PLAYER_RECALL)
-        saveSettingsAction(action: .NEXT, forInput: .PLAYER_NEXT_BUTTON)
-        saveSettingsAction(action: .PREVIOUS, forInput: .PLAYER_PREVIOUS_BUTTON)
-        saveSettingsAction(action: .PREVIOUS, forInput: .PLAYER_SWIPE_LEFT)
-        saveSettingsAction(action: .NEXT, forInput: .PLAYER_SWIPE_RIGHT)
-        saveSettingsAction(action: .VOLUME_UP, forInput: .QUICK_PLAYER_VOLUME_UP_BUTTON)
-        saveSettingsAction(action: .VOLUME_DOWN, forInput: .QUICK_PLAYER_VOLUME_DOWN_BUTTON)
-        saveSettingsAction(action: .PAUSE_OR_RESUME, forInput: .QUICK_PLAYER_PLAY_BUTTON)
-        saveSettingsAction(action: .FORWARDS_15, forInput: .QUICK_PLAYER_NEXT_BUTTON)
-        saveSettingsAction(action: .BACKWARDS_15, forInput: .QUICK_PLAYER_PREVIOUS_BUTTON)
-        saveSettingsAction(action: .PAUSE, forInput: .EARPHONES_UNPLUG)
+        saveKeybindAction(action: .VOLUME_UP, forInput: .PLAYER_VOLUME_UP_BUTTON)
+        saveKeybindAction(action: .VOLUME_DOWN, forInput: .PLAYER_VOLUME_DOWN_BUTTON)
+        saveKeybindAction(action: .MUTE_OR_UNMUTE, forInput: .PLAYER_VOLUME)
+        saveKeybindAction(action: .PAUSE_OR_RESUME, forInput: .PLAYER_PLAY_BUTTON)
+        saveKeybindAction(action: .RECALL, forInput: .PLAYER_RECALL)
+        saveKeybindAction(action: .NEXT, forInput: .PLAYER_NEXT_BUTTON)
+        saveKeybindAction(action: .PREVIOUS, forInput: .PLAYER_PREVIOUS_BUTTON)
+        saveKeybindAction(action: .PREVIOUS, forInput: .PLAYER_SWIPE_LEFT)
+        saveKeybindAction(action: .NEXT, forInput: .PLAYER_SWIPE_RIGHT)
+        saveKeybindAction(action: .VOLUME_UP, forInput: .QUICK_PLAYER_VOLUME_UP_BUTTON)
+        saveKeybindAction(action: .VOLUME_DOWN, forInput: .QUICK_PLAYER_VOLUME_DOWN_BUTTON)
+        saveKeybindAction(action: .PAUSE_OR_RESUME, forInput: .QUICK_PLAYER_PLAY_BUTTON)
+        saveKeybindAction(action: .FORWARDS_8, forInput: .QUICK_PLAYER_NEXT_BUTTON)
+        saveKeybindAction(action: .BACKWARDS_8, forInput: .QUICK_PLAYER_PREVIOUS_BUTTON)
+        saveKeybindAction(action: .FORWARDS_8, forInput: .LOCK_PLAYER_NEXT_BUTTON)
+        saveKeybindAction(action: .BACKWARDS_8, forInput: .LOCK_PLAYER_PREVIOUS_BUTTON)
+        saveKeybindAction(action: .PAUSE, forInput: .EARPHONES_UNPLUG)
         
         saveCachingPolicy(.ALBUMS_ONLY);
         
@@ -215,7 +217,7 @@ class GeneralStorage {
         return storage.string(forKey: "search_query") ?? ""
     }
     
-    func getSettingsAction(forInput input: ApplicationInput) -> ApplicationAction {
+    func getKeybindAction(forInput input: ApplicationInput) -> ApplicationAction {
         if let value = storage.string(forKey: input.rawValue)
         {
             if let result = ApplicationAction(rawValue: value)
@@ -229,8 +231,10 @@ class GeneralStorage {
         return .DO_NOTHING
     }
     
-    func saveSettingsAction(action: ApplicationAction, forInput input: ApplicationInput) {
+    func saveKeybindAction(action: ApplicationAction, forInput input: ApplicationInput) {
         storage.set(action.rawValue, forKey: input.rawValue)
+        
+        onKeybindChange(forInput: input)
     }
     
     func getPlayerPlayedHistoryCapacity() -> UInt {
@@ -422,6 +426,13 @@ extension GeneralStorage {
         for observer in observers
         {
             observer.observer?.onTabCachingPolicyChange(value)
+        }
+    }
+    
+    private func onKeybindChange(forInput input: ApplicationInput) {
+        for observer in observers
+        {
+            observer.observer?.onKeybindChange(forInput: input)
         }
     }
     

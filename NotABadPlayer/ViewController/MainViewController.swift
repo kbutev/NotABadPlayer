@@ -379,6 +379,10 @@ extension MainViewController: GeneralStorageObserver {
         clearTabsCache()
     }
     
+    func onKeybindChange(forInput: ApplicationInput) {
+        
+    }
+    
     func onResetDefaultSettings() {
         clearTabsCache()
     }

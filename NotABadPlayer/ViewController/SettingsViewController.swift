@@ -81,32 +81,55 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
     }
     
     private func selectDefaultPickerValues() {
-        baseView?.selectTheme(GeneralStorage.shared.getAppThemeValue())
-        baseView?.selectTrackSorting(GeneralStorage.shared.getTrackSortingValue())
-        baseView?.selectOpenPlayerOnPlay(GeneralStorage.shared.getOpenPlayerOnPlayValue())
+        let storage = GeneralStorage.shared
         
-        baseView?.selectKeybind(keybind: .PLAYER_VOLUME_UP_BUTTON,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_VOLUME_UP_BUTTON))
-        baseView?.selectKeybind(keybind: .PLAYER_VOLUME_DOWN_BUTTON,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_VOLUME_DOWN_BUTTON))
-        baseView?.selectKeybind(keybind: .PLAYER_RECALL,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_RECALL))
-        baseView?.selectKeybind(keybind: .PLAYER_PREVIOUS_BUTTON,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_PREVIOUS_BUTTON))
-        baseView?.selectKeybind(keybind: .PLAYER_NEXT_BUTTON,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_NEXT_BUTTON))
-        baseView?.selectKeybind(keybind: .PLAYER_SWIPE_LEFT,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_SWIPE_LEFT))
-        baseView?.selectKeybind(keybind: .PLAYER_SWIPE_RIGHT,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .PLAYER_SWIPE_RIGHT))
-        baseView?.selectKeybind(keybind: .QUICK_PLAYER_VOLUME_UP_BUTTON,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_VOLUME_UP_BUTTON))
-        baseView?.selectKeybind(keybind: .QUICK_PLAYER_VOLUME_DOWN_BUTTON,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_VOLUME_DOWN_BUTTON))
-        baseView?.selectKeybind(keybind: .QUICK_PLAYER_PREVIOUS_BUTTON,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_PREVIOUS_BUTTON))
-        baseView?.selectKeybind(keybind: .QUICK_PLAYER_NEXT_BUTTON,
-                                action: GeneralStorage.shared.getSettingsAction(forInput: .QUICK_PLAYER_NEXT_BUTTON))
+        baseView?.selectTheme(storage.getAppThemeValue())
+        baseView?.selectTrackSorting(storage.getTrackSortingValue())
+        baseView?.selectOpenPlayerOnPlay(storage.getOpenPlayerOnPlayValue())
+        
+        var input: ApplicationInput = .PLAYER_VOLUME_UP_BUTTON
+        
+        input = .PLAYER_VOLUME_UP_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .PLAYER_VOLUME_DOWN_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .PLAYER_VOLUME
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .PLAYER_RECALL
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .PLAYER_PREVIOUS_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .PLAYER_NEXT_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .PLAYER_SWIPE_LEFT
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .PLAYER_SWIPE_RIGHT
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .QUICK_PLAYER_VOLUME_UP_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .QUICK_PLAYER_VOLUME_DOWN_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .QUICK_PLAYER_PREVIOUS_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .QUICK_PLAYER_NEXT_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .LOCK_PLAYER_PREVIOUS_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        
+        input = .LOCK_PLAYER_NEXT_BUTTON
+        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
     }
     
     func goBack() {

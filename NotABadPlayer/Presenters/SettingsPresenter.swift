@@ -126,14 +126,14 @@ class SettingsPresenter: BasePresenter
     }
     
     func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
-        if GeneralStorage.shared.getSettingsAction(forInput: input) == action
+        if GeneralStorage.shared.getKeybindAction(forInput: input) == action
         {
             return
         }
         
         Logging.log(SettingsPresenter.self, "Map keybind input '\(input.rawValue)' to action '\(action.rawValue)'")
         
-        GeneralStorage.shared.saveSettingsAction(action: action, forInput: input)
+        GeneralStorage.shared.saveKeybindAction(action: action, forInput: input)
         
         if input == .PLAYER_VOLUME
         {

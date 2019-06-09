@@ -64,6 +64,8 @@ enum Text: String {
     case SettingsQPlayerVolumeD = "QPlayer Volume D"
     case SettingsQPlayerPrevious = "QPlayer Previous"
     case SettingsQPlayerNext = "QPlayer Next"
+    case SettingsLockPlayerPrevious = "LPlayer Previous"
+    case SettingsLockPlayerNext = "LPlayer Next"
     
     case Error = "Error"
     case ErrorAlbumDoesNotExist = "Album does not exist"
