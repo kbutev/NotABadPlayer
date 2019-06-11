@@ -10,6 +10,7 @@ import UIKit
 
 class CreateListAlbumTrackCell: UITableViewCell
 {
+    public static let CELL_IDENTIFIER = "cell"
     public static let HEIGHT: CGFloat = 32
     
     var selectedBackground: UIView!

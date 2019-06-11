@@ -111,11 +111,19 @@ struct AudioPlaylist: Codable {
     }
     
     func isPlayingLastTrack() -> Bool {
-        return playingTrackPosition == 0
+        return playingTrackPosition == tracks.count
     }
     
     mutating func playCurrent() {
         isPlaying = true
+    }
+    
+    mutating func goToTrack(track: AudioTrack) {
+        if let index = tracks.index(of: track)
+        {
+            isPlaying = true
+            playingTrackPosition = index
+        }
     }
     
     mutating func goToTrackBasedOnPlayOrder(playOrder: AudioPlayOrder) {

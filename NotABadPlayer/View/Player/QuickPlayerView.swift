@@ -114,15 +114,7 @@ class QuickPlayerView : UIView
         self.playOrderMediaButton.isUserInteractionEnabled = true
         self.playOrderMediaButton.addGestureRecognizer(gestureTap)
         
-        var gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeLeft(sender:)))
-        gestureSwipe.direction = .left
-        self.addGestureRecognizer(gestureSwipe)
-        
-        gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeRight(sender:)))
-        gestureSwipe.direction = .right
-        self.addGestureRecognizer(gestureSwipe)
-        
-        gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeUp(sender:)))
+        let gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeUp(sender:)))
         gestureSwipe.direction = .up
         self.addGestureRecognizer(gestureSwipe)
     }
@@ -201,33 +193,25 @@ extension QuickPlayerView {
     @objc public func actionPrevious(sender: Any) {
         UIAnimations.animateImageClicked(self.previousMediaButton)
         
-        self.onPlayerButtonClickCallback(.PLAYER_PREVIOUS_BUTTON)
+        self.onPlayerButtonClickCallback(.QUICK_PLAYER_PREVIOUS_BUTTON)
     }
     
     @objc public func actionPlay(sender: Any) {
         UIAnimations.animateImageClicked(self.playMediaButton)
         
-        self.onPlayerButtonClickCallback(.PLAYER_PLAY_BUTTON)
+        self.onPlayerButtonClickCallback(.QUICK_PLAYER_PLAY_BUTTON)
     }
     
     @objc public func actionNext(sender: Any) {
         UIAnimations.animateImageClicked(self.nextMediaButton)
         
-        self.onPlayerButtonClickCallback(.PLAYER_NEXT_BUTTON)
+        self.onPlayerButtonClickCallback(.QUICK_PLAYER_NEXT_BUTTON)
     }
     
     @objc public func actionPlayOrder(sender: Any) {
         UIAnimations.animateImageClicked(self.playOrderMediaButton)
         
         self.onPlayOrderButtonClickCallback()
-    }
-    
-    @objc public func actionSwipeLeft(sender: Any) {
-        self.onPlayerButtonClickCallback(.PLAYER_SWIPE_LEFT)
-    }
-    
-    @objc public func actionSwipeRight(sender: Any) {
-        self.onPlayerButtonClickCallback(.PLAYER_SWIPE_RIGHT)
     }
     
     @objc public func actionSwipeUp(sender: Any) {

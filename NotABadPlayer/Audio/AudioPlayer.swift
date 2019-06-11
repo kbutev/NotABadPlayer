@@ -228,7 +228,6 @@ class AudioPlayer : NSObject {
         do {
             try play(track: playlist.playingTrack)
         } catch let error {
-            stop()
             throw error
         }
         
@@ -236,8 +235,10 @@ class AudioPlayer : NSObject {
         self.playlist?.playCurrent()
     }
     
-    private func play(track: AudioTrack, usePlayHistory: Bool=true) throws {
+    private func play(track: AudioTrack, previousTrack: AudioTrack?=nil, usePlayHistory: Bool=true) throws {
         checkIfPlayerIsInitialized()
+        
+        let wasPlaying = isPlaying
         
         let url = track.filePath
         
@@ -253,7 +254,30 @@ class AudioPlayer : NSObject {
             onPlay(track: track)
         } catch let error {
             Logging.log(AudioPlayer.self, "Error: cannot play track, \(error.localizedDescription)")
-            stop()
+            
+            // If the file fails to play, restore the previous audio state
+            if let prevTrack = previousTrack
+            {
+                do {
+                    try self.player = AVAudioPlayer(contentsOf: prevTrack.filePath)
+                    self.player?.prepareToPlay()
+                    self.player?.delegate = self
+                    self.player?.play()
+                    
+                    if !wasPlaying
+                    {
+                        self.player?.pause()
+                    }
+                }
+                catch {
+                    
+                }
+            }
+            else
+            {
+                stop()
+            }
+            
             throw error
         }
         
@@ -357,13 +381,15 @@ class AudioPlayer : NSObject {
         }
     }
     
-    func playNext() {
+    func playNext() throws {
         checkIfPlayerIsInitialized()
         
         if !hasPlaylist
         {
             return
         }
+        
+        let previousTrack = self.playlist?.playingTrack
         
         self.playlist?.goToNextPlayingTrack()
         
@@ -381,8 +407,14 @@ class AudioPlayer : NSObject {
                 try play(track: playingTrack)
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play next, \(error.localizedDescription)")
-                stop()
-                return
+                
+                if let prevTrack = previousTrack
+                {
+                    self.playlist?.goToTrack(track: prevTrack)
+                    onPause(track: prevTrack)
+                }
+                
+                throw error
             }
         }
         else
@@ -395,13 +427,15 @@ class AudioPlayer : NSObject {
         }
     }
     
-    func playPrevious() {
+    func playPrevious() throws {
         checkIfPlayerIsInitialized()
         
         if !hasPlaylist
         {
             return
         }
+        
+        let previousTrack = self.playlist?.playingTrack
         
         self.playlist?.goToPreviousPlayingTrack()
         
@@ -419,13 +453,19 @@ class AudioPlayer : NSObject {
                 try play(track: playingTrack)
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play previous, \(error.localizedDescription)")
-                stop()
-                return
+                
+                if let prevTrack = previousTrack
+                {
+                    self.playlist?.goToTrack(track: prevTrack)
+                    onPause(track: prevTrack)
+                }
+                
+                throw error
             }
         }
         else
         {
-            Logging.log(AudioPlayer.self, "Stop playing, got to last track")
+            Logging.log(AudioPlayer.self, "Stop playing, got to first track")
             
             stop()
             
@@ -433,8 +473,10 @@ class AudioPlayer : NSObject {
         }
     }
     
-    func playNextBasedOnPlayOrder() {
+    func playNextBasedOnPlayOrder() throws {
         checkIfPlayerIsInitialized()
+        
+        let previousTrack = self.playlist?.playingTrack
         
         self.playlist?.goToTrackBasedOnPlayOrder(playOrder: _playOrder)
         
@@ -452,8 +494,14 @@ class AudioPlayer : NSObject {
                 try play(track: playingTrack)
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play next based on play order, \(error.localizedDescription)")
-                stop()
-                return
+                
+                if let prevTrack = previousTrack
+                {
+                    self.playlist?.goToTrack(track: prevTrack)
+                    onPause(track: prevTrack)
+                }
+                
+                throw error
             }
         }
         else
@@ -466,8 +514,10 @@ class AudioPlayer : NSObject {
         }
     }
     
-    func shuffle() {
+    func shuffle() throws {
         checkIfPlayerIsInitialized()
+        
+        let previousTrack = self.playlist?.playingTrack
         
         self.playlist?.goToTrackByShuffle()
         
@@ -483,8 +533,14 @@ class AudioPlayer : NSObject {
                 try play(track: playlist.playingTrack)
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play random, \(error.localizedDescription)")
-                stop()
-                return
+                
+                if let prevTrack = previousTrack
+                {
+                    self.playlist?.goToTrack(track: prevTrack)
+                    onPause(track: prevTrack)
+                }
+                
+                throw error
             }
         }
         else
@@ -758,7 +814,12 @@ extension AudioPlayer {
 extension AudioPlayer : AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         self.onFinish()
-        self.playNextBasedOnPlayOrder()
+        
+        do {
+            try self.playNextBasedOnPlayOrder()
+        } catch {
+            
+        }
     }
     
     func audioPlayerBeginInterruption(_ player: AVAudioPlayer) {
@@ -866,7 +927,11 @@ extension AudioPlayer: GeneralStorageObserver {
     @objc func _remoteActionPrevious(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         if self.playlist != nil
         {
-            playPrevious()
+            do {
+                try playPrevious()
+            } catch {
+                
+            }
             return .success
         }
         
@@ -876,7 +941,11 @@ extension AudioPlayer: GeneralStorageObserver {
     @objc func _remoteActionNext(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         if self.playlist != nil
         {
-            playNext()
+            do {
+                try playNext()
+            } catch {
+                
+            }
             return .success
         }
         

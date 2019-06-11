@@ -10,7 +10,6 @@ import UIKit
 
 class ListsView : UIView
 {
-    static let CELL_IDENTIFIER = "cell"
     static let HORIZONTAL_MARGIN: CGFloat = 8
     static let HEADER_HEIGHT: CGFloat = 48
     
@@ -130,7 +129,7 @@ class ListsView : UIView
         playlistsTable.separatorStyle = .none
         
         let nib = UINib(nibName: String(describing: ListsItemCell.self), bundle: nil)
-        playlistsTable.register(nib, forCellReuseIdentifier: ListsView.CELL_IDENTIFIER)
+        playlistsTable.register(nib, forCellReuseIdentifier: ListsItemCell.CELL_IDENTIFIER)
         
         self.tableActionDelegate = ListsViewDelegate(view: self)
         playlistsTable.delegate = tableActionDelegate
@@ -206,7 +205,7 @@ extension ListsView : UITableViewDataSource {
             return dataSource.tableView(tableView, cellForRowAt: indexPath)
         }
         
-        return tableView.dequeueReusableCell(withIdentifier: ListsView.CELL_IDENTIFIER, for: indexPath)
+        return tableView.dequeueReusableCell(withIdentifier: ListsItemCell.CELL_IDENTIFIER, for: indexPath)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -260,7 +259,7 @@ class ListsViewDataSource : NSObject, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: ListsView.CELL_IDENTIFIER, for: indexPath)
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: ListsItemCell.CELL_IDENTIFIER, for: indexPath)
         
         guard let cell = reusableCell as? ListsItemCell else {
             return reusableCell

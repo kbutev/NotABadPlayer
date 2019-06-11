@@ -10,7 +10,6 @@ import UIKit
 
 class PlaylistView : UIView
 {
-    static let CELL_IDENTIFIER = "cell"
     static let HEADER_IDENTIFIER = "header"
     static let ALBUM_TITLE_OVERLAY_HEIGHT: CGFloat = 48
     
@@ -81,10 +80,17 @@ class PlaylistView : UIView
     }
     
     private func setup() {
-        let guide = self.superview!
+        let guide = self
         
         // App theme setup
         setupAppTheme()
+        
+        // Self setup
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.leftAnchor.constraint(equalTo: superview!.leftAnchor).isActive = true
+        self.rightAnchor.constraint(equalTo: superview!.rightAnchor).isActive = true
+        self.topAnchor.constraint(equalTo: superview!.topAnchor).isActive = true
+        self.bottomAnchor.constraint(equalTo: superview!.bottomAnchor).isActive = true
         
         // Quick player setup
         addSubview(quickPlayerView)
@@ -102,7 +108,7 @@ class PlaylistView : UIView
         collectionView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
         
         let cellNib = UINib(nibName: String(describing: PlaylistItemCell.self), bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: PlaylistView.CELL_IDENTIFIER)
+        collectionView.register(cellNib, forCellWithReuseIdentifier: PlaylistItemCell.CELL_IDENTIFIER)
         
         let headerNib = UINib(nibName: String(describing: PlaylistHeaderView.self), bundle: nil)
         collectionView.register(headerNib,
@@ -200,6 +206,15 @@ class PlaylistView : UIView
             }
         }
     }
+    
+    public func playSelectionAnimation(reloadData: Bool) {
+        collectionDataSource?.playSelectionAnimation()
+        
+        if reloadData
+        {
+            self.reloadData()
+        }
+    }
 }
 
 // Actions
@@ -231,10 +246,12 @@ extension PlaylistView {
 // Collection data source
 class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
 {
-    let audioInfo: AudioInfo
-    let playlist: AudioPlaylist
+    private let audioInfo: AudioInfo
+    private let playlist: AudioPlaylist
     
-    var headerSize: CGSize = .zero
+    private(set) var headerSize: CGSize = .zero
+    
+    private var playSelectionAnimationNextTime: Bool = false
     
     init(audioInfo: AudioInfo, playlist: AudioPlaylist) {
         self.audioInfo = audioInfo
@@ -284,7 +301,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaylistView.CELL_IDENTIFIER, for: indexPath)
+        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaylistItemCell.CELL_IDENTIFIER, for: indexPath)
         
         guard let cell = reusableCell as? PlaylistItemCell else {
             return reusableCell
@@ -297,14 +314,26 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         cell.trackNumText.text = item.trackNum
         
         // Highlight cells that contain the currently playing track
-        cell.backgroundColor = .clear
-        
         if let playerPlaylist = AudioPlayer.shared.playlist
         {
             if playerPlaylist.playingTrack == item
             {
                 cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
+                
+                if playSelectionAnimationNextTime
+                {
+                    playSelectionAnimationNextTime = false
+                    UIAnimations.animateListItemClicked(cell)
+                }
             }
+            else
+            {
+                cell.backgroundColor = .clear
+            }
+        }
+        else
+        {
+            cell.backgroundColor = .clear
         }
         
         return cell
@@ -344,6 +373,10 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
             flowLayout.headerSize = PlaylistHeaderView.HEADER_SIZE_IMAGELESS
         }
     }
+    
+    public func playSelectionAnimation() {
+        self.playSelectionAnimationNextTime = true
+    }
 }
 
 // Collection delegate
@@ -351,11 +384,15 @@ class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
 {
     private weak var view: PlaylistView?
     
+    private let backgroundSelectionView = UIView()
+    
     init(view: PlaylistView) {
         self.view = view
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        view?.playSelectionAnimation(reloadData: false)
+        
         view?.actionTrackClicked(index: UInt(indexPath.row))
     }
     

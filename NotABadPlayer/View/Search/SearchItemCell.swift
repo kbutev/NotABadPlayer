@@ -10,6 +10,7 @@ import UIKit
 
 class SearchItemCell : UICollectionViewCell
 {
+    public static let CELL_IDENTIFIER = "cell"
     public static let SIZE = CGSize(width: 0, height: 56)
     
     @IBOutlet weak var horizontalStackView: UIStackView!

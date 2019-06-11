@@ -102,7 +102,7 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         self.subViewController = vc
         self.subViewControllerPlaylistName = playlist.name
         
-        NavigationHelpers.addVCChild(parent: self, child: vc)
+        NavigationHelpers.addVCChild(parent: self, child: vc, animation: .scaleUp)
     }
     
     func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource?, albumTitles: [String]) {
@@ -158,7 +158,11 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
     }
     
     func onPlayerErrorEncountered(_ error: Error) {
-        AlertWindows.shared.show(sourceVC: self, withTitle: "Error", withDescription: error.localizedDescription)
+        AlertWindows.shared.show(sourceVC: self,
+                                 withTitle: "Error",
+                                 withDescription: error.localizedDescription,
+                                 actionText: "Ok",
+                                 action: nil)
     }
 }
 
