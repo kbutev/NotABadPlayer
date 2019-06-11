@@ -8,23 +8,18 @@
 
 import UIKit
 
-enum NavigationHelpersAttachAnchor {
-    case top
-    case topRight
-    case topLeft
-    case bottom
-    case bottomRight
-    case bottomLeft
-}
-
 class NavigationHelpers
 {
-    class func addVCChild(parent: UIViewController, child: UIViewController) {
+    class func addVCChild(parent: UIViewController,
+                          child: UIViewController,
+                          animation: NavigationHelpersAnimation.Animation = .none) {
         parent.addChild(child)
         
         parent.view.addSubview(child.view)
         
         child.didMove(toParent: parent)
+        
+        NavigationHelpersAnimation.animateView(child.view, animation: animation)
     }
     
     class func removeVCChild(_ child: UIViewController) {
@@ -45,5 +40,28 @@ class NavigationHelpers
         vc.dismiss(animated: true, completion: {() in
             vc.view.removeFromSuperview()
         })
+    }
+}
+
+class NavigationHelpersAnimation {
+    enum Animation {
+        case none
+        case scaleUp
+        case scaleDown
+        case turnRight
+        case turnLeft
+    }
+    
+    class func animateView(_ view: UIView, animation: Animation) {
+        switch animation {
+        case .scaleUp:
+            UIAnimations.animateViewScaleUp(view)
+            break
+        case .scaleDown:
+            UIAnimations.animateViewScaleDown(view)
+            break
+        default:
+            break
+        }
     }
 }

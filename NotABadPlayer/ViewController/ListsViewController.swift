@@ -179,7 +179,11 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     }
     
     func onPlayerErrorEncountered(_ error: Error) {
-        
+        AlertWindows.shared.show(sourceVC: self,
+                                 withTitle: "Error",
+                                 withDescription: error.localizedDescription,
+                                 actionText: "Ok",
+                                 action: nil)
     }
     
     private func openCreateListsScreen() {

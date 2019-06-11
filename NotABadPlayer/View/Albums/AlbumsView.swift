@@ -10,7 +10,6 @@ import UIKit
 
 class AlbumsView : UIView
 {
-    public static let CELL_IDENTIFIER = "cell"
     public static let CELLS_PER_COLUMN: Int = 2
     public static let INDEXER_VIEW_WIDTH: CGFloat = 16
     public static let COLLECTION_HORIZONTAL_MARGIN: CGFloat = INDEXER_VIEW_WIDTH
@@ -114,7 +113,7 @@ class AlbumsView : UIView
         collectionView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
         
         let nib = UINib(nibName: String(describing: AlbumsCell.self), bundle: nil)
-        collectionView.register(nib, forCellWithReuseIdentifier: AlbumsView.CELL_IDENTIFIER)
+        collectionView.register(nib, forCellWithReuseIdentifier: AlbumsCell.CELL_IDENTIFIER)
         
         collectionView.collectionViewLayout = AlbumsFlowLayout(cellsPerColumn: AlbumsView.CELLS_PER_COLUMN)
         
@@ -252,7 +251,7 @@ class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumsView.CELL_IDENTIFIER, for: indexPath)
+        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumsCell.CELL_IDENTIFIER, for: indexPath)
         
         guard let cell = reusableCell as? AlbumsCell else {
             return reusableCell

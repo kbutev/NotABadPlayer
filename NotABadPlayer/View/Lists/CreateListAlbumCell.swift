@@ -14,7 +14,6 @@ class CreateListAlbumCell: UITableViewCell
     public static let SIZE = CGSize(width: 0, height: 48)
     public static let SELECTED_SIZE = CGSize(width: 0, height: 248)
     public static let COVER_IMAGE_SIZE = CGSize(width: 48, height: 48)
-    
     public static let HEADER_HEIGHT: CGFloat = 64
     
     @IBOutlet var content: UIView!
@@ -76,7 +75,7 @@ class CreateListAlbumCell: UITableViewCell
         tracksTable.separatorStyle = .none
         
         let nib = UINib(nibName: String(describing: CreateListAlbumTrackCell.self), bundle: nil)
-        tracksTable.register(nib, forCellReuseIdentifier: CreateListAlbumCell.CELL_IDENTIFIER)
+        tracksTable.register(nib, forCellReuseIdentifier: CreateListAlbumTrackCell.CELL_IDENTIFIER)
         
         self.delegate = CreateListAlbumCellDelegate(view: self)
         tracksTable.delegate = self.delegate

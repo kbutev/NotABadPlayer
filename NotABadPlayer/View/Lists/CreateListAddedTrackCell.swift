@@ -10,6 +10,7 @@ import UIKit
 
 class CreateListAddedTrackCell: UITableViewCell
 {
+    public static let CELL_IDENTIFIER = "cell"
     public static let SIZE = CGSize(width: 0, height: 48)
     
     @IBOutlet var stackView: UIStackView!

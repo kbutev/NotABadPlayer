@@ -19,11 +19,11 @@ class Keybinds {
         return GeneralStorage.shared.getKeybindAction(forInput: input)
     }
     
-    func evaluateInput(input: ApplicationInput) -> ApplicationAction {
+    func evaluateInput(input: ApplicationInput) -> Error? {
         return performAction(action: getActionFor(input: input))
     }
     
-    func performAction(action: ApplicationAction) -> ApplicationAction {
+    func performAction(action: ApplicationAction) -> Error? {
         switch action
         {
         case .DO_NOTHING:
@@ -32,58 +32,76 @@ class Keybinds {
             exit(0);
             break
         case .PLAY:
-            AudioPlayer.shared.resume();
+            AudioPlayer.shared.resume()
             break
         case .PAUSE:
-            AudioPlayer.shared.pause();
+            AudioPlayer.shared.pause()
             break
         case .PAUSE_OR_RESUME:
-            AudioPlayer.shared.pauseOrResume();
+            AudioPlayer.shared.pauseOrResume()
             break
         case .NEXT:
-            AudioPlayer.shared.playNext();
+            do {
+                try AudioPlayer.shared.playNext()
+            }
+            catch let e
+            {
+                return e
+            }
             break
         case .PREVIOUS:
-            AudioPlayer.shared.playPrevious();
+            do {
+                try AudioPlayer.shared.playPrevious()
+            }
+            catch let e
+            {
+                return e
+            }
             break
         case .SHUFFLE:
-            AudioPlayer.shared.shuffle();
+            do {
+                try AudioPlayer.shared.shuffle()
+            }
+            catch let e
+            {
+                return e
+            }
             break
         case .VOLUME_UP:
-            AudioPlayer.shared.volumeUp();
+            AudioPlayer.shared.volumeUp()
             break
         case .VOLUME_DOWN:
-            AudioPlayer.shared.volumeDown();
+            AudioPlayer.shared.volumeDown()
             break
         case .MUTE_OR_UNMUTE:
-            AudioPlayer.shared.muteOrUnmute();
+            AudioPlayer.shared.muteOrUnmute()
             break
         case .MUTE:
-            AudioPlayer.shared.mute();
+            AudioPlayer.shared.mute()
             break
         case .FORWARDS_8:
-            AudioPlayer.shared.jumpForwards(seconds: 8);
+            AudioPlayer.shared.jumpForwards(seconds: 8)
             break
         case .FORWARDS_15:
-            AudioPlayer.shared.jumpForwards(seconds: 15);
+            AudioPlayer.shared.jumpForwards(seconds: 15)
             break
         case .FORWARDS_30:
-            AudioPlayer.shared.jumpForwards(seconds: 30);
+            AudioPlayer.shared.jumpForwards(seconds: 30)
             break
         case .FORWARDS_60:
-            AudioPlayer.shared.jumpForwards(seconds: 60);
+            AudioPlayer.shared.jumpForwards(seconds: 60)
             break
         case .BACKWARDS_8:
-            AudioPlayer.shared.jumpBackwards(seconds: 8);
+            AudioPlayer.shared.jumpBackwards(seconds: 8)
             break
         case .BACKWARDS_15:
-            AudioPlayer.shared.jumpBackwards(seconds: 15);
+            AudioPlayer.shared.jumpBackwards(seconds: 15)
             break
         case .BACKWARDS_30:
-            AudioPlayer.shared.jumpBackwards(seconds: 30);
+            AudioPlayer.shared.jumpBackwards(seconds: 30)
             break
         case .BACKWARDS_60:
-            AudioPlayer.shared.jumpBackwards(seconds: 60);
+            AudioPlayer.shared.jumpBackwards(seconds: 60)
             break
         case .CHANGE_PLAY_ORDER:
             let player = AudioPlayer.shared
@@ -115,6 +133,6 @@ class Keybinds {
             break
         }
         
-        return action
+        return nil
     }
 }

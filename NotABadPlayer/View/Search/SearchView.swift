@@ -10,9 +10,8 @@ import UIKit
 
 class SearchView: UIView
 {
-    static let CELL_IDENTIFIER = "cell"
-    static let TOP_MARGIN: CGFloat = 8
-    static let HORIZONTAL_MARGIN: CGFloat = 8
+    public static let TOP_MARGIN: CGFloat = 8
+    public static let HORIZONTAL_MARGIN: CGFloat = 8
     
     private var initialized: Bool = false
     
@@ -109,7 +108,7 @@ class SearchView: UIView
         
         // Collection setup
         let cellNib = UINib(nibName: String(describing: SearchItemCell.self), bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: SearchView.CELL_IDENTIFIER)
+        collectionView.register(cellNib, forCellWithReuseIdentifier: SearchItemCell.CELL_IDENTIFIER)
         
         flowLayout = SearchFlowLayout()
         
@@ -230,7 +229,7 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchView.CELL_IDENTIFIER, for: indexPath)
+        let reusableCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchItemCell.CELL_IDENTIFIER, for: indexPath)
         
         guard let cell = reusableCell as? SearchItemCell else {
             return reusableCell

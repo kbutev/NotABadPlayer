@@ -10,6 +10,7 @@ import UIKit
 
 class ListsItemCell : UITableViewCell
 {
+    public static let CELL_IDENTIFIER = "cell"
     public static let HEIGHT: CGFloat = 64
     
     @IBOutlet weak var primaryStackView: UIStackView!

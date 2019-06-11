@@ -35,7 +35,6 @@ struct CreateListAudioTrack
 
 class CreateListView : UIView
 {
-    public static let CELL_IDENTIFIER = "cell"
     public static let HORIZONTAL_MARGIN: CGFloat = 8
     public static let HEADER_HEIGHT: CGFloat = 48
     
@@ -138,7 +137,7 @@ class CreateListView : UIView
         addedTracksTable.separatorStyle = .none
         
         var nib = UINib(nibName: String(describing: CreateListAddedTrackCell.self), bundle: nil)
-        addedTracksTable.register(nib, forCellReuseIdentifier: CreateListView.CELL_IDENTIFIER)
+        addedTracksTable.register(nib, forCellReuseIdentifier: CreateListAddedTrackCell.CELL_IDENTIFIER)
         
         self.addedTracksTableDelegate = CreateListViewAddedTracksActionDelegate(view: self)
         addedTracksTable.delegate = self.addedTracksTableDelegate
@@ -161,7 +160,7 @@ class CreateListView : UIView
         albumsTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
         
         nib = UINib(nibName: String(describing: CreateListAlbumCell.self), bundle: nil)
-        albumsTable.register(nib, forCellReuseIdentifier: CreateListView.CELL_IDENTIFIER)
+        albumsTable.register(nib, forCellReuseIdentifier: CreateListAlbumCell.CELL_IDENTIFIER)
         
         self.albumsTableDelegate = CreateListViewAlbumsDelegate(view: self)
         albumsTable.delegate = self.albumsTableDelegate
@@ -268,7 +267,7 @@ class CreateListViewAddedTracksTableDataSource : NSObject, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListView.CELL_IDENTIFIER, for: indexPath)
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListAddedTrackCell.CELL_IDENTIFIER, for: indexPath)
         
         guard let cell = reusableCell as? CreateListAddedTrackCell else {
             return reusableCell
@@ -333,7 +332,7 @@ class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListView.CELL_IDENTIFIER, for: indexPath)
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListAlbumCell.CELL_IDENTIFIER, for: indexPath)
         
         guard let cell = reusableCell as? CreateListAlbumCell else {
             return reusableCell

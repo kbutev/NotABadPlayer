@@ -101,13 +101,19 @@ class AlbumsPresenter: BasePresenter
         
         Logging.log(AlbumsPresenter.self, "Perform KeyBinds action '\(action.rawValue)' for input '\(input.rawValue)'")
         
-        let _ = Keybinds.shared.performAction(action: action)
+        if let error = Keybinds.shared.performAction(action: action)
+        {
+            delegate?.onPlayerErrorEncountered(error)
+        }
     }
     
     func onPlayOrderButtonClick() {
         Logging.log(AlbumsPresenter.self, "Change play order")
         
-        let _ = Keybinds.shared.performAction(action: .CHANGE_PLAY_ORDER)
+        if let error = Keybinds.shared.performAction(action: .CHANGE_PLAY_ORDER)
+        {
+            delegate?.onPlayerErrorEncountered(error)
+        }
     }
     
     func onOpenPlaylistButtonClick() {
