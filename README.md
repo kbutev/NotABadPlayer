@@ -8,7 +8,7 @@ Platform: iOS 11+
 
 Usage: Media player
 
-Technologies: iOS 11, ![iOSDropDown](https://github.com/jriosdev/iOSDropDown), ![GTProgressBar](https://github.com/gregttn/GTProgressBar)
+Technologies: iOS 11, [iOSDropDown](https://github.com/jriosdev/iOSDropDown), [GTProgressBar](https://github.com/gregttn/GTProgressBar)
 
 Architectural design:
 
@@ -68,24 +68,24 @@ Portrait mode only.
 
 Albums screen (quick player at the bottom, swipe up to open player screen)
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn1.jpg)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn1.PNG)
 
 Player screen
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn2.jpg)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn2.PNG)
 
 Playlist screen
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn3.jpg)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn3.PNG)
 
 Search screen
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn4.jpg)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn4.PNG)
 
 Settings screen - keybind options
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn5.jpg)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn5.PNG)
 
 Dark app theme
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn6.jpg)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn6.PNG)
