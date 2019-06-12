@@ -11,7 +11,7 @@ import MediaPlayer
 
 class LaunchViewController : UIViewController {
     override func loadView() {
-        self.view = MainView.create(owner: self)
+        self.view = UIImageView(image: UIImage(named: "launch_screen"))
     }
     
     override func viewDidLoad() {

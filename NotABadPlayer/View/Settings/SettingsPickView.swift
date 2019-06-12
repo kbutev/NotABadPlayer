@@ -106,10 +106,10 @@ class SettingsPickView : UIView {
     }
     
     public func setPickOptions(options: [String]) {
-        let wasEmpty = dropDownView.optionArray.count == 0
+        let wasEmpty = dropDownView.options.count == 0
         
         dropDownView.options = options
-        dropDownView.text = dropDownView.optionArray.first
+        dropDownView.text = dropDownView.options.first
         
         if wasEmpty
         {
@@ -117,20 +117,12 @@ class SettingsPickView : UIView {
         }
     }
     
-    public func selectOption(index: UInt) {
-        dropDownView.text = dropDownView.optionArray[Int(index)]
-        dropDownView.selectedIndex = Int(index)
+    public func selectOption(at index: UInt) {
+        dropDownView.selectOption(at: index)
     }
     
     public func selectOption(action: ApplicationAction) {
-        for e in 0..<dropDownView.options.count
-        {
-            if dropDownView.option(at: e, equalsAction: action)
-            {
-                dropDownView.text = dropDownView.optionsFormatted[e]
-                dropDownView.selectedIndex = e
-            }
-        }
+        dropDownView.selectOption(action: action)
     }
     
     public func showPickerView() {
@@ -153,7 +145,7 @@ class SettingsPickView : UIView {
         dropDownView.didSelect(completion: {[weak self] (_ selectedText: String, _ index: Int , _ id:Int ) -> () in
             if let view = self
             {
-                view.selectOption(index: UInt(index))
+                view.selectOption(at: UInt(index))
                 view.delegate?.onSelect(source: view.type, index: UInt(index))
             }
         })
