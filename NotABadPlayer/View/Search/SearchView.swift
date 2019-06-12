@@ -179,6 +179,15 @@ class SearchView: UIView
     public func updatePlayOrderButtonState(order: AudioPlayOrder) {
         quickPlayerView.updatePlayOrderButtonState(order: order)
     }
+    
+    public func playSelectionAnimation(reloadData: Bool) {
+        collectionDataSource?.playSelectionAnimation()
+        
+        if reloadData
+        {
+            self.reloadData()
+        }
+    }
 }
 
 // Actions
@@ -219,6 +228,8 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
     let audioInfo: AudioInfo
     let searchResults: [AudioTrack]
     
+    private var playSelectionAnimationNextTime: Bool = false
+    
     init(audioInfo: AudioInfo, searchResults: [AudioTrack]) {
         self.audioInfo = audioInfo
         self.searchResults = searchResults
@@ -242,15 +253,27 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
         cell.albumTitle.text = item.albumTitle
         cell.durationText.text = item.duration
         
-        // Highlight cells that contain the currently playing track
-        cell.backgroundColor = .clear
-        
+        // Highlight cells that represent the currently playing track
         if let playerPlaylist = AudioPlayer.shared.playlist
         {
             if playerPlaylist.playingTrack == item
             {
                 cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
+                
+                if playSelectionAnimationNextTime
+                {
+                    playSelectionAnimationNextTime = false
+                    UIAnimations.animateListItemClicked(cell)
+                }
             }
+            else
+            {
+                cell.backgroundColor = .clear
+            }
+        }
+        else
+        {
+            cell.backgroundColor = .clear
         }
         
         return cell
@@ -258,6 +281,10 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
+    }
+    
+    public func playSelectionAnimation() {
+        self.playSelectionAnimationNextTime = true
     }
 }
 
@@ -271,6 +298,7 @@ class SearchViewActionDelegate : NSObject, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.view?.playSelectionAnimation(reloadData: false)
         self.view?.actionSearchResultClick(index: UInt(indexPath.row))
     }
 }

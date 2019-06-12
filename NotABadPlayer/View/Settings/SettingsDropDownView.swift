@@ -27,26 +27,36 @@ class SettingsDropDownView: DropDown {
         }
     }
     
-    public var optionsFormatted: [String] {
-        get {
-            var values: [String] = []
-            
-            for string in self.optionArray
-            {
-                values.append(string.replacingOccurrences(of: "_", with: optionsUnderscoreReplacement))
-            }
-            
-            return values
-        }
-    }
-    
+    // Options string values always remove their "_" occurances with space
+    // Use @optionsUnformatted to retrieve the original values back
     public var options: [String] {
         get {
             return self.optionArray
         }
         
         set {
-            self.optionArray = newValue
+            var values: [String] = []
+            
+            for string in newValue
+            {
+                values.append(string.replacingOccurrences(of: "_", with: optionsUnderscoreReplacement))
+            }
+            
+            self.optionArray = values
+        }
+    }
+    
+    // Options with their original values, no formatting
+    public var optionsUnformatted: [String] {
+        get {
+            var values: [String] = []
+            
+            for string in self.optionArray
+            {
+                values.append(string.replacingOccurrences(of: optionsUnderscoreReplacement, with: "_"))
+            }
+            
+            return values
         }
     }
     
@@ -81,11 +91,20 @@ class SettingsDropDownView: DropDown {
         }
     }
     
-    public func option(at index: UInt) -> String {
-        return options[Int(index)]
+    public func selectOption(at index: UInt) {
+        self.text = options[Int(index)]
+        self.selectedIndex = Int(index)
     }
     
-    public func option(at index: Int, equalsAction action: ApplicationAction) -> Bool {
-        return options[index] == action.rawValue
+    public func selectOption(action: ApplicationAction) {
+        for e in 0..<optionsUnformatted.count
+        {
+            if optionsUnformatted[e] == action.rawValue
+            {
+                self.text = options[e]
+                self.selectedIndex = e
+                break
+            }
+        }
     }
 }

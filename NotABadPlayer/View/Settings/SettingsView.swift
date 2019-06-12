@@ -126,6 +126,9 @@ class SettingsView : UIView
         
         resizeScrollViewContentSize()
         
+        // About info setup
+        aboutInfoView.text = Text.value(.SettingsAbout)
+        
         // User interaction setup
         resetDefaultsButton.addTarget(self, action: #selector(actionResetDefaultsButton), for: .touchUpInside)
     }
@@ -164,21 +167,21 @@ class SettingsView : UIView
     public func selectTheme(_ value: AppThemeValue) {
         if let index = AppThemeValue.allCases.firstIndex(of: value)
         {
-            pickAppTheme.selectOption(index: UInt(index))
+            pickAppTheme.selectOption(at: UInt(index))
         }
     }
     
     public func selectTrackSorting(_ value: TrackSorting) {
         if let index = TrackSorting.allCases.firstIndex(of: value)
         {
-            pickTrackSorting.selectOption(index: UInt(index))
+            pickTrackSorting.selectOption(at: UInt(index))
         }
     }
     
     public func selectOpenPlayerOnPlay(_ value: OpenPlayerOnPlay) {
         if let index = OpenPlayerOnPlay.allCases.firstIndex(of: value)
         {
-            pickOpenPlayerOnPlay.selectOption(index: UInt(index))
+            pickOpenPlayerOnPlay.selectOption(at: UInt(index))
         }
     }
     

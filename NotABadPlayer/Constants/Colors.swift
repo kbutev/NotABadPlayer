@@ -15,7 +15,7 @@ struct Colors
     public static let WHITE = UIColor.white
     public static let PAPER_WHITE = UIColor(red:0.99, green:0.99, blue:0.98, alpha:1.0)
     public static let GRAY = UIColor.gray
-    public static let DARK_GRAY = UIColor.darkGray
+    public static let DARK_GRAY = UIColor(red:0.31, green:0.31, blue:0.31, alpha:1.0)
     public static let GREEN = UIColor(red:0.0, green:0.7, blue:0.25, alpha:1.0)
     public static let RED = UIColor.red
     public static let LIGHT_BLUE = UIColor(displayP3Red: 0.37, green: 0.59, blue: 0.94, alpha: 1)

@@ -21,7 +21,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Yug-el-zGD">
-                            <rect key="frame" x="0.0" y="0.0" width="339" height="1074.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="339" height="1041"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Appearance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p4a-cO-weQ">
@@ -121,12 +121,9 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="RZu-v4-vy6">
-                                    <rect key="frame" x="0.0" y="1008" width="339" height="66.5"/>
+                                <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" text="About" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="RZu-v4-vy6">
+                                    <rect key="frame" x="145" y="1008" width="49" height="33"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <string key="text">Version 1.0 (1)
-Released 2019.06.10
-Programmed, designed &amp; tested by Kristiyan Butev</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 </textView>

@@ -313,7 +313,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         cell.descriptionText.text = item.duration
         cell.trackNumText.text = item.trackNum
         
-        // Highlight cells that contain the currently playing track
+        // Highlight cells that represent the currently playing track
         if let playerPlaylist = AudioPlayer.shared.playlist
         {
             if playerPlaylist.playingTrack == item
