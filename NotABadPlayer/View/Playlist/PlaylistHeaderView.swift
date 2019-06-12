@@ -10,7 +10,7 @@ import UIKit
 
 class PlaylistHeaderView : UICollectionReusableView
 {
-    public static let HEADER_SIZE = CGSize(width: 0, height: 224)
+    public static let HEADER_SIZE = CGSize(width: 0, height: 300)
     public static let HEADER_SIZE_IMAGELESS = CGSize(width: 0, height: 64)
     
     @IBOutlet var stackView: UIStackView!

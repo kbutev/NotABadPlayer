@@ -51,7 +51,7 @@ class SettingsPickContentView : UIView {
         
         // Title setup
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
+        titleLabel.centerYAnchor.constraint(equalTo: dropDownView.centerYAnchor).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: parent.leftAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: SettingsPickContentView.TITLE_WIDTH).isActive = true
         
