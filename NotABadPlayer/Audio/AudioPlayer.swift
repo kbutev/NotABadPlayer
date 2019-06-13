@@ -410,7 +410,7 @@ class AudioPlayer : NSObject {
                 
                 if let prevTrack = previousTrack
                 {
-                    self.playlist?.goToTrack(track: prevTrack)
+                    self.playlist?.goToTrack(prevTrack)
                     onPause(track: prevTrack)
                 }
                 
@@ -456,7 +456,7 @@ class AudioPlayer : NSObject {
                 
                 if let prevTrack = previousTrack
                 {
-                    self.playlist?.goToTrack(track: prevTrack)
+                    self.playlist?.goToTrack(prevTrack)
                     onPause(track: prevTrack)
                 }
                 
@@ -497,7 +497,7 @@ class AudioPlayer : NSObject {
                 
                 if let prevTrack = previousTrack
                 {
-                    self.playlist?.goToTrack(track: prevTrack)
+                    self.playlist?.goToTrack(prevTrack)
                     onPause(track: prevTrack)
                 }
                 
@@ -536,7 +536,7 @@ class AudioPlayer : NSObject {
                 
                 if let prevTrack = previousTrack
                 {
-                    self.playlist?.goToTrack(track: prevTrack)
+                    self.playlist?.goToTrack(prevTrack)
                     onPause(track: prevTrack)
                 }
                 
@@ -791,7 +791,7 @@ extension AudioPlayer {
         
         if newPlaylist == nil
         {
-            let playlistName = "Previously played"
+            let playlistName = Text.value(.PlaylistRecentlyPlayed)
             
             newPlaylist = AudioPlaylist(name: playlistName, startWithTrack: previousTrack)
         }

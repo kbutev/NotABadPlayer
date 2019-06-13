@@ -168,9 +168,13 @@ class PlaylistPresenter: BasePresenter
         
         let playlistName = playlist.name
         
-        let newPlaylist = AudioPlaylist(name: playlistName, tracks: playlist.tracks, startWithTrack: track)
-        
-        delegate.openPlayerScreen(playlist: newPlaylist)
+        do {
+            let newPlaylist = try AudioPlaylist(name: playlistName, tracks: playlist.tracks, startWithTrack: track)
+            
+            delegate.openPlayerScreen(playlist: newPlaylist)
+        } catch let e {
+            Logging.log(PlaylistPresenter.self, "Error: cannot open player screen: \(e.localizedDescription)")
+        }
     }
     
     private func playNewTrack(_ track: AudioTrack) {
@@ -178,7 +182,15 @@ class PlaylistPresenter: BasePresenter
         
         let playlistName = self.playlist.name
         let tracks = self.playlist.tracks
-        let playlist = AudioPlaylist(name: playlistName, tracks: tracks, startWithTrack: track)
+        
+        var playlist: AudioPlaylist!
+        
+        do {
+            playlist = try AudioPlaylist(name: playlistName, tracks: tracks, startWithTrack: track)
+        } catch let e {
+            Logging.log(PlaylistPresenter.self, "Error: cannot play track: \(e.localizedDescription)")
+            return
+        }
         
         if let currentPlaylist = player.playlist
         {

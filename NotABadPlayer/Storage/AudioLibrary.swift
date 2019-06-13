@@ -101,6 +101,10 @@ class AudioLibrary : AudioInfo {
         
         for item in allSongs
         {
+            guard let identifier = item.value(forProperty: MPMediaItemPropertyPersistentID) as? Int else {
+                continue
+            }
+            
             guard let path = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL else {
                 continue
             }
@@ -119,7 +123,8 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            let track = AudioTrack(filePath: path,
+            let track = AudioTrack(identifier: identifier,
+                                   filePath: path,
                                    title: title,
                                    artist: artist,
                                    albumTitle: album.albumTitle,
@@ -150,6 +155,10 @@ class AudioLibrary : AudioInfo {
         
         for item in result
         {
+            guard let identifier = item.value(forProperty: MPMediaItemPropertyPersistentID) as? Int else {
+                continue
+            }
+            
             guard let path = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL else {
                 continue
             }
@@ -171,7 +180,8 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            let track = AudioTrack(filePath: path,
+            let track = AudioTrack(identifier: identifier,
+                                   filePath: path,
                                    title: title,
                                    artist: artist,
                                    albumTitle: albumTitle,

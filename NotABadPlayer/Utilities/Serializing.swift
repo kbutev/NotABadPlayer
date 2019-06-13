@@ -15,8 +15,6 @@ struct Serializing {
             return encodedData.base64EncodedString()
         }
         
-        Logging.log(Serializing.self, "Error: cannot serialize object of type \(String(describing: T.self))")
-        
         return nil
     }
     
@@ -28,8 +26,6 @@ struct Serializing {
                 return result
             }
         }
-        
-        Logging.log(Serializing.self, "Error: cannot deserialize object of type \(String(describing: T.self))")
         
         return nil
     }

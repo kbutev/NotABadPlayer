@@ -48,7 +48,7 @@ class GeneralStorage {
         
         if (isFirstTimeLaunch)
         {
-            Logging.log(GeneralStorage.self, "First time launching the program! Setting app settings to their default values")
+            Logging.log(GeneralStorage.self, "First time launching the program!")
             
             storage.set(true, forKey: "notFirstTime")
             
@@ -81,6 +81,8 @@ class GeneralStorage {
     }
     
     func resetDefaultSettingsValues() {
+        Logging.log(GeneralStorage.self, "Resetting settings values to their defaults")
+        
         savePlayerPlayedHistoryCapacity(50)
         saveAppThemeValue(.LIGHT)
         saveAlbumSortingValue(.TITLE)
@@ -103,6 +105,10 @@ class GeneralStorage {
         saveKeybindAction(action: .PAUSE, forInput: .EARPHONES_UNPLUG)
         
         saveCachingPolicy(.ALBUMS_ONLY);
+        
+        let playlists: [AudioPlaylist] = []
+        
+        storage.set(playlists, forKey: "user_playlists")
         
         // Observers alert
         onResetDefaultSettings()
