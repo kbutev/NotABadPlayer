@@ -42,7 +42,11 @@ struct AudioTrackSource: Codable {
                 {
                     let tracks = audioInfo.getAlbumTracks(album: album)
                     
-                    return AudioPlaylist(name: album.albumTitle, tracks: tracks, startWithTrack: playingTrack)
+                    do {
+                        return try AudioPlaylist(name: album.albumTitle, tracks: tracks, startWithTrack: playingTrack)
+                    } catch {
+                        
+                    }
                 }
             }
             
@@ -51,7 +55,19 @@ struct AudioTrackSource: Codable {
         
         if (isPlaylist())
         {
+            let userPlaylists = GeneralStorage.shared.getUserPlaylists()
             
+            for playlist in userPlaylists
+            {
+                if value == playlist.name
+                {
+                    do {
+                        return try AudioPlaylist(name: playlist.name, tracks: playlist.tracks, startWithTrack: playingTrack)
+                    } catch {
+                        
+                    }
+                }
+            }
         }
         
         return nil

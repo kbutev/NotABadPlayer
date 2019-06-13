@@ -10,6 +10,7 @@ import Foundation
 import MediaPlayer
 
 class AudioTrack: Equatable, Codable {
+    public let identifier : Int
     public let filePath : URL
     public let title : String
     public let artist : String
@@ -60,7 +61,8 @@ class AudioTrack: Equatable, Codable {
     public let duration : String
     public let source : AudioTrackSource
     
-    init(filePath : URL,
+    init(identifier : Int,
+         filePath : URL,
          title : String,
          artist : String,
          albumTitle : String,
@@ -69,6 +71,7 @@ class AudioTrack: Equatable, Codable {
          trackNum : Int,
          durationInSeconds : Double,
          source: AudioTrackSource) {
+        self.identifier = identifier
         self.filePath = filePath
         self.title = title
         self.artist = artist
@@ -82,6 +85,7 @@ class AudioTrack: Equatable, Codable {
     }
     
     init(originalTrack : AudioTrack, source: AudioTrackSource) {
+        self.identifier = originalTrack.identifier
         self.filePath = originalTrack.filePath
         self.title = originalTrack.title
         self.artist = originalTrack.artist
@@ -95,7 +99,7 @@ class AudioTrack: Equatable, Codable {
     }
     
     static func == (lhs: AudioTrack, rhs: AudioTrack) -> Bool {
-        return lhs.filePath == rhs.filePath
+        return lhs.identifier == rhs.identifier
     }
     
     static func secondsToString(_ durationInSeconds: Double) -> String {
@@ -131,6 +135,7 @@ class AudioTrack: Equatable, Codable {
     // Serialization keys
     // MPMediaItemArtwork should not be codable
     private enum CodingKeys: String, CodingKey {
+        case identifier
         case filePath
         case title
         case artist

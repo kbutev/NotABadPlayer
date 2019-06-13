@@ -185,16 +185,29 @@ class SearchPresenter: BasePresenter
         Logging.log(SearchPresenter.self, "Opening player screen")
         
         let playlistName = Text.value(.SearchPlaylistName)
-        let searchPlaylist = AudioPlaylist(name: playlistName, tracks: searchResults, startWithTrack: track)
         
-        delegate.openPlayerScreen(playlist: searchPlaylist)
+        do {
+            let searchPlaylist = try AudioPlaylist(name: playlistName, tracks: searchResults, startWithTrack: track)
+            
+            delegate.openPlayerScreen(playlist: searchPlaylist)
+        } catch let e {
+            Logging.log(SearchPresenter.self, "Error: cannot open player screen: \(e.localizedDescription)")
+        }
     }
     
     private func playNewTrack(_ track: AudioTrack) {
         let player = AudioPlayer.shared
         
         let playlistName = Text.value(.SearchPlaylistName)
-        let searchPlaylist = AudioPlaylist(name: playlistName, tracks: searchResults, startWithTrack: track)
+        
+        var searchPlaylist: AudioPlaylist!
+        
+        do {
+            searchPlaylist = try AudioPlaylist(name: playlistName, tracks: searchResults, startWithTrack: track)
+        } catch let e {
+            Logging.log(SearchPresenter.self, "Error: cannot play track: \(e.localizedDescription)")
+            return
+        }
         
         if let currentPlaylist = player.playlist
         {

@@ -16,6 +16,10 @@ enum AudioPlayOrder: String, Codable {
     case SHUFFLE;
 }
 
+enum AudioPlaylistError: Error {
+    case invalidArgument(String)
+}
+
 struct AudioPlaylist: Codable {
     public let name: String
     
@@ -31,20 +35,7 @@ struct AudioPlaylist: Codable {
         }
     }
     
-    init(name: String, startWithTrack: AudioTrack) {
-        self.init(name: name, tracks: [startWithTrack], startWithTrack: startWithTrack)
-    }
-    
     init(name: String, tracks: [AudioTrack]) {
-        self.init(name: name, tracks: tracks, startWithTrack: nil)
-    }
-    
-    init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?, sorting: TrackSorting) {
-        let sortedTracks = MediaSorting.sortTracks(tracks, sorting: sorting)
-        self.init(name: name, tracks: sortedTracks, startWithTrack: startWithTrack)
-    }
-    
-    init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?) {
         guard let firstTrack = tracks.first else {
             fatalError("Given Playlist Track Must Not Be Empty")
         }
@@ -64,22 +55,42 @@ struct AudioPlaylist: Codable {
             
             self.tracks.append(AudioTrack(originalTrack: tracks[e], source: source))
         }
+    }
+    
+    init(name: String, startWithTrack: AudioTrack) {
+        self.init(name: name, tracks: [startWithTrack])
         
-        if let playingTrack = startWithTrack
+        self.goToTrack(startWithTrack)
+    }
+    
+    init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?) throws {
+        try self.init(name: name, tracks: tracks, startWithTrack: startWithTrack, sorting: .TITLE)
+    }
+    
+    init(name: String, tracks: [AudioTrack], sorting: TrackSorting) {
+        self.init(name: name, tracks: MediaSorting.sortTracks(tracks, sorting: sorting))
+    }
+    
+    init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?, sorting: TrackSorting) throws {
+        self.init(name: name, tracks: MediaSorting.sortTracks(tracks, sorting: sorting))
+        
+        if let startingTrack = startWithTrack
         {
-            for e in 0..<tracks.count
+            if self.hasTrack(startingTrack)
             {
-                if self.tracks[e] == playingTrack
-                {
-                    self.playingTrackPosition = e
-                    break
-                }
+                self.goToTrack(startingTrack)
+            }
+            else
+            {
+                throw AudioPlaylistError.invalidArgument("Playlist cannot start with given track, was not found in the given tracks")
             }
         }
     }
     
     func sortedPlaylist(withSorting sorting: TrackSorting) -> AudioPlaylist {
-        return AudioPlaylist(name: name, tracks: tracks, startWithTrack: playingTrack, sorting: sorting)
+        var playlist = AudioPlaylist(name: name, tracks: tracks, sorting: sorting)
+        playlist.playingTrackPosition = playingTrackPosition
+        return playlist
     }
     
     func isAlbumPlaylist() -> Bool {
@@ -114,11 +125,15 @@ struct AudioPlaylist: Codable {
         return playingTrackPosition == tracks.count
     }
     
+    func hasTrack(_ track: AudioTrack) -> Bool {
+        return tracks.index(of: track) != nil
+    }
+    
     mutating func playCurrent() {
         isPlaying = true
     }
     
-    mutating func goToTrack(track: AudioTrack) {
+    mutating func goToTrack(_ track: AudioTrack) {
         if let index = tracks.index(of: track)
         {
             isPlaying = true
