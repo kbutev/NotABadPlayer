@@ -131,15 +131,8 @@ class SettingsPresenter: BasePresenter
             return
         }
         
-        Logging.log(SettingsPresenter.self, "Map keybind input '\(input.rawValue)' to action '\(action.rawValue)'")
+        Logging.log(SettingsPresenter.self, "Keybind changed - map input '\(input.rawValue)' to action '\(action.rawValue)'")
         
         GeneralStorage.shared.saveKeybindAction(action: action, forInput: input)
-        
-        if input == .PLAYER_VOLUME
-        {
-            Logging.log(SettingsPresenter.self, "Keybind PLAYER_VOLUME setting changed, automatically unmuting and pausing player")
-            AudioPlayer.shared.unmute()
-            AudioPlayer.shared.pause()
-        }
     }
 }

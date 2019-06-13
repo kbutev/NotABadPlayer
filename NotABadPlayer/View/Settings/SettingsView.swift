@@ -11,8 +11,8 @@ import iOSDropDown
 
 enum SettingsPickerValue {
     case Theme; case TrackSorting; case OpenPlayerOnPlay;
-    case PlayerVolumeUp; case PlayerVolumeDown; case PlayerVolume; case PlayerRecall; case PlayerPrevious; case PlayerNext; case PlayerSwipeL; case PlayerSwipeR;
-    case QPlayerVolumeUp; case QPlayerVolumeDown; case QPlayerPrevious; case QPlayerNext;
+    case PlayerRecall; case PlayerPrevious; case PlayerNext; case PlayerSwipeL; case PlayerSwipeR;
+    case QPlayerPrevious; case QPlayerNext;
     case LockPlayerPrevious; case LockPlayerNext;
 }
 
@@ -49,16 +49,11 @@ class SettingsView : UIView
     @IBOutlet weak var pickOpenPlayerOnPlay: SettingsPickView!
     
     @IBOutlet weak var keyBindsLabel: UILabel!
-    @IBOutlet weak var pickKeybindPlayerVolumeUp: SettingsPickView!
-    @IBOutlet weak var pickKeybindPlayerVolumeDown: SettingsPickView!
-    @IBOutlet weak var pickKeybindPlayerVolume: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerRecall: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerPrevious: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerNext: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerSwipeL: SettingsPickView!
     @IBOutlet weak var pickKeybindPlayerSwipeR: SettingsPickView!
-    @IBOutlet weak var pickKeybindQPlayerVolumeUp: SettingsPickView!
-    @IBOutlet weak var pickKeybindQPlayerVolumeDown: SettingsPickView!
     @IBOutlet weak var pickKeybindQPlayerPrevious: SettingsPickView!
     @IBOutlet weak var pickKeybindQPlayerNext: SettingsPickView!
     @IBOutlet weak var pickKeybindLockPlayerPrevious: SettingsPickView!
@@ -82,16 +77,11 @@ class SettingsView : UIView
         setupPickerValues(.Theme)
         setupPickerValues(.TrackSorting)
         setupPickerValues(.OpenPlayerOnPlay)
-        setupPickerValues(.PlayerVolumeUp)
-        setupPickerValues(.PlayerVolumeDown)
-        setupPickerValues(.PlayerVolume)
         setupPickerValues(.PlayerRecall)
         setupPickerValues(.PlayerPrevious)
         setupPickerValues(.PlayerNext)
         setupPickerValues(.PlayerSwipeL)
         setupPickerValues(.PlayerSwipeR)
-        setupPickerValues(.QPlayerVolumeUp)
-        setupPickerValues(.QPlayerVolumeDown)
         setupPickerValues(.QPlayerPrevious)
         setupPickerValues(.QPlayerNext)
         setupPickerValues(.LockPlayerPrevious)
@@ -187,15 +177,6 @@ class SettingsView : UIView
     
     public func selectKeybind(keybind: ApplicationInput, action: ApplicationAction) {
         switch keybind {
-        case .PLAYER_VOLUME_UP_BUTTON:
-            pickKeybindPlayerVolumeUp.selectOption(action: action)
-            break
-        case .PLAYER_VOLUME_DOWN_BUTTON:
-            pickKeybindPlayerVolumeDown.selectOption(action: action)
-            break
-        case .PLAYER_VOLUME:
-            pickKeybindPlayerVolume.selectOption(action: action)
-            break
         case .PLAYER_RECALL:
             pickKeybindPlayerRecall.selectOption(action: action)
             break
@@ -210,12 +191,6 @@ class SettingsView : UIView
             break
         case .PLAYER_SWIPE_RIGHT:
             pickKeybindPlayerSwipeR.selectOption(action: action)
-            break
-        case .QUICK_PLAYER_VOLUME_UP_BUTTON:
-            pickKeybindQPlayerVolumeUp.selectOption(action: action)
-            break
-        case .QUICK_PLAYER_VOLUME_DOWN_BUTTON:
-            pickKeybindQPlayerVolumeDown.selectOption(action: action)
             break
         case .QUICK_PLAYER_PREVIOUS_BUTTON:
             pickKeybindQPlayerPrevious.selectOption(action: action)
@@ -245,12 +220,6 @@ extension SettingsView {
             return pickTrackSorting
         case .OpenPlayerOnPlay:
             return pickOpenPlayerOnPlay
-        case .PlayerVolumeUp:
-            return pickKeybindPlayerVolumeUp
-        case .PlayerVolumeDown:
-            return pickKeybindPlayerVolumeDown
-        case .PlayerVolume:
-            return pickKeybindPlayerVolume
         case .PlayerRecall:
             return pickKeybindPlayerRecall
         case .PlayerPrevious:
@@ -261,10 +230,6 @@ extension SettingsView {
             return pickKeybindPlayerSwipeL
         case .PlayerSwipeR:
             return pickKeybindPlayerSwipeR
-        case .QPlayerVolumeUp:
-            return pickKeybindQPlayerVolumeUp
-        case .QPlayerVolumeDown:
-            return pickKeybindQPlayerVolumeDown
         case .QPlayerPrevious:
             return pickKeybindQPlayerPrevious
         case .QPlayerNext:
@@ -296,18 +261,6 @@ extension SettingsView {
             title = Text.value(.SettingsPlayOpensPlayer)
             options = OpenPlayerOnPlay.stringValues()
             break
-        case .PlayerVolumeUp:
-            title = Text.value(.SettingsPlayerVolumeUp)
-            options = applicationActionsAsStrings()
-            break
-        case .PlayerVolumeDown:
-            title = Text.value(.SettingsPlayerVolumeDown)
-            options = applicationActionsAsStrings()
-            break
-        case .PlayerVolume:
-            title = Text.value(.SettingsPlayerVolume)
-            options = applicationActionsAsStrings()
-            break
         case .PlayerRecall:
             title = Text.value(.SettingsPlayerRecall)
             options = applicationActionsAsStrings()
@@ -326,14 +279,6 @@ extension SettingsView {
             break
         case .PlayerSwipeR:
             title = Text.value(.SettingsPlayerSwipeR)
-            options = applicationActionsAsStrings()
-            break
-        case .QPlayerVolumeUp:
-            title = Text.value(.SettingsQPlayerVolumeU)
-            options = applicationActionsAsStrings()
-            break
-        case .QPlayerVolumeDown:
-            title = Text.value(.SettingsQPlayerVolumeD)
             options = applicationActionsAsStrings()
             break
         case .QPlayerPrevious:
@@ -371,16 +316,11 @@ extension SettingsView {
     private func setUserInteractionStateForAllPickerViews(_ value: Bool) {
         getPickerView(for: .Theme).isUserInteractionEnabled = value
         getPickerView(for: .TrackSorting).isUserInteractionEnabled = value
-        getPickerView(for: .PlayerVolumeUp).isUserInteractionEnabled = value
-        getPickerView(for: .PlayerVolumeDown).isUserInteractionEnabled = value
-        getPickerView(for: .PlayerVolume).isUserInteractionEnabled = value
         getPickerView(for: .PlayerRecall).isUserInteractionEnabled = value
         getPickerView(for: .PlayerPrevious).isUserInteractionEnabled = value
         getPickerView(for: .PlayerNext).isUserInteractionEnabled = value
         getPickerView(for: .PlayerSwipeL).isUserInteractionEnabled = value
         getPickerView(for: .PlayerSwipeR).isUserInteractionEnabled = value
-        getPickerView(for: .QPlayerVolumeUp).isUserInteractionEnabled = value
-        getPickerView(for: .QPlayerVolumeDown).isUserInteractionEnabled = value
         getPickerView(for: .QPlayerPrevious).isUserInteractionEnabled = value
         getPickerView(for: .QPlayerNext).isUserInteractionEnabled = value
         getPickerView(for: .LockPlayerPrevious).isUserInteractionEnabled = value
@@ -456,24 +396,6 @@ extension SettingsView: SettingsPickActionDelegate {
                 self.onOpenPlayerOnPlaySelectCallback(OpenPlayerOnPlay.allCases[Int(index)])
             }
             break
-        case .PlayerVolumeUp:
-            if let option = getKeybindOptionAction(options: pickKeybindPlayerVolumeUp.dropDownView.optionArray, at: index)
-            {
-                self.onKeybindSelectCallback(.PLAYER_VOLUME_UP_BUTTON, option)
-            }
-            break
-        case .PlayerVolumeDown:
-            if let option = getKeybindOptionAction(options: pickKeybindPlayerVolumeDown.dropDownView.optionArray, at: index)
-            {
-                self.onKeybindSelectCallback(.PLAYER_VOLUME_DOWN_BUTTON, option)
-            }
-            break
-        case .PlayerVolume:
-            if let option = getKeybindOptionAction(options: pickKeybindPlayerVolume.dropDownView.optionArray, at: index)
-            {
-                self.onKeybindSelectCallback(.PLAYER_VOLUME, option)
-            }
-            break
         case .PlayerRecall:
             if let option = getKeybindOptionAction(options: pickKeybindPlayerRecall.dropDownView.optionArray, at: index)
             {
@@ -502,18 +424,6 @@ extension SettingsView: SettingsPickActionDelegate {
             if let option = getKeybindOptionAction(options: pickKeybindPlayerSwipeR.dropDownView.optionArray, at: index)
             {
                 self.onKeybindSelectCallback(.PLAYER_SWIPE_RIGHT, option)
-            }
-            break
-        case .QPlayerVolumeUp:
-            if let option = getKeybindOptionAction(options: pickKeybindQPlayerVolumeUp.dropDownView.optionArray, at: index)
-            {
-                self.onKeybindSelectCallback(.QUICK_PLAYER_VOLUME_UP_BUTTON, option)
-            }
-            break
-        case .QPlayerVolumeDown:
-            if let option = getKeybindOptionAction(options: pickKeybindQPlayerVolumeDown.dropDownView.optionArray, at: index)
-            {
-                self.onKeybindSelectCallback(.QUICK_PLAYER_VOLUME_DOWN_BUTTON, option)
             }
             break
         case .QPlayerPrevious:

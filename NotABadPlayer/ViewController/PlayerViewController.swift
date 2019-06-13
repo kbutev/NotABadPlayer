@@ -64,10 +64,6 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         self.baseView?.onSideVolumeBarSeekCallback = {[weak self] (percentage) in
             self?.presenter?.onPlayerVolumeSet(value: percentage)
         }
-        
-        self.baseView?.onSideVolumeBarSpeakerButtonClickCallback = {[weak self] () in
-            self?.presenter?.onPlayerButtonClick(input: .PLAYER_VOLUME)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
