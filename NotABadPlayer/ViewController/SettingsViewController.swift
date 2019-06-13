@@ -87,16 +87,7 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
         baseView?.selectTrackSorting(storage.getTrackSortingValue())
         baseView?.selectOpenPlayerOnPlay(storage.getOpenPlayerOnPlayValue())
         
-        var input: ApplicationInput = .PLAYER_VOLUME_UP_BUTTON
-        
-        input = .PLAYER_VOLUME_UP_BUTTON
-        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
-        
-        input = .PLAYER_VOLUME_DOWN_BUTTON
-        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
-        
-        input = .PLAYER_VOLUME
-        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
+        var input: ApplicationInput = .PLAYER_RECALL
         
         input = .PLAYER_RECALL
         baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
@@ -111,12 +102,6 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
         baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
         
         input = .PLAYER_SWIPE_RIGHT
-        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
-        
-        input = .QUICK_PLAYER_VOLUME_UP_BUTTON
-        baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
-        
-        input = .QUICK_PLAYER_VOLUME_DOWN_BUTTON
         baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
         
         input = .QUICK_PLAYER_PREVIOUS_BUTTON

@@ -17,8 +17,6 @@ enum ApplicationAction: String, CaseIterable, Codable {
     case NEXT;
     case PREVIOUS;
     case SHUFFLE;
-    case VOLUME_UP;
-    case VOLUME_DOWN;
     case MUTE_OR_UNMUTE;
     case MUTE;
     case FORWARDS_8;

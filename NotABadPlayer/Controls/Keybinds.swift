@@ -67,12 +67,6 @@ class Keybinds {
                 return e
             }
             break
-        case .VOLUME_UP:
-            AudioPlayer.shared.volumeUp()
-            break
-        case .VOLUME_DOWN:
-            AudioPlayer.shared.volumeDown()
-            break
         case .MUTE_OR_UNMUTE:
             AudioPlayer.shared.muteOrUnmute()
             break

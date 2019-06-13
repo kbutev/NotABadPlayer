@@ -21,7 +21,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Yug-el-zGD">
-                            <rect key="frame" x="0.0" y="0.0" width="339" height="1041"/>
+                            <rect key="frame" x="0.0" y="0.0" width="339" height="791"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Appearance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p4a-cO-weQ">
@@ -48,81 +48,61 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9CL-f1-fTk" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hc5-P9-F1T" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="213" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RAJ-Ed-KaB" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9qy-uu-hq8" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="263" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Xt-dJ-37x" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x0c-4K-d5Z" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="313" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hc5-P9-F1T" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gj2-cs-DYR" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="363" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9qy-uu-hq8" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BQc-Lm-Agq" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="413" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x0c-4K-d5Z" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zh7-pA-oyf" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="463" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gj2-cs-DYR" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hkf-bg-eeb" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="513" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BQc-Lm-Agq" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VxM-Rn-tVP" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="563" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n6t-8s-ADl" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u7J-MT-hLO" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="613" width="339" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YJL-mn-Sui" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="663" width="339" height="50"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zh7-pA-oyf" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="713" width="339" height="50"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hkf-bg-eeb" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="763" width="339" height="50"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VxM-Rn-tVP" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="813" width="339" height="50"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </view>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u7J-MT-hLO" customClass="SettingsPickView" customModule="NotABadPlayer" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="863" width="339" height="50"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Reset" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNN-Ip-Yvp">
-                                    <rect key="frame" x="134.5" y="913" width="70" height="31.5"/>
+                                    <rect key="frame" x="134.5" y="663" width="70" height="31.5"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XTs-jf-OEZ">
-                                    <rect key="frame" x="103.5" y="944.5" width="132" height="32"/>
+                                    <rect key="frame" x="103.5" y="694.5" width="132" height="32"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                     <state key="normal" title="Reset to defaults"/>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="About" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Y3-da-2Nd">
-                                    <rect key="frame" x="132.5" y="976.5" width="74.5" height="31.5"/>
+                                    <rect key="frame" x="132.5" y="726.5" width="74.5" height="31.5"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" text="About" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="RZu-v4-vy6">
-                                    <rect key="frame" x="145" y="1008" width="49" height="33"/>
+                                    <rect key="frame" x="145" y="758" width="49" height="33"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -147,13 +127,8 @@
                 <outlet property="pickKeybindPlayerRecall" destination="hc5-P9-F1T" id="gaI-1i-bWh"/>
                 <outlet property="pickKeybindPlayerSwipeL" destination="Gj2-cs-DYR" id="36F-GP-SJf"/>
                 <outlet property="pickKeybindPlayerSwipeR" destination="BQc-Lm-Agq" id="zzy-o0-BQh"/>
-                <outlet property="pickKeybindPlayerVolume" destination="2Xt-dJ-37x" id="M5Z-qQ-Z54"/>
-                <outlet property="pickKeybindPlayerVolumeDown" destination="RAJ-Ed-KaB" id="SQ6-HA-fkQ"/>
-                <outlet property="pickKeybindPlayerVolumeUp" destination="9CL-f1-fTk" id="uqd-le-XiB"/>
                 <outlet property="pickKeybindQPlayerNext" destination="Hkf-bg-eeb" id="fjb-er-7gr"/>
                 <outlet property="pickKeybindQPlayerPrevious" destination="zh7-pA-oyf" id="YWr-Be-FiR"/>
-                <outlet property="pickKeybindQPlayerVolumeDown" destination="YJL-mn-Sui" id="mdC-V1-4sc"/>
-                <outlet property="pickKeybindQPlayerVolumeUp" destination="n6t-8s-ADl" id="Teo-Bk-fTg"/>
                 <outlet property="pickOpenPlayerOnPlay" destination="eNU-DG-dhY" id="oJA-wq-fPH"/>
                 <outlet property="pickTrackSorting" destination="QFR-sG-6Wg" id="MLM-yR-e2m"/>
                 <outlet property="resetDefaultsButton" destination="XTs-jf-OEZ" id="3aE-3b-SFt"/>
