@@ -66,7 +66,7 @@ enum Text: String {
     case SettingsQPlayerNext = "QPlayer Next"
     case SettingsLockPlayerPrevious = "LPlayer Previous"
     case SettingsLockPlayerNext = "LPlayer Next"
-    case SettingsAbout = "Version 1.0 (1)\nReleased 2019.06.13\nProgrammed, designed & tested by Kristiyan Butev"
+    case SettingsAbout = "Version 1.0 (1)\nReleased 2019.06.14\nProgrammed, designed & tested by Kristiyan Butev"
     
     case Error = "Error"
     case ErrorAlbumDoesNotExist = "Album does not exist"
