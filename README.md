@@ -40,8 +40,6 @@ General design:
 
 * CPU and energy efficient, memory ineffecient since the audio information is retrieved once and reused when trying to use the audio player
 
-* Very little little exception handling is done, do-catch blocks usually are there just to print errors/warnings
-
 * Audio Library, a singleton that stores audio data of albums and tracks. It uses the iOS API MediaPlayer.
 
 * Lifecycle: Very simple - when starting app, the launch view controller is launched before anything else. The view controller asks for permission, and after gaining it, it proceeeds with the app. The presenters have no real state, besides the view delegate property.
