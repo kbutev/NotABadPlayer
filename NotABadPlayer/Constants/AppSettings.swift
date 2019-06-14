@@ -44,22 +44,8 @@ enum AppThemeValue: String, CaseIterable {
     }
 }
 
-enum AlbumSorting: String, CaseIterable {
-    case TITLE;
-    
-    static func stringValues() -> [String] {
-        var strings: [String] = []
-        
-        for value in AlbumSorting.allCases
-        {
-            strings.append(value.rawValue)
-        }
-        
-        return strings
-    }
-}
-
 enum TrackSorting: String, CaseIterable {
+    case NONE;
     case TRACK_NUMBER;
     case TITLE;
     case LONGEST;

@@ -212,7 +212,7 @@ class SearchPresenter: BasePresenter
         if let currentPlaylist = player.playlist
         {
             // Current playing playlist or track does not match the state of the presenter's playlist?
-            if (searchPlaylist.name != currentPlaylist.name || searchPlaylist.playingTrack != currentPlaylist.playingTrack)
+            if (!(searchPlaylist == currentPlaylist))
             {
                 // Change the audio player playlist to equal the presenter's playlist
                 Logging.log(SearchPresenter.self, "Playing track '\(searchPlaylist.playingTrack.title)' from playlist '\(searchPlaylist.name)'")

@@ -64,7 +64,7 @@ struct AudioPlaylist: Codable {
     }
     
     init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?) throws {
-        try self.init(name: name, tracks: tracks, startWithTrack: startWithTrack, sorting: .TITLE)
+        try self.init(name: name, tracks: tracks, startWithTrack: startWithTrack, sorting: .NONE)
     }
     
     init(name: String, tracks: [AudioTrack], sorting: TrackSorting) {
@@ -87,9 +87,13 @@ struct AudioPlaylist: Codable {
         }
     }
     
+    static func == (lhs: AudioPlaylist, rhs: AudioPlaylist) -> Bool {
+        return lhs.name == rhs.name && lhs.playingTrackPosition == rhs.playingTrackPosition && lhs.tracks == rhs.tracks
+    }
+    
     func sortedPlaylist(withSorting sorting: TrackSorting) -> AudioPlaylist {
         var playlist = AudioPlaylist(name: name, tracks: tracks, sorting: sorting)
-        playlist.playingTrackPosition = playingTrackPosition
+        playlist.goToTrack(playingTrack)
         return playlist
     }
     
@@ -122,7 +126,7 @@ struct AudioPlaylist: Codable {
     }
     
     func isPlayingLastTrack() -> Bool {
-        return playingTrackPosition == tracks.count
+        return playingTrackPosition + 1 == tracks.count
     }
     
     func hasTrack(_ track: AudioTrack) -> Bool {

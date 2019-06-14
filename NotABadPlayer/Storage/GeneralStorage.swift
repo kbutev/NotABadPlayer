@@ -85,7 +85,6 @@ class GeneralStorage {
         
         savePlayerPlayedHistoryCapacity(50)
         saveAppThemeValue(.LIGHT)
-        saveAlbumSortingValue(.TITLE)
         saveTrackSortingValue(.TRACK_NUMBER)
         saveShowVolumeBarValue(.NO)
         saveOpenPlayerOnPlayValue(.NO)
@@ -283,27 +282,6 @@ class GeneralStorage {
     
     func saveAppThemeValue(_ theme: AppThemeValue) {
         storage.set(theme.rawValue, forKey: "app_theme")
-        
-        // Observers alert
-        onAppAppearanceChange()
-    }
-    
-    func getAlbumSortingValue() -> AlbumSorting {
-        if let value = storage.string(forKey: "album_sorting")
-        {
-            if let result = AlbumSorting(rawValue: value)
-            {
-                return result
-            }
-            
-            Logging.log(GeneralStorage.self, "Error: could not read AlbumSorting value from storage")
-        }
-        
-        return .TITLE
-    }
-    
-    func saveAlbumSortingValue(_ sorting: AlbumSorting) {
-        storage.set(sorting.rawValue, forKey: "album_sorting")
         
         // Observers alert
         onAppAppearanceChange()
