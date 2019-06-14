@@ -28,7 +28,7 @@ class PlayerPresenter: BasePresenter
         if let currentPlaylist = player.playlist
         {
             // Current playing playlist or track does not match the state of the presenter's playlist?
-            if (self.playlist.name != currentPlaylist.name || self.playlist.playingTrack != currentPlaylist.playingTrack)
+            if (!(self.playlist == currentPlaylist))
             {
                 // Change the audio player playlist to equal the presenter's playlist
                 playNew(playlist: self.playlist)

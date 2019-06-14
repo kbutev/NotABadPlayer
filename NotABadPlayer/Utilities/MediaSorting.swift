@@ -9,17 +9,11 @@
 import Foundation
 
 struct MediaSorting {
-    public static func sortAlbums(_ albums:[AudioAlbum], sorting: AlbumSorting) -> [AudioAlbum] {
-        switch sorting
-        {
-        case .TITLE:
-            return sortAlbumsByTitle(albums)
-        }
-    }
-    
     public static func sortTracks(_ tracks:[AudioTrack], sorting: TrackSorting) -> [AudioTrack] {
         switch sorting
         {
+        case .NONE:
+            return tracks
         case .TRACK_NUMBER:
             return sortTracksByTrackNumber(tracks)
         case .TITLE:
