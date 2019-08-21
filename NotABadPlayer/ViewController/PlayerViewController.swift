@@ -161,11 +161,11 @@ extension PlayerViewController : AudioPlayerObserver {
     }
     
     func onPlayerPause(track: AudioTrack) {
-        self.baseView?.updatePlayButtonState(player: AudioPlayer.shared)
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track)
     }
     
     func onPlayerResume(track: AudioTrack) {
-        self.baseView?.updatePlayButtonState(player: AudioPlayer.shared)
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track)
     }
     
     func onPlayOrderChange(order: AudioPlayOrder) {
