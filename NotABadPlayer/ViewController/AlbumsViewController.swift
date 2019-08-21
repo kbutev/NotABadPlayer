@@ -132,7 +132,7 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func searchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func updateSearchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
         
     }
     

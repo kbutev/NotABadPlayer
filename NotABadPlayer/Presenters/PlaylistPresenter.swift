@@ -235,5 +235,7 @@ class PlaylistPresenter: BasePresenter
         {
             player.resume()
         }
+        
+        delegate.updatePlayerScreen(playlist: playlist)
     }
 }

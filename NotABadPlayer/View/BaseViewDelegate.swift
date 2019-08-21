@@ -22,7 +22,7 @@ protocol BaseViewDelegate : class {
     func openPlayerScreen(playlist: AudioPlaylist)
     func updatePlayerScreen(playlist: AudioPlaylist)
     
-    func searchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?)
+    func updateSearchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?)
     
     func onResetSettingsDefaults()
     func onThemeSelect(_ value: AppThemeValue)

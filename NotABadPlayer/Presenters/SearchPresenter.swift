@@ -131,7 +131,7 @@ class SearchPresenter: BasePresenter
         GeneralStorage.shared.saveSearchQuery(query)
         
         // Start search process
-        delegate?.searchQueryResults(query: query, dataSource: nil, resultsCount: 0, searchTip: "Searching...")
+        delegate?.updateSearchQueryResults(query: query, dataSource: nil, resultsCount: 0, searchTip: "Searching...")
         
         // Use background thread to retrieve the search results
         // Then, update the view on the main thread
@@ -145,7 +145,7 @@ class SearchPresenter: BasePresenter
             DispatchQueue.main.async {
                 Logging.log(SearchPresenter.self, "Retrieved search results, updating view")
                 
-                self.delegate?.searchQueryResults(query: query,
+                self.delegate?.updateSearchQueryResults(query: query,
                                                   dataSource: dataSource,
                                                   resultsCount: UInt(results.count),
                                                   searchTip: nil)
@@ -252,5 +252,7 @@ class SearchPresenter: BasePresenter
         {
             player.resume()
         }
+        
+        delegate.updatePlayerScreen(playlist: playlist)
     }
 }
