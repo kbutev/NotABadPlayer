@@ -9,6 +9,9 @@
 import Foundation
 
 protocol AudioInfo {
+    func loadIfNecessary()
+    func load()
+    
     func getAlbums() -> [AudioAlbum];
     func getAlbum(byID identifier: NSNumber) -> AudioAlbum?
     func getAlbumTracks(album: AudioAlbum) -> [AudioTrack]
