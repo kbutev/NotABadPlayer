@@ -13,7 +13,7 @@ protocol AudioInfo {
     func load()
     
     func getAlbums() -> [AudioAlbum];
-    func getAlbum(byID identifier: NSNumber) -> AudioAlbum?
+    func getAlbum(byID identifier: Int) -> AudioAlbum?
     func getAlbumTracks(album: AudioAlbum) -> [AudioTrack]
     func searchForTracks(query: String) -> [AudioTrack]
 }

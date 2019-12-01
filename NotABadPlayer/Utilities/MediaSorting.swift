@@ -29,8 +29,8 @@ struct MediaSorting {
         var result = tracks
         
         result.sort(by: {(e1, e2) -> Bool in
-            let numL = e1.trackNum.count == 2 ? e1.trackNum : "0\(e1.trackNum)"
-            let numR = e2.trackNum.count == 2 ? e2.trackNum : "0\(e2.trackNum)"
+            let numL = e1.trackNum == 2 ? "\(e1.trackNum)" : "0\(e1.trackNum)"
+            let numR = e2.trackNum == 2 ? "\(e2.trackNum)" : "0\(e2.trackNum)"
             return numL < numR
         })
         

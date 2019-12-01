@@ -97,7 +97,7 @@ class AudioLibrary : AudioInfo {
         return albums
     }
     
-    func getAlbum(byID identifier: NSNumber) -> AudioAlbum? {
+    func getAlbum(byID identifier: Int) -> AudioAlbum? {
         return getAlbums().first(where: {album in
             return album.albumID == identifier
         })
@@ -179,7 +179,7 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            let albumId = item.value(forProperty: MPMediaItemPropertyAlbumPersistentID) as! NSNumber
+            let albumId_ = item.value(forProperty: MPMediaItemPropertyAlbumPersistentID) as! NSNumber
             let albumTitle = item.value(forKey: MPMediaItemPropertyAlbumTitle) as? String ?? "<Unknown>"
             let artist = item.value(forKey: MPMediaItemPropertyArtist) as? String ?? "<Unknown>"
             let albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
@@ -187,6 +187,8 @@ class AudioLibrary : AudioInfo {
             let title = item.value(forProperty: MPMediaItemPropertyTitle) as? String ?? "<Unknown>"
             let trackNum_ = item.value(forProperty: MPMediaItemPropertyAlbumTrackNumber) as? NSNumber
             let durationInSeconds_ = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber
+            
+            let albumId = albumId_.intValue
             
             guard let trackNum = trackNum_?.intValue else {
                 continue

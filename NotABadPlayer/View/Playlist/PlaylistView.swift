@@ -311,7 +311,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         
         cell.titleText.text = item.title
         cell.descriptionText.text = item.duration
-        cell.trackNumText.text = item.trackNum
+        cell.trackNumText.text = String(item.trackNum)
         
         // Highlight cells that represent the currently playing track
         if let playerPlaylist = AudioPlayer.shared.playlist
@@ -351,7 +351,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
             totalDuration += track.durationInSeconds
         }
         
-        return Text.value(.ListDescription, "\(playlist.tracks.count)", "\(AudioTrack.secondsToString(totalDuration))")
+        return Text.value(.ListDescription, "\(playlist.tracks.count)", "\(StringUtilities.secondsToString(totalDuration))")
     }
     
     private func setImage(header: PlaylistHeaderView, collectionView: UICollectionView) {

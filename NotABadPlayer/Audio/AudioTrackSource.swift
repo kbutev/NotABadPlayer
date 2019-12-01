@@ -12,8 +12,8 @@ struct AudioTrackSource: Codable {
     private let value : String
     private let isAlbumSource : Bool
     
-    public static func createAlbumSource(albumID: NSNumber) -> AudioTrackSource {
-        return AudioTrackSource(value: albumID.stringValue, isAlbumSource: true)
+    public static func createAlbumSource(albumID: Int) -> AudioTrackSource {
+        return AudioTrackSource(value: "\(albumID)", isAlbumSource: true)
     }
     
     public static func createPlaylistSource(playlistName: String) -> AudioTrackSource {
@@ -38,7 +38,7 @@ struct AudioTrackSource: Codable {
         {
             if let albumID = Int(value)
             {
-                if let album = audioInfo.getAlbum(byID: NSNumber(value: albumID))
+                if let album = audioInfo.getAlbum(byID: albumID)
                 {
                     let tracks = audioInfo.getAlbumTracks(album: album)
                     

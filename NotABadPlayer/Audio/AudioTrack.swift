@@ -18,14 +18,9 @@ class AudioTrack: Equatable, Codable {
     
     private let _albumID : String
     
-    public var albumID : NSNumber {
+    public var albumID : Int {
         get {
-            if let value = Int(_albumID)
-            {
-                return NSNumber(value: value)
-            }
-            
-            return NSNumber()
+            return Int(_albumID) ?? 0
         }
     }
     
@@ -56,9 +51,13 @@ class AudioTrack: Equatable, Codable {
         }
     }
     
-    public let trackNum : String
+    public let trackNum : Int
     public let durationInSeconds : Double
-    public let duration : String
+    public var duration : String {
+        get {
+            return StringUtilities.secondsToString(self.durationInSeconds)
+        }
+    }
     public let source : AudioTrackSource
     
     init(identifier : Int,
@@ -66,7 +65,7 @@ class AudioTrack: Equatable, Codable {
          title : String,
          artist : String,
          albumTitle : String,
-         albumID : NSNumber,
+         albumID : Int,
          albumCover : MPMediaItemArtwork?,
          trackNum : Int,
          durationInSeconds : Double,
@@ -76,11 +75,10 @@ class AudioTrack: Equatable, Codable {
         self.title = title
         self.artist = artist
         self.albumTitle = albumTitle
-        self._albumID = albumID.stringValue
+        self._albumID = "\(albumID)"
         self._albumCover = albumCover
-        self.trackNum = String(trackNum)
+        self.trackNum = trackNum
         self.durationInSeconds = durationInSeconds
-        self.duration = AudioTrack.secondsToString(durationInSeconds)
         self.source = source
     }
     
@@ -94,42 +92,11 @@ class AudioTrack: Equatable, Codable {
         self._albumCover = originalTrack._albumCover
         self.trackNum = originalTrack.trackNum
         self.durationInSeconds = originalTrack.durationInSeconds
-        self.duration = originalTrack.duration
         self.source = source
     }
     
     static func == (lhs: AudioTrack, rhs: AudioTrack) -> Bool {
         return lhs.identifier == rhs.identifier
-    }
-    
-    static func secondsToString(_ durationInSeconds: Double) -> String {
-        let time = Int(durationInSeconds)
-        
-        let hr = Int(time/60/60)
-        let min = Int((time - (hr*60*60)) / 60)
-        let sec = Int(time - (hr*60*60) - (min*60))
-        
-        if hr == 0
-        {
-            if min < 10
-            {
-                let strMin = "\(min)"
-                let strSec = String(format: "%02d", sec)
-                
-                return "\(strMin):\(strSec)"
-            }
-            
-            let strMin = String(format: "%02d", min)
-            let strSec = String(format: "%02d", sec)
-            
-            return "\(strMin):\(strSec)"
-        }
-        
-        let strHr = String(format: "%02d", hr)
-        let strMin = String(format: "%02d", min)
-        let strSec = String(format: "%02d", sec)
-        
-        return "\(strHr):\(strMin):\(strSec)"
     }
     
     // Serialization keys
@@ -143,7 +110,6 @@ class AudioTrack: Equatable, Codable {
         case _albumID
         case trackNum
         case durationInSeconds
-        case duration
         case source
     }
 }
