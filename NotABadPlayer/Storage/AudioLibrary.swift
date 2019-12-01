@@ -13,24 +13,43 @@ import MediaPlayer
 // Dependant on storage access permission:
 // Make sure you have access to user storage before using the audio library.
 class AudioLibrary : AudioInfo {
+    private let lock : NSObject = NSObject()
+    
+    private var loadedAlbums : Bool = false
     private var albums : [AudioAlbum] = []
     
     init() {
         
     }
     
+    public func loadIfNecessary() {
+        lockEnter()
+        
+        if self.loadedAlbums {
+            return
+        }
+        
+        lockExit()
+        
+        load()
+    }
+    
     public func load() {
         // Thread safe
-        lockEnter(self.albums)
+        lockEnter()
         
         defer {
-            lockExit(self.albums)
+            lockExit()
         }
         
         // Load albums
         Logging.log(AudioLibrary.self, "Loading albums from MP media...")
         
+        loadedAlbums = true
+        
         albums.removeAll()
+        
+        let newAlbums: NSMutableArray = NSMutableArray()
         
         let mediaQuery: MPMediaQuery = MPMediaQuery.albums()
         
@@ -53,30 +72,27 @@ class AudioLibrary : AudioInfo {
                                        albumTitle: albumTitle,
                                        albumCover: albumCover)
                 
-                albums.append(album)
+                newAlbums.add(album)
             }
         }
+        
+        albums = newAlbums as NSArray as! [AudioAlbum]
         
         Logging.log(AudioLibrary.self, "Successfully loaded \(albums.count) albums from MP media.")
     }
     
     func getAlbums() -> [AudioAlbum] {
         // Thread safe
-        lockEnter(self.albums)
+        lockEnter()
         
-        defer {
-            lockExit(self.albums)
-        }
-        
-        // Retrieve albums
-        if (albums.count > 0)
+        if self.loadedAlbums
         {
             return albums
         }
         
-        load()
+        lockExit()
         
-        self.albums = MediaSorting.sortAlbumsByTitle(albums)
+        load()
         
         return albums
     }
@@ -197,11 +213,11 @@ class AudioLibrary : AudioInfo {
         return tracks
     }
     
-    private func lockEnter(_ lock: Any) {
-        objc_sync_enter(lock)
+    private func lockEnter() {
+        objc_sync_enter(self.lock)
     }
     
-    private func lockExit(_ lock: Any) {
-        objc_sync_exit(lock)
+    private func lockExit() {
+        objc_sync_exit(self.lock)
     }
 }
