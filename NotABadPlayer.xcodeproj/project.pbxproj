@@ -94,6 +94,7 @@
 		99D1AA9C23941CB000C82E9F /* StringUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D1AA9B23941CB000C82E9F /* StringUtilities.swift */; };
 		99D1AA9E2394329400C82E9F /* AudioTrackBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D1AA9D2394329400C82E9F /* AudioTrackBuilder.swift */; };
 		99D1AAA02394355B00C82E9F /* AudioTrackV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D1AA9F2394355B00C82E9F /* AudioTrackV1.swift */; };
+		99D1AAA2239442F400C82E9F /* BaseAudioPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D1AAA1239442F400C82E9F /* BaseAudioPlaylist.swift */; };
 		99D69D5222998522007D79F8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D69D5122998522007D79F8 /* MainViewController.swift */; };
 		99D69D5422998541007D79F8 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99D69D5322998541007D79F8 /* MainView.xib */; };
 		99D69D5622998667007D79F8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D69D5522998667007D79F8 /* MainView.swift */; };
@@ -218,6 +219,7 @@
 		99D1AA9B23941CB000C82E9F /* StringUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtilities.swift; sourceTree = "<group>"; };
 		99D1AA9D2394329400C82E9F /* AudioTrackBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTrackBuilder.swift; sourceTree = "<group>"; };
 		99D1AA9F2394355B00C82E9F /* AudioTrackV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTrackV1.swift; sourceTree = "<group>"; };
+		99D1AAA1239442F400C82E9F /* BaseAudioPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAudioPlaylist.swift; sourceTree = "<group>"; };
 		99D69D5122998522007D79F8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		99D69D5322998541007D79F8 /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainView.xib; sourceTree = "<group>"; };
 		99D69D5522998667007D79F8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 				99D1AA9923941BEE00C82E9F /* BaseAudioTrack.swift */,
 				996392FA2260ABFA0050F82A /* AudioTrackSource.swift */,
 				996392FC2260ACEB0050F82A /* AudioPlaylist.swift */,
+				99D1AAA1239442F400C82E9F /* BaseAudioPlaylist.swift */,
 				996392FE2260BC0B0050F82A /* AudioInfo.swift */,
 				996393042260C0430050F82A /* AudioPlayer.swift */,
 				996393022260C00F0050F82A /* AudioPlayerObserver.swift */,
@@ -765,6 +768,7 @@
 				99A6CA7E22677EA40071DC0D /* AppThemeSetter.swift in Sources */,
 				996F11A02267685B0064D6DA /* ApplicationAction.swift in Sources */,
 				996F11A42267686D0064D6DA /* Keybinds.swift in Sources */,
+				99D1AAA2239442F400C82E9F /* BaseAudioPlaylist.swift in Sources */,
 				99B9CA5F2278859800000888 /* BasePresenter.swift in Sources */,
 				996F119D226766C40064D6DA /* GeneralStorage.swift in Sources */,
 				996392F92260AB140050F82A /* AudioTrack.swift in Sources */,
