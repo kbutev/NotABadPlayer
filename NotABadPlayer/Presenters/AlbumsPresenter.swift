@@ -81,16 +81,24 @@ class AlbumsPresenter: BasePresenter
         Logging.log(AlbumsPresenter.self, "Open playlist screen for album '\(album.albumTitle)'")
         
         let tracks = audioInfo.getAlbumTracks(album: album)
-        let playlist = AudioPlaylist(name: album.albumTitle, tracks: tracks)
         
-        self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+        var node = AudioPlaylistBuilder.start()
+        node.name = album.albumTitle
+        node.tracks = tracks
+        
+        do {
+            let playlist = try node.build()
+            self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+        } catch {
+            Logging.log(AlbumsPresenter.self, "Error: failed to playlist screen for album '\(album.albumTitle)'")
+        }
     }
     
     func onPlaylistItemClick(index: UInt) {
         
     }
     
-    func onOpenPlayer(playlist: AudioPlaylist) {
+    func onOpenPlayer(playlist: BaseAudioPlaylist) {
         Logging.log(AlbumsPresenter.self, "Open player screen")
         
         self.delegate?.openPlayerScreen(playlist: playlist)

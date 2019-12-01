@@ -36,7 +36,7 @@ class SettingsPresenter: BasePresenter
         
     }
     
-    func onOpenPlayer(playlist: AudioPlaylist) {
+    func onOpenPlayer(playlist: BaseAudioPlaylist) {
         
     }
     

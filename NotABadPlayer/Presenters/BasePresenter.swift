@@ -19,7 +19,7 @@ protocol BasePresenter
     func onAlbumClick(index: UInt)
     func onPlaylistItemClick(index: UInt)
     
-    func onOpenPlayer(playlist: AudioPlaylist)
+    func onOpenPlayer(playlist: BaseAudioPlaylist)
     
     func onPlayerButtonClick(input: ApplicationInput)
     func onPlayOrderButtonClick()

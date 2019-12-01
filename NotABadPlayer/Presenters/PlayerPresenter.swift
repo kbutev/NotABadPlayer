@@ -12,9 +12,9 @@ class PlayerPresenter: BasePresenter
 {
     private weak var delegate: BaseViewDelegate?
     
-    private let playlist: AudioPlaylist
+    private let playlist: BaseAudioPlaylist
     
-    required init(playlist: AudioPlaylist) {
+    required init(playlist: BaseAudioPlaylist) {
         self.playlist = playlist
     }
     
@@ -28,7 +28,7 @@ class PlayerPresenter: BasePresenter
         if let currentPlaylist = player.playlist
         {
             // Current playing playlist or track does not match the state of the presenter's playlist?
-            if (!(self.playlist == currentPlaylist))
+            if (!(self.playlist.equals(currentPlaylist)))
             {
                 // Change the audio player playlist to equal the presenter's playlist
                 playNew(playlist: self.playlist)
@@ -58,7 +58,7 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func onOpenPlayer(playlist: AudioPlaylist) {
+    func onOpenPlayer(playlist: BaseAudioPlaylist) {
         
     }
     
@@ -120,17 +120,17 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    private func playContinue(playlist: AudioPlaylist) {
+    private func playContinue(playlist: BaseAudioPlaylist) {
         Logging.log(PlayerPresenter.self, "Opening player without changing current audio player state")
         
         delegate?.updatePlayerScreen(playlist: playlist)
     }
     
-    private func playFirstTime(playlist: AudioPlaylist) {
+    private func playFirstTime(playlist: BaseAudioPlaylist) {
         playNew(playlist: playlist)
     }
     
-    private func playNew(playlist: AudioPlaylist) {
+    private func playNew(playlist: BaseAudioPlaylist) {
         let newPlaylistName = playlist.name
         let newTrack = playlist.playingTrack
         

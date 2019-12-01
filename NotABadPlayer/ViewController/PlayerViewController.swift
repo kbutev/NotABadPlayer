@@ -90,7 +90,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         NavigationHelpers.dismissPresentedVC(self)
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
         
     }
     
@@ -106,11 +106,11 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func openPlayerScreen(playlist: AudioPlaylist) {
+    func openPlayerScreen(playlist: BaseAudioPlaylist) {
         
     }
     
-    func updatePlayerScreen(playlist: AudioPlaylist) {
+    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
         self.baseView?.updateUIState(player: AudioPlayer.shared, track: playlist.playingTrack)
     }
     

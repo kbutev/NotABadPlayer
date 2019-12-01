@@ -84,7 +84,7 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         rootView?.goBack()
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
         // Forward request to delegate
         rootView?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
     }
@@ -109,7 +109,7 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func openPlayerScreen(playlist: AudioPlaylist) {
+    func openPlayerScreen(playlist: BaseAudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController(presenter: presenter)
         
@@ -118,7 +118,7 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         NavigationHelpers.presentVC(current: self, vc: vc)
     }
     
-    func updatePlayerScreen(playlist: AudioPlaylist) {
+    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
         
     }
     

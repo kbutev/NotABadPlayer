@@ -20,7 +20,7 @@ enum AudioPlaylistError: Error {
     case invalidArgument(String)
 }
 
-class AudioPlaylist: BaseAudioPlaylist, Codable {
+class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     public let name: String
     
     private (set) var tracks: [AudioTrack]
@@ -34,6 +34,8 @@ class AudioPlaylist: BaseAudioPlaylist, Codable {
             return self.tracks[self.playingTrackPosition]
         }
     }
+    
+    public var isTemporary: Bool = false
     
     init(name: String, tracks: [AudioTrack]) {
         guard let firstTrack = tracks.first else {
@@ -62,7 +64,7 @@ class AudioPlaylist: BaseAudioPlaylist, Codable {
                 self.tracks.append(result)
             } catch {
                 let path = track.filePath?.absoluteString ?? ""
-                Logging.log(AudioPlaylist.self, "Failed to copy audio track \(path)")
+                Logging.log(MutableAudioPlaylist.self, "Failed to copy audio track \(path)")
             }
         }
     }
@@ -97,12 +99,24 @@ class AudioPlaylist: BaseAudioPlaylist, Codable {
         }
     }
     
-    static func == (lhs: AudioPlaylist, rhs: AudioPlaylist) -> Bool {
+    static func == (lhs: MutableAudioPlaylist, rhs: MutableAudioPlaylist) -> Bool {
         return lhs.name == rhs.name && lhs.playingTrackPosition == rhs.playingTrackPosition && lhs.tracks == rhs.tracks
     }
     
-    func sortedPlaylist(withSorting sorting: TrackSorting) -> AudioPlaylist {
-        let playlist = AudioPlaylist(name: name, tracks: tracks, sorting: sorting)
+    func equals(_ other: BaseAudioPlaylist) -> Bool {
+        if let other_ = other as? MutableAudioPlaylist {
+            return self == other_
+        }
+        
+        return false
+    }
+    
+    func serialize() -> String? {
+        return Serializing.serialize(object: self)
+    }
+    
+    func sortedPlaylist(withSorting sorting: TrackSorting) -> MutableAudioPlaylist {
+        let playlist = MutableAudioPlaylist(name: name, tracks: tracks, sorting: sorting)
         playlist.goToTrack(playingTrack)
         return playlist
     }
@@ -150,6 +164,13 @@ class AudioPlaylist: BaseAudioPlaylist, Codable {
     func goToTrack(_ track: AudioTrack) {
         if let index = tracks.index(of: track)
         {
+            isPlaying = true
+            playingTrackPosition = index
+        }
+    }
+    
+    func goToTrackAt(_ index: Int) {
+        if index >= 0 && index < tracks.count {
             isPlaying = true
             playingTrackPosition = index
         }

@@ -50,7 +50,7 @@ class SearchPresenter: BasePresenter
         
     }
     
-    func onOpenPlayer(playlist: AudioPlaylist) {
+    func onOpenPlayer(playlist: BaseAudioPlaylist) {
         Logging.log(SearchPresenter.self, "Open player screen")
         
         self.delegate?.openPlayerScreen(playlist: playlist)
@@ -187,8 +187,12 @@ class SearchPresenter: BasePresenter
         let playlistName = Text.value(.SearchPlaylistName)
         
         do {
-            let searchPlaylist = try AudioPlaylist(name: playlistName, tracks: searchResults, startWithTrack: track)
+            var node = AudioPlaylistBuilder.start()
+            node.name = playlistName
+            node.tracks = searchResults
+            node.startWithTrack = track
             
+            let searchPlaylist = try node.build()
             delegate.openPlayerScreen(playlist: searchPlaylist)
         } catch let e {
             Logging.log(SearchPresenter.self, "Error: cannot open player screen: \(e.localizedDescription)")
@@ -200,10 +204,15 @@ class SearchPresenter: BasePresenter
         
         let playlistName = Text.value(.SearchPlaylistName)
         
-        var searchPlaylist: AudioPlaylist!
+        var searchPlaylist: BaseAudioPlaylist!
         
         do {
-            searchPlaylist = try AudioPlaylist(name: playlistName, tracks: searchResults, startWithTrack: track)
+            var node = AudioPlaylistBuilder.start()
+            node.name = playlistName
+            node.tracks = searchResults
+            node.startWithTrack = track
+            
+            searchPlaylist = try node.build()
         } catch let e {
             Logging.log(SearchPresenter.self, "Error: cannot play track: \(e.localizedDescription)")
             return
@@ -212,7 +221,7 @@ class SearchPresenter: BasePresenter
         if let currentPlaylist = player.playlist
         {
             // Current playing playlist or track does not match the state of the presenter's playlist?
-            if (!(searchPlaylist == currentPlaylist))
+            if (!(searchPlaylist.equals(currentPlaylist)))
             {
                 // Change the audio player playlist to equal the presenter's playlist
                 Logging.log(SearchPresenter.self, "Playing track '\(searchPlaylist.playingTrack.title)' from playlist '\(searchPlaylist.name)'")
@@ -231,11 +240,11 @@ class SearchPresenter: BasePresenter
         playFirstTime(playlist: searchPlaylist)
     }
     
-    private func playFirstTime(playlist: AudioPlaylist) {
+    private func playFirstTime(playlist: BaseAudioPlaylist) {
         playNew(playlist: playlist)
     }
     
-    private func playNew(playlist: AudioPlaylist) {
+    private func playNew(playlist: BaseAudioPlaylist) {
         guard let delegate = self.delegate else {
             fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
         }

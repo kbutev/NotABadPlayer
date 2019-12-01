@@ -13,11 +13,11 @@ class PlaylistPresenter: BasePresenter
     private weak var delegate: BaseViewDelegate?
     
     private let audioInfo: AudioInfo
-    private let playlist: AudioPlaylist
+    private let playlist: BaseAudioPlaylist
     
     private var collectionDataSource: PlaylistViewDataSource?
     
-    required init(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+    required init(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
         self.audioInfo = audioInfo
         
         // Sort playlist
@@ -86,7 +86,7 @@ class PlaylistPresenter: BasePresenter
         }
     }
     
-    func onOpenPlayer(playlist: AudioPlaylist) {
+    func onOpenPlayer(playlist: BaseAudioPlaylist) {
         Logging.log(PlaylistPresenter.self, "Open player screen")
         
         self.delegate?.openPlayerScreen(playlist: playlist)
@@ -169,8 +169,12 @@ class PlaylistPresenter: BasePresenter
         let playlistName = playlist.name
         
         do {
-            let newPlaylist = try AudioPlaylist(name: playlistName, tracks: playlist.tracks, startWithTrack: track)
+            var node = AudioPlaylistBuilder.start()
+            node.name = playlistName
+            node.tracks = playlist.tracks
+            node.startWithTrack = track
             
+            let newPlaylist = try node.build()
             delegate.openPlayerScreen(playlist: newPlaylist)
         } catch let e {
             Logging.log(PlaylistPresenter.self, "Error: cannot open player screen: \(e.localizedDescription)")
@@ -183,10 +187,15 @@ class PlaylistPresenter: BasePresenter
         let playlistName = self.playlist.name
         let tracks = self.playlist.tracks
         
-        var playlist: AudioPlaylist!
+        var playlist: BaseAudioPlaylist!
         
         do {
-            playlist = try AudioPlaylist(name: playlistName, tracks: tracks, startWithTrack: track)
+            var node = AudioPlaylistBuilder.start()
+            node.name = playlistName
+            node.tracks = tracks
+            node.startWithTrack = track
+            
+            playlist = try node.build()
         } catch let e {
             Logging.log(PlaylistPresenter.self, "Error: cannot play track: \(e.localizedDescription)")
             return
@@ -195,7 +204,7 @@ class PlaylistPresenter: BasePresenter
         if let currentPlaylist = player.playlist
         {
             // Current playing playlist or track does not match the state of the presenter's playlist?
-            if (!(playlist == currentPlaylist))
+            if (!(playlist.equals(currentPlaylist)))
             {
                 // Change the audio player playlist to equal the presenter's playlist
                 Logging.log(PlaylistPresenter.self, "Playing track '\(playlist.playingTrack.title)' from playlist '\(playlist.name)'")
@@ -214,11 +223,11 @@ class PlaylistPresenter: BasePresenter
         playFirstTime(playlist: playlist)
     }
     
-    private func playFirstTime(playlist: AudioPlaylist) {
+    private func playFirstTime(playlist: BaseAudioPlaylist) {
         playNew(playlist: playlist)
     }
     
-    private func playNew(playlist: AudioPlaylist) {
+    private func playNew(playlist: BaseAudioPlaylist) {
         guard let delegate = self.delegate else {
             fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
         }
