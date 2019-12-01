@@ -33,7 +33,7 @@ struct CollectionIndexerSelection {
 class CollectionIndexerView : UIView
 {
     public static let TEXT_FONT = UIFont.systemFont(ofSize: 18)
-    
+    public static let ALPHABET_CAPACITY = 24
     public weak var delegate: CollectionIndexerDelegate?
     
     private (set) var selection: CollectionIndexerSelection?
@@ -199,6 +199,10 @@ class CollectionIndexerView : UIView
         }
     }
     
+}
+
+// Alphabet
+extension CollectionIndexerView {
     public func setAlphabet(_ strings: [String]) {
         var fullAlphabet: [Character] = []
         var alphabet: [Character] = []
@@ -218,6 +222,11 @@ class CollectionIndexerView : UIView
             }
             
             fullAlphabet.append(firstChar)
+            
+            if alphabet.count >= CollectionIndexerView.ALPHABET_CAPACITY
+            {
+                break
+            }
         }
         
         self.alphabet = alphabet.sorted { $0 < $1 }
