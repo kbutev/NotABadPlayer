@@ -20,7 +20,7 @@ enum AudioPlaylistError: Error {
     case invalidArgument(String)
 }
 
-struct AudioPlaylist: Codable {
+class AudioPlaylist: BaseAudioPlaylist, Codable {
     public let name: String
     
     private (set) var tracks: [AudioTrack]
@@ -67,21 +67,21 @@ struct AudioPlaylist: Codable {
         }
     }
     
-    init(name: String, startWithTrack: AudioTrack) {
+    convenience init(name: String, startWithTrack: AudioTrack) {
         self.init(name: name, tracks: [startWithTrack])
         
         self.goToTrack(startWithTrack)
     }
     
-    init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?) throws {
+    convenience init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?) throws {
         try self.init(name: name, tracks: tracks, startWithTrack: startWithTrack, sorting: .NONE)
     }
     
-    init(name: String, tracks: [AudioTrack], sorting: TrackSorting) {
+    convenience init(name: String, tracks: [AudioTrack], sorting: TrackSorting) {
         self.init(name: name, tracks: MediaSorting.sortTracks(tracks, sorting: sorting))
     }
     
-    init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?, sorting: TrackSorting) throws {
+    convenience init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?, sorting: TrackSorting) throws {
         self.init(name: name, tracks: MediaSorting.sortTracks(tracks, sorting: sorting))
         
         if let startingTrack = startWithTrack
@@ -102,7 +102,7 @@ struct AudioPlaylist: Codable {
     }
     
     func sortedPlaylist(withSorting sorting: TrackSorting) -> AudioPlaylist {
-        var playlist = AudioPlaylist(name: name, tracks: tracks, sorting: sorting)
+        let playlist = AudioPlaylist(name: name, tracks: tracks, sorting: sorting)
         playlist.goToTrack(playingTrack)
         return playlist
     }
@@ -143,11 +143,11 @@ struct AudioPlaylist: Codable {
         return tracks.index(of: track) != nil
     }
     
-    mutating func playCurrent() {
+    func playCurrent() {
         isPlaying = true
     }
     
-    mutating func goToTrack(_ track: AudioTrack) {
+    func goToTrack(_ track: AudioTrack) {
         if let index = tracks.index(of: track)
         {
             isPlaying = true
@@ -155,7 +155,7 @@ struct AudioPlaylist: Codable {
         }
     }
     
-    mutating func goToTrackBasedOnPlayOrder(playOrder: AudioPlayOrder) {
+    func goToTrackBasedOnPlayOrder(playOrder: AudioPlayOrder) {
         isPlaying = true
         
         switch playOrder
@@ -177,7 +177,7 @@ struct AudioPlaylist: Codable {
         }
     }
     
-    mutating func goToNextPlayingTrack() {
+    func goToNextPlayingTrack() {
         isPlaying = true
         
         // Stop playing upon reaching the end
@@ -191,7 +191,7 @@ struct AudioPlaylist: Codable {
         }
     }
     
-    mutating func goToNextPlayingTrackRepeat() {
+    func goToNextPlayingTrackRepeat() {
         isPlaying = true
         
         // Keep going until reaching the end
@@ -206,7 +206,7 @@ struct AudioPlaylist: Codable {
         }
     }
     
-    mutating func goToPreviousPlayingTrack() {
+    func goToPreviousPlayingTrack() {
         isPlaying = true
         
         if (isPlayingFirstTrack())
@@ -220,11 +220,20 @@ struct AudioPlaylist: Codable {
         }
     }
     
-    mutating func goToTrackByShuffle() {
+    func goToTrackByShuffle() {
         isPlaying = true
         
         let min = 0
         let max = tracks.count - 1
         playingTrackPosition = Int.random(in: min...max)
+    }
+    
+    // Serialization keys
+    internal enum CodingKeys: String, CodingKey {
+        case name
+        case tracks
+        case firstTrack
+        case isPlaying
+        case playingTrackPosition
     }
 }
