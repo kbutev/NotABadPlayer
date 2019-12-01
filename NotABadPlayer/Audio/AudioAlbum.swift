@@ -10,14 +10,9 @@ import Foundation
 import MediaPlayer
 
 class AudioAlbum: Equatable, Codable {
-    public var albumID : NSNumber {
+    public var albumID : Int {
         get {
-            if let value = Int(_albumID)
-            {
-                return NSNumber(value: value)
-            }
-            
-            return NSNumber()
+            return Int(_albumID) ?? 0
         }
     }
     

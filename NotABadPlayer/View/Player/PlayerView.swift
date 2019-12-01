@@ -250,7 +250,7 @@ class PlayerView : UIView
             seekBar.progressValue = newSeekBarPosition
         }
         
-        currentTimeLabel.text = AudioTrack.secondsToString(currentPosition)
+        currentTimeLabel.text = StringUtilities.secondsToString(currentPosition)
         
         // Play order button update
         updatePlayOrderButtonState(order: player.playOrder)

@@ -133,7 +133,7 @@ class QuickPlayerView : UIView
     }
     
     func updateTime(currentTime: Double, totalDuration: Double) {
-        trackInfoDurationText.text = "\(AudioTrack.secondsToString(currentTime))/\(AudioTrack.secondsToString(totalDuration))"
+        trackInfoDurationText.text = "\(StringUtilities.secondsToString(currentTime))/\(StringUtilities.secondsToString(totalDuration))"
         
         // Seek bar update
         let newSeekBarPosition = (currentTime / totalDuration) * QuickPlayerView.MEDIA_BAR_MAX_VALUE
