@@ -21,7 +21,7 @@ struct CreateListAudioTrack
     }
     
     public static func createFrom(_ track: AudioTrack) -> CreateListAudioTrack {
-        return CreateListAudioTrack(title: track.title, description: track.duration, identifier: track.filePath.absoluteString)
+        return CreateListAudioTrack(title: track.title, description: track.duration, identifier: track.filePath?.absoluteString ?? "")
     }
     
     static func ==(lhs: CreateListAudioTrack, rhs: CreateListAudioTrack) -> Bool {
@@ -29,7 +29,11 @@ struct CreateListAudioTrack
     }
     
     public func equalsToTrack(_ track: AudioTrack) -> Bool {
-        return identifier == track.filePath.absoluteString
+        if let absolutePath = track.filePath?.absoluteString {
+            return identifier == absolutePath
+        }
+        
+        return false
     }
 }
 

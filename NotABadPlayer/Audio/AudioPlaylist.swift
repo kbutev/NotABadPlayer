@@ -53,7 +53,17 @@ struct AudioPlaylist: Codable {
         {
             let source = isAlbumList ? AudioTrackSource.createAlbumSource(albumID: firstTrack.albumID) : AudioTrackSource.createPlaylistSource(playlistName: self.name)
             
-            self.tracks.append(AudioTrack(originalTrack: tracks[e], source: source))
+            let track = tracks[e]
+            var node = AudioTrackBuilder.start(prototype: track)
+            node.source = source
+            
+            do {
+                let result = try node.build()
+                self.tracks.append(result)
+            } catch {
+                let path = track.filePath?.absoluteString ?? ""
+                Logging.log(AudioPlaylist.self, "Failed to copy audio track \(path)")
+            }
         }
     }
     

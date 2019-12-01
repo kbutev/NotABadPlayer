@@ -9,22 +9,49 @@
 import Foundation
 import MediaPlayer
 
-class AudioTrack: Equatable, Codable {
-    public let identifier : Int
-    public let filePath : URL
-    public let title : String
-    public let artist : String
-    public let albumTitle : String
+class AudioTrack: BaseAudioTrack, Equatable, Codable {
+    internal var _identifier : Int
+    internal var _filePath : URL?
+    internal var _title : String
+    internal var _artist : String
+    internal var _albumTitle : String
+    internal var _albumID : Int
+    internal var _albumCover : MPMediaItemArtwork? = nil
+    internal var _trackNum : Int
+    internal var _durationInSeconds : Double
+    internal var _source : AudioTrackSource
     
-    private let _albumID : String
-    
-    public var albumID : Int {
+    public var identifier : Int {
         get {
-            return Int(_albumID) ?? 0
+            return _identifier
+        }
+    }
+    public var filePath : URL? {
+        get {
+            return _filePath
+        }
+    }
+    public var title : String {
+        get {
+            return _title
+        }
+    }
+    public var artist : String {
+        get {
+            return _artist
+        }
+    }
+    public var albumTitle : String {
+        get {
+            return _albumTitle
         }
     }
     
-    public var _albumCover : MPMediaItemArtwork? = nil
+    public var albumID : Int {
+        get {
+            return _albumID
+        }
+    }
     
     public var albumCover : MPMediaItemArtwork? {
         get {
@@ -51,48 +78,37 @@ class AudioTrack: Equatable, Codable {
         }
     }
     
-    public let trackNum : Int
-    public let durationInSeconds : Double
-    public var duration : String {
+    public var trackNum : Int {
         get {
-            return StringUtilities.secondsToString(self.durationInSeconds)
+            return _trackNum
         }
     }
-    public let source : AudioTrackSource
-    
-    init(identifier : Int,
-         filePath : URL,
-         title : String,
-         artist : String,
-         albumTitle : String,
-         albumID : Int,
-         albumCover : MPMediaItemArtwork?,
-         trackNum : Int,
-         durationInSeconds : Double,
-         source: AudioTrackSource) {
-        self.identifier = identifier
-        self.filePath = filePath
-        self.title = title
-        self.artist = artist
-        self.albumTitle = albumTitle
-        self._albumID = "\(albumID)"
-        self._albumCover = albumCover
-        self.trackNum = trackNum
-        self.durationInSeconds = durationInSeconds
-        self.source = source
+    public var durationInSeconds : Double {
+        get {
+            return _durationInSeconds
+        }
+    }
+    public var duration : String {
+        get {
+            return StringUtilities.secondsToString(self._durationInSeconds)
+        }
+    }
+    public var source : AudioTrackSource {
+        get {
+            return _source
+        }
     }
     
-    init(originalTrack : AudioTrack, source: AudioTrackSource) {
-        self.identifier = originalTrack.identifier
-        self.filePath = originalTrack.filePath
-        self.title = originalTrack.title
-        self.artist = originalTrack.artist
-        self.albumTitle = originalTrack.albumTitle
-        self._albumID = originalTrack._albumID
-        self._albumCover = originalTrack._albumCover
-        self.trackNum = originalTrack.trackNum
-        self.durationInSeconds = originalTrack.durationInSeconds
-        self.source = source
+    init(albumID: Int, source: AudioTrackSource) {
+        self._identifier = 0
+        self._filePath = nil
+        self._title = ""
+        self._artist = ""
+        self._albumTitle = ""
+        self._trackNum = 0
+        self._durationInSeconds = 0
+        self._albumID = albumID
+        self._source = source
     }
     
     static func == (lhs: AudioTrack, rhs: AudioTrack) -> Bool {
@@ -101,15 +117,15 @@ class AudioTrack: Equatable, Codable {
     
     // Serialization keys
     // MPMediaItemArtwork should not be codable
-    private enum CodingKeys: String, CodingKey {
-        case identifier
-        case filePath
-        case title
-        case artist
-        case albumTitle
+    internal enum CodingKeys: String, CodingKey {
+        case _identifier
+        case _filePath
+        case _title
+        case _artist
+        case _albumTitle
         case _albumID
-        case trackNum
-        case durationInSeconds
-        case source
+        case _trackNum
+        case _durationInSeconds
+        case _source
     }
 }
