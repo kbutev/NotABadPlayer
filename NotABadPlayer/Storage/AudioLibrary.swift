@@ -139,18 +139,24 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            let track = AudioTrack(identifier: identifier,
-                                   filePath: path,
-                                   title: title,
-                                   artist: artist,
-                                   albumTitle: album.albumTitle,
-                                   albumID: album.albumID,
-                                   albumCover: albumCover,
-                                   trackNum: trackNum,
-                                   durationInSeconds: durationInSeconds,
-                                   source: AudioTrackSource.createAlbumSource(albumID: album.albumID))
+            var node = AudioTrackBuilder.start()
+            node.identifier = identifier
+            node.filePath = path
+            node.title = title
+            node.artist = artist
+            node.albumTitle = album.albumTitle
+            node.albumID = album.albumID
+            node.albumCover = albumCover
+            node.trackNum = trackNum
+            node.durationInSeconds = durationInSeconds
+            node.source = AudioTrackSource.createAlbumSource(albumID: album.albumID)
             
-            tracks.append(track)
+            do {
+                let result = try node.build()
+                tracks.append(result)
+            } catch {
+                
+            }
         }
         
         return tracks
@@ -188,7 +194,7 @@ class AudioLibrary : AudioInfo {
             let trackNum_ = item.value(forProperty: MPMediaItemPropertyAlbumTrackNumber) as? NSNumber
             let durationInSeconds_ = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber
             
-            let albumId = albumId_.intValue
+            let albumID = albumId_.intValue
             
             guard let trackNum = trackNum_?.intValue else {
                 continue
@@ -198,18 +204,24 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            let track = AudioTrack(identifier: identifier,
-                                   filePath: path,
-                                   title: title,
-                                   artist: artist,
-                                   albumTitle: albumTitle,
-                                   albumID: albumId,
-                                   albumCover: albumCover,
-                                   trackNum: trackNum,
-                                   durationInSeconds: durationInSeconds,
-                                   source: AudioTrackSource.createAlbumSource(albumID: albumId))
+            var node = AudioTrackBuilder.start()
+            node.identifier = identifier
+            node.filePath = path
+            node.title = title
+            node.artist = artist
+            node.albumTitle = albumTitle
+            node.albumID = albumID
+            node.albumCover = albumCover
+            node.trackNum = trackNum
+            node.durationInSeconds = durationInSeconds
+            node.source = AudioTrackSource.createAlbumSource(albumID: albumID)
             
-            tracks.append(track)
+            do {
+                let result = try node.build()
+                tracks.append(result)
+            } catch {
+                
+            }
         }
         
         return tracks

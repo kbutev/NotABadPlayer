@@ -10,6 +10,10 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
+enum AudioPlayerError: Error {
+    case invalidArgument(String)
+}
+
 // Standart audio player for the app.
 // Before using the player, you MUST call start().
 // Dependant on @GeneralStorage (must be initialized before using the player).
@@ -240,7 +244,10 @@ class AudioPlayer : NSObject {
         
         let wasPlaying = isPlaying
         
-        let url = track.filePath
+        guard let url = track.filePath else {
+            Logging.log(AudioPlayer.self, "Error: cannot play track with nil url path")
+            throw AudioPlayerError.invalidArgument("Cannot play track with nil url path")
+        }
         
         do {
             try self.player = AVAudioPlayer(contentsOf: url)
@@ -256,10 +263,10 @@ class AudioPlayer : NSObject {
             Logging.log(AudioPlayer.self, "Error: cannot play track, \(error.localizedDescription)")
             
             // If the file fails to play, restore the previous audio state
-            if let prevTrack = previousTrack
+            if let prevTrackPath = previousTrack?.filePath
             {
                 do {
-                    try self.player = AVAudioPlayer(contentsOf: prevTrack.filePath)
+                    try self.player = AVAudioPlayer(contentsOf: prevTrackPath)
                     self.player?.prepareToPlay()
                     self.player?.delegate = self
                     self.player?.play()

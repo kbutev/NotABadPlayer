@@ -199,14 +199,14 @@ class GeneralStorage {
     func restorePlayerPlayHistoryState() {
         if let value = storage.string(forKey: "play_history")
         {
-            if let result:[AudioTrack] = Serializing.deserialize(fromData: value)
-            {
+            do {
+                let result:[AudioTrack] = try AudioTrackBuilder.buildLatestVersionListFrom(serializedData: value)
                 AudioPlayer.shared.setPlayHistory(result)
                 return
+            } catch {
+                Logging.log(GeneralStorage.self, "Error: could not restore play history for the player from storage")
             }
         }
-        
-        Logging.log(GeneralStorage.self, "Error: could not restore play history for the player from storage")
     }
     
     func saveSearchQuery(_ searchQuery: String) {
