@@ -11,7 +11,7 @@ import Foundation
 protocol BaseViewDelegate : class {
     func goBack()
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist)
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist)
     
     func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource?, albumTitles: [String])
     
@@ -19,8 +19,8 @@ protocol BaseViewDelegate : class {
     
     func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?)
     
-    func openPlayerScreen(playlist: AudioPlaylist)
-    func updatePlayerScreen(playlist: AudioPlaylist)
+    func openPlayerScreen(playlist: BaseAudioPlaylist)
+    func updatePlayerScreen(playlist: BaseAudioPlaylist)
     
     func updateSearchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?)
     

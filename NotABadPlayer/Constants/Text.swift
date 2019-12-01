@@ -69,6 +69,7 @@ enum Text: String {
     case SettingsAbout = "Version 1.0 (1)\nReleased 2019.06.14\nProgrammed, designed & tested by Kristiyan Butev"
     
     case Error = "Error"
+    case ErrorUnknown = "Unknown error occured"
     case ErrorAlbumDoesNotExist = "Album does not exist"
     case ErrorPlaylistNameEmpty = "Playlist name cannot be empty"
     case ErrorPlaylistEmpty = "Playlist must have at least 1 track"

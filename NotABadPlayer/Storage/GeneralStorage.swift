@@ -105,7 +105,7 @@ class GeneralStorage {
         
         saveCachingPolicy(.ALBUMS_ONLY);
         
-        let playlists: [AudioPlaylist] = []
+        let playlists: [MutableAudioPlaylist] = []
         
         storage.set(playlists, forKey: "user_playlists")
         
@@ -124,11 +124,7 @@ class GeneralStorage {
     func savePlayerState() {
         let player = AudioPlayer.shared
         
-        guard let playlist = player.playlist else {
-            return
-        }
-        
-        if let playlistSerialized = Serializing.serialize(object: playlist)
+        if let playlistSerialized = player.serializePlaylist()
         {
             storage.set(player.playOrder.rawValue, forKey: "player_play_order")
             storage.set(playlistSerialized, forKey: "player_current_playlist")
@@ -164,7 +160,7 @@ class GeneralStorage {
             return
         }
         
-        guard let playlist: AudioPlaylist = Serializing.deserialize(fromData: playlistAsString) else {
+        guard let playlist: MutableAudioPlaylist = Serializing.deserialize(fromData: playlistAsString) else {
             Logging.log(GeneralStorage.self, "Error: could not restore player audio state")
             return
         }
@@ -245,21 +241,22 @@ class GeneralStorage {
         storage.set(capacity, forKey: "play_history_capacity")
     }
     
-    func getUserPlaylists() -> [AudioPlaylist] {
+    func getUserPlaylists() -> [MutableAudioPlaylist] {
         if let value = storage.string(forKey: "user_playlists")
         {
-            if let result:[AudioPlaylist] = Serializing.deserialize(fromData: value)
-            {
-                return result
+            do {
+                return try AudioPlaylistBuilder.buildLatestMutableVersionListFrom(serializedData: value)
+            } catch {
+                
             }
+            
+            Logging.log(GeneralStorage.self, "Error: could not read the user playlists from storage")
         }
-        
-        Logging.log(GeneralStorage.self, "Error: could not read the user playlists from storage")
         
         return []
     }
     
-    func saveUserPlaylists(_ playlists: [AudioPlaylist]) {
+    func saveUserPlaylists(_ playlists: [MutableAudioPlaylist]) {
         if let serialized = Serializing.serialize(object: playlists)
         {
             storage.set(serialized, forKey: "user_playlists")

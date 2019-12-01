@@ -8,15 +8,19 @@
 
 import Foundation
 
+enum ListsPresenterError: Error {
+    case failedToBuildMutableList(String)
+}
+
 class ListsPresenter: BasePresenter
 {
     private weak var delegate: BaseViewDelegate?
     
     private let audioInfo: AudioInfo
     
-    private var playlists: [AudioPlaylist] = []
+    private var playlists: [BaseAudioPlaylist] = []
     
-    private var recentlyPlayedPlaylist: AudioPlaylist?
+    private var recentlyPlayedPlaylist: BaseAudioPlaylist?
     
     private var collectionDataSource: ListsViewDataSource?
     
@@ -39,12 +43,20 @@ class ListsPresenter: BasePresenter
         DispatchQueue.global().async {
             var playlists = GeneralStorage.shared.getUserPlaylists()
             let recentlyPlayedTracks = AudioPlayer.shared.playHistory
-            var recentlyPlayedPlaylist: AudioPlaylist?
+            var recentlyPlayedPlaylist: MutableAudioPlaylist?
             
             if recentlyPlayedTracks.count > 0
             {
-                recentlyPlayedPlaylist = AudioPlaylist(name: Text.value(.PlaylistRecentlyPlayed), tracks: recentlyPlayedTracks)
-                playlists.insert(recentlyPlayedPlaylist!, at: 0)
+                var node = AudioPlaylistBuilder.start()
+                node.name = Text.value(.PlaylistRecentlyPlayed)
+                node.tracks = recentlyPlayedTracks
+                
+                do {
+                    recentlyPlayedPlaylist = try node.buildMutable()
+                    playlists.insert(recentlyPlayedPlaylist!, at: 0)
+                } catch {
+                    
+                }
             }
             
             // Then, update on main thread
@@ -78,7 +90,7 @@ class ListsPresenter: BasePresenter
         self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
     }
     
-    func onOpenPlayer(playlist: AudioPlaylist) {
+    func onOpenPlayer(playlist: BaseAudioPlaylist) {
         Logging.log(ListsPresenter.self, "Open player screen")
         
         self.delegate?.openPlayerScreen(playlist: playlist)
@@ -130,15 +142,14 @@ class ListsPresenter: BasePresenter
         
         self.playlists.remove(at: Int(index))
         
-        var playlistsWithoutRecentlyPlayed = self.playlists
-        
-        if recentlyPlayedPlaylist != nil
-        {
-            playlistsWithoutRecentlyPlayed.remove(at: 0)
-        }
-        
         // Save
-        GeneralStorage.shared.saveUserPlaylists(playlistsWithoutRecentlyPlayed)
+        do {
+            let playlistsToSave = try buildMutablePlaylistsFromCurrentData(ignoreTemporary: true)
+            GeneralStorage.shared.saveUserPlaylists(playlistsToSave)
+        } catch {
+            Logging.log(ListsPresenter.self, "Failed to delete user playlist '\(playlistToDelete.name)' from storage, unknown error")
+            return
+        }
         
         Logging.log(ListsPresenter.self, "Deleted user playlist '\(playlistToDelete.name)' from storage")
         
@@ -195,5 +206,25 @@ class ListsPresenter: BasePresenter
         }
         
         return true
+    }
+    
+    private func buildMutablePlaylistsFromCurrentData(ignoreTemporary: Bool) throws -> [MutableAudioPlaylist] {
+        // Do not save temporary playlists, as they are recently played/added playlists
+        var playlists: [MutableAudioPlaylist] = []
+        
+        for playlist in self.playlists
+        {
+            if !ignoreTemporary || !playlist.isTemporary
+            {
+                do {
+                    let node = AudioPlaylistBuilder.start(prototype: playlist)
+                    playlists.append(try node.buildMutable())
+                } catch {
+                    throw ListsPresenterError.failedToBuildMutableList("Failed to build")
+                }
+            }
+        }
+        
+        return playlists
     }
 }

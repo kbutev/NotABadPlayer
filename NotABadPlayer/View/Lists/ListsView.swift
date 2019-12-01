@@ -247,9 +247,9 @@ extension ListsView {
 class ListsViewDataSource : NSObject, UITableViewDataSource
 {
     let audioInfo: AudioInfo
-    var playlists: [AudioPlaylist]
+    var playlists: [BaseAudioPlaylist]
     
-    init(audioInfo: AudioInfo, playlists: [AudioPlaylist]) {
+    init(audioInfo: AudioInfo, playlists: [BaseAudioPlaylist]) {
         self.audioInfo = audioInfo
         self.playlists = playlists
     }
@@ -281,7 +281,7 @@ class ListsViewDataSource : NSObject, UITableViewDataSource
         return 1
     }
     
-    func getPlaylistDescription(playlist: AudioPlaylist) -> String {
+    func getPlaylistDescription(playlist: BaseAudioPlaylist) -> String {
         return Text.value(.PlaylistCellDescription, "\(playlist.tracks.count)")
     }
 }

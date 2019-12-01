@@ -247,13 +247,13 @@ extension PlaylistView {
 class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
 {
     private let audioInfo: AudioInfo
-    private let playlist: AudioPlaylist
+    private let playlist: BaseAudioPlaylist
     
     private(set) var headerSize: CGSize = .zero
     
     private var playSelectionAnimationNextTime: Bool = false
     
-    init(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+    init(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
         self.audioInfo = audioInfo
         self.playlist = playlist
     }

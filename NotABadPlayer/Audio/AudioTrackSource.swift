@@ -33,7 +33,7 @@ struct AudioTrackSource: Codable {
         return !isAlbum()
     }
     
-    func getSourcePlaylist(audioInfo: AudioInfo, playingTrack: AudioTrack) -> AudioPlaylist? {
+    func getSourcePlaylist(audioInfo: AudioInfo, playingTrack: AudioTrack) -> BaseAudioPlaylist? {
         if (isAlbum())
         {
             if let albumID = Int(value)
@@ -43,7 +43,12 @@ struct AudioTrackSource: Codable {
                     let tracks = audioInfo.getAlbumTracks(album: album)
                     
                     do {
-                        return try AudioPlaylist(name: album.albumTitle, tracks: tracks, startWithTrack: playingTrack)
+                        var node = AudioPlaylistBuilder.start()
+                        node.name = album.albumTitle
+                        node.tracks = tracks
+                        node.startWithTrack = playingTrack
+                        
+                        return try node.build()
                     } catch {
                         
                     }
@@ -62,7 +67,12 @@ struct AudioTrackSource: Codable {
                 if value == playlist.name
                 {
                     do {
-                        return try AudioPlaylist(name: playlist.name, tracks: playlist.tracks, startWithTrack: playingTrack)
+                        var node = AudioPlaylistBuilder.start()
+                        node.name = playlist.name
+                        node.tracks = playlist.tracks
+                        node.startWithTrack = playingTrack
+                        
+                        return try node.build()
                     } catch {
                         
                     }

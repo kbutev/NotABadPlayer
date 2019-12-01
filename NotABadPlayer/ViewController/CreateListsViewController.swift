@@ -174,9 +174,18 @@ class CreateListsViewController: UIViewController {
             }
         }
         
-        let playlist = AudioPlaylist(name: playlistName, tracks: addedTracks)
+        var node = AudioPlaylistBuilder.start()
+        node.name = playlistName
+        node.tracks = addedTracks
         
-        storagePlaylists.append(playlist)
+        do {
+            let result = try node.buildMutable()
+            storagePlaylists.append(result)
+        } catch {
+            Logging.log(CreateListsViewController.self, "Failed to save user playliist '\(playlistName)' with \(addedTracks.count) tracks to storage, failed to build playlist")
+            showPlaylistUnknownError()
+            return
+        }
         
         // Save
         GeneralStorage.shared.saveUserPlaylists(storagePlaylists)
@@ -203,6 +212,12 @@ class CreateListsViewController: UIViewController {
         AlertWindows.shared.show(sourceVC: self,
                                  withTitle: Text.value(.Error),
                                  withDescription: Text.value(.ErrorPlaylistAlreadyExists))
+    }
+    
+    private func showPlaylistUnknownError() {
+        AlertWindows.shared.show(sourceVC: self,
+                                 withTitle: Text.value(.Error),
+                                 withDescription: Text.value(.ErrorUnknown))
     }
 }
 

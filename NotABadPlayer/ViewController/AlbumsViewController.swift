@@ -81,7 +81,7 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         self.subViewControllerPlaylistName = ""
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylist) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
         if self.subViewController != nil
         {
             // Correct playlist is already open? Do nothing
@@ -119,7 +119,7 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func openPlayerScreen(playlist: AudioPlaylist) {
+    func openPlayerScreen(playlist: BaseAudioPlaylist) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController(presenter: presenter)
         
@@ -128,7 +128,7 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         NavigationHelpers.presentVC(current: self, vc: vc)
     }
     
-    func updatePlayerScreen(playlist: AudioPlaylist) {
+    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
         
     }
     

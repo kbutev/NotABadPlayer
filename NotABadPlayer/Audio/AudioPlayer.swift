@@ -42,7 +42,7 @@ class AudioPlayer : NSObject {
     
     var isCompletelyStopped: Bool {
         get {
-            return !(self.playlist?.isPlaying ?? false)
+            return !(self._playlist?.isPlaying ?? false)
         }
     }
     
@@ -115,11 +115,17 @@ class AudioPlayer : NSObject {
     
     var hasPlaylist: Bool {
         get {
-            return self.playlist != nil
+            return self._playlist != nil
         }
     }
     
-    private (set) var playlist: AudioPlaylist?
+    private var _playlist: MutableAudioPlaylist?
+    
+    public var playlist: BaseAudioPlaylist? {
+        get {
+            return _playlist
+        }
+    }
     
     private var _playOrder: AudioPlayOrder = .FORWARDS
     
@@ -137,7 +143,7 @@ class AudioPlayer : NSObject {
     
     public var playingTrack: AudioTrack? {
         get {
-            return self.playlist?.playingTrack
+            return self._playlist?.playingTrack
         }
     }
     
@@ -226,8 +232,17 @@ class AudioPlayer : NSObject {
         setupRemoteSkipCommands()
     }
     
-    public func play(playlist: AudioPlaylist) throws {
+    public func play(playlist: BaseAudioPlaylist) throws {
         checkIfPlayerIsInitialized()
+        
+        var mutablePlaylist: MutableAudioPlaylist? = nil
+        
+        do {
+            let node = AudioPlaylistBuilder.start(prototype: playlist)
+            mutablePlaylist = try node.buildMutable()
+        } catch let error {
+            throw error
+        }
         
         do {
             try play(track: playlist.playingTrack)
@@ -235,8 +250,8 @@ class AudioPlayer : NSObject {
             throw error
         }
         
-        self.playlist = playlist
-        self.playlist?.playCurrent()
+        self._playlist = mutablePlaylist!
+        self._playlist?.playCurrent()
     }
     
     private func play(track: AudioTrack, previousTrack: AudioTrack?=nil, usePlayHistory: Bool=true) throws {
@@ -304,7 +319,7 @@ class AudioPlayer : NSObject {
             return
         }
         
-        guard let playlist = self.playlist else {
+        guard let playlist = self._playlist else {
             return
         }
         
@@ -336,7 +351,7 @@ class AudioPlayer : NSObject {
             return
         }
         
-        guard let playlist = self.playlist else {
+        guard let playlist = self._playlist else {
             return
         }
         
@@ -396,11 +411,11 @@ class AudioPlayer : NSObject {
             return
         }
         
-        let previousTrack = self.playlist?.playingTrack
+        let previousTrack = self._playlist?.playingTrack
         
-        self.playlist?.goToNextPlayingTrack()
+        self._playlist?.goToNextPlayingTrack()
         
-        guard let playlist = self.playlist else {
+        guard let playlist = self._playlist else {
             return
         }
         
@@ -417,7 +432,7 @@ class AudioPlayer : NSObject {
                 
                 if let prevTrack = previousTrack
                 {
-                    self.playlist?.goToTrack(prevTrack)
+                    self._playlist?.goToTrack(prevTrack)
                     onPause(track: prevTrack)
                 }
                 
@@ -442,11 +457,11 @@ class AudioPlayer : NSObject {
             return
         }
         
-        let previousTrack = self.playlist?.playingTrack
+        let previousTrack = self._playlist?.playingTrack
         
-        self.playlist?.goToPreviousPlayingTrack()
+        self._playlist?.goToPreviousPlayingTrack()
         
-        guard let playlist = self.playlist else {
+        guard let playlist = self._playlist else {
             return
         }
         
@@ -463,7 +478,7 @@ class AudioPlayer : NSObject {
                 
                 if let prevTrack = previousTrack
                 {
-                    self.playlist?.goToTrack(prevTrack)
+                    self._playlist?.goToTrack(prevTrack)
                     onPause(track: prevTrack)
                 }
                 
@@ -483,11 +498,11 @@ class AudioPlayer : NSObject {
     func playNextBasedOnPlayOrder() throws {
         checkIfPlayerIsInitialized()
         
-        let previousTrack = self.playlist?.playingTrack
+        let previousTrack = self._playlist?.playingTrack
         
-        self.playlist?.goToTrackBasedOnPlayOrder(playOrder: _playOrder)
+        self._playlist?.goToTrackBasedOnPlayOrder(playOrder: _playOrder)
         
-        guard let playlist = self.playlist else {
+        guard let playlist = self._playlist else {
             return
         }
         
@@ -504,7 +519,7 @@ class AudioPlayer : NSObject {
                 
                 if let prevTrack = previousTrack
                 {
-                    self.playlist?.goToTrack(prevTrack)
+                    self._playlist?.goToTrack(prevTrack)
                     onPause(track: prevTrack)
                 }
                 
@@ -524,11 +539,11 @@ class AudioPlayer : NSObject {
     func shuffle() throws {
         checkIfPlayerIsInitialized()
         
-        let previousTrack = self.playlist?.playingTrack
+        let previousTrack = self._playlist?.playingTrack
         
-        self.playlist?.goToTrackByShuffle()
+        self._playlist?.goToTrackByShuffle()
         
-        guard let playlist = self.playlist else {
+        guard let playlist = self._playlist else {
             return
         }
         
@@ -543,7 +558,7 @@ class AudioPlayer : NSObject {
                 
                 if let prevTrack = previousTrack
                 {
-                    self.playlist?.goToTrack(prevTrack)
+                    self._playlist?.goToTrack(prevTrack)
                     onPause(track: prevTrack)
                 }
                 
@@ -578,7 +593,7 @@ class AudioPlayer : NSObject {
             p.currentTime = TimeInterval(0)
         }
         
-        if let playlist = self.playlist
+        if let playlist = self._playlist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -602,7 +617,7 @@ class AudioPlayer : NSObject {
             p.currentTime = p.duration
         }
         
-        if let playlist = self.playlist
+        if let playlist = self._playlist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -613,7 +628,7 @@ class AudioPlayer : NSObject {
         
         self.player?.currentTime = TimeInterval(seconds)
         
-        if let playlist = self.playlist
+        if let playlist = self._playlist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -626,7 +641,7 @@ class AudioPlayer : NSObject {
         
         self.player?.currentTime = seekToPositionInSeconds
         
-        if let playlist = self.playlist
+        if let playlist = self._playlist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -800,7 +815,16 @@ extension AudioPlayer {
         {
             let playlistName = Text.value(.PlaylistRecentlyPlayed)
             
-            newPlaylist = AudioPlaylist(name: playlistName, startWithTrack: previousTrack)
+            var node = AudioPlaylistBuilder.start()
+            node.name = playlistName
+            node.startWithTrack = previousTrack
+            
+            do {
+                newPlaylist = try node.build()
+            } catch {
+                Logging.log(AudioPlayer.self, "Error: failed to build playlist from previous track")
+                newPlaylist = nil
+            }
         }
         
         // Play playlist with specific track from play history
@@ -932,7 +956,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionPrevious(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if self.playlist != nil
+        if self._playlist != nil
         {
             do {
                 try playPrevious()
@@ -946,7 +970,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionNext(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if self.playlist != nil
+        if self._playlist != nil
         {
             do {
                 try playNext()
@@ -960,7 +984,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionBackwards(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if let playlist = self.playlist
+        if let playlist = self._playlist
         {
             let _ = Keybinds.shared.evaluateInput(input: .LOCK_PLAYER_PREVIOUS_BUTTON)
             updateRemoteCenterInfo(track: playlist.playingTrack)
@@ -971,7 +995,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionForwards(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if let playlist = self.playlist
+        if let playlist = self._playlist
         {
             let _ = Keybinds.shared.evaluateInput(input: .LOCK_PLAYER_NEXT_BUTTON)
             updateRemoteCenterInfo(track: playlist.playingTrack)
@@ -979,5 +1003,24 @@ extension AudioPlayer: GeneralStorageObserver {
         }
         
         return .commandFailed
+    }
+}
+
+// Serialization
+extension AudioPlayer {
+    func serializePlaylist() -> String? {
+        guard let playlist = self._playlist else {
+            return nil
+        }
+        
+        do {
+            var node = AudioPlaylistBuilder.start(prototype: playlist)
+            node.isTemporary = true
+            return Serializing.serialize(object: try node.buildMutable())
+        } catch {
+            
+        }
+        
+        return nil
     }
 }
