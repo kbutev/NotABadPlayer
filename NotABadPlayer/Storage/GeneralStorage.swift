@@ -123,8 +123,18 @@ class GeneralStorage {
     
     func savePlayerState() {
         let player = AudioPlayer.shared
+        var playlistToSerialize: MutableAudioPlaylist?
         
-        if let playlistSerialized = Serializing.serialize(object: player.mutablePlaylistCopy)
+        if let playPlaylist = player.playlist
+        {
+            do {
+                playlistToSerialize = try AudioPlaylistBuilder.buildMutableFromImmutable(prototype: playPlaylist)
+            } catch {
+                
+            }
+        }
+        
+        if let playlistSerialized = Serializing.serialize(object: playlistToSerialize)
         {
             storage.set(player.playOrder.rawValue, forKey: "player_play_order")
             storage.set(playlistSerialized, forKey: "player_current_playlist")

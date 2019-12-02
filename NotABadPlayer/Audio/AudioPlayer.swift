@@ -123,18 +123,12 @@ class AudioPlayer : NSObject {
     
     public var playlist: BaseAudioPlaylist? {
         get {
-            return _playlist
-        }
-    }
-    
-    public var mutablePlaylistCopy: MutableAudioPlaylist? {
-        get {
             guard let playlist_ = self._playlist else {
                 return nil
             }
             
             do {
-                return try AudioPlaylistBuilder.start(prototype: playlist_).buildMutable()
+                return try AudioPlaylistBuilder.start(prototype: playlist_).build()
             } catch {
                 
             }

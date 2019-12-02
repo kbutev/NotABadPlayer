@@ -22,7 +22,7 @@ class AudioPlaylistBuilder {
         return AudioPlaylistBuilderNode(prototype: prototype)
     }
     
-    public static func buildMutableFromImmutable(prototype: BaseAudioPlaylist) throws -> BaseAudioPlaylist {
+    public static func buildMutableFromImmutable(prototype: BaseAudioPlaylist) throws -> MutableAudioPlaylist {
         return try AudioPlaylistBuilderNode(prototype: prototype).buildMutable()
     }
     
