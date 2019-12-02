@@ -144,7 +144,7 @@ class GeneralStorage {
         }
         else
         {
-            storage.set(AudioPlayOrder.FORWARDS, forKey: "player_play_order")
+            storage.set(AudioPlayOrder.FORWARDS.rawValue, forKey: "player_play_order")
             storage.set("", forKey: "player_current_playlist")
             storage.set(0, forKey: "player_current_position")
             
