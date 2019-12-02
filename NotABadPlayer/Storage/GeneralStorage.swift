@@ -278,10 +278,6 @@ class GeneralStorage {
         if let serialized = Serializing.serialize(object: playlists)
         {
             storage.set(serialized, forKey: "user_playlists")
-            
-            let test: [MutableAudioPlaylist]? = Serializing.deserialize(fromData: serialized)
-            
-            print("!")
         }
     }
     
