@@ -23,6 +23,15 @@ class AudioPlaylistV1 : MutableAudioPlaylist {
         try self.init(name: name, tracks: tracks, startWithTrack: startWithTrack, sorting: .NONE)
     }
     
+    convenience init(name: String, tracks: [AudioTrack], startWithTrackIndex: Int) throws {
+        if startWithTrackIndex < 0 || startWithTrackIndex >= tracks.count
+        {
+            throw AudioPlaylistError.invalidArgument("Playlist cannot start with given track, given index is invalid")
+        }
+        
+        try self.init(name: name, tracks: tracks, startWithTrack: tracks[startWithTrackIndex], sorting: .NONE)
+    }
+    
     convenience init(name: String, tracks: [AudioTrack], sorting: TrackSorting) {
         self.init(name: name, tracks: MediaSorting.sortTracks(tracks, sorting: sorting))
     }
@@ -57,9 +66,5 @@ class AudioPlaylistV1 : MutableAudioPlaylist {
         }
         
         return false
-    }
-    
-    override func serialize() -> String? {
-        return Serializing.serialize(object: self)
     }
 }

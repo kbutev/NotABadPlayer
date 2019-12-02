@@ -22,7 +22,15 @@ class AudioPlaylistBuilder {
         return AudioPlaylistBuilderNode(prototype: prototype)
     }
     
-    public static func buildLatestVersionFrom(serializedData :String) throws -> BaseAudioPlaylist {
+    public static func buildMutableFromImmutable(prototype: BaseAudioPlaylist) throws -> BaseAudioPlaylist {
+        return try AudioPlaylistBuilderNode(prototype: prototype).buildMutable()
+    }
+    
+    public static func buildLatestVersionFrom(serializedData: String) throws -> BaseAudioPlaylist {
+        return try buildLatestMutableVersionFrom(serializedData: serializedData)
+    }
+    
+    public static func buildLatestMutableVersionFrom(serializedData: String) throws -> MutableAudioPlaylist {
         if let result: AudioPlaylistV1 = Serializing.deserialize(fromData: serializedData) {
             return result
         }
@@ -30,7 +38,7 @@ class AudioPlaylistBuilder {
         throw AudioPlaylistBuilderError.deserializationFailed("Failed to deserialize given data")
     }
     
-    public static func buildLatestVersionListFrom(serializedData :String) throws -> [BaseAudioPlaylist] {
+    public static func buildLatestVersionListFrom(serializedData: String) throws -> [BaseAudioPlaylist] {
         if let result: [AudioPlaylistV1] = Serializing.deserialize(fromData: serializedData) {
             return result
         }
@@ -53,29 +61,27 @@ protocol BaseAudioPlaylistBuilderNode {
     
     var name: String { get set }
     var tracks: [AudioTrack] { get set }
-    var sorting: TrackSorting { get set }
-    var startWithTrack: AudioTrack? { get set }
+    var playingTrack: AudioTrack? { get set }
+    var playingTrackIndex: Int { get set }
     var isTemporary: Bool { get set }
 }
 
 class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
     var name: String = ""
     var tracks: [AudioTrack] = []
-    var sorting: TrackSorting = .NONE
-    var startWithTrack: AudioTrack?
-    var playingTrackPosition: Int = 0
+    var playingTrack: AudioTrack?
+    var playingTrackIndex: Int = 0
     var isTemporary: Bool = false
     
     init() {
-        sorting = .NONE
+        
     }
     
     init(prototype: BaseAudioPlaylist) {
         name = prototype.name
         tracks = prototype.tracks
-        sorting = .NONE
-        startWithTrack = prototype.playingTrack
-        playingTrackPosition = prototype.playingTrackPosition
+        playingTrack = prototype.playingTrack
+        playingTrackIndex = prototype.isPlaying ? prototype.playingTrackPosition : -1
         isTemporary = prototype.isTemporary
     }
     
@@ -84,27 +90,31 @@ class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
     }
     
     func buildMutable() throws -> MutableAudioPlaylist {
-        if startWithTrack != nil
+        if tracks.count == 0
         {
-            // Playlist with one single track
-            if tracks.count == 0
-            {
-                guard let startTrack = startWithTrack else {
-                    throw AudioPlaylistBuilderError.invalidBuildParameters("Cannot build playlist with no tracks and no start track")
-                }
-                
-                let playlist = AudioPlaylistV1(name: name, startWithTrack: startTrack)
-                playlist.isTemporary = isTemporary
-                return playlist
-            }
-            
-            let playlist = AudioPlaylistV1(name: name, tracks: tracks, sorting: sorting)
-            playlist.isTemporary = isTemporary
-            return playlist
+            throw AudioPlaylistBuilderError.invalidBuildParameters("Cannot build playlist with zero tracks")
         }
         
-        let playlist = AudioPlaylistV1(name: name, tracks: tracks, sorting: sorting)
-        playlist.isTemporary = isTemporary
-        return playlist
+        var playlist: AudioPlaylistV1? = nil
+        
+        if let startTrack = playingTrack
+        {
+            playlist = try AudioPlaylistV1(name: name, tracks: tracks, startWithTrack: startTrack)
+        }
+        else if playingTrackIndex != -1
+        {
+            if playingTrackIndex < 0 || playingTrackIndex >= tracks.count
+            {
+                throw AudioPlaylistBuilderError.invalidBuildParameters("Cannot build playlist with invalid play track index")
+            }
+            
+            playlist = try AudioPlaylistV1(name: name, tracks: tracks, startWithTrackIndex: playingTrackIndex)
+        } else {
+            playlist = AudioPlaylistV1(name: name, tracks: tracks)
+        }
+        
+        playlist?.isTemporary = isTemporary
+        
+        return playlist!
     }
 }

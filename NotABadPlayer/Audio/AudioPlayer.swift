@@ -127,6 +127,22 @@ class AudioPlayer : NSObject {
         }
     }
     
+    public var mutablePlaylistCopy: MutableAudioPlaylist? {
+        get {
+            guard let playlist_ = self._playlist else {
+                return nil
+            }
+            
+            do {
+                return try AudioPlaylistBuilder.start(prototype: playlist_).buildMutable()
+            } catch {
+                
+            }
+            
+            return nil
+        }
+    }
+    
     private var _playOrder: AudioPlayOrder = .FORWARDS
     
     public var playOrder: AudioPlayOrder {
@@ -817,7 +833,7 @@ extension AudioPlayer {
             
             var node = AudioPlaylistBuilder.start()
             node.name = playlistName
-            node.startWithTrack = previousTrack
+            node.playingTrack = previousTrack
             
             do {
                 newPlaylist = try node.build()
@@ -1003,24 +1019,5 @@ extension AudioPlayer: GeneralStorageObserver {
         }
         
         return .commandFailed
-    }
-}
-
-// Serialization
-extension AudioPlayer {
-    func serializePlaylist() -> String? {
-        guard let playlist = self._playlist else {
-            return nil
-        }
-        
-        do {
-            var node = AudioPlaylistBuilder.start(prototype: playlist)
-            node.isTemporary = true
-            return Serializing.serialize(object: try node.buildMutable())
-        } catch {
-            
-        }
-        
-        return nil
     }
 }

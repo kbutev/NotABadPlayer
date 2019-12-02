@@ -124,7 +124,7 @@ class GeneralStorage {
     func savePlayerState() {
         let player = AudioPlayer.shared
         
-        if let playlistSerialized = player.serializePlaylist()
+        if let playlistSerialized = Serializing.serialize(object: player.mutablePlaylistCopy)
         {
             storage.set(player.playOrder.rawValue, forKey: "player_play_order")
             storage.set(playlistSerialized, forKey: "player_current_playlist")
@@ -160,7 +160,15 @@ class GeneralStorage {
             return
         }
         
-        guard let playlist: MutableAudioPlaylist = Serializing.deserialize(fromData: playlistAsString) else {
+        var playlistObject: MutableAudioPlaylist?
+        
+        do {
+            playlistObject = try AudioPlaylistBuilder.buildLatestMutableVersionFrom(serializedData: playlistAsString)
+        } catch {
+            
+        }
+        
+        guard let playlist = playlistObject else {
             Logging.log(GeneralStorage.self, "Error: could not restore player audio state")
             return
         }
@@ -260,6 +268,10 @@ class GeneralStorage {
         if let serialized = Serializing.serialize(object: playlists)
         {
             storage.set(serialized, forKey: "user_playlists")
+            
+            let test: [MutableAudioPlaylist]? = Serializing.deserialize(fromData: serialized)
+            
+            print("!")
         }
     }
     
