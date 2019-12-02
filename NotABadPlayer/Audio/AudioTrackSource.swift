@@ -46,7 +46,7 @@ struct AudioTrackSource: Codable {
                         var node = AudioPlaylistBuilder.start()
                         node.name = album.albumTitle
                         node.tracks = tracks
-                        node.startWithTrack = playingTrack
+                        node.playingTrack = playingTrack
                         
                         return try node.build()
                     } catch {
@@ -70,7 +70,7 @@ struct AudioTrackSource: Codable {
                         var node = AudioPlaylistBuilder.start()
                         node.name = playlist.name
                         node.tracks = playlist.tracks
-                        node.startWithTrack = playingTrack
+                        node.playingTrack = playingTrack
                         
                         return try node.build()
                     } catch {

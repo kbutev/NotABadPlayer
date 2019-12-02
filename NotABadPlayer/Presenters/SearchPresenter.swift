@@ -190,7 +190,7 @@ class SearchPresenter: BasePresenter
             var node = AudioPlaylistBuilder.start()
             node.name = playlistName
             node.tracks = searchResults
-            node.startWithTrack = track
+            node.playingTrack = track
             
             let searchPlaylist = try node.build()
             delegate.openPlayerScreen(playlist: searchPlaylist)
@@ -210,7 +210,7 @@ class SearchPresenter: BasePresenter
             var node = AudioPlaylistBuilder.start()
             node.name = playlistName
             node.tracks = searchResults
-            node.startWithTrack = track
+            node.playingTrack = track
             
             searchPlaylist = try node.build()
         } catch let e {

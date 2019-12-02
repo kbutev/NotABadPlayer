@@ -60,19 +60,7 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
                 return _albumCover
             }
             
-            let predicate = MPMediaPropertyPredicate(value: albumID, forProperty: MPMediaItemPropertyAlbumPersistentID)
-            
-            let set = Set(arrayLiteral: predicate)
-            
-            let query = MPMediaQuery(filterPredicates: set)
-            
-            if let collection = query.collections?.first
-            {
-                if let item = collection.items.first
-                {
-                    _albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
-                }
-            }
+            _albumCover = retrieveAlbumCoverFromAlbum()
             
             return _albumCover
         }
@@ -113,6 +101,24 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
     
     static func == (lhs: AudioTrack, rhs: AudioTrack) -> Bool {
         return lhs.identifier == rhs.identifier
+    }
+    
+    func retrieveAlbumCoverFromAlbum() -> MPMediaItemArtwork? {
+        let predicate = MPMediaPropertyPredicate(value: albumID, forProperty: MPMediaItemPropertyAlbumPersistentID)
+        
+        let set = Set(arrayLiteral: predicate)
+        
+        let query = MPMediaQuery(filterPredicates: set)
+        
+        if let collection = query.collections?.first
+        {
+            if let item = collection.items.first
+            {
+                return item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
+            }
+        }
+        
+        return nil
     }
     
     // Serialization keys

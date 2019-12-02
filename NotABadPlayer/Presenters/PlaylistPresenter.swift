@@ -172,7 +172,7 @@ class PlaylistPresenter: BasePresenter
             var node = AudioPlaylistBuilder.start()
             node.name = playlistName
             node.tracks = playlist.tracks
-            node.startWithTrack = track
+            node.playingTrack = track
             
             let newPlaylist = try node.build()
             delegate.openPlayerScreen(playlist: newPlaylist)
@@ -193,7 +193,7 @@ class PlaylistPresenter: BasePresenter
             var node = AudioPlaylistBuilder.start()
             node.name = playlistName
             node.tracks = tracks
-            node.startWithTrack = track
+            node.playingTrack = track
             
             playlist = try node.build()
         } catch let e {

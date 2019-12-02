@@ -35,7 +35,16 @@ class AudioTrackV1 : AudioTrack {
         set { _albumID = newValue }
     }
     override public var albumCover : MPMediaItemArtwork? {
-        get { return _albumCover }
+        get {
+            if _albumCover != nil
+            {
+                return _albumCover
+            }
+            
+            _albumCover = retrieveAlbumCoverFromAlbum()
+            
+            return _albumCover
+        }
         set { _albumCover = newValue }
     }
     override public var trackNum : Int {
