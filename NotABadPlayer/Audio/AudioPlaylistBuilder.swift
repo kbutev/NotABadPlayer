@@ -67,11 +67,33 @@ protocol BaseAudioPlaylistBuilderNode {
 }
 
 class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
+    static let NO_PLAY_INDEX = -1
+    
     var name: String = ""
     var tracks: [AudioTrack] = []
-    var playingTrack: AudioTrack?
-    var playingTrackIndex: Int = 0
+    var _playingTrack: AudioTrack?
+    var _playingTrackIndex: Int = 0
     var isTemporary: Bool = false
+    
+    var playingTrack: AudioTrack? {
+        get {
+            return _playingTrack
+        }
+        set {
+            _playingTrack = newValue
+            _playingTrackIndex = AudioPlaylistBuilderNode.NO_PLAY_INDEX
+        }
+    }
+    var playingTrackIndex: Int {
+        get {
+            return _playingTrackIndex
+        }
+        
+        set {
+            _playingTrackIndex = newValue
+            _playingTrack = nil
+        }
+    }
     
     init() {
         
@@ -80,8 +102,11 @@ class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
     init(prototype: BaseAudioPlaylist) {
         name = prototype.name
         tracks = prototype.tracks
-        playingTrack = prototype.playingTrack
-        playingTrackIndex = prototype.isPlaying ? prototype.playingTrackPosition : -1
+        
+        if prototype.isPlaying {
+            _playingTrackIndex = prototype.playingTrackPosition
+        }
+        
         isTemporary = prototype.isTemporary
     }
     
@@ -101,7 +126,7 @@ class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
         {
             playlist = try AudioPlaylistV1(name: name, tracks: tracks, startWithTrack: startTrack)
         }
-        else if playingTrackIndex != -1
+        else if playingTrackIndex != AudioPlaylistBuilderNode.NO_PLAY_INDEX
         {
             if playingTrackIndex < 0 || playingTrackIndex >= tracks.count
             {
