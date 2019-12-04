@@ -148,6 +148,10 @@ class AudioLibrary : AudioInfo {
     }
     
     public func searchForTracks(query: String, filter: SearchTracksFilter) -> [AudioTrack] {
+        if query.count == 0 {
+            return []
+        }
+        
         let allTracks = MPMediaQuery.songs()
         
         var property: String = MPMediaItemPropertyTitle
