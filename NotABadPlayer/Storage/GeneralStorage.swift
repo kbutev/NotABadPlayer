@@ -77,6 +77,19 @@ class GeneralStorage {
             storageVersion = version
         }
         
+        // Migrate to 1.1
+        if storageVersion == "1.0"
+        {
+            let version = "1.1"
+            
+            Logging.log(GeneralStorage.self, "Migrating settings from version \(storageVersion) to version \(version)")
+            
+            clearUserPlaylists()
+            clearPlayerPlayHistoryState()
+            
+            storageVersion = version
+        }
+        
         Logging.log(GeneralStorage.self, "Successfully migrated settings values!")
     }
     
@@ -223,6 +236,10 @@ class GeneralStorage {
         }
     }
     
+    func clearPlayerPlayHistoryState() {
+        storage.set(nil, forKey: "play_history")
+    }
+    
     func saveSearchQuery(_ searchQuery: String) {
         storage.set(searchQuery, forKey: "search_query")
     }
@@ -279,6 +296,10 @@ class GeneralStorage {
         {
             storage.set(serialized, forKey: "user_playlists")
         }
+    }
+    
+    func clearUserPlaylists() {
+        storage.set(nil, forKey: "user_playlists")
     }
     
     func getAppThemeValue() -> AppThemeValue {
