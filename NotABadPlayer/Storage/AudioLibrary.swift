@@ -133,6 +133,11 @@ class AudioLibrary : AudioInfo {
             let durationInSeconds_ = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber
             let albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
             
+            let lyrics = item.value(forProperty: MPMediaItemPropertyLyrics) as? String ?? ""
+            let dateAdded = item.value(forProperty: MPMediaItemPropertyDateAdded) as? Date
+            let dateLastPlayed = item.value(forProperty: MPMediaItemPropertyLastPlayedDate) as? Date
+            let lastPlayedPosition = item.value(forProperty: MPMediaItemPropertyBookmarkTime) as? NSNumber
+            
             guard let trackNum = trackNum_?.intValue else {
                 continue
             }
@@ -153,6 +158,11 @@ class AudioLibrary : AudioInfo {
             node.trackNum = trackNum
             node.durationInSeconds = durationInSeconds
             node.source = AudioTrackSource.createAlbumSource(albumID: album.albumID)
+            
+            node.lyrics = lyrics
+            node.dateAdded = dateAdded ?? node.dateAdded
+            node.dateLastPlayed = dateLastPlayed ?? node.dateLastPlayed
+            node.lastPlayedPosition = lastPlayedPosition?.doubleValue ?? 0
             
             do {
                 let result = try node.build()
@@ -191,6 +201,7 @@ class AudioLibrary : AudioInfo {
             }
             
             let albumId_ = item.value(forProperty: MPMediaItemPropertyAlbumPersistentID) as! NSNumber
+            let albumID = albumId_.intValue
             let albumTitle = item.value(forKey: MPMediaItemPropertyAlbumTitle) as? String ?? "<Unknown>"
             let artist = item.value(forKey: MPMediaItemPropertyArtist) as? String ?? "<Unknown>"
             let albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
@@ -199,7 +210,10 @@ class AudioLibrary : AudioInfo {
             let trackNum_ = item.value(forProperty: MPMediaItemPropertyAlbumTrackNumber) as? NSNumber
             let durationInSeconds_ = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber
             
-            let albumID = albumId_.intValue
+            let lyrics = item.value(forProperty: MPMediaItemPropertyLyrics) as? String ?? ""
+            let dateAdded = item.value(forProperty: MPMediaItemPropertyDateAdded) as? Date
+            let dateLastPlayed = item.value(forProperty: MPMediaItemPropertyLastPlayedDate) as? Date
+            let lastPlayedPosition = item.value(forProperty: MPMediaItemPropertyBookmarkTime) as? NSNumber
             
             guard let trackNum = trackNum_?.intValue else {
                 continue
@@ -221,6 +235,11 @@ class AudioLibrary : AudioInfo {
             node.trackNum = trackNum
             node.durationInSeconds = durationInSeconds
             node.source = AudioTrackSource.createAlbumSource(albumID: albumID)
+            
+            node.lyrics = lyrics
+            node.dateAdded = dateAdded ?? node.dateAdded
+            node.dateLastPlayed = dateLastPlayed ?? node.dateLastPlayed
+            node.lastPlayedPosition = lastPlayedPosition?.doubleValue ?? 0
             
             do {
                 let result = try node.build()
