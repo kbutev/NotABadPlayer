@@ -85,6 +85,10 @@ class SearchView: UIView
             initialized = true
             setup()
         }
+        else
+        {
+            searchFilterPicker.removeTarget(self, action: #selector(pickerValueChanged), for: .valueChanged)
+        }
     }
     
     private func setup() {
