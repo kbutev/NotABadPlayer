@@ -61,6 +61,9 @@ enum ColorValue
     
     case PLAYLIST_PLAYING_TRACK;
     
+    case SEARCH_FILTER_PICKER_SELECTION;
+    case SEARCH_FILTER_PICKER_TINT;
+    
     case CREATE_LIST_SELECTED_TRACK;
     
     case ANIMATION_CLICK_EFFECT;

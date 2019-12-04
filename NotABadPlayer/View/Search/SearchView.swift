@@ -131,6 +131,13 @@ class SearchView: UIView
         
         collectionView.backgroundColor = .clear
         searchDescription.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        
+        let segmentedTextColor = [NSAttributedString.Key.foregroundColor: AppTheme.shared.colorFor(.SEARCH_FILTER_PICKER_TINT)]
+        let segmentedSelTextColor = [NSAttributedString.Key.foregroundColor: AppTheme.shared.colorFor(.SEARCH_FILTER_PICKER_SELECTION)]
+        let segmentedTintColor = AppTheme.shared.colorFor(.SEARCH_FILTER_PICKER_TINT)
+        searchFilterPicker.setTitleTextAttributes(segmentedTextColor, for: .normal)
+        searchFilterPicker.setTitleTextAttributes(segmentedSelTextColor, for: .selected)
+        searchFilterPicker.tintColor = segmentedTintColor
     }
     
     public func reloadData() {
