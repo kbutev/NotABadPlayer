@@ -64,6 +64,19 @@ class AudioTrackV1 : AudioTrack {
         super.init(albumID: 0, source: AudioTrackSource.createAlbumSource(albumID: 0))
     }
     
+    public init(_ prototype: AudioTrack) {
+        super.init(albumID: prototype.albumID, source: prototype.source)
+        self.identifier = prototype.identifier
+        self.filePath = prototype.filePath
+        self.title = prototype.title
+        self.artist = prototype.artist
+        self.albumTitle = prototype.albumTitle
+        self.albumID = prototype.albumID
+        self.albumCover = prototype.albumCover
+        self.trackNum = prototype.trackNum
+        self.durationInSeconds = prototype.durationInSeconds
+    }
+    
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
     }
