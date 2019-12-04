@@ -59,7 +59,7 @@ class AudioTrackDateBuilderCache {
             }
         }
         
-        // Otherwise add given date to cache and return it
+        // Otherwise add given value to cache and return it
         datesCache.insert(date)
         
         return date
@@ -79,7 +79,7 @@ class AudioTrackDateBuilderCache {
             }
         }
         
-        // Otherwise add given date value to cache and return it
+        // Otherwise add given value to cache and return it
         dateValuesCache.insert(value)
         
         return value

@@ -8,16 +8,20 @@
 
 import Foundation
 
-struct AudioTrackSource: Codable {
+class AudioTrackSource: Codable, Equatable, Hashable {
+    private static let cache: AudioTrackSourceCache = AudioTrackSourceCache()
+    
     private let value : String
     private let isAlbumSource : Bool
     
     public static func createAlbumSource(albumID: Int) -> AudioTrackSource {
-        return AudioTrackSource(value: "\(albumID)", isAlbumSource: true)
+        let newSource = AudioTrackSource(value: "\(albumID)", isAlbumSource: true)
+        return cache.getFlyweight(for: newSource)
     }
     
     public static func createPlaylistSource(playlistName: String) -> AudioTrackSource {
-        return AudioTrackSource(value: playlistName, isAlbumSource: false)
+        let newSource = AudioTrackSource(value: playlistName, isAlbumSource: false)
+        return cache.getFlyweight(for: newSource)
     }
     
     private init(value: String, isAlbumSource: Bool) {
@@ -81,5 +85,48 @@ struct AudioTrackSource: Codable {
         }
         
         return nil
+    }
+    
+    static func ==(lhs: AudioTrackSource, rhs: AudioTrackSource) -> Bool {
+        return lhs.value == rhs.value && lhs.isAlbumSource == rhs.isAlbumSource
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(value)
+        hasher.combine(isAlbumSource)
+    }
+}
+
+class AudioTrackSourceCache {
+    private let lock : NSObject = NSObject()
+    
+    private var sourceCache: Set<AudioTrackSource> = []
+    
+    public func getFlyweight(for source: AudioTrackSource) -> AudioTrackSource {
+        lockEnter()
+        
+        defer {
+            lockExit()
+        }
+        
+        // If already present in cache, return cached instance
+        for cachedSource in sourceCache {
+            if cachedSource == source {
+                return cachedSource
+            }
+        }
+        
+        // Otherwise add given value to cache and return it
+        sourceCache.insert(source)
+        
+        return source
+    }
+    
+    private func lockEnter() {
+        objc_sync_enter(self.lock)
+    }
+    
+    private func lockExit() {
+        objc_sync_exit(self.lock)
     }
 }
