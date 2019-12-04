@@ -41,6 +41,7 @@ class AudioTrackBuilder {
 
 protocol BaseAudioTrackBuilderNode {
     func build() throws -> AudioTrack
+    func reset()
     
     var identifier : Int { get set}
     var filePath : URL? { get set}
@@ -55,6 +56,9 @@ protocol BaseAudioTrackBuilderNode {
 }
 
 class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
+    static let genericOrigin: AudioTrackV1 = AudioTrackV1()
+    
+    var template: AudioTrack
     var track: AudioTrackV1
     
     public var identifier : Int {
@@ -99,27 +103,24 @@ class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
     }
     
     init() {
-        track = AudioTrackV1()
+        template = AudioTrackBuilderNode.genericOrigin
+        track = AudioTrackBuilderNode.genericOrigin
+        reset()
     }
     
     init(prototype: AudioTrack) {
-        track = AudioTrackV1()
-        track.albumID = prototype.albumID
-        track.identifier = prototype.identifier
-        track.filePath = prototype.filePath
-        track.title = prototype.title
-        track.artist = prototype.artist
-        track.albumTitle = prototype.albumTitle
-        track.albumID = prototype.albumID
-        track.albumCover = prototype.albumCover
-        track.trackNum = prototype.trackNum
-        track.durationInSeconds = prototype.durationInSeconds
-        track.source = prototype.source
+        template = prototype
+        track = AudioTrackBuilderNode.genericOrigin
+        reset()
     }
     
     func build() throws -> AudioTrack {
         let track = self.track
         self.track = AudioTrackV1()
         return track
+    }
+    
+    func reset() {
+        track = AudioTrackV1(template)
     }
 }

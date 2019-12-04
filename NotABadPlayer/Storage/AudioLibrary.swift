@@ -114,6 +114,8 @@ class AudioLibrary : AudioInfo {
         {
             return []
         }
+
+        var node = AudioTrackBuilder.start()
         
         for item in allSongs
         {
@@ -139,7 +141,8 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            var node = AudioTrackBuilder.start()
+            node.reset()
+            
             node.identifier = identifier
             node.filePath = path
             node.title = title
@@ -175,6 +178,8 @@ class AudioLibrary : AudioInfo {
             return []
         }
         
+        var node = AudioTrackBuilder.start()
+        
         for item in result
         {
             guard let identifier = item.value(forProperty: MPMediaItemPropertyPersistentID) as? Int else {
@@ -204,7 +209,8 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            var node = AudioTrackBuilder.start()
+            node.reset()
+            
             node.identifier = identifier
             node.filePath = path
             node.title = title
