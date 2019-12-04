@@ -30,6 +30,7 @@ class SearchView: UIView
     
     public var onSearchResultClickedCallback: (UInt)->Void = {(index) in }
     public var onSearchFieldTextEnteredCallback: (String)->Void = {(text) in }
+    public var onSearchFilterPickedCallback: (Int)->Void = {(index) in }
     
     public var onQuickPlayerPlaylistButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlaylistButtonClickCallback }
@@ -51,10 +52,11 @@ class SearchView: UIView
         set { quickPlayerView.onSwipeUpCallback = newValue }
     }
     
-    @IBOutlet var stackView: UIStackView!
-    @IBOutlet var searchField: UITextField!
-    @IBOutlet var searchDescription: UILabel!
-    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var searchField: UITextField!
+    @IBOutlet weak var searchFilterPicker: UISegmentedControl!
+    @IBOutlet weak var searchDescription: UILabel!
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
@@ -119,6 +121,9 @@ class SearchView: UIView
         
         // Search field interaction setup
         searchField.delegate = self
+        
+        // Search filter picker setup
+        searchFilterPicker.addTarget(self, action: #selector(pickerValueChanged), for: .valueChanged)
     }
     
     public func setupAppTheme() {
@@ -134,6 +139,10 @@ class SearchView: UIView
     
     public func setTextFieldText(_ text: String) {
         searchField.text = text
+    }
+    
+    public func setTextFilterIndex(_ index: Int) {
+        searchFilterPicker.selectedSegmentIndex = index
     }
     
     public func updateSearchResults(resultsCount: UInt, searchTip: String?) {
@@ -208,6 +217,15 @@ extension SearchView: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+// Picker actions
+extension SearchView {
+    @objc func pickerValueChanged(_ sender: Any) {
+        let index = self.searchFilterPicker.selectedSegmentIndex
+        
+        self.onSearchFilterPickedCallback(index)
     }
 }
 

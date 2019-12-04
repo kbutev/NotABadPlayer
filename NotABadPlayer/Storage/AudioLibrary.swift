@@ -146,10 +146,21 @@ class AudioLibrary : AudioInfo {
         return searchForTracks(mediaQuery: allTracks, predicate: predicate)
     }
     
-    public func searchForTracks(query: String) -> [AudioTrack] {
+    public func searchForTracks(query: String, filter: SearchTracksFilter) -> [AudioTrack] {
         let allTracks = MPMediaQuery.songs()
         
-        let predicate = MPMediaPropertyPredicate.init(value: query, forProperty: MPMediaItemPropertyTitle, comparisonType: .contains)
+        var property: String = MPMediaItemPropertyTitle
+        
+        switch filter {
+        case .Title:
+            property = MPMediaItemPropertyTitle
+        case .Album:
+            property = MPMediaItemPropertyAlbumTitle
+        case .Artist:
+            property = MPMediaItemPropertyArtist
+        }
+        
+        let predicate = MPMediaPropertyPredicate.init(value: query, forProperty: property, comparisonType: .contains)
         
         return searchForTracks(mediaQuery: allTracks, predicate: predicate)
     }

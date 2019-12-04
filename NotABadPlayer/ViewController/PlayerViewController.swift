@@ -114,7 +114,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         self.baseView?.updateUIState(player: AudioPlayer.shared, track: playlist.playingTrack)
     }
     
-    func updateSearchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
         
     }
     

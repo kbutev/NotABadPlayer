@@ -29,7 +29,7 @@ protocol BasePresenter
     func onPlaylistItemDelete(index: UInt)
     
     func onSearchResultClick(index: UInt)
-    func onSearchQuery(_ query: String)
+    func onSearchQuery(query: String, filterIndex: Int)
     
     func onAppSettingsReset()
     func onAppThemeChange(_ themeValue: AppThemeValue);

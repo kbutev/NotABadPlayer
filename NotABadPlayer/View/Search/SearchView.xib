@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KXA-GE-Kig">
-                    <rect key="frame" x="152" y="348" width="240" height="228"/>
+                    <rect key="frame" x="152" y="348" width="240" height="266"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search for track" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="yjM-Dr-I4r">
@@ -26,14 +26,22 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lTX-M3-aHy">
+                            <rect key="frame" x="0.0" y="40" width="240" height="29"/>
+                            <segments>
+                                <segment title="Title"/>
+                                <segment title="Album"/>
+                                <segment title="Artist"/>
+                            </segments>
+                        </segmentedControl>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uoC-gA-fl7">
-                            <rect key="frame" x="0.0" y="40" width="240" height="50"/>
+                            <rect key="frame" x="0.0" y="78" width="240" height="50"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="cEl-is-6pK">
-                            <rect key="frame" x="0.0" y="100" width="240" height="128"/>
+                            <rect key="frame" x="0.0" y="138" width="240" height="128"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="EHj-P9-tvB">
                                 <size key="itemSize" width="50" height="50"/>
@@ -51,6 +59,7 @@
                 <outlet property="collectionView" destination="cEl-is-6pK" id="ych-Lx-GcA"/>
                 <outlet property="searchDescription" destination="uoC-gA-fl7" id="Sx1-5R-zd3"/>
                 <outlet property="searchField" destination="yjM-Dr-I4r" id="gqd-YI-Y5L"/>
+                <outlet property="searchFilterPicker" destination="lTX-M3-aHy" id="aLk-jb-TUe"/>
                 <outlet property="stackView" destination="KXA-GE-Kig" id="kqs-Zv-A8B"/>
             </connections>
         </view>

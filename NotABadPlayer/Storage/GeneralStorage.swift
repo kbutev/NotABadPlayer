@@ -248,6 +248,24 @@ class GeneralStorage {
         return storage.string(forKey: "search_query") ?? ""
     }
     
+    func saveSearchQueryFilter(_ searchQueryFilter: SearchTracksFilter) {
+        storage.set(searchQueryFilter.rawValue, forKey: "search_query_filter")
+    }
+    
+    func retrieveSearchQueryFilter() -> SearchTracksFilter {
+        if let value = storage.string(forKey: "search_query_filter")
+        {
+            if let result = SearchTracksFilter(rawValue: value)
+            {
+                return result
+            }
+            
+            Logging.log(GeneralStorage.self, "Error: could not read SearchTracksFilter value from storage")
+        }
+        
+        return .Title
+    }
+    
     func getKeybindAction(forInput input: ApplicationInput) -> ApplicationAction {
         if let value = storage.string(forKey: input.rawValue)
         {

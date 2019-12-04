@@ -16,6 +16,9 @@ class SearchViewController: UIViewController, BaseViewDelegate {
     private var subViewController: PlaylistViewController?
     private var subViewControllerPlaylistName: String = ""
     
+    private var searchFieldText: String = ""
+    private var searchFilterPickedIndex: Int = 0
+    
     init(presenter: BasePresenter?) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -45,7 +48,19 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         }
         
         baseView?.onSearchFieldTextEnteredCallback = {[weak self] (text) in
-            self?.presenter?.onSearchQuery(text)
+            if let strongSelf = self
+            {
+                strongSelf.searchFieldText = text
+                strongSelf.presenter?.onSearchQuery(query: text, filterIndex: strongSelf.searchFilterPickedIndex)
+            }
+        }
+        
+        baseView?.onSearchFilterPickedCallback = {[weak self] (index) in
+            if let strongSelf = self
+            {
+                strongSelf.searchFilterPickedIndex = index
+                strongSelf.presenter?.onSearchQuery(query: strongSelf.searchFieldText, filterIndex: index)
+            }
         }
         
         baseView?.onQuickPlayerPlaylistButtonClickCallback = { [weak self] () in
@@ -131,9 +146,13 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func updateSearchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+        searchFieldText = query
+        searchFilterPickedIndex = filterIndex
+        
         baseView?.collectionDataSource = dataSource
         baseView?.setTextFieldText(query)
+        baseView?.setTextFilterIndex(filterIndex)
         baseView?.updateSearchResults(resultsCount: resultsCount, searchTip: searchTip)
     }
     
