@@ -13,11 +13,11 @@ class PlaylistHeaderView : UICollectionReusableView
     public static let HEADER_SIZE = CGSize(width: 0, height: 300)
     public static let HEADER_SIZE_IMAGELESS = CGSize(width: 0, height: 64)
     
-    @IBOutlet var stackView: UIStackView!
-    @IBOutlet var artCoverImage: UIImageView!
-    @IBOutlet var titleText: UILabel!
-    @IBOutlet var artistText: UILabel!
-    @IBOutlet var descriptionText: UILabel!
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var artCoverImage: UIImageView!
+    @IBOutlet weak var titleText: UILabel!
+    @IBOutlet weak var artistText: UILabel!
+    @IBOutlet weak var descriptionText: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

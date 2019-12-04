@@ -62,9 +62,9 @@ class AlbumsView : UIView
         set { quickPlayerView.onSwipeUpCallback = newValue }
     }
     
-    @IBOutlet private var collectionView: UICollectionView!
-    @IBOutlet private weak var indexerCenterCharacter: UILabel!
-    @IBOutlet private var quickPlayerView: QuickPlayerView!
+    @IBOutlet weak private var collectionView: UICollectionView!
+    @IBOutlet weak private var indexerCenterCharacter: UILabel!
+    private var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

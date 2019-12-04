@@ -57,7 +57,7 @@ class SearchView: UIView
     @IBOutlet weak var searchFilterPicker: UISegmentedControl!
     @IBOutlet weak var searchDescription: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet var quickPlayerView: QuickPlayerView!
+    var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

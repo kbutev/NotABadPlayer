@@ -52,8 +52,8 @@ class PlaylistView : UIView
     }
     
     @IBOutlet weak var albumTitleOverlayLabel: UILabel!
-    @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet var quickPlayerView: QuickPlayerView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

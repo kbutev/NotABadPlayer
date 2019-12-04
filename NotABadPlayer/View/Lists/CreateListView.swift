@@ -77,9 +77,9 @@ class CreateListView : UIView
     @IBOutlet weak var playlistNameField: UITextField!
     @IBOutlet weak var doneButton: UIButton!
     
-    @IBOutlet var addedTracksLabel: UILabel!
+    @IBOutlet weak var addedTracksLabel: UILabel!
     @IBOutlet weak var addedTracksTable: UITableView!
-    @IBOutlet var tracksLabel: UILabel!
+    @IBOutlet weak var tracksLabel: UILabel!
     @IBOutlet weak var albumsTable: UITableView!
     
     override init(frame: CGRect) {
