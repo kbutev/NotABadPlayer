@@ -19,22 +19,22 @@ class QuickPlayerView : UIView
     public var onPlayOrderButtonClickCallback: ()->Void = {() in }
     public var onSwipeUpCallback: ()->Void = {() in }
     
-    @IBOutlet var primaryStackView: UIStackView!
+    @IBOutlet weak var primaryStackView: UIStackView!
     
-    @IBOutlet var trackInfoStackView: UIStackView!
-    @IBOutlet var trackInfoArtCoverImage: UIImageView!
-    @IBOutlet var trackInfoTextStackView: UIStackView!
-    @IBOutlet var trackInfoTitleText: UILabel!
-    @IBOutlet var trackInfoDurationText: UILabel!
+    @IBOutlet weak var trackInfoStackView: UIStackView!
+    @IBOutlet weak var trackInfoArtCoverImage: UIImageView!
+    @IBOutlet weak var trackInfoTextStackView: UIStackView!
+    @IBOutlet weak var trackInfoTitleText: UILabel!
+    @IBOutlet weak var trackInfoDurationText: UILabel!
     
-    @IBOutlet var mediaButtonsStackView: UIStackView!
-    @IBOutlet var playlistMediaButton: UIImageView!
-    @IBOutlet var previousMediaButton: UIImageView!
-    @IBOutlet var playMediaButton: UIImageView!
-    @IBOutlet var nextMediaButton: UIImageView!
-    @IBOutlet var playOrderMediaButton: UIImageView!
+    @IBOutlet weak var mediaButtonsStackView: UIStackView!
+    @IBOutlet weak var playlistMediaButton: UIImageView!
+    @IBOutlet weak var previousMediaButton: UIImageView!
+    @IBOutlet weak var playMediaButton: UIImageView!
+    @IBOutlet weak var nextMediaButton: UIImageView!
+    @IBOutlet weak var playOrderMediaButton: UIImageView!
     
-    @IBOutlet var trackSeekBarSlider: UISlider!
+    @IBOutlet weak var trackSeekBarSlider: UISlider!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

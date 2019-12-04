@@ -16,9 +16,9 @@ class CreateListAlbumCell: UITableViewCell
     public static let COVER_IMAGE_SIZE = CGSize(width: 48, height: 48)
     public static let HEADER_HEIGHT: CGFloat = 64
     
-    @IBOutlet var content: UIView!
-    @IBOutlet var coverImage: UIImageView!
-    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet weak var content: UIView!
+    @IBOutlet weak var coverImage: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var tracksTable: UITableView!
     

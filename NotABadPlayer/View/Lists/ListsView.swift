@@ -57,7 +57,7 @@ class ListsView : UIView
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var playlistsTable: UITableView!
-    @IBOutlet var quickPlayerView: QuickPlayerView!
+    var quickPlayerView: QuickPlayerView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

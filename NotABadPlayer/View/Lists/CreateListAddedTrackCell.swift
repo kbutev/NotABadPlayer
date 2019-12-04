@@ -13,11 +13,11 @@ class CreateListAddedTrackCell: UITableViewCell
     public static let CELL_IDENTIFIER = "cell"
     public static let SIZE = CGSize(width: 0, height: 48)
     
-    @IBOutlet var stackView: UIStackView!
-    @IBOutlet var coverImage: UIImageView!
-    @IBOutlet var textStackView: UIStackView!
-    @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var descriptionLabel: UILabel!
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var coverImage: UIImageView!
+    @IBOutlet weak var textStackView: UIStackView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
