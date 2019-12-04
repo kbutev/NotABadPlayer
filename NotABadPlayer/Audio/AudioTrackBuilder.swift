@@ -43,23 +43,34 @@ protocol BaseAudioTrackBuilderNode {
     func build() throws -> AudioTrack
     func reset()
     
-    var identifier : Int { get set}
-    var filePath : URL? { get set}
-    var title : String { get set}
-    var artist : String { get set}
-    var albumTitle : String { get set}
-    var albumID : Int { get set}
-    var albumCover : MPMediaItemArtwork? { get set}
-    var trackNum : Int { get set}
-    var durationInSeconds : Double { get set}
-    var source : AudioTrackSource { get set}
+    var identifier : Int { get set }
+    var filePath : URL? { get set }
+    var title : String { get set }
+    var artist : String { get set }
+    var albumTitle : String { get set }
+    var albumID : Int { get set }
+    var albumCover : MPMediaItemArtwork? { get set }
+    var trackNum : Int { get set }
+    var durationInSeconds : Double { get set }
+    var source : AudioTrackSource { get set }
+    
+    var lyrics : String { get set }
+    var dateAdded : Date { get set }
+    var dateFirstPlayed : Date { get set }
+    var dateLastPlayed : Date? { get set }
+    var lastPlayedPosition : TimeInterval { get set }
 }
 
 class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
     static let genericOrigin: AudioTrackV1 = AudioTrackV1()
+    static let genericDate: AudioTrackDateValue = AudioTrackDateValue()
     
-    var template: AudioTrack
-    var track: AudioTrackV1
+    private var template: AudioTrack
+    private var track: AudioTrackV1
+    
+    private var _dateAdded: AudioTrackDateValue = AudioTrackBuilderNode.genericDate
+    private var _dateFirstPlayed: AudioTrackDateValue = AudioTrackBuilderNode.genericDate
+    private var _dateLastPlayed: AudioTrackDateValue? = AudioTrackBuilderNode.genericDate
     
     public var identifier : Int {
         get { return track.identifier }
@@ -101,6 +112,32 @@ class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
         get { return track.source }
         set { track.source = newValue }
     }
+    public var lyrics : String {
+        get { return track.lyrics }
+        set { track.lyrics = newValue }
+    }
+    public var dateAdded : Date {
+        get { return _dateAdded.value }
+        set { _dateAdded = AudioTrackDateValue(newValue) }
+    }
+    public var dateFirstPlayed : Date {
+        get { return _dateFirstPlayed.value }
+        set { _dateFirstPlayed = AudioTrackDateValue(newValue)}
+    }
+    public var dateLastPlayed : Date? {
+        get { return _dateLastPlayed?.value }
+        set {
+            if let newDate = newValue {
+                _dateLastPlayed = AudioTrackDateValue(newDate)
+            } else {
+                _dateLastPlayed = nil
+            }
+        }
+    }
+    public var lastPlayedPosition : TimeInterval {
+        get { return track.lastPlayedPosition }
+        set { track.lastPlayedPosition = newValue }
+    }
     
     init() {
         template = AudioTrackBuilderNode.genericOrigin
@@ -117,10 +154,14 @@ class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
     func build() throws -> AudioTrack {
         let track = self.track
         self.track = AudioTrackV1()
+        self.track.date = AudioTrackDateBuilder.build(_dateAdded, _dateFirstPlayed, _dateLastPlayed)
         return track
     }
     
     func reset() {
         track = AudioTrackV1(template)
+        _dateAdded = AudioTrackBuilderNode.genericDate
+        _dateFirstPlayed = AudioTrackBuilderNode.genericDate
+        _dateLastPlayed = AudioTrackBuilderNode.genericDate
     }
 }

@@ -59,6 +59,18 @@ class AudioTrackV1 : AudioTrack {
         get { return _source }
         set { _source = newValue }
     }
+    override public var lyrics : String {
+        get { return _lyrics }
+        set { _lyrics = newValue }
+    }
+    override public var date : AudioTrackDate {
+        get { return _date }
+        set { _date = newValue }
+    }
+    override public var lastPlayedPosition : TimeInterval {
+        get { return _lastPlayedPosition }
+        set { _lastPlayedPosition = newValue }
+    }
     
     public init() {
         super.init(albumID: 0, source: AudioTrackSource.createAlbumSource(albumID: 0))
@@ -75,6 +87,10 @@ class AudioTrackV1 : AudioTrack {
         self.albumCover = prototype.albumCover
         self.trackNum = prototype.trackNum
         self.durationInSeconds = prototype.durationInSeconds
+        
+        self.lyrics = prototype.lyrics
+        self.date = prototype.date
+        self.lastPlayedPosition = prototype.lastPlayedPosition
     }
     
     required init(from decoder: Decoder) throws {

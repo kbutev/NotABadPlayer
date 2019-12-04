@@ -21,6 +21,10 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
     internal var _durationInSeconds : Double
     internal var _source : AudioTrackSource
     
+    internal var _lyrics : String
+    internal var _date : AudioTrackDate
+    internal var _lastPlayedPosition : TimeInterval
+    
     public var identifier : Int {
         get {
             return _identifier
@@ -87,6 +91,25 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
         }
     }
     
+    var lyrics : String
+    {
+        get {
+            return _lyrics
+        }
+    }
+    var date : AudioTrackDate
+    {
+        get {
+            return _date
+        }
+    }
+    var lastPlayedPosition : TimeInterval
+    {
+        get {
+            return _lastPlayedPosition
+        }
+    }
+    
     init(albumID: Int, source: AudioTrackSource) {
         self._identifier = 0
         self._filePath = nil
@@ -97,6 +120,9 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
         self._durationInSeconds = 0
         self._albumID = albumID
         self._source = source
+        self._lyrics = ""
+        self._date = AudioTrackDateBuilder.buildGeneric()
+        self._lastPlayedPosition = 0
     }
     
     static func == (lhs: AudioTrack, rhs: AudioTrack) -> Bool {
@@ -133,5 +159,8 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
         case _trackNum
         case _durationInSeconds
         case _source
+        case _lyrics
+        case _date
+        case _lastPlayedPosition
     }
 }
