@@ -85,7 +85,7 @@ class SearchView: UIView
             initialized = true
             setup()
         }
-        else
+        else if self.superview == nil
         {
             searchFilterPicker.removeTarget(self, action: #selector(pickerValueChanged), for: .valueChanged)
         }
