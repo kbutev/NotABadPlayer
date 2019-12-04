@@ -92,7 +92,7 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func onSearchQuery(_ query: String) {
+    func onSearchQuery(query: String, filterIndex: Int) {
         
     }
     

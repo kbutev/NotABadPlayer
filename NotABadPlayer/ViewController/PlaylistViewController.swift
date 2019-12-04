@@ -122,7 +122,7 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func updateSearchQueryResults(query: String, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
         
     }
     

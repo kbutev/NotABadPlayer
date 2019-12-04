@@ -19,6 +19,7 @@ class SearchPresenter: BasePresenter
     private var dataSource: SearchViewDataSource?
     
     private var lastSearchQuery: String?
+    private var lastSearchFilter: SearchTracksFilter = .Title
     
     required init(audioInfo: AudioInfo) {
         self.audioInfo = audioInfo
@@ -31,10 +32,11 @@ class SearchPresenter: BasePresenter
     func start() {
         // Restore last search query from storage
         let savedQuery = GeneralStorage.shared.retrieveSearchQuery()
+        let savedFilter = GeneralStorage.shared.retrieveSearchQueryFilter()
 
         if savedQuery.count > 0
         {
-            onSearchQuery(savedQuery)
+            onSearchQuery(query: savedQuery, filterIndex: getSearchIndex(for: savedFilter))
         }
     }
     
@@ -109,34 +111,42 @@ class SearchPresenter: BasePresenter
         }
     }
     
-    func onSearchQuery(_ query: String) {
+    func onSearchQuery(query: String, filterIndex: Int) {
         guard self.delegate != nil else {
             fatalError("Delegate is not set for \(String(describing: SearchPresenter.self))")
         }
         
+        let filter = self.getSearchFilter(for: filterIndex)
+        
         // If the query was already made, return
         if let lastQuery = lastSearchQuery
         {
-            if query == lastQuery
+            if query == lastQuery && lastSearchFilter == filter
             {
                 return
             }
         }
         
-        Logging.log(SearchPresenter.self, "Searching for '\(query)' ...")
+        Logging.log(SearchPresenter.self, "Searching for '\(query)', filter: \(filter.rawValue) ...")
         
         lastSearchQuery = query
+        lastSearchFilter = filter
         
         // Save query to storage
         GeneralStorage.shared.saveSearchQuery(query)
+        GeneralStorage.shared.saveSearchQueryFilter(filter)
         
         // Start search process
-        delegate?.updateSearchQueryResults(query: query, dataSource: nil, resultsCount: 0, searchTip: "Searching...")
+        delegate?.updateSearchQueryResults(query: query,
+                                           filterIndex: filterIndex,
+                                           dataSource: nil,
+                                           resultsCount: 0,
+                                           searchTip: "Searching...")
         
         // Use background thread to retrieve the search results
         // Then, update the view on the main thread
         DispatchQueue.global(qos: .background).async {
-            let results = self.audioInfo.searchForTracks(query: query)
+            let results = self.audioInfo.searchForTracks(query: query, filter: filter)
             self.searchResults = results
             
             let dataSource = SearchViewDataSource(audioInfo: self.audioInfo, searchResults: results)
@@ -146,9 +156,10 @@ class SearchPresenter: BasePresenter
                 Logging.log(SearchPresenter.self, "Retrieved search results, updating view")
                 
                 self.delegate?.updateSearchQueryResults(query: query,
-                                                  dataSource: dataSource,
-                                                  resultsCount: UInt(results.count),
-                                                  searchTip: nil)
+                                                        filterIndex: filterIndex,
+                                                        dataSource: dataSource,
+                                                        resultsCount: UInt(results.count),
+                                                        searchTip: nil)
             }
         }
     }
@@ -263,5 +274,29 @@ class SearchPresenter: BasePresenter
         }
         
         delegate.updatePlayerScreen(playlist: playlist)
+    }
+    
+    private func getSearchFilter(for index: Int) -> SearchTracksFilter {
+        if index == 2 {
+            return SearchTracksFilter.Artist
+        }
+        
+        if index == 1 {
+            return SearchTracksFilter.Album
+        }
+        
+        return SearchTracksFilter.Title
+    }
+    
+    private func getSearchIndex(for filter: SearchTracksFilter) -> Int {
+        if filter == .Artist {
+            return 2
+        }
+        
+        if filter == .Album {
+            return 1
+        }
+        
+        return 0
     }
 }
