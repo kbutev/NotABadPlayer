@@ -14,6 +14,7 @@ import MediaPlayer
 // Make sure you have access to user storage before using the audio library.
 class AudioLibrary : AudioInfo {
     public static let RECENTLY_ADDED_DAYS_DIFFERENCE = 30
+    public static let RECENTLY_ADDED_CAPACITY = 100
     
     private let lock : NSObject = NSObject()
     private let internalQueue: DispatchQueue
@@ -100,7 +101,7 @@ class AudioLibrary : AudioInfo {
         
         let allTracks = MPMediaQuery.songs()
         
-        let tracks: [AudioTrack] = searchForTracks(mediaQuery: allTracks, predicate: nil)
+        let tracks: [AudioTrack] = searchForTracks(mediaQuery: allTracks, predicate: nil, cap: AudioLibrary.RECENTLY_ADDED_CAPACITY)
         
         let now = Date()
         let minimumDate = Calendar.current.date(
@@ -173,7 +174,11 @@ class AudioLibrary : AudioInfo {
         }
     }
     
-    public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int=Int.max) -> [AudioTrack] {
+    public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?) -> [AudioTrack] {
+        return searchForTracks(mediaQuery: mediaQuery, predicate: predicate, cap: Int.max)
+    }
+    
+    public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int) -> [AudioTrack] {
         var tracks: [AudioTrack] = []
         
         if let predicate_ = predicate {

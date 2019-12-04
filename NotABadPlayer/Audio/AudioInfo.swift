@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MediaPlayer
 
 protocol AudioInfo {
     func loadIfNecessary()
@@ -16,4 +17,7 @@ protocol AudioInfo {
     func getAlbum(byID identifier: Int) -> AudioAlbum?
     func getAlbumTracks(album: AudioAlbum) -> [AudioTrack]
     func searchForTracks(query: String) -> [AudioTrack]
+    func recentlyAddedTracks() -> [AudioTrack]
+    
+    func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int) -> [AudioTrack]
 }
