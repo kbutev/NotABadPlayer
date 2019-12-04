@@ -20,8 +20,6 @@ class ListsPresenter: BasePresenter
     
     private var playlists: [BaseAudioPlaylist] = []
     
-    private var recentlyPlayedPlaylist: BaseAudioPlaylist?
-    
     private var collectionDataSource: ListsViewDataSource?
     
     required init(audioInfo: AudioInfo) {
@@ -42,18 +40,34 @@ class ListsPresenter: BasePresenter
         // Perform work on background thread
         DispatchQueue.global().async {
             var playlists = GeneralStorage.shared.getUserPlaylists()
+            
+            let recentlyAddedTracks = self.audioInfo.recentlyAddedTracks()
+            
+            if recentlyAddedTracks.count > 0
+            {
+                var node = AudioPlaylistBuilder.start()
+                node.name = Text.value(.PlaylistRecentlyAdded)
+                node.tracks = recentlyAddedTracks
+                node.isTemporary = true
+                
+                do {
+                    playlists.insert(try node.buildMutable(), at: 0)
+                } catch {
+                    
+                }
+            }
+            
             let recentlyPlayedTracks = AudioPlayer.shared.playHistory
-            var recentlyPlayedPlaylist: MutableAudioPlaylist?
             
             if recentlyPlayedTracks.count > 0
             {
                 var node = AudioPlaylistBuilder.start()
                 node.name = Text.value(.PlaylistRecentlyPlayed)
                 node.tracks = recentlyPlayedTracks
+                node.isTemporary = true
                 
                 do {
-                    recentlyPlayedPlaylist = try node.buildMutable()
-                    playlists.insert(recentlyPlayedPlaylist!, at: 0)
+                    playlists.insert(try node.buildMutable(), at: 0)
                 } catch {
                     
                 }
@@ -64,7 +78,6 @@ class ListsPresenter: BasePresenter
                 Logging.log(ListsPresenter.self, "Retrieved user playlists, updating view")
                 
                 self.playlists = playlists
-                self.recentlyPlayedPlaylist = recentlyPlayedPlaylist
                 self.collectionDataSource = ListsViewDataSource(audioInfo: self.audioInfo, playlists: self.playlists)
                 
                 self.delegate?.onUserPlaylistsLoad(audioInfo: self.audioInfo, dataSource: self.collectionDataSource)
@@ -196,16 +209,8 @@ class ListsPresenter: BasePresenter
     }
     
     private func shouldDeletePlaylistAt(index: UInt) -> Bool {
-        // Never delete recently played plalist
-        if self.recentlyPlayedPlaylist != nil
-        {
-            if index == 0
-            {
-                return false
-            }
-        }
-        
-        return true
+        // Do not delete temporary playlists, as they are recently played/added playlists
+        return !self.playlists[Int(index)].isTemporary
     }
     
     private func buildMutablePlaylistsFromCurrentData(ignoreTemporary: Bool) throws -> [MutableAudioPlaylist] {

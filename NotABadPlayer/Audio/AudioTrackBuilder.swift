@@ -153,8 +153,7 @@ class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
     
     func build() throws -> AudioTrack {
         let track = self.track
-        self.track = AudioTrackV1()
-        self.track.date = AudioTrackDateBuilder.build(_dateAdded, _dateFirstPlayed, _dateLastPlayed)
+        track.date = AudioTrackDateBuilder.build(_dateAdded, _dateFirstPlayed, _dateLastPlayed)
         return track
     }
     

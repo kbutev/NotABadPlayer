@@ -42,6 +42,7 @@ enum Text: String {
     case ListsDeleteButtonName = "Delete"
     case ListsDoneButtonName = "Done"
     case PlaylistRecentlyPlayed = "Recently Played";
+    case PlaylistRecentlyAdded = "Recently Added";
     case PlaylistCellDescription = "@! tracks";
     
     case SearchDescriptionNoResults = "no results";
