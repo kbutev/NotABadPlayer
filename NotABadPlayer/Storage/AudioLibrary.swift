@@ -13,6 +13,7 @@ import MediaPlayer
 // Dependant on storage access permission:
 // Make sure you have access to user storage before using the audio library.
 class AudioLibrary : AudioInfo {
+    public static let SEARCH_TRACKS_CAP = 1000
     public static let RECENTLY_ADDED_DAYS_DIFFERENCE = 30
     public static let RECENTLY_ADDED_CAPACITY = 100
     
@@ -186,7 +187,7 @@ class AudioLibrary : AudioInfo {
     }
     
     public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?) -> [AudioTrack] {
-        return searchForTracks(mediaQuery: mediaQuery, predicate: predicate, cap: Int.max)
+        return searchForTracks(mediaQuery: mediaQuery, predicate: predicate, cap: AudioLibrary.SEARCH_TRACKS_CAP)
     }
     
     public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int) -> [AudioTrack] {
