@@ -13,25 +13,33 @@ import MediaPlayer
 // Dependant on storage access permission:
 // Make sure you have access to user storage before using the audio library.
 class AudioLibrary : AudioInfo {
+    public static let RECENTLY_ADDED_DAYS_DIFFERENCE = 30
+    
     private let lock : NSObject = NSObject()
+    private let internalQueue: DispatchQueue
     
     private var loadedAlbums : Bool = false
     private var albums : [AudioAlbum] = []
     
+    private var loadedRecentlyAdded : Bool = false
+    private var recentlyAdded : [AudioTrack] = []
+    
     init() {
-        
+        internalQueue = DispatchQueue(label: "AudioLibrary.internalQueue")
     }
     
     public func loadIfNecessary() {
+        var hasLoadedAlbums = false
+        
         lockEnter()
         
-        if self.loadedAlbums {
-            return
-        }
+        hasLoadedAlbums = self.loadedAlbums
         
         lockExit()
         
-        load()
+        if !hasLoadedAlbums {
+            load()
+        }
     }
     
     public func load() {
@@ -81,7 +89,33 @@ class AudioLibrary : AudioInfo {
         Logging.log(AudioLibrary.self, "Successfully loaded \(albums.count) albums from MP media.")
     }
     
-    func getAlbums() -> [AudioAlbum] {
+    public func loadRecentlyAddedTracks() {
+        lockEnter()
+        
+        defer {
+            lockExit()
+        }
+        
+        self.recentlyAdded.removeAll()
+        
+        let allTracks = MPMediaQuery.songs()
+        
+        let tracks: [AudioTrack] = searchForTracks(mediaQuery: allTracks, predicate: nil)
+        
+        let now = Date()
+        let minimumDate = Calendar.current.date(
+            byAdding: .day,
+            value: -AudioLibrary.RECENTLY_ADDED_DAYS_DIFFERENCE,
+            to: now) ?? now
+        
+        for track in tracks {
+            if track.date.added.value >= minimumDate {
+                self.recentlyAdded.append(track)
+            }
+        }
+    }
+    
+    public func getAlbums() -> [AudioAlbum] {
         // Thread safe
         lockEnter()
         
@@ -97,91 +131,54 @@ class AudioLibrary : AudioInfo {
         return albums
     }
     
-    func getAlbum(byID identifier: Int) -> AudioAlbum? {
+    public func getAlbum(byID identifier: Int) -> AudioAlbum? {
         return getAlbums().first(where: {album in
             return album.albumID == identifier
         })
     }
     
-    func getAlbumTracks(album: AudioAlbum) -> [AudioTrack] {
-        var tracks: [AudioTrack] = []
+    public func getAlbumTracks(album: AudioAlbum) -> [AudioTrack] {
+        let allTracks = MPMediaQuery.songs()
         
-        let mediaQuery = MPMediaQuery.songs()
         let predicate = MPMediaPropertyPredicate.init(value: album.albumID, forProperty: MPMediaItemPropertyAlbumPersistentID)
-        mediaQuery.addFilterPredicate(predicate)
         
-        guard let allSongs = mediaQuery.items else
-        {
-            return []
-        }
-
-        var node = AudioTrackBuilder.start()
-        
-        for item in allSongs
-        {
-            guard let identifier = item.value(forProperty: MPMediaItemPropertyPersistentID) as? Int else {
-                continue
-            }
-            
-            guard let path = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL else {
-                continue
-            }
-            
-            let title = item.value(forProperty: MPMediaItemPropertyTitle) as? String ?? "<Unknown>"
-            let artist = item.value(forProperty: MPMediaItemPropertyArtist) as? String ?? "<Unknown>"
-            let trackNum_ = item.value(forProperty: MPMediaItemPropertyAlbumTrackNumber) as? NSNumber
-            let durationInSeconds_ = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber
-            let albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
-            
-            let lyrics = item.value(forProperty: MPMediaItemPropertyLyrics) as? String ?? ""
-            let dateAdded = item.value(forProperty: MPMediaItemPropertyDateAdded) as? Date
-            let dateLastPlayed = item.value(forProperty: MPMediaItemPropertyLastPlayedDate) as? Date
-            let lastPlayedPosition = item.value(forProperty: MPMediaItemPropertyBookmarkTime) as? NSNumber
-            
-            guard let trackNum = trackNum_?.intValue else {
-                continue
-            }
-            
-            guard let durationInSeconds = durationInSeconds_?.doubleValue else {
-                continue
-            }
-            
-            node.reset()
-            
-            node.identifier = identifier
-            node.filePath = path
-            node.title = title
-            node.artist = artist
-            node.albumTitle = album.albumTitle
-            node.albumID = album.albumID
-            node.albumCover = albumCover
-            node.trackNum = trackNum
-            node.durationInSeconds = durationInSeconds
-            node.source = AudioTrackSource.createAlbumSource(albumID: album.albumID)
-            
-            node.lyrics = lyrics
-            node.dateAdded = dateAdded ?? node.dateAdded
-            node.dateLastPlayed = dateLastPlayed ?? node.dateLastPlayed
-            node.lastPlayedPosition = lastPlayedPosition?.doubleValue ?? 0
-            
-            do {
-                let result = try node.build()
-                tracks.append(result)
-            } catch {
-                
-            }
-        }
-        
-        return tracks
+        return searchForTracks(mediaQuery: allTracks, predicate: predicate)
     }
     
-    func searchForTracks(query: String) -> [AudioTrack] {
-        var tracks: [AudioTrack] = []
-        
-        let mediaQuery = MPMediaQuery.songs()
+    public func searchForTracks(query: String) -> [AudioTrack] {
+        let allTracks = MPMediaQuery.songs()
         
         let predicate = MPMediaPropertyPredicate.init(value: query, forProperty: MPMediaItemPropertyTitle, comparisonType: .contains)
-        mediaQuery.addFilterPredicate(predicate)
+        
+        return searchForTracks(mediaQuery: allTracks, predicate: predicate)
+    }
+    
+    public func recentlyAddedTracks() -> [AudioTrack] {
+        loadIfNecessary()
+        
+        var hasLoadedRecentlyAdded = false
+        
+        lockEnter()
+        
+        hasLoadedRecentlyAdded = self.loadedRecentlyAdded
+        
+        lockExit()
+        
+        if !hasLoadedRecentlyAdded {
+            loadRecentlyAddedTracks()
+        }
+        
+        return internalQueue.sync {
+            self.recentlyAdded
+        }
+    }
+    
+    public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int=Int.max) -> [AudioTrack] {
+        var tracks: [AudioTrack] = []
+        
+        if let predicate_ = predicate {
+            mediaQuery.addFilterPredicate(predicate_)
+        }
         
         guard let result = mediaQuery.items else
         {
@@ -246,6 +243,10 @@ class AudioLibrary : AudioInfo {
                 tracks.append(result)
             } catch {
                 
+            }
+            
+            if tracks.count >= cap {
+                break
             }
         }
         
