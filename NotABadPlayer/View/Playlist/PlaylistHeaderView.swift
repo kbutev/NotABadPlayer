@@ -14,10 +14,12 @@ class PlaylistHeaderView : UICollectionReusableView
     public static let HEADER_SIZE_IMAGELESS = CGSize(width: 0, height: 64)
     
     @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var artCoverImage: UIImageView!
+    @IBOutlet private weak var artCoverImage: UIImageView?
     @IBOutlet weak var titleText: UILabel!
     @IBOutlet weak var artistText: UILabel!
     @IBOutlet weak var descriptionText: UILabel!
+    
+    private var test: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,9 +40,11 @@ class PlaylistHeaderView : UICollectionReusableView
         setupAppTheme()
         
         // Art cover setup
-        artCoverImage.translatesAutoresizingMaskIntoConstraints = false
-        artCoverImage.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
-        artCoverImage.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.7).isActive = true
+        artCoverImage?.translatesAutoresizingMaskIntoConstraints = false
+        artCoverImage?.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
+        artCoverImage?.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.7).isActive = true
+        
+        test = true
     }
     
     public func setupAppTheme() {
@@ -50,9 +54,15 @@ class PlaylistHeaderView : UICollectionReusableView
         descriptionText.textColor = AppTheme.shared.colorFor(.ALBUM_COVER_DESCRIPTION)
     }
     
+    public func setArtCoverImage(_ image: UIImage) {
+        self.artCoverImage?.image = image
+    }
+    
     public func removeArtCoverImage() {
-        artCoverImage.image = nil
-        stackView.removeArrangedSubview(artCoverImage)
-        artCoverImage.removeFromSuperview()
+        if let coverImage = self.artCoverImage {
+            coverImage.image = nil
+            stackView.removeArrangedSubview(coverImage)
+            coverImage.removeFromSuperview()
+        }
     }
 }
