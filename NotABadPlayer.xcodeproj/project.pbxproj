@@ -85,6 +85,7 @@
 		99B8617F2287614500344C17 /* UIAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B8617E2287614500344C17 /* UIAnimations.swift */; };
 		99B9CA5D2278859100000888 /* AlbumsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B9CA5C2278859100000888 /* AlbumsPresenter.swift */; };
 		99B9CA5F2278859800000888 /* BasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B9CA5E2278859800000888 /* BasePresenter.swift */; };
+		99BC2C6C239963F10036D418 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BC2C6B239963F10036D418 /* Counter.swift */; };
 		99C633E722849E2E00A2BF25 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C633E622849E2E00A2BF25 /* PlayerViewController.swift */; };
 		99C633E922849EC800A2BF25 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C633E822849EC800A2BF25 /* PlayerView.swift */; };
 		99C633EB22849ECF00A2BF25 /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99C633EA22849ECF00A2BF25 /* PlayerView.xib */; };
@@ -214,6 +215,7 @@
 		99B8617E2287614500344C17 /* UIAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAnimations.swift; sourceTree = "<group>"; };
 		99B9CA5C2278859100000888 /* AlbumsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsPresenter.swift; sourceTree = "<group>"; };
 		99B9CA5E2278859800000888 /* BasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePresenter.swift; sourceTree = "<group>"; };
+		99BC2C6B239963F10036D418 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		99C633E622849E2E00A2BF25 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		99C633E822849EC800A2BF25 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		99C633EA22849ECF00A2BF25 /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerView.xib; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 			isa = PBXGroup;
 			children = (
 				999F7A662291B5200065E360 /* StringExtensions.swift */,
+				99BC2C6B239963F10036D418 /* Counter.swift */,
 				99D1AA9B23941CB000C82E9F /* StringUtilities.swift */,
 				9961B68A229F1C83001F4B35 /* UIExtensions.swift */,
 				99A6CA7F22677EF20071DC0D /* Serializing.swift */,
@@ -791,6 +794,7 @@
 				99D1AAA6239451C800C82E9F /* AudioPlaylistV1.swift in Sources */,
 				99B2D9E922A444D6003BC592 /* CreateListView.swift in Sources */,
 				997C944A229AE30E00601D12 /* SettingsPickViewContentView.swift in Sources */,
+				99BC2C6C239963F10036D418 /* Counter.swift in Sources */,
 				991255372397E6A0003FE182 /* AudioTrackDateBuilder.swift in Sources */,
 				996393032260C00F0050F82A /* AudioPlayerObserver.swift in Sources */,
 				992FC78C22A54F8800411305 /* CreateListAddedTrackCell.swift in Sources */,
