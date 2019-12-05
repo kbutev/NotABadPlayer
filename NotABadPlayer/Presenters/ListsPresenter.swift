@@ -41,6 +41,8 @@ class ListsPresenter: BasePresenter
         DispatchQueue.global().async {
             var playlists = GeneralStorage.shared.getUserPlaylists()
             
+            let playlistsCount = playlists.count
+            
             let recentlyAddedTracks = self.audioInfo.recentlyAddedTracks()
             
             if recentlyAddedTracks.count > 0
@@ -75,7 +77,7 @@ class ListsPresenter: BasePresenter
             
             // Then, update on main thread
             DispatchQueue.main.async {
-                Logging.log(ListsPresenter.self, "Retrieved user playlists, updating view")
+                Logging.log(ListsPresenter.self, "Retrieved \(playlistsCount) user playlists, updating view")
                 
                 self.playlists = playlists
                 self.collectionDataSource = ListsViewDataSource(audioInfo: self.audioInfo, playlists: self.playlists)
