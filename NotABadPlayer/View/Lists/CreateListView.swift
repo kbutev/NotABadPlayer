@@ -279,7 +279,7 @@ class CreateListViewAddedTracksTableDataSource : NSObject, UITableViewDataSource
         
         let item = tracks[indexPath.row]
         
-        cell.coverImage.image = item.albumCover?.image(at: cell.coverImage!.frame.size)
+        cell.coverImage.image = item.albumCoverImage
         cell.titleLabel.text = item.title
         cell.descriptionLabel.text = getTrackDescription(track: item)
         
@@ -344,7 +344,7 @@ class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
         
         let item = albums[indexPath.row]
         
-        cell.coverImage.image = item.albumCover?.image(at: CreateListAlbumCell.COVER_IMAGE_SIZE)
+        cell.coverImage.image = item.albumCoverImage
         cell.titleLabel.text = item.albumTitle
         
         // Selected album - display, update callbacks and update table data source

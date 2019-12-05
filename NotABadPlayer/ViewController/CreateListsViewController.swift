@@ -182,7 +182,7 @@ class CreateListsViewController: UIViewController {
             let result = try node.buildMutable()
             storagePlaylists.append(result)
         } catch {
-            Logging.log(CreateListsViewController.self, "Failed to save user playliist '\(playlistName)' with \(addedTracks.count) tracks to storage, failed to build playlist")
+            Logging.log(CreateListsViewController.self, "Failed to save user playlist '\(playlistName)' with \(addedTracks.count) tracks to storage, failed to build playlist")
             showPlaylistUnknownError()
             return
         }
@@ -190,7 +190,7 @@ class CreateListsViewController: UIViewController {
         // Save
         GeneralStorage.shared.saveUserPlaylists(storagePlaylists)
         
-        Logging.log(CreateListsViewController.self, "Saved new user playliist '\(playlistName)' with \(addedTracks.count) tracks to storage")
+        Logging.log(CreateListsViewController.self, "Saved new user playlist '\(playlistName)' with \(addedTracks.count) tracks to storage")
         
         // Leave current screen
         self.goBack()

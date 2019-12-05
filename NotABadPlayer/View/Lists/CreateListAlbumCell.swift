@@ -58,8 +58,8 @@ class CreateListAlbumCell: UITableViewCell
         coverImage.translatesAutoresizingMaskIntoConstraints = false
         coverImage.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
         coverImage.leftAnchor.constraint(equalTo: guide.leftAnchor).isActive = true
-        coverImage.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        coverImage.heightAnchor.constraint(lessThanOrEqualToConstant: 48).isActive = true
+        coverImage.widthAnchor.constraint(equalToConstant: CreateListAlbumCell.COVER_IMAGE_SIZE.width).isActive = true
+        coverImage.heightAnchor.constraint(lessThanOrEqualToConstant: CreateListAlbumCell.COVER_IMAGE_SIZE.height).isActive = true
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.centerYAnchor.constraint(equalTo: coverImage.centerYAnchor).isActive = true

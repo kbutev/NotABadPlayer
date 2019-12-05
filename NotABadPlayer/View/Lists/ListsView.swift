@@ -268,7 +268,7 @@ class ListsViewDataSource : NSObject, UITableViewDataSource
         let item = playlists[indexPath.row]
         let firstTrack = item.firstTrack
         
-        cell.artCoverImage.image = firstTrack.albumCover?.image(at: cell.artCoverImage!.frame.size)
+        cell.artCoverImage.image = firstTrack.albumCoverImage
         cell.titleLabel.text = item.name
         cell.descriptionLabel.text = getPlaylistDescription(playlist: item)
         

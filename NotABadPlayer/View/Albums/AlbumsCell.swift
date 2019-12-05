@@ -13,7 +13,7 @@ class AlbumsCell : UICollectionViewCell
     public static let CELL_IDENTIFIER = "cell"
     public static let SIZE = CGSize(width: 0, height: 256)
     
-    @IBOutlet weak var covertArtImage: UIImageView!
+    @IBOutlet weak var coverArtImage: UIImageView!
     @IBOutlet weak var titleText: UILabel!
     
     override init(frame: CGRect) {
@@ -33,10 +33,10 @@ class AlbumsCell : UICollectionViewCell
         setupAppTheme()
         
         // Cover art setup
-        covertArtImage.translatesAutoresizingMaskIntoConstraints = false
-        covertArtImage.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        covertArtImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        covertArtImage.bottomAnchor.constraint(equalTo: titleText.topAnchor).isActive = true
+        coverArtImage.translatesAutoresizingMaskIntoConstraints = false
+        coverArtImage.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        coverArtImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        coverArtImage.bottomAnchor.constraint(equalTo: titleText.topAnchor).isActive = true
         
         // Title setup
         titleText.translatesAutoresizingMaskIntoConstraints = false
