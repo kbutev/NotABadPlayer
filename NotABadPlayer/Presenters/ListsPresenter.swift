@@ -22,6 +22,8 @@ class ListsPresenter: BasePresenter
     
     private var collectionDataSource: ListsViewDataSource?
     
+    private var fetchOnlyOnce: Counter = Counter(identifier: String(describing: ListsPresenter.self))
+    
     required init(audioInfo: AudioInfo) {
         self.audioInfo = audioInfo
     }
@@ -35,6 +37,13 @@ class ListsPresenter: BasePresenter
     }
     
     func fetchData() {
+        // Prevent simultaneous fetch actions
+        if !fetchOnlyOnce.isZero() {
+            return
+        }
+        
+        let _ = fetchOnlyOnce.increment()
+        
         Logging.log(ListsPresenter.self, "Retrieving user playlists...")
         
         // Perform work on background thread
@@ -83,6 +92,8 @@ class ListsPresenter: BasePresenter
                 self.collectionDataSource = ListsViewDataSource(audioInfo: self.audioInfo, playlists: self.playlists)
                 
                 self.delegate?.onUserPlaylistsLoad(audioInfo: self.audioInfo, dataSource: self.collectionDataSource)
+                
+                let _ = self.fetchOnlyOnce.decrement()
             }
         }
     }
