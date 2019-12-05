@@ -357,7 +357,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
     private func setImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
         if let image = playlist.firstTrack.albumCover?.image(at: header.bounds.size)
         {
-            header.artCoverImage.image = image
+            header.setArtCoverImage(image)
         }
         else
         {
