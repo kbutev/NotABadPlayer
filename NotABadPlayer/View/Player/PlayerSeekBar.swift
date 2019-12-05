@@ -115,7 +115,9 @@ class PlayerSeekBar: UIView
             thumbView.frame.size.height = progressBar.frame.height
         }
         
-        thumbView.frame.origin.x = (progressBar.frame.width * progressBar.progress)
+        let newX = Int(progressBar.frame.width * progressBar.progress)
+        
+        thumbView.frame.origin.x = CGFloat(newX)
         thumbView.frame.origin.y = progressBar.frame.origin.y
     }
 }
