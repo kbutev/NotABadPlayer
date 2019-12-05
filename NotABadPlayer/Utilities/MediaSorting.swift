@@ -28,10 +28,10 @@ struct MediaSorting {
     public static func sortTracksByTrackNumber(_ tracks:[AudioTrack]) -> [AudioTrack] {
         var result = tracks
         
-        result.sort(by: {(e1, e2) -> Bool in
-            let numL = e1.trackNum == 2 ? "\(e1.trackNum)" : "0\(e1.trackNum)"
-            let numR = e2.trackNum == 2 ? "\(e2.trackNum)" : "0\(e2.trackNum)"
-            return numL < numR
+        result.sort(by: {(trackA, trackB) -> Bool in
+            let trackNumLString = String(format: "%02d", trackA.trackNum)
+            let trackNumRString = String(format: "%02d", trackB.trackNum)
+            return trackNumLString < trackNumRString
         })
         
         return result
@@ -40,8 +40,8 @@ struct MediaSorting {
     public static func sortTracksByTitle(_ tracks:[AudioTrack]) -> [AudioTrack] {
         var result = tracks
         
-        result.sort(by: {(e1, e2) -> Bool in
-            return e1.title < e2.title
+        result.sort(by: {(trackA, trackB) -> Bool in
+            return trackA.title < trackB.title
         })
         
         return result
@@ -51,12 +51,12 @@ struct MediaSorting {
         var result = tracks
         
         if longest {
-            result.sort(by: {(e1, e2) -> Bool in
-                return e1.duration > e2.duration
+            result.sort(by: {(trackA, trackB) -> Bool in
+                return trackA.duration > trackB.duration
             })
         } else {
-            result.sort(by: {(e1, e2) -> Bool in
-                return e1.duration < e2.duration
+            result.sort(by: {(trackA, trackB) -> Bool in
+                return trackA.duration < trackB.duration
             })
         }
         
@@ -66,8 +66,8 @@ struct MediaSorting {
     public static func sortAlbumsByTitle(_ albums:[AudioAlbum]) -> [AudioAlbum] {
         var result = albums
         
-        result.sort(by: {(e1, e2) -> Bool in
-            return e1.albumTitle < e2.albumTitle
+        result.sort(by: {(trackA, trackB) -> Bool in
+            return trackA.albumTitle < trackB.albumTitle
         })
         
         return result
