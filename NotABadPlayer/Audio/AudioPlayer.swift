@@ -44,7 +44,7 @@ class AudioPlayer : NSObject {
     
     var isCompletelyStopped: Bool {
         get {
-            if let playlist = self.mutablePlaylist {
+            if let playlist = self.safeMutablePlaylist {
                 return !playlist.isPlaying
             }
             
@@ -121,28 +121,28 @@ class AudioPlayer : NSObject {
     
     var hasPlaylist: Bool {
         get {
-            return self.mutablePlaylist != nil
+            return self.safeMutablePlaylist != nil
         }
     }
     
-    private var __playlist: SafeMutableAudioPlaylist?
+    private var __unsafePlaylist: SafeMutableAudioPlaylist?
     
-    private var mutablePlaylist: SafeMutableAudioPlaylist? {
+    private var safeMutablePlaylist: SafeMutableAudioPlaylist? {
         get {
             return self.synchronous.sync {
-                return __playlist
+                return __unsafePlaylist
             }
         }
         set {
             self.synchronous.sync {
-                __playlist = newValue
+                __unsafePlaylist = newValue
             }
         }
     }
     
     public var playlist: BaseAudioPlaylist? {
         get {
-            return self.mutablePlaylist?.copy()
+            return self.safeMutablePlaylist?.copy()
         }
     }
     
@@ -162,7 +162,7 @@ class AudioPlayer : NSObject {
     
     public var playingTrack: AudioTrack? {
         get {
-            return self.mutablePlaylist?.playingTrack
+            return self.safeMutablePlaylist?.playingTrack
         }
     }
     
@@ -266,7 +266,7 @@ class AudioPlayer : NSObject {
         do {
             try play(track: playlist.playingTrack)
             let newPlaylist = try SafeMutableAudioPlaylist.build(mutablePlaylist!)
-            self.mutablePlaylist = newPlaylist
+            self.safeMutablePlaylist = newPlaylist
             newPlaylist.playCurrent()
         } catch let error {
             throw error
@@ -333,7 +333,7 @@ class AudioPlayer : NSObject {
     func resume() {
         checkIfPlayerIsInitialized()
         
-        guard let playlist = self.mutablePlaylist else {
+        guard let playlist = self.safeMutablePlaylist else {
             return
         }
         
@@ -360,7 +360,7 @@ class AudioPlayer : NSObject {
     func pause() {
         checkIfPlayerIsInitialized()
         
-        guard let playlist = self.mutablePlaylist else {
+        guard let playlist = self.safeMutablePlaylist else {
             return
         }
         
@@ -410,7 +410,7 @@ class AudioPlayer : NSObject {
     func playNext() throws {
         checkIfPlayerIsInitialized()
         
-        guard let playlist = self.mutablePlaylist else {
+        guard let playlist = self.safeMutablePlaylist else {
             return
         }
         
@@ -448,7 +448,7 @@ class AudioPlayer : NSObject {
     func playPrevious() throws {
         checkIfPlayerIsInitialized()
         
-        guard let playlist = self.mutablePlaylist else {
+        guard let playlist = self.safeMutablePlaylist else {
             return
         }
         
@@ -486,7 +486,7 @@ class AudioPlayer : NSObject {
     func playNextBasedOnPlayOrder() throws {
         checkIfPlayerIsInitialized()
         
-        guard let playlist = self.mutablePlaylist else {
+        guard let playlist = self.safeMutablePlaylist else {
             return
         }
         
@@ -524,7 +524,7 @@ class AudioPlayer : NSObject {
     func shuffle() throws {
         checkIfPlayerIsInitialized()
         
-        guard let playlist = self.mutablePlaylist else {
+        guard let playlist = self.safeMutablePlaylist else {
             return
         }
         
@@ -575,7 +575,7 @@ class AudioPlayer : NSObject {
             p.currentTime = TimeInterval(0)
         }
         
-        if let playlist = self.mutablePlaylist
+        if let playlist = self.safeMutablePlaylist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -599,7 +599,7 @@ class AudioPlayer : NSObject {
             p.currentTime = p.duration
         }
         
-        if let playlist = self.mutablePlaylist
+        if let playlist = self.safeMutablePlaylist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -610,7 +610,7 @@ class AudioPlayer : NSObject {
         
         self.player?.currentTime = TimeInterval(seconds)
         
-        if let playlist = self.mutablePlaylist
+        if let playlist = self.safeMutablePlaylist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -623,7 +623,7 @@ class AudioPlayer : NSObject {
         
         self.player?.currentTime = seekToPositionInSeconds
         
-        if let playlist = self.mutablePlaylist
+        if let playlist = self.safeMutablePlaylist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -938,7 +938,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionPrevious(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if self.mutablePlaylist != nil
+        if self.safeMutablePlaylist != nil
         {
             do {
                 try playPrevious()
@@ -952,7 +952,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionNext(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if self.mutablePlaylist != nil
+        if self.safeMutablePlaylist != nil
         {
             do {
                 try playNext()
@@ -966,7 +966,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionBackwards(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if let playlist = self.mutablePlaylist
+        if let playlist = self.safeMutablePlaylist
         {
             let _ = Keybinds.shared.evaluateInput(input: .LOCK_PLAYER_PREVIOUS_BUTTON)
             updateRemoteCenterInfo(track: playlist.playingTrack)
@@ -977,7 +977,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionForwards(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if let playlist = self.mutablePlaylist
+        if let playlist = self.safeMutablePlaylist
         {
             let _ = Keybinds.shared.evaluateInput(input: .LOCK_PLAYER_NEXT_BUTTON)
             updateRemoteCenterInfo(track: playlist.playingTrack)
