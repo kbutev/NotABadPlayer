@@ -259,7 +259,7 @@ class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
         
         let item = albums[indexPath.row]
         
-        cell.covertArtImage.image = item.albumCover?.image(at: cell.covertArtImage!.frame.size)
+        cell.coverArtImage.image = item.albumCoverImage
         cell.titleText.text = item.albumTitle
         
         return cell

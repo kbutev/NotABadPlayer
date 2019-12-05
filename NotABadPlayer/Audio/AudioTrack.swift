@@ -70,6 +70,17 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
         }
     }
     
+    public var albumCoverImage : UIImage? {
+         get {
+            if let albumCover = self.albumCover
+            {
+                return albumCover.image(at: albumCover.bounds.size)
+            }
+            
+            return nil
+         }
+    }
+    
     public var trackNum : Int {
         get {
             return _trackNum

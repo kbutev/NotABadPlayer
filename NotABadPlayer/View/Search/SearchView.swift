@@ -277,7 +277,7 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
         
         let item = searchResults[indexPath.row]
         
-        cell.trackAlbumCover.image = item.albumCover?.image(at: cell.trackAlbumCover!.frame.size)
+        cell.trackAlbumCover.image = item.albumCoverImage
         cell.titleText.text = item.title
         cell.albumTitle.text = item.albumTitle
         cell.durationText.text = item.duration

@@ -43,6 +43,17 @@ class AudioAlbum: Equatable, Codable {
         }
     }
     
+    public var albumCoverImage : UIImage? {
+        get {
+            if let albumCover = self.albumCover
+            {
+                return albumCover.image(at: albumCover.bounds.size)
+            }
+            
+            return nil
+        }
+    }
+    
     public var _albumCover : MPMediaItemArtwork? = nil
     
     init(albumID : NSNumber, albumArtist : String, albumTitle : String, albumCover : MPMediaItemArtwork?) {
