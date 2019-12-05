@@ -9,6 +9,11 @@
 import Foundation
 
 class AudioPlaylistV1 : MutableAudioPlaylist {
+    convenience init(_ prototype: MutableAudioPlaylist) throws {
+        try self.init(name: prototype.name, tracks: prototype.tracks, startWithTrackIndex: prototype.playingTrackPosition)
+        isTemporary = prototype.isTemporary
+    }
+    
     override init(name: String, tracks: [AudioTrack]) {
         super.init(name: name, tracks: tracks)
     }
