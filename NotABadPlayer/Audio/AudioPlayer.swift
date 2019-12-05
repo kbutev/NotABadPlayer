@@ -21,6 +21,8 @@ enum AudioPlayerError: Error {
 class AudioPlayer : NSObject {
     static let shared = AudioPlayer()
     
+    private let synchronous: DispatchQueue
+    
     var running: Bool {
         get {
             return self._audioInfo != nil
@@ -42,7 +44,11 @@ class AudioPlayer : NSObject {
     
     var isCompletelyStopped: Bool {
         get {
-            return !(self._playlist?.isPlaying ?? false)
+            if let playlist = self.mutablePlaylist {
+                return !playlist.isPlaying
+            }
+            
+            return true
         }
     }
     
@@ -115,25 +121,28 @@ class AudioPlayer : NSObject {
     
     var hasPlaylist: Bool {
         get {
-            return self._playlist != nil
+            return self.mutablePlaylist != nil
         }
     }
     
-    private var _playlist: MutableAudioPlaylist?
+    private var __playlist: SafeMutableAudioPlaylist?
+    
+    private var mutablePlaylist: SafeMutableAudioPlaylist? {
+        get {
+            return self.synchronous.sync {
+                return __playlist
+            }
+        }
+        set {
+            self.synchronous.sync {
+                __playlist = newValue
+            }
+        }
+    }
     
     public var playlist: BaseAudioPlaylist? {
         get {
-            guard let playlist_ = self._playlist else {
-                return nil
-            }
-            
-            do {
-                return try AudioPlaylistBuilder.start(prototype: playlist_).build()
-            } catch {
-                
-            }
-            
-            return nil
+            return self.mutablePlaylist?.copy()
         }
     }
     
@@ -153,7 +162,7 @@ class AudioPlayer : NSObject {
     
     public var playingTrack: AudioTrack? {
         get {
-            return self._playlist?.playingTrack
+            return self.mutablePlaylist?.playingTrack
         }
     }
     
@@ -162,7 +171,7 @@ class AudioPlayer : NSObject {
     private (set) var muted: Bool = false
     
     override private init() {
-        
+        synchronous = DispatchQueue(label: "AudioPlayer.synchronous")
     }
     
     func start(audioInfo: AudioInfo) {
@@ -256,12 +265,12 @@ class AudioPlayer : NSObject {
         
         do {
             try play(track: playlist.playingTrack)
+            let newPlaylist = try SafeMutableAudioPlaylist.build(mutablePlaylist!)
+            self.mutablePlaylist = newPlaylist
+            newPlaylist.playCurrent()
         } catch let error {
             throw error
         }
-        
-        self._playlist = mutablePlaylist!
-        self._playlist?.playCurrent()
     }
     
     private func play(track: AudioTrack, previousTrack: AudioTrack?=nil, usePlayHistory: Bool=true) throws {
@@ -324,12 +333,7 @@ class AudioPlayer : NSObject {
     func resume() {
         checkIfPlayerIsInitialized()
         
-        if !hasPlaylist
-        {
-            return
-        }
-        
-        guard let playlist = self._playlist else {
+        guard let playlist = self.mutablePlaylist else {
             return
         }
         
@@ -356,12 +360,7 @@ class AudioPlayer : NSObject {
     func pause() {
         checkIfPlayerIsInitialized()
         
-        if !hasPlaylist
-        {
-            return
-        }
-        
-        guard let playlist = self._playlist else {
+        guard let playlist = self.mutablePlaylist else {
             return
         }
         
@@ -379,11 +378,6 @@ class AudioPlayer : NSObject {
     
     func stop() {
         checkIfPlayerIsInitialized()
-        
-        if !hasPlaylist
-        {
-            return
-        }
         
         if currentPositionMSec > 0
         {
@@ -416,18 +410,13 @@ class AudioPlayer : NSObject {
     func playNext() throws {
         checkIfPlayerIsInitialized()
         
-        if !hasPlaylist
-        {
+        guard let playlist = self.mutablePlaylist else {
             return
         }
         
-        let previousTrack = self._playlist?.playingTrack
+        let previousTrack = playlist.playingTrack
         
-        self._playlist?.goToNextPlayingTrack()
-        
-        guard let playlist = self._playlist else {
-            return
-        }
+        playlist.goToNextPlayingTrack()
         
         if !isCompletelyStopped
         {
@@ -440,11 +429,8 @@ class AudioPlayer : NSObject {
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play next, \(error.localizedDescription)")
                 
-                if let prevTrack = previousTrack
-                {
-                    self._playlist?.goToTrack(prevTrack)
-                    onPause(track: prevTrack)
-                }
+                playlist.goToTrack(previousTrack)
+                onPause(track: previousTrack)
                 
                 throw error
             }
@@ -462,18 +448,13 @@ class AudioPlayer : NSObject {
     func playPrevious() throws {
         checkIfPlayerIsInitialized()
         
-        if !hasPlaylist
-        {
+        guard let playlist = self.mutablePlaylist else {
             return
         }
         
-        let previousTrack = self._playlist?.playingTrack
+        let previousTrack = playlist.playingTrack
         
-        self._playlist?.goToPreviousPlayingTrack()
-        
-        guard let playlist = self._playlist else {
-            return
-        }
+        playlist.goToPreviousPlayingTrack()
         
         if !isCompletelyStopped
         {
@@ -486,11 +467,8 @@ class AudioPlayer : NSObject {
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play previous, \(error.localizedDescription)")
                 
-                if let prevTrack = previousTrack
-                {
-                    self._playlist?.goToTrack(prevTrack)
-                    onPause(track: prevTrack)
-                }
+                playlist.goToTrack(previousTrack)
+                onPause(track: previousTrack)
                 
                 throw error
             }
@@ -508,13 +486,13 @@ class AudioPlayer : NSObject {
     func playNextBasedOnPlayOrder() throws {
         checkIfPlayerIsInitialized()
         
-        let previousTrack = self._playlist?.playingTrack
-        
-        self._playlist?.goToTrackBasedOnPlayOrder(playOrder: _playOrder)
-        
-        guard let playlist = self._playlist else {
+        guard let playlist = self.mutablePlaylist else {
             return
         }
+        
+        let previousTrack = playlist.playingTrack
+        
+        playlist.goToTrackBasedOnPlayOrder(playOrder: _playOrder)
         
         if !isCompletelyStopped
         {
@@ -527,11 +505,8 @@ class AudioPlayer : NSObject {
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play next based on play order, \(error.localizedDescription)")
                 
-                if let prevTrack = previousTrack
-                {
-                    self._playlist?.goToTrack(prevTrack)
-                    onPause(track: prevTrack)
-                }
+                playlist.goToTrack(previousTrack)
+                onPause(track: previousTrack)
                 
                 throw error
             }
@@ -549,13 +524,13 @@ class AudioPlayer : NSObject {
     func shuffle() throws {
         checkIfPlayerIsInitialized()
         
-        let previousTrack = self._playlist?.playingTrack
-        
-        self._playlist?.goToTrackByShuffle()
-        
-        guard let playlist = self._playlist else {
+        guard let playlist = self.mutablePlaylist else {
             return
         }
+        
+        let previousTrack = playlist.playingTrack
+        
+        playlist.goToTrackByShuffle()
         
         if !isCompletelyStopped
         {
@@ -566,11 +541,8 @@ class AudioPlayer : NSObject {
             } catch let error {
                 Logging.log(AudioPlayer.self, "Error: could not play random, \(error.localizedDescription)")
                 
-                if let prevTrack = previousTrack
-                {
-                    self._playlist?.goToTrack(prevTrack)
-                    onPause(track: prevTrack)
-                }
+                playlist.goToTrack(previousTrack)
+                onPause(track: previousTrack)
                 
                 throw error
             }
@@ -603,7 +575,7 @@ class AudioPlayer : NSObject {
             p.currentTime = TimeInterval(0)
         }
         
-        if let playlist = self._playlist
+        if let playlist = self.mutablePlaylist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -627,7 +599,7 @@ class AudioPlayer : NSObject {
             p.currentTime = p.duration
         }
         
-        if let playlist = self._playlist
+        if let playlist = self.mutablePlaylist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -638,7 +610,7 @@ class AudioPlayer : NSObject {
         
         self.player?.currentTime = TimeInterval(seconds)
         
-        if let playlist = self._playlist
+        if let playlist = self.mutablePlaylist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -651,7 +623,7 @@ class AudioPlayer : NSObject {
         
         self.player?.currentTime = seekToPositionInSeconds
         
-        if let playlist = self._playlist
+        if let playlist = self.mutablePlaylist
         {
             updateRemoteCenterInfo(track: playlist.playingTrack)
         }
@@ -966,7 +938,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionPrevious(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if self._playlist != nil
+        if self.mutablePlaylist != nil
         {
             do {
                 try playPrevious()
@@ -980,7 +952,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionNext(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if self._playlist != nil
+        if self.mutablePlaylist != nil
         {
             do {
                 try playNext()
@@ -994,7 +966,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionBackwards(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if let playlist = self._playlist
+        if let playlist = self.mutablePlaylist
         {
             let _ = Keybinds.shared.evaluateInput(input: .LOCK_PLAYER_PREVIOUS_BUTTON)
             updateRemoteCenterInfo(track: playlist.playingTrack)
@@ -1005,7 +977,7 @@ extension AudioPlayer: GeneralStorageObserver {
     }
     
     @objc func _remoteActionForwards(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if let playlist = self._playlist
+        if let playlist = self.mutablePlaylist
         {
             let _ = Keybinds.shared.evaluateInput(input: .LOCK_PLAYER_NEXT_BUTTON)
             updateRemoteCenterInfo(track: playlist.playingTrack)
