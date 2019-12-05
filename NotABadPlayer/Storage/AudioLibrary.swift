@@ -17,8 +17,7 @@ class AudioLibrary : AudioInfo {
     public static let RECENTLY_ADDED_DAYS_DIFFERENCE = 30
     public static let RECENTLY_ADDED_CAPACITY = 100
     
-    private let lock : NSObject = NSObject()
-    private let internalQueue: DispatchQueue
+    private let synchronous: DispatchQueue
     
     private var loadedAlbums : Bool = false
     private var albums : [AudioAlbum] = []
@@ -27,17 +26,15 @@ class AudioLibrary : AudioInfo {
     private var recentlyAdded : [AudioTrack] = []
     
     init() {
-        internalQueue = DispatchQueue(label: "AudioLibrary.internalQueue")
+        synchronous = DispatchQueue(label: "AudioLibrary.synchronous")
     }
     
     public func loadIfNecessary() {
         var hasLoadedAlbums = false
         
-        lockEnter()
-        
-        hasLoadedAlbums = self.loadedAlbums
-        
-        lockExit()
+        synchronous.sync {
+            hasLoadedAlbums = self.loadedAlbums
+        }
         
         if !hasLoadedAlbums {
             load()
@@ -45,13 +42,12 @@ class AudioLibrary : AudioInfo {
     }
     
     public func load() {
-        // Thread safe
-        lockEnter()
-        
-        defer {
-            lockExit()
+        synchronous.sync {
+            loadAlbums()
         }
-        
+    }
+    
+    private func loadAlbums() {
         // Load albums
         Logging.log(AudioLibrary.self, "Loading albums from MP media...")
         
@@ -92,14 +88,6 @@ class AudioLibrary : AudioInfo {
     }
     
     public func loadRecentlyAddedTracks() {
-        lockEnter()
-        
-        defer {
-            lockExit()
-        }
-        
-        self.recentlyAdded.removeAll()
-        
         let allTracks = MPMediaQuery.songs()
         
         let tracks: [AudioTrack] = searchForTracks(mediaQuery: allTracks, predicate: nil, cap: AudioLibrary.RECENTLY_ADDED_CAPACITY)
@@ -110,27 +98,32 @@ class AudioLibrary : AudioInfo {
             value: -AudioLibrary.RECENTLY_ADDED_DAYS_DIFFERENCE,
             to: now) ?? now
         
-        for track in tracks {
-            if track.date.added.value >= minimumDate {
-                self.recentlyAdded.append(track)
+        synchronous.sync {
+            self.recentlyAdded.removeAll()
+            
+            for track in tracks {
+                if track.date.added.value >= minimumDate {
+                    self.recentlyAdded.append(track)
+                }
             }
         }
     }
     
     public func getAlbums() -> [AudioAlbum] {
-        // Thread safe
-        lockEnter()
+        var hasLoadedAlbums: Bool = false
         
-        if self.loadedAlbums
-        {
-            return albums
+        synchronous.sync {
+            hasLoadedAlbums = self.loadedAlbums
         }
         
-        lockExit()
+        if !hasLoadedAlbums
+        {
+            load()
+        }
         
-        load()
-        
-        return albums
+        return synchronous.sync {
+            return albums
+        }
     }
     
     public func getAlbum(byID identifier: Int) -> AudioAlbum? {
@@ -175,17 +168,15 @@ class AudioLibrary : AudioInfo {
         
         var hasLoadedRecentlyAdded = false
         
-        lockEnter()
-        
-        hasLoadedRecentlyAdded = self.loadedRecentlyAdded
-        
-        lockExit()
+        synchronous.sync {
+            hasLoadedRecentlyAdded = self.loadedRecentlyAdded
+        }
         
         if !hasLoadedRecentlyAdded {
             loadRecentlyAddedTracks()
         }
         
-        return internalQueue.sync {
+        return synchronous.sync {
             self.recentlyAdded
         }
     }
@@ -272,13 +263,5 @@ class AudioLibrary : AudioInfo {
         }
         
         return tracks
-    }
-    
-    private func lockEnter() {
-        objc_sync_enter(self.lock)
-    }
-    
-    private func lockExit() {
-        objc_sync_exit(self.lock)
     }
 }
