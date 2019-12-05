@@ -18,7 +18,6 @@ protocol BaseAudioPlaylist {
     var isTemporary: Bool { get }
     
     func equals(_ other: BaseAudioPlaylist) -> Bool
-    func serialize() -> String?
     
     func sortedPlaylist(withSorting sorting: TrackSorting) -> MutableAudioPlaylist
     func isAlbumPlaylist() -> Bool

@@ -111,10 +111,6 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         return false
     }
     
-    func serialize() -> String? {
-        return Serializing.serialize(object: self)
-    }
-    
     func sortedPlaylist(withSorting sorting: TrackSorting) -> MutableAudioPlaylist {
         let playlist = MutableAudioPlaylist(name: name, tracks: tracks, sorting: sorting)
         playlist.goToTrack(playingTrack)

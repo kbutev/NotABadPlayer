@@ -11,6 +11,7 @@
 		99021E462281EE2A007B2BF7 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99021E452281EE2A007B2BF7 /* PlaylistViewController.swift */; };
 		99021E4A2281EEEA007B2BF7 /* PlaylistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99021E492281EEEA007B2BF7 /* PlaylistPresenter.swift */; };
 		99021E4D2281EF5C007B2BF7 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99021E4C2281EF5C007B2BF7 /* PlaylistView.swift */; };
+		990448D52399AA8600D09ED2 /* SafeMutableAudioPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990448D42399AA8600D09ED2 /* SafeMutableAudioPlaylist.swift */; };
 		9909D6682299199600B4E637 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9909D6672299199600B4E637 /* SettingsView.swift */; };
 		9909D66A229919A200B4E637 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9909D669229919A200B4E637 /* SettingsView.xib */; };
 		9909D66C229920DE00B4E637 /* SettingsPickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9909D66B229920DE00B4E637 /* SettingsPickView.swift */; };
@@ -135,6 +136,7 @@
 		99021E452281EE2A007B2BF7 /* PlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		99021E492281EEEA007B2BF7 /* PlaylistPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistPresenter.swift; sourceTree = "<group>"; };
 		99021E4C2281EF5C007B2BF7 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
+		990448D42399AA8600D09ED2 /* SafeMutableAudioPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeMutableAudioPlaylist.swift; sourceTree = "<group>"; };
 		9909D6672299199600B4E637 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9909D669229919A200B4E637 /* SettingsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
 		9909D66B229920DE00B4E637 /* SettingsPickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPickView.swift; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 				99D1AA9F2394355B00C82E9F /* AudioTrackV1.swift */,
 				99D1AAA1239442F400C82E9F /* BaseAudioPlaylist.swift */,
 				996392FC2260ACEB0050F82A /* MutableAudioPlaylist.swift */,
+				990448D42399AA8600D09ED2 /* SafeMutableAudioPlaylist.swift */,
 				99D1AAA5239451C800C82E9F /* AudioPlaylistV1.swift */,
 				996392FA2260ABFA0050F82A /* AudioTrackSource.swift */,
 				991255342397E5BD003FE182 /* AudioTrackDate.swift */,
@@ -827,6 +830,7 @@
 				99D1AA9A23941BEE00C82E9F /* BaseAudioTrack.swift in Sources */,
 				996F260E22A7F6AA00BE199E /* PlayerSeekBar.swift in Sources */,
 				992EA212228FF7C7000C5592 /* AlertWindows.swift in Sources */,
+				990448D52399AA8600D09ED2 /* SafeMutableAudioPlaylist.swift in Sources */,
 				99021E462281EE2A007B2BF7 /* PlaylistViewController.swift in Sources */,
 				997C9448229AD68B00601D12 /* SettingsDropDownView.swift in Sources */,
 				992EC1ED225B6ED9007DDD9D /* SettingsViewController.swift in Sources */,
