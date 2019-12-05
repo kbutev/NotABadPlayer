@@ -13,7 +13,7 @@ import Foundation
 class GeneralStorage {
     public static let shared = GeneralStorage()
     
-    public static let CURRENT_VERSION = "1.0"
+    public static let CURRENT_VERSION = "1.1"
     
     private var _storage: UserDefaults?
     
