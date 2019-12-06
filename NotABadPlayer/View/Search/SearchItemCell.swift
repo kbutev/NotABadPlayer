@@ -52,7 +52,7 @@ class SearchItemCell : UICollectionViewCell
     public func setupAppTheme() {
         self.backgroundColor = .clear
         titleText.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
-        albumTitle.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
+        albumTitle.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         durationText.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
     }
 }

@@ -128,7 +128,7 @@ class AppAppearanceColors
         .PLAYER_BACKGROUND : Colors.DARK_GRAY,
         .QUICK_PLAYER_BACKGROUND : Colors.WHITE,
         .STANDART_TEXT : Colors.WHITE,
-        .STANDART_SUBTEXT : Colors.PAPER_WHITE,
+        .STANDART_SUBTEXT : Colors.YELLOW,
         .STANDART_BUTTON : Colors.YELLOW,
         .QUICK_PLAYER_TEXT : Colors.BLACK,
         .QUICK_PLAYER_SUBTEXT : Colors.DARK_GRAY,
@@ -148,8 +148,8 @@ class AppAppearanceColors
         .SEARCH_FILTER_PICKER_TINT : Colors.YELLOW,
         .INDEXER_CHAR_COLOR : Colors.WHITE,
         .ALBUM_COVER_TITLE : Colors.WHITE,
-        .ALBUM_COVER_ARTIST : Colors.WHITE,
-        .ALBUM_COVER_DESCRIPTION : Colors.PAPER_WHITE,
+        .ALBUM_COVER_ARTIST : Colors.PAPER_WHITE,
+        .ALBUM_COVER_DESCRIPTION : Colors.YELLOW,
         .ANIMATION_CLICK_EFFECT : Colors.BLUE
     ]
     public static let MIX : [ColorValue:UIColor] = [
