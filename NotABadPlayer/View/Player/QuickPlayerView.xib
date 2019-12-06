@@ -17,17 +17,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="heA-3X-0NM">
-                    <rect key="frame" x="0.0" y="44" width="470" height="126"/>
+                    <rect key="frame" x="0.0" y="44" width="1448" height="224"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="92x-Ay-PFt">
-                            <rect key="frame" x="0.0" y="0.0" width="470" height="48"/>
+                            <rect key="frame" x="0.0" y="0.0" width="1448" height="48"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_album_unknown" translatesAutoresizingMaskIntoConstraints="NO" id="iHI-s6-pcL">
-                                    <rect key="frame" x="0.0" y="0.0" width="418.5" height="48"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1396.5" height="48"/>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qxe-z5-jYf">
-                                    <rect key="frame" x="422.5" y="0.0" width="47.5" height="48"/>
+                                    <rect key="frame" x="1400.5" y="0.0" width="47.5" height="48"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKk-5w-j4g">
                                             <rect key="frame" x="0.0" y="0.0" width="47.5" height="28.5"/>
@@ -45,38 +45,45 @@
                                 </stackView>
                             </subviews>
                         </stackView>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lnm-GN-nDr">
-                            <rect key="frame" x="0.0" y="48" width="470" height="78"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lnm-GN-nDr">
+                            <rect key="frame" x="0.0" y="48" width="1448" height="176"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xS1-q4-Mux">
-                                    <rect key="frame" x="0.0" y="0.0" width="470" height="48"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1448" height="48"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="IXx-Gy-UMr">
-                                            <rect key="frame" x="0.0" y="0.0" width="94" height="48"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="289.5" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_previous" translatesAutoresizingMaskIntoConstraints="NO" id="1na-pL-kn0">
-                                            <rect key="frame" x="94" y="0.0" width="94" height="48"/>
+                                            <rect key="frame" x="289.5" y="0.0" width="289.5" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_play" translatesAutoresizingMaskIntoConstraints="NO" id="g4l-RX-6cP">
-                                            <rect key="frame" x="188" y="0.0" width="94" height="48"/>
+                                            <rect key="frame" x="579" y="0.0" width="290" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_next" translatesAutoresizingMaskIntoConstraints="NO" id="Pfy-K8-L84">
-                                            <rect key="frame" x="282" y="0.0" width="94" height="48"/>
+                                            <rect key="frame" x="869" y="0.0" width="289.5" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_order_forwards" translatesAutoresizingMaskIntoConstraints="NO" id="b55-uw-kmn">
-                                            <rect key="frame" x="376" y="0.0" width="94" height="48"/>
+                                            <rect key="frame" x="1158.5" y="0.0" width="289.5" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
                                     </subviews>
                                 </stackView>
-                                <slider opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="EXn-AZ-TAm">
-                                    <rect key="frame" x="-2" y="48" width="474" height="31"/>
-                                    <color key="tintColor" red="1" green="0.62527403622268296" blue="0.014185282698119028" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </slider>
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4IG-Vy-33l">
+                                    <rect key="frame" x="0.0" y="48" width="1448" height="128"/>
+                                    <subviews>
+                                        <slider opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="EXn-AZ-TAm">
+                                            <rect key="frame" x="-2" y="48" width="1452" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="tintColor" red="1" green="0.62527403622268296" blue="0.014185282698119028" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </slider>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
                             </subviews>
                         </stackView>
                     </subviews>
@@ -97,6 +104,7 @@
                 <outlet property="trackInfoStackView" destination="92x-Ay-PFt" id="ap7-FM-MSZ"/>
                 <outlet property="trackInfoTextStackView" destination="qxe-z5-jYf" id="mwK-nX-yQG"/>
                 <outlet property="trackInfoTitleText" destination="AKk-5w-j4g" id="e4c-1q-U2R"/>
+                <outlet property="trackSeekBarContainer" destination="4IG-Vy-33l" id="0KV-NI-MhV"/>
                 <outlet property="trackSeekBarSlider" destination="EXn-AZ-TAm" id="U3A-ac-I3j"/>
             </connections>
             <point key="canvasLocation" x="38" y="35"/>
