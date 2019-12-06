@@ -10,6 +10,7 @@ import UIKit
 
 class QuickPlayerView : UIView
 {
+    public static let MEDIA_BUTTONS_PROPORTIONS: CGFloat = 0.55
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
     public static let MEDIA_BAR_SIZE: CGSize = CGSize(width: 0, height: 10)
     
@@ -81,7 +82,7 @@ class QuickPlayerView : UIView
         
         // Constraints - media stack
         mediaButtonsStackView.translatesAutoresizingMaskIntoConstraints = false
-        mediaButtonsStackView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.5).isActive = true
+        mediaButtonsStackView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: QuickPlayerView.MEDIA_BUTTONS_PROPORTIONS).isActive = true
         
         // Constaints - track seek bar
         trackSeekBarContainer.translatesAutoresizingMaskIntoConstraints = false
