@@ -67,31 +67,27 @@ protocol BaseAudioPlaylistBuilderNode {
 }
 
 class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
-    static let NO_PLAY_INDEX = -1
-    
     var name: String = ""
     var tracks: [AudioTrack] = []
-    var _playingTrack: AudioTrack?
-    var _playingTrackIndex: Int = 0
+    var playingTrackIndex: Int = 0
+    var isPlaying: Bool = false
     var isTemporary: Bool = false
     
     var playingTrack: AudioTrack? {
         get {
-            return _playingTrack
+            if playingTrackIndex >= 0 && playingTrackIndex < tracks.count
+            {
+                return tracks[playingTrackIndex]
+            }
+            
+            return nil
         }
         set {
-            _playingTrack = newValue
-            _playingTrackIndex = AudioPlaylistBuilderNode.NO_PLAY_INDEX
-        }
-    }
-    var playingTrackIndex: Int {
-        get {
-            return _playingTrackIndex
-        }
-        
-        set {
-            _playingTrackIndex = newValue
-            _playingTrack = nil
+            if let track = newValue {
+                playingTrackIndex = tracks.firstIndex(of: track) ?? 0
+            } else {
+                playingTrackIndex = 0
+            }
         }
     }
     
@@ -102,11 +98,8 @@ class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
     init(prototype: BaseAudioPlaylist) {
         name = prototype.name
         tracks = prototype.tracks
-        
-        if prototype.isPlaying {
-            _playingTrackIndex = prototype.playingTrackPosition
-        }
-        
+        playingTrackIndex = prototype.playingTrackPosition
+        isPlaying = prototype.isPlaying
         isTemporary = prototype.isTemporary
     }
     
@@ -120,26 +113,10 @@ class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
             throw AudioPlaylistBuilderError.invalidBuildParameters("Cannot build playlist with zero tracks")
         }
         
-        var playlist: AudioPlaylistV1? = nil
-        
-        if let startTrack = playingTrack
-        {
-            playlist = try AudioPlaylistV1(name: name, tracks: tracks, startWithTrack: startTrack)
-        }
-        else if playingTrackIndex != AudioPlaylistBuilderNode.NO_PLAY_INDEX
-        {
-            if playingTrackIndex < 0 || playingTrackIndex >= tracks.count
-            {
-                throw AudioPlaylistBuilderError.invalidBuildParameters("Cannot build playlist with invalid play track index")
-            }
-            
-            playlist = try AudioPlaylistV1(name: name, tracks: tracks, startWithTrackIndex: playingTrackIndex)
-        } else {
-            playlist = AudioPlaylistV1(name: name, tracks: tracks)
-        }
-        
-        playlist?.isTemporary = isTemporary
-        
-        return playlist!
+        return try AudioPlaylistV1(name: name,
+                                   tracks: tracks,
+                                   startWithTrackIndex: playingTrackIndex,
+                                   startPlaying: isPlaying,
+                                   isTemporary: isTemporary)
     }
 }
