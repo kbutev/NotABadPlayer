@@ -12,6 +12,9 @@ class AlbumsCell : UICollectionViewCell
 {
     public static let CELL_IDENTIFIER = "cell"
     public static let SIZE = CGSize(width: 0, height: 256)
+    public static let COVER_SIZE = CGSize(width: AlbumsCell.SIZE.width, height: AlbumsCell.SIZE.height - AlbumsCell.TEXT_SIZE.height)
+    public static let TEXT_SIZE = CGSize(width: AlbumsCell.SIZE.width, height: 52)
+    public static let INBETWEEN_SPACING: CGFloat = 2
     
     @IBOutlet weak var coverArtImage: UIImageView!
     @IBOutlet weak var titleText: UILabel!
@@ -36,13 +39,12 @@ class AlbumsCell : UICollectionViewCell
         coverArtImage.translatesAutoresizingMaskIntoConstraints = false
         coverArtImage.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         coverArtImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        coverArtImage.bottomAnchor.constraint(equalTo: titleText.topAnchor).isActive = true
+        coverArtImage.heightAnchor.constraint(equalToConstant: AlbumsCell.COVER_SIZE.height).isActive = true
         
         // Title setup
         titleText.translatesAutoresizingMaskIntoConstraints = false
         titleText.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        titleText.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        titleText.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        titleText.topAnchor.constraint(equalTo: coverArtImage.bottomAnchor, constant: AlbumsCell.INBETWEEN_SPACING).isActive = true
     }
     
     public func setupAppTheme() {
