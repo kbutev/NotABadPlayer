@@ -311,7 +311,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
         
         cell.titleText.text = item.title
         cell.descriptionText.text = item.duration
-        cell.trackNumText.text = String(item.trackNum)
+        cell.setTrackNum(item.trackNum)
         
         // Highlight cells that represent the currently playing track
         if let playerPlaylist = AudioPlayer.shared.playlist
