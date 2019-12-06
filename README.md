@@ -66,24 +66,24 @@ Portrait mode only.
 
 Albums screen (quick player at the bottom, swipe up to open player screen)
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn1.PNG)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/2019scrn1.PNG)
 
 Player screen
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn2.PNG)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/2019scrn2.PNG)
 
 Playlist screen
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn3.PNG)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/2019scrn3.PNG)
 
 Search screen
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn4.PNG)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/2019scrn4.PNG)
 
 Settings screen - keybind options
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn5.PNG)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/2019scrn5.PNG)
 
 Dark app theme
 
-![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/scrn6.PNG)
+![alt text](https://github.com/felixisto/NotABadPlayer/blob/master/About/2019scrn6.PNG)
