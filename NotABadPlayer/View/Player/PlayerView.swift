@@ -257,7 +257,6 @@ class PlayerView : UIView
     }
     
     public func updateMediaInfo(player: AudioPlayer, track: AudioTrack) {
-        let imageSize = CGSize(width: self.artCoverImage.frame.width, height: self.artCoverImage.frame.height)
         self.artCoverImage.image = track.albumCoverImage
         
         self.titleLabel.text = track.title

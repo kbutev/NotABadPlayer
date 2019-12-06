@@ -9,52 +9,28 @@
 import Foundation
 
 class AudioPlaylistV1 : MutableAudioPlaylist {
-    convenience init(_ prototype: MutableAudioPlaylist) throws {
-        try self.init(name: prototype.name, tracks: prototype.tracks, startWithTrackIndex: prototype.playingTrackPosition)
-        isTemporary = prototype.isTemporary
+    override init(_ prototype: MutableAudioPlaylist) {
+        super.init(prototype)
     }
     
-    override init(name: String, tracks: [AudioTrack]) {
-        super.init(name: name, tracks: tracks)
+    convenience init(name: String, tracks: [AudioTrack]) throws {
+        try self.init(name: name,
+                      tracks: tracks,
+                      startWithTrackIndex: 0,
+                      startPlaying: false,
+                      isTemporary: false)
     }
     
-    convenience init(name: String, startWithTrack: AudioTrack) {
-        self.init(name: name, tracks: [startWithTrack])
-        
-        self.goToTrack(startWithTrack)
-    }
-    
-    convenience init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?) throws {
-        try self.init(name: name, tracks: tracks, startWithTrack: startWithTrack, sorting: .NONE)
-    }
-    
-    convenience init(name: String, tracks: [AudioTrack], startWithTrackIndex: Int) throws {
-        if startWithTrackIndex < 0 || startWithTrackIndex >= tracks.count
-        {
-            throw AudioPlaylistError.invalidArgument("Playlist cannot start with given track, given index is invalid")
-        }
-        
-        try self.init(name: name, tracks: tracks, startWithTrack: tracks[startWithTrackIndex], sorting: .NONE)
-    }
-    
-    convenience init(name: String, tracks: [AudioTrack], sorting: TrackSorting) {
-        self.init(name: name, tracks: MediaSorting.sortTracks(tracks, sorting: sorting))
-    }
-    
-    convenience init(name: String, tracks: [AudioTrack], startWithTrack: AudioTrack?, sorting: TrackSorting) throws {
-        self.init(name: name, tracks: MediaSorting.sortTracks(tracks, sorting: sorting))
-        
-        if let startingTrack = startWithTrack
-        {
-            if self.hasTrack(startingTrack)
-            {
-                self.goToTrack(startingTrack)
-            }
-            else
-            {
-                throw AudioPlaylistError.invalidArgument("Playlist cannot start with given track, was not found in the given tracks")
-            }
-        }
+    override init(name: String,
+                     tracks: [AudioTrack],
+                     startWithTrackIndex: Int,
+                     startPlaying: Bool,
+                     isTemporary: Bool) throws {
+        try super.init(name: name,
+                       tracks: tracks,
+                       startWithTrackIndex: startWithTrackIndex,
+                       startPlaying: startPlaying,
+                       isTemporary: isTemporary)
     }
     
     required init(from decoder: Decoder) throws {

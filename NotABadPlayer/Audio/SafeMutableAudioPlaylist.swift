@@ -15,13 +15,13 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
     private var _read: MutableAudioPlaylist
     
     public static func build(_ prototype: MutableAudioPlaylist) throws -> SafeMutableAudioPlaylist {
-        return try SafeMutableAudioPlaylist(prototype)
+        return try SafeMutableAudioPlaylist(prototype: prototype)
     }
     
-    public init(_ prototype: MutableAudioPlaylist) throws {
+    private init(prototype: MutableAudioPlaylist) throws {
         _write = try AudioPlaylistBuilder.buildMutableFromImmutable(prototype: prototype)
         _read = try AudioPlaylistBuilder.buildMutableFromImmutable(prototype: prototype)
-        super.init(name: prototype.name, tracks: prototype.tracks)
+        super.init(prototype)
     }
     
     required init(from decoder: Decoder) throws {
@@ -75,12 +75,6 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
             unlock()
             return read.isTemporary
         }
-        set {
-            lock()
-            self._write.isTemporary = newValue
-            updateReadPlaylist()
-            unlock()
-        }
     }
     
     override func sortedPlaylist(withSorting sorting: TrackSorting) -> MutableAudioPlaylist {
@@ -120,7 +114,7 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
         read = self._read
         unlock()
         
-        return read.tracks[index]
+        return read.trackAt(index)
     }
     
     override func getAlbum(audioInfo: AudioInfo) -> AudioAlbum? {
@@ -168,7 +162,7 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
         read = self._read
         unlock()
         
-        return read.tracks.index(of: track) != nil
+        return read.hasTrack(track)
     }
     
     override func playCurrent() {
