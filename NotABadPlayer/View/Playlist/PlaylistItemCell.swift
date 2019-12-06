@@ -50,4 +50,8 @@ class PlaylistItemCell : UICollectionViewCell
         titleText.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         descriptionText.textColor = AppTheme.shared.colorFor(.STANDART_SUBTEXT)
     }
+    
+    public func setTrackNum(_ value: Int) {
+        trackNumText.text = value > 0 ? "\(value)" : "-"
+    }
 }
