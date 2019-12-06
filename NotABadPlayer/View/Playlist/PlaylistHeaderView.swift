@@ -10,8 +10,8 @@ import UIKit
 
 class PlaylistHeaderView : UICollectionReusableView
 {
-    public static let HEADER_SIZE = CGSize(width: 0, height: 300)
-    public static let HEADER_SIZE_IMAGELESS = CGSize(width: 0, height: 64)
+    public static let HEADER_SIZE = CGSize(width: 0, height: 270)
+    public static let HEADER_SIZE_IMAGELESS = CGSize(width: 0, height: 52)
     
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet private weak var artCoverImage: UIImageView?
@@ -42,7 +42,7 @@ class PlaylistHeaderView : UICollectionReusableView
         // Art cover setup
         artCoverImage?.translatesAutoresizingMaskIntoConstraints = false
         artCoverImage?.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
-        artCoverImage?.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.7).isActive = true
+        artCoverImage?.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.75).isActive = true
         
         test = true
     }
