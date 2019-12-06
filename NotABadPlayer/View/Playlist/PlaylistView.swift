@@ -122,6 +122,8 @@ class PlaylistView : UIView
         self.collectionActionDelegate = PlaylistViewActionDelegate(view: self)
         collectionView.delegate = collectionActionDelegate
         
+        collectionView.showsVerticalScrollIndicator = false
+        
         // Album title overlay setup
         albumTitleOverlayLabel.translatesAutoresizingMaskIntoConstraints = false
         albumTitleOverlayLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true

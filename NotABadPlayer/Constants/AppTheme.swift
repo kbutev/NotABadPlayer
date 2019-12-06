@@ -66,6 +66,18 @@ class AppTheme
         return UIColor.black
     }
     
+    public func scrollBarColor() -> UIScrollView.IndicatorStyle
+    {
+        switch self.theme {
+        case .LIGHT:
+            return .black
+        case .DARK:
+            return .white
+        case .MIX:
+            return .default
+        }
+    }
+    
     private func lockEnter(_ lock: Any) {
         objc_sync_enter(lock)
     }

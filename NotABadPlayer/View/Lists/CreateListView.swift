@@ -180,6 +180,9 @@ class CreateListView : UIView
         
         cancelButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
         doneButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
+        
+        addedTracksTable.indicatorStyle = AppTheme.shared.scrollBarColor()
+        albumsTable.indicatorStyle = AppTheme.shared.scrollBarColor()
     }
     
     public func reloadAddedTracksData() {
