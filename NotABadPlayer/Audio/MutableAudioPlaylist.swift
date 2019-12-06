@@ -23,11 +23,11 @@ enum AudioPlaylistError: Error {
 class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     public let name: String
     
-    private (set) var tracks: [AudioTrack]
-    private (set) var firstTrack: AudioTrack
+    private(set) var tracks: [AudioTrack]
+    private(set) var firstTrack: AudioTrack
     
-    private (set) var isPlaying: Bool = false
-    private (set) var playingTrackPosition: Int
+    private(set) var isPlaying: Bool = false
+    private(set) var playingTrackPosition: Int
     
     public var playingTrack: AudioTrack {
         get {
@@ -43,21 +43,28 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         }
         
         self.name = name;
-        self.tracks = tracks
+        self.tracks = []
+        self.tracks.append(tracks[0]) // Add one track just so we can determine isAlbumPlaylist()
         self.firstTrack = firstTrack
         self.playingTrackPosition = 0
         
-        // Set proper source value
+        // Make sure that all tracks have the correct source
         let isAlbumList = isAlbumPlaylist()
-        self.tracks = []
+        self.tracks.removeAll()
+        
+        let theSource = isAlbumList ? AudioTrackSource.createAlbumSource(albumID: firstTrack.albumID) : AudioTrackSource.createPlaylistSource(playlistName: self.name)
         
         for e in 0..<tracks.count
         {
-            let source = isAlbumList ? AudioTrackSource.createAlbumSource(albumID: firstTrack.albumID) : AudioTrackSource.createPlaylistSource(playlistName: self.name)
-            
             let track = tracks[e]
+            
+            if track.source == theSource {
+                self.tracks.append(track)
+                continue
+            }
+            
             var node = AudioTrackBuilder.start(prototype: track)
-            node.source = source
+            node.source = theSource
             
             do {
                 let result = try node.build()
