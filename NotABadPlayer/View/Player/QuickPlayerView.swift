@@ -82,7 +82,11 @@ class QuickPlayerView : UIView
         mediaButtonsStackView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.5).isActive = true
         
         trackSeekBarSlider.translatesAutoresizingMaskIntoConstraints = false
-        trackSeekBarSlider.heightAnchor.constraint(equalToConstant: 8).isActive = true
+        trackSeekBarSlider.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
+        trackSeekBarSlider.widthAnchor.constraint(equalTo: guide.widthAnchor, multiplier: 0.9).isActive = true
+        trackSeekBarSlider.heightAnchor.constraint(equalToConstant: 12).isActive = true
+        // This is not the actual size of the bar
+        // The height of the track seek bar is always the same, we make it larger to put some additional spacing
         
         // Customize seek bar
         trackSeekBarSlider.setThumbImage(UIImage(), for: .normal)
