@@ -83,9 +83,12 @@ class CreateListAlbumCell: UITableViewCell
     
     public func setupAppTheme() {
         self.backgroundColor = .clear
+        
         content.backgroundColor = .clear
         tracksTable.backgroundColor = .clear
         titleLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
+        
+        tracksTable.indicatorStyle = AppTheme.shared.scrollBarColor()
     }
     
     public func selectAlbumTrack(at index: UInt) {

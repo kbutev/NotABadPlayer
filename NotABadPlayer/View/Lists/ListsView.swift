@@ -145,6 +145,8 @@ class ListsView : UIView
         
         createButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
         deleteButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
+        
+        playlistsTable.indicatorStyle = AppTheme.shared.scrollBarColor()
     }
     
     public func reloadData() {

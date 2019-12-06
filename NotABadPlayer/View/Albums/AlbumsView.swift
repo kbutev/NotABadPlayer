@@ -130,6 +130,8 @@ class AlbumsView : UIView
         collectionIndexerView.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
         collectionIndexerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
         
+        collectionView.showsVerticalScrollIndicator = false
+        
         // Indexer center character setup
         indexerCenterCharacter.translatesAutoresizingMaskIntoConstraints = false
         indexerCenterCharacter.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true

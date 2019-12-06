@@ -142,6 +142,8 @@ class SearchView: UIView
         searchFilterPicker.setTitleTextAttributes(segmentedTextColor, for: .normal)
         searchFilterPicker.setTitleTextAttributes(segmentedSelTextColor, for: .selected)
         searchFilterPicker.tintColor = segmentedTintColor
+        
+        collectionView.indicatorStyle = AppTheme.shared.scrollBarColor()
     }
     
     public func reloadData() {
