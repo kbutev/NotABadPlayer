@@ -44,14 +44,15 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         
         self.name = name;
         self.tracks = []
-        self.tracks.append(tracks[0]) // Add one track just so we can determine isAlbumPlaylist()
         self.firstTrack = firstTrack
         self.playingTrackPosition = 0
         
-        // Make sure that all tracks have the correct source
+        // Is album list?
+        self.tracks.append(tracks[0]) // Add one track just so we can determine isAlbumPlaylist()
         let isAlbumList = isAlbumPlaylist()
         self.tracks.removeAll()
         
+        // Make sure that all tracks have the correct source
         let theSource = isAlbumList ? AudioTrackSource.createAlbumSource(albumID: firstTrack.albumID) : AudioTrackSource.createPlaylistSource(playlistName: self.name)
         
         for e in 0..<tracks.count
