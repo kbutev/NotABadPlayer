@@ -11,6 +11,7 @@ import UIKit
 class QuickPlayerView : UIView
 {
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
+    public static let MEDIA_BAR_SIZE: CGSize = CGSize(width: 0, height: 10)
     
     private var initialized: Bool = false
     
@@ -34,6 +35,7 @@ class QuickPlayerView : UIView
     @IBOutlet weak var nextMediaButton: UIImageView!
     @IBOutlet weak var playOrderMediaButton: UIImageView!
     
+    @IBOutlet weak var trackSeekBarContainer: UIView!
     @IBOutlet weak var trackSeekBarSlider: UISlider!
     
     override init(frame: CGRect) {
@@ -81,12 +83,16 @@ class QuickPlayerView : UIView
         mediaButtonsStackView.translatesAutoresizingMaskIntoConstraints = false
         mediaButtonsStackView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.5).isActive = true
         
+        // Constaints - track seek bar
+        trackSeekBarContainer.translatesAutoresizingMaskIntoConstraints = false
+        trackSeekBarContainer.widthAnchor.constraint(equalTo: mediaButtonsStackView.widthAnchor).isActive = true
+        trackSeekBarContainer.heightAnchor.constraint(equalToConstant: QuickPlayerView.MEDIA_BAR_SIZE.height
+            ).isActive = true
+        
         trackSeekBarSlider.translatesAutoresizingMaskIntoConstraints = false
-        trackSeekBarSlider.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
-        trackSeekBarSlider.widthAnchor.constraint(equalTo: guide.widthAnchor, multiplier: 0.9).isActive = true
-        trackSeekBarSlider.heightAnchor.constraint(equalToConstant: 12).isActive = true
-        // This is not the actual size of the bar
-        // The height of the track seek bar is always the same, we make it larger to put some additional spacing
+        trackSeekBarSlider.centerXAnchor.constraint(equalTo: trackSeekBarContainer.centerXAnchor).isActive = true
+        trackSeekBarSlider.centerYAnchor.constraint(equalTo: trackSeekBarContainer.centerYAnchor).isActive = true
+        trackSeekBarSlider.widthAnchor.constraint(equalTo: trackSeekBarContainer.widthAnchor, multiplier: 0.9).isActive = true
         
         // Customize seek bar
         trackSeekBarSlider.setThumbImage(UIImage(), for: .normal)
