@@ -56,7 +56,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     
     public var playingTrack: AudioTrack {
         get {
-            return self._tracks[self._playingTrackPosition]
+            return self.tracks[self.playingTrackPosition]
         }
     }
     
@@ -136,7 +136,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     }
     
     static func == (lhs: MutableAudioPlaylist, rhs: MutableAudioPlaylist) -> Bool {
-        return lhs.name == rhs.name && lhs._playingTrackPosition == rhs._playingTrackPosition && lhs._tracks == rhs._tracks
+        return lhs.name == rhs.name && lhs.playingTrackPosition == rhs.playingTrackPosition && lhs.tracks == rhs.tracks
     }
     
     func equals(_ other: BaseAudioPlaylist) -> Bool {
@@ -168,15 +168,15 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     }
     
     func size() -> Int {
-        return self._tracks.count
+        return self.tracks.count
     }
     
     func trackAt(_ index: Int) -> AudioTrack {
-        return self._tracks[index]
+        return self.tracks[index]
     }
     
     func getAlbum(audioInfo: AudioInfo) -> AudioAlbum? {
-        for track in _tracks
+        for track in self.tracks
         {
             if let album = audioInfo.getAlbum(byID: track.albumID)
             {
@@ -188,15 +188,15 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     }
     
     func isPlayingFirstTrack() -> Bool {
-        return _playingTrackPosition == 0
+        return self.playingTrackPosition == 0
     }
     
     func isPlayingLastTrack() -> Bool {
-        return _playingTrackPosition + 1 == _tracks.count
+        return self.playingTrackPosition + 1 == self.tracks.count
     }
     
     func hasTrack(_ track: AudioTrack) -> Bool {
-        return _tracks.index(of: track) != nil
+        return self.tracks.index(of: track) != nil
     }
     
     func playCurrent() {
