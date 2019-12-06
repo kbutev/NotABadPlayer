@@ -38,6 +38,10 @@ class PlaylistItemCell : UICollectionViewCell
         // App theme setup
         setupAppTheme()
         
+        // Stack setup
+        verticalStackView.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+        verticalStackView.isLayoutMarginsRelativeArrangement = true
+        
         // Track num setup
         trackNumText.translatesAutoresizingMaskIntoConstraints = false
         trackNumText.widthAnchor.constraint(equalToConstant: 32).isActive = true
