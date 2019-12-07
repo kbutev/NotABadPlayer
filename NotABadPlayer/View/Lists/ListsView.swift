@@ -31,6 +31,7 @@ class ListsView : UIView
     public var onCreateButtonClickedCallback: ()->Void = {() in }
     public var onDeleteButtonClickedCallback: ()->Void = {() in }
     public var onPlaylistClickedCallback: (UInt)->Void = {(index) in }
+    public var onPrepareDeletePlaylistCallback: (UInt)->Bool = {(index) in true }
     public var onDidDeletePlaylistCallback: (UInt)->Void = {(index) in }
     
     public var onQuickPlayerPlaylistButtonClickCallback: ()->Void {
@@ -251,9 +252,19 @@ class ListsViewDataSource : NSObject, UITableViewDataSource
     let audioInfo: AudioInfo
     var playlists: [BaseAudioPlaylist]
     
+    public var count: Int {
+        get {
+            return playlists.count
+        }
+    }
+    
     init(audioInfo: AudioInfo, playlists: [BaseAudioPlaylist]) {
         self.audioInfo = audioInfo
         self.playlists = playlists
+    }
+    
+    func data(at index: UInt) -> BaseAudioPlaylist {
+        return playlists[Int(index)]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -307,7 +318,11 @@ class ListsViewDelegate : NSObject, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         if tableView.isEditing {
-            return .delete
+            // Show delete symbol only for those for which the callback returns true
+            if view?.onPrepareDeletePlaylistCallback(UInt(indexPath.row)) ?? false
+            {
+                return .delete
+            }
         }
         
         return .none
