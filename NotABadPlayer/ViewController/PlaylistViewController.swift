@@ -142,6 +142,10 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func onAudioLibraryChanged() {
+        
+    }
+    
     func onFetchDataErrorEncountered(_ error: Error) {
         // Fetch data again until successful
         presenter?.fetchData()

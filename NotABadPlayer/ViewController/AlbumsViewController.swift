@@ -152,6 +152,10 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func onAudioLibraryChanged() {
+        Toast.show(message: Text.value(.AlbumsLibraryChanged), controller: self)
+    }
+    
     func onFetchDataErrorEncountered(_ error: Error) {
         // Fetch data again until successful
         presenter?.fetchData()

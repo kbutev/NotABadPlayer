@@ -21,7 +21,7 @@ extension AlbumsPresenterError: LocalizedError {
     }
 }
 
-class AlbumsPresenter: BasePresenter
+class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
 {
     private weak var delegate: BaseViewDelegate?
     
@@ -30,8 +30,14 @@ class AlbumsPresenter: BasePresenter
     
     private var collectionDataSource: AlbumsViewDataSource?
     
+    private var fetchOnlyOnce: Counter = Counter(identifier: String(describing: AlbumsPresenter.self))
+    
     required init(audioInfo: AudioInfo) {
         self.audioInfo = audioInfo
+    }
+    
+    deinit {
+         self.audioInfo.unregisterLibraryChangesListener(self)
     }
     
     func setView(_ delegate: BaseViewDelegate) {
@@ -43,10 +49,19 @@ class AlbumsPresenter: BasePresenter
             fatalError("Delegate is not set for \(String(describing: AlbumsPresenter.self))")
         }
         
+        self.audioInfo.registerLibraryChangesListener(self)
+        
         fetchData()
     }
     
     func fetchData() {
+        // Prevent simultaneous fetch actions
+        if !fetchOnlyOnce.isZero() {
+            return
+        }
+        
+        let _ = fetchOnlyOnce.increment()
+        
         Logging.log(AlbumsPresenter.self, "Retrieving albums...")
         
         // Perform work on background thread
@@ -66,11 +81,13 @@ class AlbumsPresenter: BasePresenter
             
             // Then, update on main thread
             DispatchQueue.main.async {
-                Logging.log(AlbumsPresenter.self, "Retrieved albums, updating view")
+                Logging.log(AlbumsPresenter.self, "Retrieved \(albums.count) albums, updating view")
                 
                 self.albums = albums
                 self.collectionDataSource = dataSource
                 self.delegate?.onMediaAlbumsLoad(dataSource: dataSource, albumTitles: albumTitles)
+                
+                let _ = self.fetchOnlyOnce.decrement()
             }
         }
     }
@@ -172,5 +189,17 @@ class AlbumsPresenter: BasePresenter
     
     func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
         
+    }
+    
+    // # AudioLibraryChangesListener
+    
+    func onMediaLibraryChanged() {
+        Logging.log(AlbumsPresenter.self, "Audio library changed in the background")
+        
+        DispatchQueue.main.async {
+            self.delegate?.onAudioLibraryChanged()
+        }
+        
+        fetchData()
     }
 }

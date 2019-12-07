@@ -109,6 +109,7 @@
 		99D69D5422998541007D79F8 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99D69D5322998541007D79F8 /* MainView.xib */; };
 		99D69D5622998667007D79F8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D69D5522998667007D79F8 /* MainView.swift */; };
 		99D69D5A22998733007D79F8 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D69D5922998733007D79F8 /* MainTabView.swift */; };
+		99D9672F239BFA4E0014999C /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D9672E239BFA4E0014999C /* Toast.swift */; };
 		99DE0087229D7D7D00ADB539 /* GeneralStorageObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */; };
 		99F2C26122898B35000F6AA7 /* QuickPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F2C26022898B35000F6AA7 /* QuickPlayerView.xib */; };
 		99F33F6C22A413840049DA68 /* ListsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F33F6B22A413840049DA68 /* ListsView.xib */; };
@@ -244,6 +245,7 @@
 		99D69D5322998541007D79F8 /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainView.xib; sourceTree = "<group>"; };
 		99D69D5522998667007D79F8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		99D69D5922998733007D79F8 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		99D9672E239BFA4E0014999C /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralStorageObserver.swift; sourceTree = "<group>"; };
 		99F2C26022898B35000F6AA7 /* QuickPlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickPlayerView.xib; sourceTree = "<group>"; };
 		99F33F6B22A413840049DA68 /* ListsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListsView.xib; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				994E20FE2296D516002BA684 /* CollectionIndexerView.swift */,
+				99D9672E239BFA4E0014999C /* Toast.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -788,6 +791,7 @@
 				99A6CA8022677EF20071DC0D /* Serializing.swift in Sources */,
 				994046DD229E953100C6B789 /* SearchView.swift in Sources */,
 				99C9405522835F4600F0FA49 /* BaseViewDelegate.swift in Sources */,
+				99D9672F239BFA4E0014999C /* Toast.swift in Sources */,
 				99194243227867CA00FF041E /* AlbumsCell.swift in Sources */,
 				996F260822A7C61B00BE199E /* AppTheme.swift in Sources */,
 				992EC1B9225B6A5C007DDD9D /* ListsViewController.swift in Sources */,
