@@ -17,7 +17,7 @@ class SearchView: UIView
     
     private var flowLayout: SearchFlowLayout?
     
-    private var collectionActionDelegate : BaseSearchViewActionDelegate?
+    public var collectionActionDelegate : BaseSearchViewActionDelegate?
     
     public var collectionDataSource : BaseSearchViewDataSource? {
         get {
@@ -70,7 +70,8 @@ class SearchView: UIView
     }
     
     private func initialize() {
-        quickPlayerView = QuickPlayerView.create(owner: self)
+        self.quickPlayerView = QuickPlayerView.create(owner: self)
+        self.collectionActionDelegate = SearchViewActionDelegate(view: self)
     }
     
     override func awakeFromNib() {
@@ -120,7 +121,6 @@ class SearchView: UIView
         
         collectionView.collectionViewLayout = flowLayout!
         
-        self.collectionActionDelegate = SearchViewActionDelegate(view: self)
         collectionView.delegate = self.collectionActionDelegate
         
         // Search field interaction setup
