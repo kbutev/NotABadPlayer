@@ -121,11 +121,11 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         NavigationHelpers.addVCChild(parent: self, child: vc)
     }
     
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource?, albumTitles: [String]) {
+    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
         
     }
     
-    func onPlaylistSongsLoad(name: String, dataSource: PlaylistViewDataSource?, playingTrackIndex: UInt?) {
+    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
         
     }
     
@@ -146,7 +146,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
         searchFieldText = query
         searchFilterPickedIndex = filterIndex
         

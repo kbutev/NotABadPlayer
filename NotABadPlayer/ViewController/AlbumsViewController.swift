@@ -105,13 +105,13 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         NavigationHelpers.addVCChild(parent: self, child: vc, animation: .scaleUp)
     }
     
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource?, albumTitles: [String]) {
+    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
         self.baseView?.collectionDataSource = dataSource
         self.baseView?.updateIndexerAlphabet(albumTitles: albumTitles)
         self.baseView?.reloadData()
     }
     
-    func onPlaylistSongsLoad(name: String, dataSource: PlaylistViewDataSource?, playingTrackIndex: UInt?) {
+    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
         
     }
     
@@ -132,7 +132,7 @@ class AlbumsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
         
     }
     
