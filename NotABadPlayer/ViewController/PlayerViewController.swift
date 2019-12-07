@@ -94,11 +94,11 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onMediaAlbumsLoad(dataSource: AlbumsViewDataSource?, albumTitles: [String]) {
+    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
         
     }
     
-    func onPlaylistSongsLoad(name: String, dataSource: PlaylistViewDataSource?, playingTrackIndex: UInt?) {
+    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
         
     }
     
@@ -114,7 +114,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         self.baseView?.updateUIState(player: AudioPlayer.shared, track: playlist.playingTrack)
     }
     
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
         
     }
     
