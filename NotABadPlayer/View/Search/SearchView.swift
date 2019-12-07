@@ -17,11 +17,11 @@ class SearchView: UIView
     
     private var flowLayout: SearchFlowLayout?
     
-    private var collectionActionDelegate : SearchViewActionDelegate?
+    private var collectionActionDelegate : BaseSearchViewActionDelegate?
     
-    public var collectionDataSource : SearchViewDataSource? {
+    public var collectionDataSource : BaseSearchViewDataSource? {
         get {
-            return collectionView.dataSource as? SearchViewDataSource
+            return collectionView.dataSource as? BaseSearchViewDataSource
         }
         set {
             collectionView.dataSource = newValue
@@ -254,7 +254,7 @@ extension SearchView {
 }
 
 // Collection data source
-class SearchViewDataSource : NSObject, UICollectionViewDataSource
+class SearchViewDataSource : NSObject, BaseSearchViewDataSource
 {
     let audioInfo: AudioInfo
     let searchResults: [AudioTrack]
@@ -320,7 +320,7 @@ class SearchViewDataSource : NSObject, UICollectionViewDataSource
 }
 
 // Collection delegate
-class SearchViewActionDelegate : NSObject, UICollectionViewDelegate
+class SearchViewActionDelegate : NSObject, BaseSearchViewActionDelegate
 {
     private weak var view: SearchView?
     
@@ -370,4 +370,3 @@ class SearchFlowLayout : UICollectionViewFlowLayout
         return context
     }
 }
-
