@@ -39,6 +39,8 @@ enum Text: String {
     case ZeroTimer = "0:00";
     case DoubleZeroTimers = "0:00/0:00";
     
+    case AlbumsLibraryChanged = "Device library changed"
+    
     case ListsDeleteButtonName = "Delete"
     case ListsDoneButtonName = "Done"
     case PlaylistRecentlyPlayed = "Recently Played";

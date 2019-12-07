@@ -28,6 +28,7 @@ protocol BaseViewDelegate : class {
     func onThemeSelect(_ value: AppThemeValue)
     func onTrackSortingSelect(_ value: TrackSorting)
     func onShowVolumeBarSelect(_ value: ShowVolumeBar)
+    func onAudioLibraryChanged()
     
     func onFetchDataErrorEncountered(_ error: Error)
     func onPlayerErrorEncountered(_ error: Error)

@@ -134,6 +134,10 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func onAudioLibraryChanged() {
+        
+    }
+    
     func onFetchDataErrorEncountered(_ error: Error) {
         
     }

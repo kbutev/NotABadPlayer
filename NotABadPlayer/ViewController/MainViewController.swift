@@ -329,6 +329,10 @@ class MainViewController : UIViewController, BaseViewDelegate {
         
     }
     
+    func onAudioLibraryChanged() {
+        
+    }
+    
     func onFetchDataErrorEncountered(_ error: Error) {
         
     }

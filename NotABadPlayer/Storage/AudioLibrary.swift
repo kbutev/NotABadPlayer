@@ -16,6 +16,7 @@ class AudioLibrary : AudioInfo {
     public static let SEARCH_TRACKS_CAP = 1000
     public static let RECENTLY_ADDED_DAYS_DIFFERENCE = 30
     public static let RECENTLY_ADDED_CAPACITY = 100
+    public static let LIBRARY_CHANGES_ALERT_SEC_DELAY: Double = 5
     
     private let synchronous: DispatchQueue
     
@@ -25,8 +26,16 @@ class AudioLibrary : AudioInfo {
     private var loadedRecentlyAdded : Bool = false
     private var recentlyAdded : [AudioTrack] = []
     
+    private var audioLibraryChangesListeners : [AudioLibraryChangesListenerReference] = []
+    private var audioLibraryChangesUpdatePending: Bool = false
+    
     init() {
         synchronous = DispatchQueue(label: "AudioLibrary.synchronous")
+        NotificationCenter.default.addObserver(self, selector: #selector(onLibraryChanges), name: .MPMediaLibraryDidChange, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     public func loadIfNecessary() {
@@ -263,5 +272,108 @@ class AudioLibrary : AudioInfo {
         }
         
         return tracks
+    }
+    
+    // # Audio library changes listening
+    
+    func registerLibraryChangesListener(_ listener: AudioLibraryChangesListener) {
+        synchronous.sync {
+            self.audioLibraryChangesListeners.append(AudioLibraryChangesListenerReference(listener))
+        }
+    }
+    
+    func unregisterLibraryChangesListener(_ listener: AudioLibraryChangesListener) {
+        synchronous.sync {
+            self.audioLibraryChangesListeners.removeAll { (ref) -> Bool in
+                return ref.value === listener
+            }
+        }
+    }
+    
+    @objc private func onLibraryChanges() {
+        requestAudioLibraryChangeUpdate()
+    }
+    
+    private func isRequestForAudioLibraryChangeUpdatePending() -> Bool {
+        return synchronous.sync {
+            return self.audioLibraryChangesUpdatePending
+        }
+    }
+    
+    private func requestAudioLibraryChangeUpdate() {
+        Logging.log(AudioLibrary.self, "Audio library changed in the background")
+        
+        // When the library changes, the event for library changes is sent many times
+        // In order to prevent spam, limit the number of listener alerts to every LIBRARY_CHANGES_ALERT_SEC_DELAY
+        
+        var isAlreadyPending: Bool = false
+        
+        synchronous.sync {
+            isAlreadyPending = self.audioLibraryChangesUpdatePending
+            self.audioLibraryChangesUpdatePending = true
+        }
+        
+        // Do nothing if already pending
+        if isAlreadyPending {
+            return
+        }
+        
+        // Alert the listeners after a delay
+        let deadline = DispatchTime.now() + AudioLibrary.LIBRARY_CHANGES_ALERT_SEC_DELAY
+        
+        DispatchQueue.global().asyncAfter(deadline: deadline, execute: {
+            self.synchronous.sync {
+                self.audioLibraryChangesUpdatePending = false
+            }
+            
+            self.alertAllOfLibraryChanges()
+        })
+    }
+    
+    @objc private func alertAllOfLibraryChanges() {
+        Logging.log(AudioLibrary.self, "Alert audio library listeners")
+        
+        var listenersToBeAlerted: [AudioLibraryChangesListenerReference] = []
+        
+        // Safely copy
+        synchronous.sync {
+            for listener in self.audioLibraryChangesListeners {
+                listenersToBeAlerted.append(listener)
+            }
+        }
+        
+        // Alert delegates
+        for listener in listenersToBeAlerted {
+            listener.value?.onMediaLibraryChanged()
+        }
+        
+        // Cleanup
+        cleanup()
+    }
+    
+    private func cleanup() {
+        synchronous.sync {
+            self.audioLibraryChangesListeners.removeAll { (ref) -> Bool in
+                return ref.isNil
+            }
+        }
+    }
+}
+
+protocol AudioLibraryChangesListener: AnyObject {
+    func onMediaLibraryChanged()
+}
+
+struct AudioLibraryChangesListenerReference {
+    public weak var value: AudioLibraryChangesListener?
+    
+    public var isNil: Bool {
+        get {
+            return self.value == nil
+        }
+    }
+    
+    init(_ value: AudioLibraryChangesListener) {
+        self.value = value
     }
 }

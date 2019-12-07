@@ -26,4 +26,7 @@ protocol AudioInfo {
     func recentlyAddedTracks() -> [AudioTrack]
     
     func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int) -> [AudioTrack]
+    
+    func registerLibraryChangesListener(_ listener: AudioLibraryChangesListener)
+    func unregisterLibraryChangesListener(_ listener: AudioLibraryChangesListener)
 }
