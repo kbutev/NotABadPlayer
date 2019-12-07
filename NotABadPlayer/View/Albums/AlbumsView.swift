@@ -20,20 +20,20 @@ class AlbumsView : UIView
     
     private var flowLayout: AlbumsFlowLayout?
     
-    private var collectionActionDelegate : AlbumsViewActionDelegate?
+    private var collectionActionDelegate : BaseAlbumsViewActionDelegate?
     
-    public var collectionDataSource : AlbumsViewDataSource? {
+    public var collectionDataSource : BaseAlbumsViewDataSource? {
         get {
-            return collectionView.dataSource as? AlbumsViewDataSource
+            return collectionView.dataSource as? BaseAlbumsViewDataSource
         }
         set {
             collectionView.dataSource = newValue
         }
     }
     
-    public var collectionDelegate : AlbumsViewActionDelegate? {
+    public var collectionDelegate : BaseAlbumsViewActionDelegate? {
         get {
-            return collectionView.delegate as? AlbumsViewActionDelegate
+            return collectionView.delegate as? BaseAlbumsViewActionDelegate
         }
         set {
             collectionView.delegate = newValue
@@ -238,7 +238,7 @@ extension AlbumsView {
 }
 
 // Collection data source
-class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
+class AlbumsViewDataSource : NSObject, BaseAlbumsViewDataSource
 {
     let audioInfo: AudioInfo
     let albums: [AudioAlbum]
@@ -273,7 +273,7 @@ class AlbumsViewDataSource : NSObject, UICollectionViewDataSource
 }
 
 // Collection delegate
-class AlbumsViewActionDelegate : NSObject, UICollectionViewDelegate
+class AlbumsViewActionDelegate : NSObject, BaseAlbumsViewActionDelegate
 {
     private weak var view: AlbumsView?
     
