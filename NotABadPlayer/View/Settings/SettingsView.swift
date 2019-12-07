@@ -302,7 +302,7 @@ extension SettingsView {
         pickerView.type = type
         pickerView.delegate = self
         pickerView.setTitle(title: title)
-        pickerView.setPickOptions(options: options)
+        pickerView.setPickOptions(unformatted: options)
     }
     
     private func enableAllPickerViews() {
@@ -367,7 +367,7 @@ extension SettingsView: SettingsPickActionDelegate {
         pview.isUserInteractionEnabled = true
     }
     
-    private func getKeybindOptionAction(options: [String], at index: UInt) -> ApplicationAction? {
+    private func getKeybindOptionAction(unformatted options: [String], at index: UInt) -> ApplicationAction? {
         guard index < options.count else {
             return nil
         }
@@ -397,55 +397,64 @@ extension SettingsView: SettingsPickActionDelegate {
             }
             break
         case .PlayerRecall:
-            if let option = getKeybindOptionAction(options: pickKeybindPlayerRecall.dropDownView.optionArray, at: index)
+            let options = pickKeybindPlayerRecall.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.PLAYER_RECALL, option)
             }
             break
         case .PlayerPrevious:
-            if let option = getKeybindOptionAction(options: pickKeybindPlayerPrevious.dropDownView.optionArray, at: index)
+            let options = pickKeybindPlayerPrevious.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.PLAYER_PREVIOUS_BUTTON, option)
             }
             break
         case .PlayerNext:
-            if let option = getKeybindOptionAction(options: pickKeybindPlayerNext.dropDownView.optionArray, at: index)
+            let options = pickKeybindPlayerNext.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.PLAYER_NEXT_BUTTON, option)
             }
             break
         case .PlayerSwipeL:
-            if let option = getKeybindOptionAction(options: pickKeybindPlayerSwipeL.dropDownView.optionArray, at: index)
+            let options = pickKeybindPlayerSwipeL.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.PLAYER_SWIPE_LEFT, option)
             }
             break
         case .PlayerSwipeR:
-            if let option = getKeybindOptionAction(options: pickKeybindPlayerSwipeR.dropDownView.optionArray, at: index)
+            let options = pickKeybindPlayerSwipeR.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.PLAYER_SWIPE_RIGHT, option)
             }
             break
         case .QPlayerPrevious:
-            if let option = getKeybindOptionAction(options: pickKeybindQPlayerPrevious.dropDownView.optionArray, at: index)
+            let options = pickKeybindQPlayerPrevious.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.QUICK_PLAYER_PREVIOUS_BUTTON, option)
             }
             break
         case .QPlayerNext:
-            if let option = getKeybindOptionAction(options: pickKeybindQPlayerNext.dropDownView.optionArray, at: index)
+            let options = pickKeybindQPlayerNext.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.QUICK_PLAYER_NEXT_BUTTON, option)
             }
             break
         case .LockPlayerPrevious:
-            if let option = getKeybindOptionAction(options: pickKeybindLockPlayerPrevious.dropDownView.optionArray, at: index)
+            let options = pickKeybindLockPlayerPrevious.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.LOCK_PLAYER_PREVIOUS_BUTTON, option)
             }
             break
         case .LockPlayerNext:
-            if let option = getKeybindOptionAction(options: pickKeybindLockPlayerNext.dropDownView.optionArray, at: index)
+            let options = pickKeybindLockPlayerNext.dropDownView.optionsUnformatted
+            if let option = getKeybindOptionAction(unformatted: options, at: index)
             {
                 self.onKeybindSelectCallback(.LOCK_PLAYER_NEXT_BUTTON, option)
             }
