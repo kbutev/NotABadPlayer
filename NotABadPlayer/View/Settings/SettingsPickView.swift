@@ -105,10 +105,10 @@ class SettingsPickView : UIView {
         titleLabel.text = title
     }
     
-    public func setPickOptions(options: [String]) {
+    public func setPickOptions(unformatted options: [String]) {
         let wasEmpty = dropDownView.options.count == 0
         
-        dropDownView.options = options
+        dropDownView.optionsUnformatted = options
         dropDownView.text = dropDownView.options.first
         
         if wasEmpty

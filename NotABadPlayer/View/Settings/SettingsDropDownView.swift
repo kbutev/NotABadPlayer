@@ -27,14 +27,25 @@ class SettingsDropDownView: DropDown {
         }
     }
     
+    private var _optionsUnformatted: [String] = []
+    
     // Options string values always remove their "_" occurances with space
     // Use @optionsUnformatted to retrieve the original values back
     public var options: [String] {
         get {
             return self.optionArray
         }
+    }
+    
+    // Options with their original values, no formatting
+    public var optionsUnformatted: [String] {
+        get {
+            return self._optionsUnformatted
+        }
         
         set {
+            self._optionsUnformatted = newValue
+            
             var values: [String] = []
             
             for string in newValue
@@ -43,20 +54,6 @@ class SettingsDropDownView: DropDown {
             }
             
             self.optionArray = values
-        }
-    }
-    
-    // Options with their original values, no formatting
-    public var optionsUnformatted: [String] {
-        get {
-            var values: [String] = []
-            
-            for string in self.optionArray
-            {
-                values.append(string.replacingOccurrences(of: optionsUnderscoreReplacement, with: "_"))
-            }
-            
-            return values
         }
     }
     
