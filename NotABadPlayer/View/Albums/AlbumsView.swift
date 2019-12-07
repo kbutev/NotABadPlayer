@@ -20,7 +20,7 @@ class AlbumsView : UIView
     
     private var flowLayout: AlbumsFlowLayout?
     
-    private var collectionActionDelegate : BaseAlbumsViewActionDelegate?
+    public var collectionActionDelegate : BaseAlbumsViewActionDelegate?
     
     public var collectionDataSource : BaseAlbumsViewDataSource? {
         get {
@@ -77,8 +77,9 @@ class AlbumsView : UIView
     }
     
     private func initialize() {
-        quickPlayerView = QuickPlayerView.create(owner: self)
-        collectionIndexerView = CollectionIndexerView()
+        self.quickPlayerView = QuickPlayerView.create(owner: self)
+        self.collectionActionDelegate = AlbumsViewActionDelegate(view: self)
+        self.collectionIndexerView = CollectionIndexerView()
     }
     
     override func didMoveToSuperview() {
@@ -117,7 +118,6 @@ class AlbumsView : UIView
         
         collectionView.collectionViewLayout = AlbumsFlowLayout(cellsPerColumn: AlbumsView.CELLS_PER_COLUMN)
         
-        self.collectionActionDelegate = AlbumsViewActionDelegate(view: self)
         collectionView.delegate = collectionActionDelegate
         
         // Indexer view setup

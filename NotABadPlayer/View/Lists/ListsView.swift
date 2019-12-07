@@ -72,7 +72,6 @@ class ListsView : UIView
     
     private func initialize() {
         self.quickPlayerView = QuickPlayerView.create(owner: self)
-        
         self.tableActionDelegate = ListsViewDelegate(view: self)
     }
     
