@@ -44,22 +44,22 @@ class CreateListView : UIView
     
     private var openedAlbum: CreateListAlbumCell?
     
-    private var addedTracksTableDelegate : CreateListViewAddedTracksActionDelegate?
+    private var addedTracksTableDelegate : BaseCreateListViewAddedTracksActionDelegate?
     
-    public var addedTracksTableDataSource : CreateListViewAddedTracksTableDataSource? {
+    public var addedTracksTableDataSource : BaseCreateListViewAddedTracksTableDataSource? {
         get {
-            return addedTracksTable.dataSource as? CreateListViewAddedTracksTableDataSource
+            return addedTracksTable.dataSource as? BaseCreateListViewAddedTracksTableDataSource
         }
         set {
             addedTracksTable.dataSource = newValue
         }
     }
     
-    private var albumsTableDelegate : CreateListViewAlbumsDelegate?
+    private var albumsTableDelegate : BaseCreateListViewAlbumsDelegate?
     
-    public var albumsTableDataSource : CreateListViewAlbumsDataSource? {
+    public var albumsTableDataSource : BaseCreateListViewAlbumsDataSource? {
         get {
-            return albumsTable.dataSource as? CreateListViewAlbumsDataSource
+            return albumsTable.dataSource as? BaseCreateListViewAlbumsDataSource
         }
         set {
             albumsTable.dataSource = newValue
@@ -259,7 +259,7 @@ extension CreateListView {
 }
 
 // Table data source
-class CreateListViewAddedTracksTableDataSource : NSObject, UITableViewDataSource
+class CreateListViewAddedTracksTableDataSource : NSObject, BaseCreateListViewAddedTracksTableDataSource
 {
     let audioInfo: AudioInfo
     let tracks: [AudioTrack]
@@ -299,7 +299,7 @@ class CreateListViewAddedTracksTableDataSource : NSObject, UITableViewDataSource
 }
 
 // Table action delegate
-class CreateListViewAddedTracksActionDelegate : NSObject, UITableViewDelegate
+class CreateListViewAddedTracksActionDelegate : NSObject, BaseCreateListViewAddedTracksActionDelegate
 {
     private weak var view: CreateListView?
     
@@ -313,7 +313,7 @@ class CreateListViewAddedTracksActionDelegate : NSObject, UITableViewDelegate
 }
 
 // Table data source
-class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
+class CreateListViewAlbumsDataSource : NSObject, BaseCreateListViewAlbumsDataSource
 {
     let albums: [AudioAlbum]
     let onOpenedAlbumTrackSelectionCallback: (UInt)->()
@@ -322,7 +322,7 @@ class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
     private var selectedAlbumIndex: Int = -1
     private var selectedAlbumCell: CreateListAlbumCell?
     private var selectedAlbumTracks: [CreateListAudioTrack] = []
-    private var selectedAlbumDataSource: CreateListAlbumCellDataSource?
+    private var selectedAlbumDataSource: BaseCreateListAlbumCellDataSource?
     
     private var addedTracks: [CreateListAudioTrack] = []
     
@@ -447,7 +447,7 @@ class CreateListViewAlbumsDataSource : NSObject, UITableViewDataSource
 }
 
 // Table action delegate
-class CreateListViewAlbumsDelegate : NSObject, UITableViewDelegate
+class CreateListViewAlbumsDelegate : NSObject, BaseCreateListViewAlbumsDelegate
 {
     private weak var view: CreateListView?
     
@@ -489,7 +489,7 @@ class CreateListViewAlbumsDelegate : NSObject, UITableViewDelegate
 }
 
 // Table data source
-class CreateListAlbumCellDataSource : NSObject, UITableViewDataSource
+class CreateListAlbumCellDataSource : NSObject, BaseCreateListAlbumCellDataSource
 {
     let tracks: [CreateListAudioTrack]
     
@@ -522,7 +522,7 @@ class CreateListAlbumCellDataSource : NSObject, UITableViewDataSource
 }
 
 // Table delegate
-class CreateListAlbumCellDelegate : NSObject, UITableViewDelegate
+class CreateListAlbumCellDelegate : NSObject, BaseCreateListAlbumCellDelegate
 {
     private weak var view: CreateListAlbumCell?
     

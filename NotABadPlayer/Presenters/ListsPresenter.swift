@@ -20,7 +20,7 @@ class ListsPresenter: BasePresenter
     
     private var playlists: [BaseAudioPlaylist] = []
     
-    private var collectionDataSource: ListsViewDataSource?
+    private var collectionDataSource: BaseListsViewDataSource?
     
     private var fetchOnlyOnce: Counter = Counter(identifier: String(describing: ListsPresenter.self))
     

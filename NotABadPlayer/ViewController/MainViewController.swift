@@ -297,7 +297,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
         
     }
     
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?) {
+    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
         
     }
     
