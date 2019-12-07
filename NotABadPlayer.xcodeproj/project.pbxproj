@@ -47,6 +47,7 @@
 		9949253C239BE2A90009FDD1 /* ListsViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949253B239BE2A90009FDD1 /* ListsViewProtocols.swift */; };
 		9949253E239BE6F20009FDD1 /* AlbumsViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949253D239BE6F20009FDD1 /* AlbumsViewProtocols.swift */; };
 		99492540239BE8690009FDD1 /* SearchViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949253F239BE8690009FDD1 /* SearchViewProtocols.swift */; };
+		99492542239BE90D0009FDD1 /* PlaylistViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99492541239BE90D0009FDD1 /* PlaylistViewProtocols.swift */; };
 		9949E52F228E9599002CDCC0 /* QuickPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949E52E228E9599002CDCC0 /* QuickPlayerService.swift */; };
 		9949E531228E9698002CDCC0 /* Looper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949E530228E9698002CDCC0 /* Looper.swift */; };
 		994E20FF2296D516002BA684 /* CollectionIndexerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994E20FE2296D516002BA684 /* CollectionIndexerView.swift */; };
@@ -181,6 +182,7 @@
 		9949253B239BE2A90009FDD1 /* ListsViewProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsViewProtocols.swift; sourceTree = "<group>"; };
 		9949253D239BE6F20009FDD1 /* AlbumsViewProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewProtocols.swift; sourceTree = "<group>"; };
 		9949253F239BE8690009FDD1 /* SearchViewProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewProtocols.swift; sourceTree = "<group>"; };
+		99492541239BE90D0009FDD1 /* PlaylistViewProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewProtocols.swift; sourceTree = "<group>"; };
 		9949E52E228E9599002CDCC0 /* QuickPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPlayerService.swift; sourceTree = "<group>"; };
 		9949E530228E9698002CDCC0 /* Looper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Looper.swift; sourceTree = "<group>"; };
 		994E20FE2296D516002BA684 /* CollectionIndexerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionIndexerView.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 		9909D6622299195000B4E637 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
+				99492541239BE90D0009FDD1 /* PlaylistViewProtocols.swift */,
 				99021E4C2281EF5C007B2BF7 /* PlaylistView.swift */,
 				99A0140C22821D1C0084E830 /* PlaylistView.xib */,
 				993B353422840D8C0003D150 /* PlaylistHeaderView.swift */,
@@ -845,6 +848,7 @@
 				990448D52399AA8600D09ED2 /* SafeMutableAudioPlaylist.swift in Sources */,
 				99021E462281EE2A007B2BF7 /* PlaylistViewController.swift in Sources */,
 				997C9448229AD68B00601D12 /* SettingsDropDownView.swift in Sources */,
+				99492542239BE90D0009FDD1 /* PlaylistViewProtocols.swift in Sources */,
 				992EC1ED225B6ED9007DDD9D /* SettingsViewController.swift in Sources */,
 				9949E531228E9698002CDCC0 /* Looper.swift in Sources */,
 				99A6CA7C22677C850071DC0D /* AppSettings.swift in Sources */,
