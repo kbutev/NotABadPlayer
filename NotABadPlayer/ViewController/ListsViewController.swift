@@ -13,7 +13,7 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     
     private let presenter: BasePresenter?
     
-    private var playlistsDataSource: ListsViewDataSource?
+    private var playlistsDataSource: BaseListsViewDataSource?
     
     private var subViewController: PlaylistViewController?
     private var subViewControllerPlaylistName: String = ""
@@ -144,7 +144,7 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?) {
+    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
         self.audioInfo = audioInfo
         self.playlistsDataSource = dataSource
         

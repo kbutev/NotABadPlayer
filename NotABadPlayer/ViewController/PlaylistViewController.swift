@@ -105,7 +105,7 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         self.baseView?.reloadData()
     }
     
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?) {
+    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
         
     }
     

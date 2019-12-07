@@ -45,8 +45,8 @@ class CreateListsViewController: UIViewController {
     
     private var playlistName: String = ""
     
-    private var addedTracksTableDataSource: CreateListViewAddedTracksTableDataSource?
-    private var albumsDataSource: CreateListViewAlbumsDataSource?
+    private var addedTracksTableDataSource: BaseCreateListViewAddedTracksTableDataSource?
+    private var albumsDataSource: BaseCreateListViewAlbumsDataSource?
     
     private var onOpenedAlbumTrackSelectionCallback: (UInt)->Void = {(index) in }
     private var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void = {(index) in }

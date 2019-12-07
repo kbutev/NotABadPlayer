@@ -25,11 +25,11 @@ class CreateListAlbumCell: UITableViewCell
     public var onOpenedAlbumTrackSelectionCallback: (UInt)->Void = {(index) in }
     public var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void = {(index) in }
     
-    private var delegate : CreateListAlbumCellDelegate?
+    private var delegate : BaseCreateListAlbumCellDelegate?
     
-    public var dataSource : CreateListAlbumCellDataSource? {
+    public var dataSource : BaseCreateListAlbumCellDataSource? {
         get {
-            return tracksTable.dataSource as? CreateListAlbumCellDataSource
+            return tracksTable.dataSource as? BaseCreateListAlbumCellDataSource
         }
         set {
             tracksTable.dataSource = newValue

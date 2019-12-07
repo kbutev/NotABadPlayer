@@ -17,7 +17,7 @@ protocol BaseViewDelegate : class {
     
     func onPlaylistSongsLoad(name: String, dataSource: PlaylistViewDataSource?, playingTrackIndex: UInt?)
     
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?)
+    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?)
     
     func openPlayerScreen(playlist: BaseAudioPlaylist)
     func updatePlayerScreen(playlist: BaseAudioPlaylist)

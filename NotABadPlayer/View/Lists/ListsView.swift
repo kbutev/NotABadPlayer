@@ -15,11 +15,11 @@ class ListsView : UIView
     
     private var initialized: Bool = false
     
-    private var tableActionDelegate : ListsViewDelegate?
+    public var tableActionDelegate : BaseListsViewDelegate?
     
-    private var tableDataSourceReal : ListsViewDataSource?
+    private var tableDataSourceReal : BaseListsViewDataSource?
     
-    public var tableDataSource : ListsViewDataSource? {
+    public var tableDataSource : BaseListsViewDataSource? {
         get {
             return self.tableDataSourceReal
         }
@@ -71,7 +71,9 @@ class ListsView : UIView
     }
     
     private func initialize() {
-        quickPlayerView = QuickPlayerView.create(owner: self)
+        self.quickPlayerView = QuickPlayerView.create(owner: self)
+        
+        self.tableActionDelegate = ListsViewDelegate(view: self)
     }
     
     override func didMoveToSuperview() {
@@ -132,7 +134,6 @@ class ListsView : UIView
         let nib = UINib(nibName: String(describing: ListsItemCell.self), bundle: nil)
         playlistsTable.register(nib, forCellReuseIdentifier: ListsItemCell.CELL_IDENTIFIER)
         
-        self.tableActionDelegate = ListsViewDelegate(view: self)
         playlistsTable.delegate = tableActionDelegate
         
         playlistsTable.dataSource = self
@@ -247,7 +248,7 @@ extension ListsView {
 }
 
 // Table data source
-class ListsViewDataSource : NSObject, UITableViewDataSource
+class ListsViewDataSource : NSObject, BaseListsViewDataSource
 {
     let audioInfo: AudioInfo
     var playlists: [BaseAudioPlaylist]
@@ -300,7 +301,7 @@ class ListsViewDataSource : NSObject, UITableViewDataSource
 }
 
 // Table delegate
-class ListsViewDelegate : NSObject, UITableViewDelegate
+class ListsViewDelegate : NSObject, BaseListsViewDelegate
 {
     private weak var view: ListsView?
     
