@@ -17,11 +17,11 @@ class PlaylistView : UIView
     
     private var flowLayout: PlaylistFlowLayout?
     
-    private var collectionActionDelegate: PlaylistViewActionDelegate?
+    public var collectionActionDelegate: BasePlaylistViewActionDelegate?
     
-    public var collectionDataSource : PlaylistViewDataSource? {
+    public var collectionDataSource : BasePlaylistViewDataSource? {
         get {
-            return collectionView.dataSource as? PlaylistViewDataSource
+            return collectionView.dataSource as? BasePlaylistViewDataSource
         }
         set {
             collectionView.dataSource = newValue
@@ -66,7 +66,8 @@ class PlaylistView : UIView
     }
     
     private func initialize() {
-        quickPlayerView = QuickPlayerView.create(owner: self)
+        self.quickPlayerView = QuickPlayerView.create(owner: self)
+        self.collectionActionDelegate = PlaylistViewActionDelegate(view: self)
     }
     
     override func didMoveToSuperview() {
@@ -119,7 +120,6 @@ class PlaylistView : UIView
         
         collectionView.collectionViewLayout = flowLayout!
         
-        self.collectionActionDelegate = PlaylistViewActionDelegate(view: self)
         collectionView.delegate = collectionActionDelegate
         
         collectionView.showsVerticalScrollIndicator = false
@@ -246,7 +246,7 @@ extension PlaylistView {
 }
 
 // Collection data source
-class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
+class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
 {
     private let audioInfo: AudioInfo
     private let playlist: BaseAudioPlaylist
@@ -382,7 +382,7 @@ class PlaylistViewDataSource : NSObject, UICollectionViewDataSource
 }
 
 // Collection delegate
-class PlaylistViewActionDelegate : NSObject, UICollectionViewDelegate
+class PlaylistViewActionDelegate : NSObject, BasePlaylistViewActionDelegate
 {
     private weak var view: PlaylistView?
     
