@@ -44,7 +44,8 @@
 		994046E1229EBEB700C6B789 /* SearchItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994046E0229EBEB700C6B789 /* SearchItemCell.swift */; };
 		994046E3229EBEC300C6B789 /* SearchItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 994046E2229EBEC300C6B789 /* SearchItemCell.xib */; };
 		994046E6229EBEF000C6B789 /* ListsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994046E5229EBEF000C6B789 /* ListsView.swift */; };
-		9949253C239BE2A90009FDD1 /* ListsProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949253B239BE2A90009FDD1 /* ListsProtocols.swift */; };
+		9949253C239BE2A90009FDD1 /* ListsViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949253B239BE2A90009FDD1 /* ListsViewProtocols.swift */; };
+		9949253E239BE6F20009FDD1 /* AlbumsViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949253D239BE6F20009FDD1 /* AlbumsViewProtocols.swift */; };
 		9949E52F228E9599002CDCC0 /* QuickPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949E52E228E9599002CDCC0 /* QuickPlayerService.swift */; };
 		9949E531228E9698002CDCC0 /* Looper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9949E530228E9698002CDCC0 /* Looper.swift */; };
 		994E20FF2296D516002BA684 /* CollectionIndexerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994E20FE2296D516002BA684 /* CollectionIndexerView.swift */; };
@@ -176,7 +177,8 @@
 		994046E0229EBEB700C6B789 /* SearchItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemCell.swift; sourceTree = "<group>"; };
 		994046E2229EBEC300C6B789 /* SearchItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchItemCell.xib; sourceTree = "<group>"; };
 		994046E5229EBEF000C6B789 /* ListsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsView.swift; sourceTree = "<group>"; };
-		9949253B239BE2A90009FDD1 /* ListsProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsProtocols.swift; sourceTree = "<group>"; };
+		9949253B239BE2A90009FDD1 /* ListsViewProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsViewProtocols.swift; sourceTree = "<group>"; };
+		9949253D239BE6F20009FDD1 /* AlbumsViewProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewProtocols.swift; sourceTree = "<group>"; };
 		9949E52E228E9599002CDCC0 /* QuickPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickPlayerService.swift; sourceTree = "<group>"; };
 		9949E530228E9698002CDCC0 /* Looper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Looper.swift; sourceTree = "<group>"; };
 		994E20FE2296D516002BA684 /* CollectionIndexerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionIndexerView.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 		9909D6612299193700B4E637 /* Albums */ = {
 			isa = PBXGroup;
 			children = (
+				9949253D239BE6F20009FDD1 /* AlbumsViewProtocols.swift */,
 				99194240227867BF00FF041E /* AlbumsView.swift */,
 				99A0140A228215430084E830 /* AlbumsView.xib */,
 				99194242227867CA00FF041E /* AlbumsCell.swift */,
@@ -526,7 +529,7 @@
 		994046E4229EBEE700C6B789 /* Lists */ = {
 			isa = PBXGroup;
 			children = (
-				9949253B239BE2A90009FDD1 /* ListsProtocols.swift */,
+				9949253B239BE2A90009FDD1 /* ListsViewProtocols.swift */,
 				994046E5229EBEF000C6B789 /* ListsView.swift */,
 				99F33F6B22A413840049DA68 /* ListsView.xib */,
 				99F33F6F22A419070049DA68 /* ListsItemCell.swift */,
@@ -801,7 +804,7 @@
 				99B2D9E922A444D6003BC592 /* CreateListView.swift in Sources */,
 				997C944A229AE30E00601D12 /* SettingsPickViewContentView.swift in Sources */,
 				99BC2C6C239963F10036D418 /* Counter.swift in Sources */,
-				9949253C239BE2A90009FDD1 /* ListsProtocols.swift in Sources */,
+				9949253C239BE2A90009FDD1 /* ListsViewProtocols.swift in Sources */,
 				991255372397E6A0003FE182 /* AudioTrackDateBuilder.swift in Sources */,
 				996393032260C00F0050F82A /* AudioPlayerObserver.swift in Sources */,
 				992FC78C22A54F8800411305 /* CreateListAddedTrackCell.swift in Sources */,
@@ -813,6 +816,7 @@
 				99D1AA9C23941CB000C82E9F /* StringUtilities.swift in Sources */,
 				994E20FF2296D516002BA684 /* CollectionIndexerView.swift in Sources */,
 				99F33F7022A419070049DA68 /* ListsItemCell.swift in Sources */,
+				9949253E239BE6F20009FDD1 /* AlbumsViewProtocols.swift in Sources */,
 				9909D6682299199600B4E637 /* SettingsView.swift in Sources */,
 				99F33F6E22A414F70049DA68 /* ListsPresenter.swift in Sources */,
 				99C633E922849EC800A2BF25 /* PlayerView.swift in Sources */,
