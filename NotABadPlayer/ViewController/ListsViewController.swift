@@ -13,6 +13,8 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     
     private let presenter: BasePresenter?
     
+    private var playlistsDataSource: ListsViewDataSource?
+    
     private var subViewController: PlaylistViewController?
     private var subViewControllerPlaylistName: String = ""
     
@@ -54,6 +56,16 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         
         baseView?.onPlaylistClickedCallback = { [weak self] (index) in
             self?.presenter?.onPlaylistItemClick(index: index)
+        }
+        
+        baseView?.onPrepareDeletePlaylistCallback = { [weak self] (index: UInt) -> Bool in
+            if let dataSource = self?.playlistsDataSource {
+                if index >= 0 && index < dataSource.count {
+                    return !dataSource.data(at: index).isTemporary
+                }
+            }
+            
+            return false
         }
         
         baseView?.onDidDeletePlaylistCallback = { [weak self] (index: UInt) -> Void in
@@ -134,9 +146,9 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     
     func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: ListsViewDataSource?) {
         self.audioInfo = audioInfo
+        self.playlistsDataSource = dataSource
         
         self.baseView?.tableDataSource = dataSource
-        
         self.baseView?.reloadData()
     }
     
