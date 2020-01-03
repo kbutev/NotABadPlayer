@@ -13,7 +13,11 @@ enum AudioTrackBuilderError: Error {
     case deserializationFailed(String)
 }
 
+typealias AudioTrackBuilderLatestVersion = AudioTrackV1
+
 class AudioTrackBuilder {
+    public static let LATEST_VERSION = AudioTrackBuilderLatestVersion.self
+    
     public static func start() -> BaseAudioTrackBuilderNode {
         return AudioTrackBuilderNode()
     }
@@ -23,7 +27,7 @@ class AudioTrackBuilder {
     }
     
     public static func buildLatestVersionFrom(serializedData :String) throws -> AudioTrack {
-        if let result: AudioTrackV1 = Serializing.deserialize(fromData: serializedData) {
+        if let result: AudioTrackBuilderLatestVersion = Serializing.deserialize(fromData: serializedData) {
             return result
         }
         
@@ -31,7 +35,7 @@ class AudioTrackBuilder {
     }
     
     public static func buildLatestVersionListFrom(serializedData :String) throws -> [AudioTrack] {
-        if let result: [AudioTrackV1] = Serializing.deserialize(fromData: serializedData) {
+        if let result: [AudioTrackBuilderLatestVersion] = Serializing.deserialize(fromData: serializedData) {
             return result
         }
         
@@ -62,11 +66,11 @@ protocol BaseAudioTrackBuilderNode {
 }
 
 class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
-    static let genericOrigin: AudioTrackV1 = AudioTrackV1()
+    static let genericOrigin = AudioTrackBuilderLatestVersion()
     static let genericDate: AudioTrackDateValue = AudioTrackDateValue()
     
     private var template: AudioTrack
-    private var track: AudioTrackV1
+    private var track: AudioTrackBuilderLatestVersion
     
     private var _dateAdded: AudioTrackDateValue = AudioTrackBuilderNode.genericDate
     private var _dateFirstPlayed: AudioTrackDateValue = AudioTrackBuilderNode.genericDate
@@ -158,7 +162,7 @@ class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
     }
     
     func reset() {
-        track = AudioTrackV1(template)
+        track = AudioTrackBuilderLatestVersion(template)
         _dateAdded = AudioTrackBuilderNode.genericDate
         _dateFirstPlayed = AudioTrackBuilderNode.genericDate
         _dateLastPlayed = AudioTrackBuilderNode.genericDate

@@ -22,10 +22,10 @@ class AudioPlaylistV1 : MutableAudioPlaylist {
     }
     
     override init(name: String,
-                     tracks: [AudioTrack],
-                     startWithTrackIndex: Int,
-                     startPlaying: Bool,
-                     isTemporary: Bool) throws {
+                  tracks: [AudioTrack],
+                  startWithTrackIndex: Int,
+                  startPlaying: Bool,
+                  isTemporary: Bool) throws {
         try super.init(name: name,
                        tracks: tracks,
                        startWithTrackIndex: startWithTrackIndex,

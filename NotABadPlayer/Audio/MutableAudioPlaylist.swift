@@ -75,10 +75,10 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     }
     
     init(name: String,
-                     tracks: [AudioTrack],
-                     startWithTrackIndex: Int,
-                     startPlaying: Bool,
-                     isTemporary: Bool) throws {
+         tracks: [AudioTrack],
+         startWithTrackIndex: Int,
+         startPlaying: Bool,
+         isTemporary: Bool) throws {
         guard let firstTrack = tracks.first else {
             fatalError("Given Playlist Track Must Not Be Empty")
         }
@@ -133,6 +133,16 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
                       startWithTrackIndex: 0,
                       startPlaying: false,
                       isTemporary: false)
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self._name = try container.decode(String.self, forKey: ._name)
+        self._tracks = try container.decode([AudioTrackBuilderLatestVersion].self, forKey: ._tracks)
+        self._playing = try container.decode(Bool.self, forKey: ._playing)
+        self._playingTrackPosition = try container.decode(Int.self, forKey: ._playingTrackPosition)
+        self._temporary = try container.decode(Bool.self, forKey: ._temporary)
     }
     
     static func == (lhs: MutableAudioPlaylist, rhs: MutableAudioPlaylist) -> Bool {
