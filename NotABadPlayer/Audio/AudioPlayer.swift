@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MediaPlayer
 import AVFoundation
 
 enum AudioPlayerError: Error {
@@ -22,17 +21,17 @@ class AudioPlayer : NSObject {
     static let shared = AudioPlayer()
     
     private let synchronous: DispatchQueue
+    private let playSync: DispatchQueue
     
-    var running: Bool {
+    var isRunning: Bool {
         get {
-            return self._audioInfo != nil
+            return synchronous.sync {
+                return self._audioInfo != nil
+            }
         }
     }
     
     private var audioSession: AVAudioSession = AVAudioSession.sharedInstance()
-    
-    private let remoteControl: MPRemoteCommandCenter = MPRemoteCommandCenter.shared()
-    private let remoteControlInfo: MPNowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
     
     private var player: AVAudioPlayer?
     
@@ -88,22 +87,21 @@ class AudioPlayer : NSObject {
     
     var volume: Int {
         get {
-            return _volume
+            return synchronous.sync {
+                return _volume
+            }
         }
         
         set {
-            if newValue < 0 {
-                self._volume = 0
-            } else if newValue > 100 {
-                self._volume = 100
-            } else {
-                self._volume = newValue
+            var value = newValue
+            
+            synchronous.sync {
+                value = value < 0 ? 0 : value
+                value = value > 100 ? 100 : value
+                self._volume = value
             }
             
-            if !self.muted
-            {
-                self.player?.volume = Float(self._volume) / 100
-            }
+            updateAVPlayerVolume(value)
         }
     }
     
@@ -113,11 +111,13 @@ class AudioPlayer : NSObject {
         get {
             checkIfPlayerIsInitialized()
             
-            return _audioInfo!
+            return synchronous.sync {
+                return _audioInfo!
+            }
         }
     }
     
-    private var observers: [AudioPlayerObserverValue] = []
+    private var _observers: [AudioPlayerObserverValue] = []
     
     var hasPlaylist: Bool {
         get {
@@ -129,12 +129,12 @@ class AudioPlayer : NSObject {
     
     private var safeMutablePlaylist: SafeMutableAudioPlaylist? {
         get {
-            return self.synchronous.sync {
+            return synchronous.sync {
                 return __unsafePlaylist
             }
         }
         set {
-            self.synchronous.sync {
+            synchronous.sync {
                 __unsafePlaylist = newValue
             }
         }
@@ -142,7 +142,7 @@ class AudioPlayer : NSObject {
     
     public var playlist: BaseAudioPlaylist? {
         get {
-            return self.safeMutablePlaylist?.copy()
+            return self.safeMutablePlaylist
         }
     }
     
@@ -166,21 +166,38 @@ class AudioPlayer : NSObject {
         }
     }
     
-    private (set) var playHistory: [AudioTrack] = []
+    public var isMuted: Bool {
+        get {
+            return synchronous.sync {
+                return _muted
+            }
+        }
+    }
     
-    private (set) var muted: Bool = false
+    private (set) var _muted: Bool = false
     
-    override private init() {
+    public var playerHistory: AudioPlayerHistory
+    private var remote: AudioPlayerRemote
+    
+    private init(_ remote: AudioPlayerRemote?=nil) {
         synchronous = DispatchQueue(label: "AudioPlayer.synchronous")
+        playSync = DispatchQueue(label: "AudioPlayer.synchronous.play")
+        self.playerHistory = AudioPlayerHistory()
+        self.remote = AudioPlayerRemote()
+        super.init()
+        self.playerHistory = AudioPlayerHistory(player: self)
+        self.remote = remote ?? AudioPlayerRemote(player: self)
     }
     
     func start(audioInfo: AudioInfo) {
-        if running
+        if self.isRunning
         {
             fatalError("[\(String(describing: AudioPlayer.self))] must not call start() twice")
         }
         
-        self._audioInfo = audioInfo
+        synchronous.sync {
+            self._audioInfo = audioInfo
+        }
         
         // Setup audio session
         do {
@@ -190,65 +207,8 @@ class AudioPlayer : NSObject {
             fatalError("[\(String(describing: AudioPlayer.self))] could not start audio session properly: \(e.localizedDescription)")
         }
         
-        // Setup remote control - user can control the audio from the lock screen
-        setupRemoteControl()
-        
         // Subscribe for general storage events
-        GeneralStorage.shared.attach(observer: self)
-    }
-    
-    private func setupRemoteControl() {
-        remoteControl.togglePlayPauseCommand.isEnabled = true
-        remoteControl.togglePlayPauseCommand.addTarget(handler: {event -> MPRemoteCommandHandlerStatus in
-            if self.hasPlaylist
-            {
-                self.pauseOrResume()
-                return .success
-            }
-            
-            return .commandFailed
-        })
-        
-        remoteControl.changePlaybackPositionCommand.isEnabled = true
-        remoteControl.changePlaybackPositionCommand.addTarget(handler: {event -> MPRemoteCommandHandlerStatus in
-            guard let event = event as? MPChangePlaybackPositionCommandEvent else
-            {
-                return .commandFailed
-            }
-            
-            if self.hasPlaylist
-            {
-                let time = event.positionTime as Double
-                
-                self.seekTo(seconds: time)
-                
-                return .success
-            }
-            
-            return .commandFailed
-        })
-        
-        remoteControl.skipBackwardCommand.isEnabled = false
-        remoteControl.skipBackwardCommand.addTarget(handler: {event -> MPRemoteCommandHandlerStatus in
-            return self._remoteActionBackwards(event: event)
-        })
-        
-        remoteControl.skipForwardCommand.isEnabled = false
-        remoteControl.skipForwardCommand.addTarget(handler: {event -> MPRemoteCommandHandlerStatus in
-            return self._remoteActionForwards(event: event)
-        })
-        
-        remoteControl.previousTrackCommand.isEnabled = false
-        remoteControl.previousTrackCommand.addTarget(handler: {event -> MPRemoteCommandHandlerStatus in
-            return self._remoteActionPrevious(event: event)
-        })
-        
-        remoteControl.nextTrackCommand.isEnabled = false
-        remoteControl.nextTrackCommand.addTarget(handler: {event -> MPRemoteCommandHandlerStatus in
-            return self._remoteActionNext(event: event)
-        })
-        
-        setupRemoteSkipCommands()
+        GeneralStorage.shared.attach(observer: remote)
     }
     
     public func play(playlist: BaseAudioPlaylist) throws {
@@ -264,10 +224,19 @@ class AudioPlayer : NSObject {
         }
         
         do {
-            try play(track: playlist.playingTrack)
             let newPlaylist = try SafeMutableAudioPlaylist.build(mutablePlaylist!)
-            self.safeMutablePlaylist = newPlaylist
-            newPlaylist.playCurrent()
+            
+            try playSync.sync {
+                try play(track: playlist.playingTrack)
+                
+                if let current = self.safeMutablePlaylist {
+                    current.set(newPlaylist)
+                } else {
+                    self.safeMutablePlaylist = newPlaylist
+                }
+                
+                newPlaylist.playCurrent()
+            }
         } catch let error {
             throw error
         }
@@ -276,7 +245,7 @@ class AudioPlayer : NSObject {
     private func play(track: AudioTrack, previousTrack: AudioTrack?=nil, usePlayHistory: Bool=true) throws {
         checkIfPlayerIsInitialized()
         
-        let wasPlaying = isPlaying
+        let wasPlaying = self.isPlaying
         
         guard let url = track.filePath else {
             Logging.log(AudioPlayer.self, "Error: cannot play track with nil url path")
@@ -324,10 +293,10 @@ class AudioPlayer : NSObject {
         
         if usePlayHistory
         {
-            addToPlayHistory(newTrack: track)
+            playerHistory.addToPlayHistory(newTrack: track)
         }
         
-        updateRemoteCenterInfo(track: track)
+        remote.updateRemoteCenterInfo(track: track)
     }
     
     func resume() {
@@ -353,7 +322,7 @@ class AudioPlayer : NSObject {
             
             self.onResume(track: playlist.playingTrack)
             
-            updateRemoteCenterInfo(track: playlist.playingTrack)
+            remote.updateRemoteCenterInfo(track: playlist.playingTrack)
         }
     }
     
@@ -372,7 +341,7 @@ class AudioPlayer : NSObject {
             
             self.onPause(track: playlist.playingTrack)
             
-            updateRemoteCenterInfo(track: playlist.playingTrack)
+            remote.updateRemoteCenterInfo(track: playlist.playingTrack)
         }
     }
     
@@ -557,6 +526,12 @@ class AudioPlayer : NSObject {
         }
     }
     
+    func playPreviousInPlayHistory() {
+        checkIfPlayerIsInitialized()
+        
+        playerHistory.playPreviousInPlayHistory()
+    }
+    
     func jumpBackwards(seconds: Double) {
         checkIfPlayerIsInitialized()
         
@@ -577,7 +552,7 @@ class AudioPlayer : NSObject {
         
         if let playlist = self.safeMutablePlaylist
         {
-            updateRemoteCenterInfo(track: playlist.playingTrack)
+            remote.updateRemoteCenterInfo(track: playlist.playingTrack)
         }
     }
     
@@ -601,7 +576,7 @@ class AudioPlayer : NSObject {
         
         if let playlist = self.safeMutablePlaylist
         {
-            updateRemoteCenterInfo(track: playlist.playingTrack)
+            remote.updateRemoteCenterInfo(track: playlist.playingTrack)
         }
     }
     
@@ -612,7 +587,7 @@ class AudioPlayer : NSObject {
         
         if let playlist = self.safeMutablePlaylist
         {
-            updateRemoteCenterInfo(track: playlist.playingTrack)
+            remote.updateRemoteCenterInfo(track: playlist.playingTrack)
         }
     }
     
@@ -625,7 +600,7 @@ class AudioPlayer : NSObject {
         
         if let playlist = self.safeMutablePlaylist
         {
-            updateRemoteCenterInfo(track: playlist.playingTrack)
+            remote.updateRemoteCenterInfo(track: playlist.playingTrack)
         }
     }
     
@@ -641,37 +616,52 @@ class AudioPlayer : NSObject {
         self.volume = self.volume - 10
     }
     
+    private func updateAVPlayerVolume(_ volume: Int) {
+        var value = Float(volume) / 100
+        
+        if self.isMuted {
+            value = 0
+        }
+        
+        synchronous.sync {
+            self.player?.volume = value
+        }
+    }
+    
     func mute() {
         checkIfPlayerIsInitialized()
         
-        if !self.muted
+        if !self.isMuted
         {
             Logging.log(AudioPlayer.self, "Mute")
             
-            self.muted = true
+            synchronous.sync {
+                self._muted = true
+            }
             
-            self.player?.volume = 0
+            updateAVPlayerVolume(0)
         }
     }
     
     func unmute() {
         checkIfPlayerIsInitialized()
         
-        if self.muted
+        if self.isMuted
         {
             Logging.log(AudioPlayer.self, "Unmute")
             
-            self.muted = false
+            synchronous.sync {
+                self._muted = false
+            }
             
-            // Set the player volume to equal @_volume
-            self.volume = self._volume
+            updateAVPlayerVolume(self.volume)
         }
     }
     
     func muteOrUnmute() {
         checkIfPlayerIsInitialized()
         
-        if self.muted
+        if self.isMuted
         {
             self.unmute()
         }
@@ -682,7 +672,7 @@ class AudioPlayer : NSObject {
     }
     
     private func checkIfPlayerIsInitialized() {
-        if !self.running
+        if !self.isRunning
         {
             fatalError("[\(String(describing: AudioPlayer.self))] being used before being initialized, initialize() has never been called")
         }
@@ -692,19 +682,27 @@ class AudioPlayer : NSObject {
 // Component - Observers
 extension AudioPlayer {
     func attach(observer: AudioPlayerObserver) {
-        if observers.contains(where: {(element) -> Bool in element.value === observer})
-        {
-            return
+        synchronous.sync {
+            if _observers.contains(where: {(element) -> Bool in element.value === observer})
+            {
+                return
+            }
+            
+            _observers.append(AudioPlayerObserverValue(observer))
         }
-        
-        observers.append(AudioPlayerObserverValue(observer))
     }
     
     func detach(observer: AudioPlayerObserver) {
-        observers.removeAll(where: {(element) -> Bool in element.value === observer})
+        synchronous.sync {
+            _observers.removeAll(where: {(element) -> Bool in element.value === observer})
+        }
     }
     
     private func onPlay(track: AudioTrack) {
+        let observers = synchronous.sync {
+            return _observers
+        }
+        
         for observer in observers
         {
             observer.value?.onPlayerPlay(current: track)
@@ -712,6 +710,10 @@ extension AudioPlayer {
     }
     
     private func onFinish() {
+        let observers = synchronous.sync {
+            return _observers
+        }
+        
         for observer in observers
         {
             observer.value?.onPlayerFinish()
@@ -719,6 +721,10 @@ extension AudioPlayer {
     }
     
     private func onStop() {
+        let observers = synchronous.sync {
+            return _observers
+        }
+        
         for observer in observers
         {
             observer.value?.onPlayerStop()
@@ -726,6 +732,10 @@ extension AudioPlayer {
     }
     
     private func onResume(track: AudioTrack) {
+        let observers = synchronous.sync {
+            return _observers
+        }
+        
         for observer in observers
         {
             observer.value?.onPlayerResume(track: track)
@@ -733,6 +743,10 @@ extension AudioPlayer {
     }
     
     private func onPause(track: AudioTrack) {
+        let observers = synchronous.sync {
+            return _observers
+        }
+        
         for observer in observers
         {
             observer.value?.onPlayerPause(track: track)
@@ -740,6 +754,10 @@ extension AudioPlayer {
     }
     
     private func onPlayOrderChange(order: AudioPlayOrder) {
+        let observers = synchronous.sync {
+            return _observers
+        }
+        
         for observer in observers
         {
             observer.value?.onPlayOrderChange(order: order)
@@ -747,78 +765,13 @@ extension AudioPlayer {
     }
     
     private func onVolumeChanged(volume: Double) {
+        let observers = synchronous.sync {
+            return _observers
+        }
+        
         for observer in observers
         {
             observer.value?.onVolumeChanged(volume: volume)
-        }
-    }
-}
-
-// Component - Play history
-extension AudioPlayer {
-    public func setPlayHistory(_ list:[AudioTrack]) {
-        playHistory = list
-    }
-    
-    private func addToPlayHistory(newTrack: AudioTrack) {
-        // Make sure that the history tracks are unique
-        playHistory.removeAll(where: { (element) -> Bool in element == newTrack})
-        
-        playHistory.insert(newTrack, at: 0)
-        
-        // Do not exceed the play history capacity
-        let capacity = GeneralStorage.shared.getPlayerPlayedHistoryCapacity()
-        
-        while playHistory.count > capacity
-        {
-            playHistory.removeLast()
-        }
-    }
-    
-    public func playPreviousInPlayHistory() {
-        checkIfPlayerIsInitialized()
-        
-        stop()
-        
-        if (playHistory.count <= 1)
-        {
-            return
-        }
-        
-        playHistory.removeFirst()
-        
-        guard let previousTrack = playHistory.first else {
-            return
-        }
-        
-        var newPlaylist = previousTrack.source.getSourcePlaylist(audioInfo: audioInfo, playingTrack: previousTrack)
-        
-        if newPlaylist == nil
-        {
-            let playlistName = Text.value(.PlaylistRecentlyPlayed)
-            
-            var node = AudioPlaylistBuilder.start()
-            node.name = playlistName
-            node.playingTrack = previousTrack
-            
-            do {
-                newPlaylist = try node.build()
-            } catch {
-                Logging.log(AudioPlayer.self, "Error: failed to build playlist from previous track")
-                newPlaylist = nil
-            }
-        }
-        
-        // Play playlist with specific track from play history
-        if let resultPlaylist = newPlaylist
-        {
-            do {
-                try play(playlist: resultPlaylist)
-            } catch let error {
-                Logging.log(AudioPlayer.self, "Error: could not play previous in play history, \(error.localizedDescription)")
-                stop()
-                return
-            }
         }
     }
 }
@@ -837,153 +790,5 @@ extension AudioPlayer : AVAudioPlayerDelegate {
     
     func audioPlayerBeginInterruption(_ player: AVAudioPlayer) {
         self.onStop()
-    }
-}
-
-// Remote control component and general storage extension
-extension AudioPlayer: GeneralStorageObserver {
-    func onAppAppearanceChange() {
-        
-    }
-    
-    func onTabCachingPolicyChange(_ value: TabsCachingPolicy) {
-        
-    }
-    
-    func onKeybindChange(forInput: ApplicationInput) {
-        reloadRemoteControls()
-    }
-    
-    func onResetDefaultSettings() {
-        
-    }
-    
-    private func reloadRemoteControls() {
-        setupRemoteSkipCommands()
-    }
-    
-    private func updateRemoteCenterInfo(track: AudioTrack) {
-        var nowPlaying: [String : Any] = [:]
-        
-        nowPlaying[MPMediaItemPropertyAlbumTitle] = track.albumTitle
-        nowPlaying[MPMediaItemPropertyTitle] = track.title
-        
-        if let artwork = track.albumCover
-        {
-            nowPlaying[MPMediaItemPropertyArtwork] = artwork
-        }
-        
-        nowPlaying[MPMediaItemPropertyPlaybackDuration] = Float(track.durationInSeconds)
-        nowPlaying[MPNowPlayingInfoPropertyElapsedPlaybackTime] = Float(currentPositionSec)
-        
-        remoteControlInfo.nowPlayingInfo = nowPlaying
-    }
-    
-    private func setupRemoteSkipCommands() {
-        remoteControl.previousTrackCommand.isEnabled = false
-        remoteControl.nextTrackCommand.isEnabled = false
-        remoteControl.skipBackwardCommand.isEnabled = false
-        remoteControl.skipForwardCommand.isEnabled = false
-        
-        setupCommand(previous: true)
-        setupCommand(previous: false)
-    }
-    
-    private func setupCommand(previous: Bool) {
-        let input = previous ? ApplicationInput.LOCK_PLAYER_PREVIOUS_BUTTON : ApplicationInput.LOCK_PLAYER_NEXT_BUTTON
-        let action = GeneralStorage.shared.getKeybindAction(forInput: input)
-        
-        switch action {
-        case .PREVIOUS:
-            remoteControl.previousTrackCommand.isEnabled = true
-            break
-        case .NEXT:
-            remoteControl.nextTrackCommand.isEnabled = true
-            break
-        case .BACKWARDS_8:
-            remoteControl.skipBackwardCommand.isEnabled = true
-            remoteControl.skipBackwardCommand.preferredIntervals = [NSNumber(8)]
-            break
-        case .BACKWARDS_15:
-            remoteControl.skipBackwardCommand.isEnabled = true
-            remoteControl.skipBackwardCommand.preferredIntervals = [NSNumber(15)]
-            break
-        case .BACKWARDS_30:
-            remoteControl.skipBackwardCommand.isEnabled = true
-            remoteControl.skipBackwardCommand.preferredIntervals = [NSNumber(30)]
-            break
-        case .BACKWARDS_60:
-            remoteControl.skipBackwardCommand.isEnabled = true
-            remoteControl.skipBackwardCommand.preferredIntervals = [NSNumber(60)]
-            break
-        case .FORWARDS_8:
-            remoteControl.skipForwardCommand.isEnabled = true
-            remoteControl.skipForwardCommand.preferredIntervals = [NSNumber(8)]
-            break
-        case .FORWARDS_15:
-            remoteControl.skipForwardCommand.isEnabled = true
-            remoteControl.skipForwardCommand.preferredIntervals = [NSNumber(15)]
-            break
-        case .FORWARDS_30:
-            remoteControl.skipForwardCommand.isEnabled = true
-            remoteControl.skipForwardCommand.preferredIntervals = [NSNumber(30)]
-            break
-        case .FORWARDS_60:
-            remoteControl.skipForwardCommand.isEnabled = true
-            remoteControl.skipForwardCommand.preferredIntervals = [NSNumber(60)]
-            break
-        default:
-            break
-        }
-    }
-    
-    @objc func _remoteActionPrevious(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if self.safeMutablePlaylist != nil
-        {
-            do {
-                try playPrevious()
-            } catch {
-                
-            }
-            return .success
-        }
-        
-        return .commandFailed
-    }
-    
-    @objc func _remoteActionNext(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if self.safeMutablePlaylist != nil
-        {
-            do {
-                try playNext()
-            } catch {
-                
-            }
-            return .success
-        }
-        
-        return .commandFailed
-    }
-    
-    @objc func _remoteActionBackwards(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if let playlist = self.safeMutablePlaylist
-        {
-            let _ = Keybinds.shared.evaluateInput(input: .LOCK_PLAYER_PREVIOUS_BUTTON)
-            updateRemoteCenterInfo(track: playlist.playingTrack)
-            return .success
-        }
-        
-        return .commandFailed
-    }
-    
-    @objc func _remoteActionForwards(event:MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
-        if let playlist = self.safeMutablePlaylist
-        {
-            let _ = Keybinds.shared.evaluateInput(input: .LOCK_PLAYER_NEXT_BUTTON)
-            updateRemoteCenterInfo(track: playlist.playingTrack)
-            return .success
-        }
-        
-        return .commandFailed
     }
 }

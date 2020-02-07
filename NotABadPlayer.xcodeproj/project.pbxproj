@@ -116,6 +116,8 @@
 		99F33F6E22A414F70049DA68 /* ListsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F33F6D22A414F70049DA68 /* ListsPresenter.swift */; };
 		99F33F7022A419070049DA68 /* ListsItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F33F6F22A419070049DA68 /* ListsItemCell.swift */; };
 		99F33F7222A4191E0049DA68 /* ListsItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F33F7122A4191E0049DA68 /* ListsItemCell.xib */; };
+		99F6177923EDEBD2003F33FC /* AudioPlayerRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F6177823EDEBD2003F33FC /* AudioPlayerRemote.swift */; };
+		99F6177B23EDEE95003F33FC /* AudioPlayerHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F6177A23EDEE95003F33FC /* AudioPlayerHistory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,6 +254,8 @@
 		99F33F6D22A414F70049DA68 /* ListsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsPresenter.swift; sourceTree = "<group>"; };
 		99F33F6F22A419070049DA68 /* ListsItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsItemCell.swift; sourceTree = "<group>"; };
 		99F33F7122A4191E0049DA68 /* ListsItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListsItemCell.xib; sourceTree = "<group>"; };
+		99F6177823EDEBD2003F33FC /* AudioPlayerRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerRemote.swift; sourceTree = "<group>"; };
+		99F6177A23EDEE95003F33FC /* AudioPlayerHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerHistory.swift; sourceTree = "<group>"; };
 		B195FBF5C733777245BC7C64 /* Pods-NotABadPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotABadPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		BB4B74DBECF55DAE5230633C /* Pods-NotABadPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotABadPlayer.release.xcconfig"; path = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		DD871B545DBB27E8C1D6F59B /* Pods-NotABadPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotABadPlayer.debug.xcconfig"; path = "Target Support Files/Pods-NotABadPlayer/Pods-NotABadPlayer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -453,6 +457,8 @@
 				991255342397E5BD003FE182 /* AudioTrackDate.swift */,
 				996392FE2260BC0B0050F82A /* AudioInfo.swift */,
 				996393042260C0430050F82A /* AudioPlayer.swift */,
+				99F6177A23EDEE95003F33FC /* AudioPlayerHistory.swift */,
+				99F6177823EDEBD2003F33FC /* AudioPlayerRemote.swift */,
 				996393022260C00F0050F82A /* AudioPlayerObserver.swift */,
 				99D1AA9D2394329400C82E9F /* AudioTrackBuilder.swift */,
 				99D1AAA32394467C00C82E9F /* AudioPlaylistBuilder.swift */,
@@ -777,6 +783,7 @@
 				992EC1E7225B6E65007DDD9D /* SearchViewController.swift in Sources */,
 				992FC79022A5503A00411305 /* CreateListAlbumCell.swift in Sources */,
 				9960343A22805E77003A0DFE /* Logging.swift in Sources */,
+				99F6177923EDEBD2003F33FC /* AudioPlayerRemote.swift in Sources */,
 				9971379A229C6A8C009E8F35 /* SettingsPresenter.swift in Sources */,
 				99021E4A2281EEEA007B2BF7 /* PlaylistPresenter.swift in Sources */,
 				996F260222A7BD3D00BE199E /* PlayerSideVolumeBar.swift in Sources */,
@@ -847,6 +854,7 @@
 				99C633ED2284A36800A2BF25 /* PlayerPresenter.swift in Sources */,
 				996392FD2260ACEB0050F82A /* MutableAudioPlaylist.swift in Sources */,
 				99D1AA9A23941BEE00C82E9F /* BaseAudioTrack.swift in Sources */,
+				99F6177B23EDEE95003F33FC /* AudioPlayerHistory.swift in Sources */,
 				996F260E22A7F6AA00BE199E /* PlayerSeekBar.swift in Sources */,
 				992EA212228FF7C7000C5592 /* AlertWindows.swift in Sources */,
 				990448D52399AA8600D09ED2 /* SafeMutableAudioPlaylist.swift in Sources */,

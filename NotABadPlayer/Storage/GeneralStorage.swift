@@ -217,7 +217,7 @@ class GeneralStorage {
     }
     
     func savePlayerPlayHistoryState() {
-        if let playHistory = Serializing.serialize(object: AudioPlayer.shared.playHistory)
+        if let playHistory = Serializing.serialize(object: AudioPlayer.shared.playerHistory.playHistory)
         {
             storage.set(playHistory, forKey: "play_history")
         }
@@ -228,7 +228,7 @@ class GeneralStorage {
         {
             do {
                 let result:[AudioTrack] = try AudioTrackBuilder.buildLatestVersionListFrom(serializedData: value)
-                AudioPlayer.shared.setPlayHistory(result)
+                AudioPlayer.shared.playerHistory.setPlayHistory(result)
                 return
             } catch {
                 Logging.log(GeneralStorage.self, "Error: could not restore play history for the player from storage")
