@@ -142,7 +142,7 @@ class AudioPlayer : NSObject {
     
     public var playlist: BaseAudioPlaylist? {
         get {
-            return self.safeMutablePlaylist
+            return self.safeMutablePlaylist?.copy()
         }
     }
     
@@ -229,11 +229,7 @@ class AudioPlayer : NSObject {
             try playSync.sync {
                 try play(track: playlist.playingTrack)
                 
-                if let current = self.safeMutablePlaylist {
-                    current.set(newPlaylist)
-                } else {
-                    self.safeMutablePlaylist = newPlaylist
-                }
+                self.safeMutablePlaylist = newPlaylist
                 
                 newPlaylist.playCurrent()
             }
