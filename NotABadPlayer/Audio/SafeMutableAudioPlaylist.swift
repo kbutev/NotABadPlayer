@@ -8,10 +8,13 @@
 
 import Foundation
 
+// Wraps a single playlist that can be mutated at any time.
+// Very memory/cpu effecient, use copy() to quickly get a copy of the latest playlist data.
+// Thread safe: yes
 class SafeMutableAudioPlaylist: MutableAudioPlaylist {
     private let _lock = NSLock()
     
-    private var _write: MutableAudioPlaylist
+    private let _write: MutableAudioPlaylist
     private var _read: MutableAudioPlaylist
     
     public static func build(_ prototype: MutableAudioPlaylist) throws -> SafeMutableAudioPlaylist {
@@ -28,11 +31,11 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
         fatalError("init(from:) has not been implemented")
     }
     
-    public func set(_ newValue: MutableAudioPlaylist) {
+    public func copy() -> MutableAudioPlaylist {
         lock()
-        _write = newValue
+        let list = _read
         unlock()
-        self.updateReadPlaylist()
+        return list
     }
     
     override public var isPlaying: Bool {

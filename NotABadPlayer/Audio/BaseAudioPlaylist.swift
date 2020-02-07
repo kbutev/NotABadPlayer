@@ -8,6 +8,8 @@
 
 import Foundation
 
+// Describes a playlist model.
+// Thread safe: no
 protocol BaseAudioPlaylist {
     var name: String { get }
     var tracks: [AudioTrack] { get }
