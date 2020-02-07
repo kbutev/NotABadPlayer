@@ -68,7 +68,7 @@ class ListsPresenter: BasePresenter
                 }
             }
             
-            let recentlyPlayedTracks = AudioPlayer.shared.playHistory
+            let recentlyPlayedTracks = AudioPlayer.shared.playerHistory.playHistory
             
             if recentlyPlayedTracks.count > 0
             {
