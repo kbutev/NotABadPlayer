@@ -13,4 +13,12 @@ class Logging
     class func log<T>(_ source: T.Type, _ message: String) {
         NSLog("[\(String(describing: T.self))] \(message)")
     }
+    
+    class func warning<T>(_ source: T.Type, _ message: String) {
+        NSLog("[\(String(describing: T.self))][WARNING] \(message)")
+    }
+    
+    class func error<T>(_ source: T.Type, _ message: String) {
+        NSLog("[\(String(describing: T.self))][ERROR] \(message)")
+    }
 }
