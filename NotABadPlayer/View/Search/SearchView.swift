@@ -10,6 +10,8 @@ import UIKit
 
 class SearchView: UIView
 {
+    public static let SHINY_STAR_IMAGE = "shiny_star"
+    public static let FAVORITES_ICON_SIZE = CGRect(x: 0, y: 1, width: 12, height: 12)
     public static let TOP_MARGIN: CGFloat = 8
     public static let HORIZONTAL_MARGIN: CGFloat = 8
     
@@ -24,7 +26,17 @@ class SearchView: UIView
             return collectionView.dataSource as? BaseSearchViewDataSource
         }
         set {
+            newValue?.favoritesChecker = self.favoritesChecker
             collectionView.dataSource = newValue
+        }
+    }
+    
+    public weak var favoritesChecker : BaseSearchFavoritesChecker? {
+        get {
+            return (collectionView.dataSource as? BaseSearchViewDataSource)?.favoritesChecker
+        }
+        set {
+            (collectionView.dataSource as? BaseSearchViewDataSource)?.favoritesChecker = newValue
         }
     }
     
@@ -256,6 +268,8 @@ extension SearchView {
 // Collection data source
 class SearchViewDataSource : NSObject, BaseSearchViewDataSource
 {
+    public weak var favoritesChecker : BaseSearchFavoritesChecker?
+    
     let audioInfo: AudioInfo
     let searchResults: [AudioTrack]
     
@@ -278,11 +292,12 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
         }
         
         let item = searchResults[indexPath.row]
+        let isFavorite = favoritesChecker?.isMarkedFavorite(item: item) ?? false
         
         cell.trackAlbumCover.image = item.albumCoverImage
         cell.titleText.text = item.title
         cell.albumTitle.text = item.albumTitle
-        cell.durationText.text = item.duration
+        cell.durationText.attributedText = buildAttributedDescription(duration: item.duration, isFavorite: isFavorite)
         
         // Highlight cells that represent the currently playing track
         if let playerPlaylist = AudioPlayer.shared.playlist
@@ -316,6 +331,42 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
     
     public func playSelectionAnimation() {
         self.playSelectionAnimationNextTime = true
+    }
+    
+    func buildAttributedTitle(_ title: String, isFavorite: Bool=false) -> NSAttributedString {
+        if !isFavorite {
+            return NSMutableAttributedString(string: title)
+        }
+        
+        let fullString = NSMutableAttributedString()
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(named: PlaylistView.SHINY_STAR_IMAGE)
+        imageAttachment.bounds = PlaylistView.FAVORITES_ICON_SIZE
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        fullString.append(imageString)
+        fullString.append(NSAttributedString(string: title))
+        
+        return fullString
+    }
+    
+    func buildAttributedDescription(duration: String, isFavorite: Bool=false) -> NSAttributedString {
+        if !isFavorite {
+            return NSMutableAttributedString(string: duration)
+        }
+        
+        let fullString = NSMutableAttributedString()
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(named: PlaylistView.SHINY_STAR_IMAGE)
+        imageAttachment.bounds = PlaylistView.FAVORITES_ICON_SIZE
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        fullString.append(imageString)
+        fullString.append(NSAttributedString(string: " " + duration))
+        
+        return fullString
     }
 }
 

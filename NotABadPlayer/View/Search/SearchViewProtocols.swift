@@ -10,9 +10,15 @@ import UIKit
 
 protocol BaseSearchViewDataSource : UICollectionViewDataSource
 {
+    var favoritesChecker : BaseSearchFavoritesChecker? { get set }
+    
     func playSelectionAnimation()
 }
 
 protocol BaseSearchViewActionDelegate : UICollectionViewDelegate {
     
+}
+
+protocol BaseSearchFavoritesChecker : NSObject {
+    func isMarkedFavorite(item: AudioTrack) -> Bool
 }

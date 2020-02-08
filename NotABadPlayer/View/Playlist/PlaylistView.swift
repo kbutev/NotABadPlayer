@@ -360,6 +360,41 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         return 1
     }
     
+    private func getPlaylistDescription() -> String {
+        var totalDuration: Double = 0
+        
+        for track in playlist.tracks
+        {
+            totalDuration += track.durationInSeconds
+        }
+        
+        return Text.value(.ListDescription, "\(playlist.tracks.count)", "\(StringUtilities.secondsToString(totalDuration))")
+    }
+    
+    private func setImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
+        if let image = playlist.firstTrack.albumCoverImage
+        {
+            header.setArtCoverImage(image)
+        }
+        else
+        {
+            hideImage(header: header, collectionView: collectionView)
+        }
+    }
+    
+    private func hideImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
+        header.removeArtCoverImage()
+        
+        if let flowLayout = collectionView.collectionViewLayout as? PlaylistFlowLayout
+        {
+            flowLayout.headerSize = PlaylistHeaderView.HEADER_SIZE_IMAGELESS
+        }
+    }
+    
+    public func playSelectionAnimation() {
+        self.playSelectionAnimationNextTime = true
+    }
+    
     func buildAttributedTitle(_ title: String, isFavorite: Bool=false) -> NSAttributedString {
         if !isFavorite {
             return NSMutableAttributedString(string: title)
@@ -394,41 +429,6 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         fullString.append(NSAttributedString(string: " " + duration))
         
         return fullString
-    }
-    
-    private func getPlaylistDescription() -> String {
-        var totalDuration: Double = 0
-        
-        for track in playlist.tracks
-        {
-            totalDuration += track.durationInSeconds
-        }
-        
-        return Text.value(.ListDescription, "\(playlist.tracks.count)", "\(StringUtilities.secondsToString(totalDuration))")
-    }
-    
-    private func setImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
-        if let image = playlist.firstTrack.albumCoverImage
-        {
-            header.setArtCoverImage(image)
-        }
-        else
-        {
-            hideImage(header: header, collectionView: collectionView)
-        }
-    }
-    
-    private func hideImage(header: PlaylistHeaderView, collectionView: UICollectionView) {
-        header.removeArtCoverImage()
-        
-        if let flowLayout = collectionView.collectionViewLayout as? PlaylistFlowLayout
-        {
-            flowLayout.headerSize = PlaylistHeaderView.HEADER_SIZE_IMAGELESS
-        }
-    }
-    
-    public func playSelectionAnimation() {
-        self.playSelectionAnimationNextTime = true
     }
 }
 
