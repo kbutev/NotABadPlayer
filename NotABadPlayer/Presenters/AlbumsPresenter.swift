@@ -121,7 +121,7 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
         self.delegate?.openPlayerScreen(playlist: playlist)
     }
     
-    func contextAudioTrack() -> AudioTrack? {
+    func contextAudioTrackLyrics() -> String? {
         return nil
     }
     

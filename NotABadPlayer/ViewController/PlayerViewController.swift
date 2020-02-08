@@ -52,9 +52,9 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
                 return
             }
             
-            if let track = strongSelf.presenter?.contextAudioTrack() {
-                if !track.lyrics.isEmpty {
-                    strongSelf.baseView?.showLyrics(track.lyrics)
+            if let trackLyrics = strongSelf.presenter?.contextAudioTrackLyrics() {
+                if !trackLyrics.isEmpty {
+                    strongSelf.baseView?.showLyrics(trackLyrics)
                 } else {
                     strongSelf.displayNoLyricsToast()
                 }
