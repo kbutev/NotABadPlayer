@@ -161,14 +161,7 @@ class QuickPlayerView : UIView
     }
     
     func updatePlayButtonState(playing: Bool) {
-        if playing
-        {
-            playMediaButton.image = UIImage(named: "media_pause")
-        }
-        else
-        {
-            playMediaButton.image = UIImage(named: "media_play")
-        }
+        playMediaButton.isHighlighted = playing
     }
     
     func updatePlayOrderButtonState(order: AudioPlayOrder) {

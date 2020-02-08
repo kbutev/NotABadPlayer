@@ -10,17 +10,20 @@ import UIKit
 
 class PlayerView : UIView
 {
-    public static let MEDIA_BAR_MAX_VALUE: Double = 100
-    public static let LYRICS_VISIBLE_OPACITY: CGFloat = 0.9
+    public let MEDIA_BAR_MAX_VALUE: Double = 100
+    public let FAVORITE_ICON_CLICK_SIZE = CGSize(width: 48, height: 48)
+    public let FAVORITE_ICON_SIZE = CGSize(width: 32, height: 32)
+    public let LYRICS_VISIBLE_OPACITY: CGFloat = 0.9
     
-    public var onCoverImageTap: ()->Void = {() in }
-    public var onLyricsTap: ()->Void = {() in }
+    public var onCoverImageTapCallback: ()->Void = {() in }
+    public var onLyricsTapCallback: ()->Void = {() in }
     public var onPlayerSeekCallback: (Double)->Void = {(percentage) in }
     public var onPlayerButtonClickCallback: (ApplicationInput)->Void = {(input) in }
     public var onPlayOrderButtonClickCallback: ()->Void = {() in }
     public var onSwipeDownCallback: ()->Void = {() in }
     public var onSideVolumeBarSeekCallback: (Double)->Void = {(percentage) in }
     public var onSideVolumeBarSpeakerButtonClickCallback: ()->Void = {() in }
+    public var onFavoritesCallback: ()->Void = {() in }
     
     @IBOutlet weak var primaryStackView: UIStackView!
     
@@ -40,6 +43,8 @@ class PlayerView : UIView
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var playlistLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var favoriteImageButton: UIView!
+    @IBOutlet weak var favoriteImage: UIImageView!
     
     @IBOutlet weak var mediaSeekLayout: UIView!
     @IBOutlet weak var seekBar: PlayerSeekBar!
@@ -111,20 +116,10 @@ class PlayerView : UIView
         bottomStackView.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
         bottomStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
         
-        // Text layout setup (is inside the bottom stack)
+        // Text layout setup (fills 0.5x of the bottom stack)
         textLayoutView.translatesAutoresizingMaskIntoConstraints = false
         textLayoutView.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
-        textLayoutView.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.3).isActive = true
-        
-        // Media seek layout setup (is inside the bottom stack)
-        mediaSeekLayout.translatesAutoresizingMaskIntoConstraints = false
-        mediaSeekLayout.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
-        mediaSeekLayout.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.4).isActive = true
-        
-        // Media buttons stack setup (is inside the bottom stack)
-        mediaButtonStack.translatesAutoresizingMaskIntoConstraints = false
-        mediaButtonStack.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
-        mediaButtonStack.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.3).isActive = true
+        textLayoutView.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.5).isActive = true
         
         // Title label setup
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -141,6 +136,24 @@ class PlayerView : UIView
         artistLabel.topAnchor.constraint(equalTo: playlistLabel.bottomAnchor).isActive = true
         artistLabel.widthAnchor.constraint(equalTo: textLayoutView.widthAnchor).isActive = true
         
+        // Favorite image button setup
+        favoriteImageButton.translatesAutoresizingMaskIntoConstraints = false
+        favoriteImageButton.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 4).isActive = true
+        favoriteImageButton.centerXAnchor.constraint(equalTo: textLayoutView.centerXAnchor).isActive = true
+        favoriteImageButton.widthAnchor.constraint(equalToConstant: FAVORITE_ICON_CLICK_SIZE.width).isActive = true
+        favoriteImageButton.heightAnchor.constraint(equalToConstant: FAVORITE_ICON_CLICK_SIZE.height).isActive = true
+        
+        favoriteImage.translatesAutoresizingMaskIntoConstraints = false
+        favoriteImage.centerXAnchor.constraint(equalTo: favoriteImageButton.centerXAnchor).isActive = true
+        favoriteImage.centerYAnchor.constraint(equalTo: favoriteImageButton.centerYAnchor).isActive = true
+        favoriteImage.widthAnchor.constraint(equalToConstant: FAVORITE_ICON_SIZE.width).isActive = true
+        favoriteImage.heightAnchor.constraint(equalToConstant: FAVORITE_ICON_SIZE.height).isActive = true
+        
+        // Media seek layout setup (fills 0.25x of the bottom stack)
+        mediaSeekLayout.translatesAutoresizingMaskIntoConstraints = false
+        mediaSeekLayout.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
+        mediaSeekLayout.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.25).isActive = true
+        
         // Seek bar setup
         seekBar.translatesAutoresizingMaskIntoConstraints = false
         seekBar.widthAnchor.constraint(equalTo: mediaSeekLayout.widthAnchor).isActive = true
@@ -150,6 +163,11 @@ class PlayerView : UIView
         seekTimeStackView.translatesAutoresizingMaskIntoConstraints = false
         seekTimeStackView.widthAnchor.constraint(equalTo: mediaSeekLayout.widthAnchor).isActive = true
         seekTimeStackView.bottomAnchor.constraint(equalTo: mediaSeekLayout.bottomAnchor).isActive = true
+        
+        // Media buttons stack setup (fills 0.25x the bottom stack)
+        mediaButtonStack.translatesAutoresizingMaskIntoConstraints = false
+        mediaButtonStack.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
+        mediaButtonStack.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.25).isActive = true
         
         // User input setup
         seekBar.onSeekCallback = {[weak self] (progress) in
@@ -186,6 +204,11 @@ class PlayerView : UIView
         self.playOrderMediaButton.isUserInteractionEnabled = true
         self.playOrderMediaButton.addGestureRecognizer(gestureTap)
         
+        gestureTap = UITapGestureRecognizer(target: self, action: #selector(actionFavorite(sender:)))
+        gestureTap.numberOfTapsRequired = 1
+        self.favoriteImageButton.isUserInteractionEnabled = true
+        self.favoriteImageButton.addGestureRecognizer(gestureTap)
+        
         var gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeLeft(sender:)))
         gestureSwipe.direction = .left
         self.addGestureRecognizer(gestureSwipe)
@@ -203,7 +226,7 @@ class PlayerView : UIView
         weak var weakSelf = self
         
         self.trackLyricsIsAnimating = true
-        self.trackLyricsText.alpha = PlayerView.LYRICS_VISIBLE_OPACITY
+        self.trackLyricsText.alpha = LYRICS_VISIBLE_OPACITY
         
         UIView.animate(withDuration: TimeInterval(0.5), animations: {
             weakSelf?.trackLyricsText.alpha = 0
@@ -216,6 +239,8 @@ class PlayerView : UIView
     }
     
     public func showLyrics(_ text: String) {
+        let LYRICS_VISIBLE_OPACITY = self.LYRICS_VISIBLE_OPACITY
+        
         weak var weakSelf = self
         
         self.trackLyricsText.text = text
@@ -226,7 +251,7 @@ class PlayerView : UIView
         self.trackLyricsText.alpha = 0
         
         UIView.animate(withDuration: TimeInterval(0.5), animations: {
-            weakSelf?.trackLyricsText.alpha = PlayerView.LYRICS_VISIBLE_OPACITY
+            weakSelf?.trackLyricsText.alpha = LYRICS_VISIBLE_OPACITY
         }) { (value) in
             weakSelf?.trackLyricsIsAnimating = false
             weakSelf?.trackLyricsText.isScrollEnabled = true
@@ -300,8 +325,8 @@ class PlayerView : UIView
         }
     }
     
-    public func updateUIState(player: AudioPlayer, track: AudioTrack) {
-        updateMediaInfo(player: player, track: track)
+    public func updateUIState(player: AudioPlayer, track: AudioTrack, isFavorite: Bool) {
+        updateMediaInfo(player: player, track: track, isFavorite: isFavorite)
         updateSoftUIState(player: player)
     }
     
@@ -313,7 +338,7 @@ class PlayerView : UIView
         // Seek bar update
         let duration = player.durationSec
         let currentPosition = player.currentPositionSec
-        let newSeekBarPosition = (currentPosition / duration) * PlayerView.MEDIA_BAR_MAX_VALUE
+        let newSeekBarPosition = (currentPosition / duration) * MEDIA_BAR_MAX_VALUE
         
         if seekBar.progressValue != newSeekBarPosition
         {
@@ -326,7 +351,7 @@ class PlayerView : UIView
         updatePlayOrderButtonState(order: player.playOrder)
     }
     
-    public func updateMediaInfo(player: AudioPlayer, track: AudioTrack) {
+    public func updateMediaInfo(player: AudioPlayer, track: AudioTrack, isFavorite: Bool) {
         self.artCoverImage.image = track.albumCoverImage
         
         self.titleLabel.text = track.title
@@ -337,17 +362,17 @@ class PlayerView : UIView
         
         // Update play button state
         updatePlayButtonState(player: player)
+        
+        // Update favorite state
+        markFavorite(isFavorite)
     }
     
     public func updatePlayButtonState(player: AudioPlayer) {
-        if player.isPlaying
-        {
-            playMediaButton.image = UIImage(named: "media_pause")
-        }
-        else
-        {
-            playMediaButton.image = UIImage(named: "media_play")
-        }
+        playMediaButton.isHighlighted = player.isPlaying
+    }
+    
+    public func markFavorite(_ value: Bool) {
+        self.favoriteImage.isHighlighted = value
     }
     
     public func updatePlayOrderButtonState(order: AudioPlayOrder) {
@@ -388,9 +413,9 @@ extension PlayerView {
         }
         
         if !self.isLyricsShown {
-            self.onCoverImageTap()
+            self.onCoverImageTapCallback()
         } else {
-            self.onLyricsTap()
+            self.onLyricsTapCallback()
         }
     }
     
@@ -422,6 +447,10 @@ extension PlayerView {
         UIAnimations.animateImageClicked(self.playOrderMediaButton)
         
         self.onPlayOrderButtonClickCallback()
+    }
+    
+    @objc public func actionFavorite(sender: Any) {
+        self.onFavoritesCallback()
     }
     
     @objc public func actionSwipeLeft(sender: Any) {

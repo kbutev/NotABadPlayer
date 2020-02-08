@@ -127,6 +127,10 @@ class PlaylistPresenter: BasePresenter
         
     }
     
+    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
+        return false
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         
     }

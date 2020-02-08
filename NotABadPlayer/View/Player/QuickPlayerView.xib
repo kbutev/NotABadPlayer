@@ -59,7 +59,7 @@
                                             <rect key="frame" x="289.5" y="0.0" width="289.5" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_play" translatesAutoresizingMaskIntoConstraints="NO" id="g4l-RX-6cP">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_play" highlightedImage="media_pause" translatesAutoresizingMaskIntoConstraints="NO" id="g4l-RX-6cP">
                                             <rect key="frame" x="579" y="0.0" width="290" height="48"/>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </imageView>
@@ -114,6 +114,7 @@
         <image name="cover_album_unknown" width="48" height="48"/>
         <image name="media_next" width="48" height="48"/>
         <image name="media_order_forwards" width="48" height="48"/>
+        <image name="media_pause" width="48" height="48"/>
         <image name="media_play" width="48" height="48"/>
         <image name="media_playlist" width="48" height="48"/>
         <image name="media_previous" width="48" height="48"/>

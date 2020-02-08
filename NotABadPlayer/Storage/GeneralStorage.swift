@@ -15,6 +15,8 @@ class GeneralStorage {
     
     public static let CURRENT_VERSION = "1.1"
     
+    public let favorites: FavoritesStorage
+    
     private var _storage: UserDefaults?
     
     private var storage: UserDefaults {
@@ -32,7 +34,7 @@ class GeneralStorage {
     private var observers: [GeneralStorageObserverValue] = []
     
     init() {
-        
+        self.favorites = FavoritesStorage()
     }
     
     func initialize(storage: UserDefaults=UserDefaults.standard) {

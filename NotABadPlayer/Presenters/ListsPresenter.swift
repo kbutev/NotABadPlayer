@@ -157,6 +157,10 @@ class ListsPresenter: BasePresenter
         
     }
     
+    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
+        return false
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         if index >= self.playlists.count
         {
