@@ -27,7 +27,7 @@ class AudioTrackBuilder {
     }
     
     public static func buildLatestVersionFrom(serializedData :String) throws -> AudioTrack {
-        if let result: AudioTrackBuilderLatestVersion = Serializing.deserialize(fromData: serializedData) {
+        if let result: AudioTrackBuilderLatestVersion = Serializing.jsonDeserialize(fromString: serializedData) {
             return result
         }
         
@@ -35,7 +35,7 @@ class AudioTrackBuilder {
     }
     
     public static func buildLatestVersionListFrom(serializedData :String) throws -> [AudioTrack] {
-        if let result: [AudioTrackBuilderLatestVersion] = Serializing.deserialize(fromData: serializedData) {
+        if let result: [AudioTrackBuilderLatestVersion] = Serializing.jsonDeserialize(fromString: serializedData) {
             return result
         }
         
