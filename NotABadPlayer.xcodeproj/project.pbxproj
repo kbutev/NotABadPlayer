@@ -91,6 +91,7 @@
 		99B9CA5D2278859100000888 /* AlbumsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B9CA5C2278859100000888 /* AlbumsPresenter.swift */; };
 		99B9CA5F2278859800000888 /* BasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B9CA5E2278859800000888 /* BasePresenter.swift */; };
 		99BC2C6C239963F10036D418 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BC2C6B239963F10036D418 /* Counter.swift */; };
+		99BC3ABC23EEDF340074B081 /* FavoritesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BC3ABB23EEDF340074B081 /* FavoritesStorage.swift */; };
 		99C633E722849E2E00A2BF25 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C633E622849E2E00A2BF25 /* PlayerViewController.swift */; };
 		99C633E922849EC800A2BF25 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C633E822849EC800A2BF25 /* PlayerView.swift */; };
 		99C633EB22849ECF00A2BF25 /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99C633EA22849ECF00A2BF25 /* PlayerView.xib */; };
@@ -229,6 +230,7 @@
 		99B9CA5C2278859100000888 /* AlbumsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsPresenter.swift; sourceTree = "<group>"; };
 		99B9CA5E2278859800000888 /* BasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePresenter.swift; sourceTree = "<group>"; };
 		99BC2C6B239963F10036D418 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
+		99BC3ABB23EEDF340074B081 /* FavoritesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesStorage.swift; sourceTree = "<group>"; };
 		99C633E622849E2E00A2BF25 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		99C633E822849EC800A2BF25 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		99C633EA22849ECF00A2BF25 /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerView.xib; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 			isa = PBXGroup;
 			children = (
 				996F119C226766C40064D6DA /* GeneralStorage.swift */,
+				99BC3ABB23EEDF340074B081 /* FavoritesStorage.swift */,
 				99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */,
 				996393002260BD360050F82A /* AudioLibrary.swift */,
 			);
@@ -856,6 +859,7 @@
 				99D1AA9A23941BEE00C82E9F /* BaseAudioTrack.swift in Sources */,
 				99F6177B23EDEE95003F33FC /* AudioPlayerHistory.swift in Sources */,
 				996F260E22A7F6AA00BE199E /* PlayerSeekBar.swift in Sources */,
+				99BC3ABC23EEDF340074B081 /* FavoritesStorage.swift in Sources */,
 				992EA212228FF7C7000C5592 /* AlertWindows.swift in Sources */,
 				990448D52399AA8600D09ED2 /* SafeMutableAudioPlaylist.swift in Sources */,
 				99021E462281EE2A007B2BF7 /* PlaylistViewController.swift in Sources */,
