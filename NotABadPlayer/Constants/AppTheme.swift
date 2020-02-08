@@ -143,14 +143,14 @@ class AppAppearanceColors
         .PLAYER_SEEK_BAR_BORDER : Colors.DARK_GRAY,
         .PLAYER_SEEK_BAR_THUMB : Colors.WHITE,
         .PLAYER_SEEK_BAR_THUMB_BORDER : Colors.BLACK,
-        .PLAYLIST_PLAYING_TRACK : Colors.GREEN,
+        .PLAYLIST_PLAYING_TRACK : Colors.LIGHT_BLUE,
         .SEARCH_FILTER_PICKER_SELECTION : Colors.BLACK,
         .SEARCH_FILTER_PICKER_TINT : Colors.YELLOW,
         .INDEXER_CHAR_COLOR : Colors.WHITE,
         .ALBUM_COVER_TITLE : Colors.WHITE,
         .ALBUM_COVER_ARTIST : Colors.PAPER_WHITE,
         .ALBUM_COVER_DESCRIPTION : Colors.YELLOW,
-        .ANIMATION_CLICK_EFFECT : Colors.BLUE
+        .ANIMATION_CLICK_EFFECT : Colors.GREEN
     ]
     public static let MIX : [ColorValue:UIColor] = [
         .PLAYER_BACKGROUND : Colors.DARK_GRAY,
