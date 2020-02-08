@@ -195,10 +195,6 @@ class AudioLibrary : AudioInfo {
     }
     
     func favoriteTracks() -> [AudioTrack] {
-        return updateFavoriteTracksIfNecessary()
-    }
-    
-    private func updateFavoriteTracksIfNecessary() -> [AudioTrack] {
         loadIfNecessary()
         
         let lastUpdateTime = synchronous.sync {
@@ -215,10 +211,17 @@ class AudioLibrary : AudioInfo {
             }
         }
         
+        let tracks = updateFavoriteTracksIfNecessary()
+        
         synchronous.sync {
+            self.markedFavoriteTracks = tracks
             self.lastTimeFavoritesUpdated = lastUpdateOfStorage
         }
         
+        return tracks
+    }
+    
+    private func updateFavoriteTracksIfNecessary() -> [AudioTrack] {
         let mediaQuery: MPMediaQuery = MPMediaQuery.albums()
         
         guard let result = mediaQuery.items else
@@ -239,6 +242,11 @@ class AudioLibrary : AudioInfo {
         
         for item in result
         {
+            if tracks.count >= AudioLibrary.FAVORITE_TRACKS_CAP {
+                break
+            }
+            
+            // Build tracks whose path matches the path of the favorite item
             guard let path = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL else {
                 continue
             }
@@ -252,14 +260,6 @@ class AudioLibrary : AudioInfo {
             }
             
             tracks.append(track)
-            
-            if tracks.count >= AudioLibrary.FAVORITE_TRACKS_CAP {
-                break
-            }
-        }
-        
-        synchronous.sync {
-            self.markedFavoriteTracks = tracks
         }
         
         return tracks
@@ -285,15 +285,15 @@ class AudioLibrary : AudioInfo {
         
         for item in result
         {
+            if tracks.count >= cap {
+                break
+            }
+            
             guard let track = buildTrackFromMPItem(item, reuseNode: node) else {
                 continue
             }
             
             tracks.append(track)
-            
-            if tracks.count >= cap {
-                break
-            }
         }
         
         return tracks

@@ -151,6 +151,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         searchFilterPickedIndex = filterIndex
         
         baseView?.collectionDataSource = dataSource
+        baseView?.favoritesChecker = self
         baseView?.setTextFieldText(query)
         baseView?.setTextFilterIndex(filterIndex)
         baseView?.updateSearchResults(resultsCount: resultsCount, searchTip: searchTip)
@@ -205,5 +206,11 @@ extension SearchViewController : QuickPlayerObserver {
     
     func updatePlayOrderButtonState(order: AudioPlayOrder) {
         baseView?.updatePlayOrderButtonState(order: order)
+    }
+}
+
+extension SearchViewController : BaseSearchFavoritesChecker {
+    func isMarkedFavorite(item: AudioTrack) -> Bool {
+        return GeneralStorage.shared.favorites.isMarkedFavorite(item)
     }
 }
