@@ -60,6 +60,10 @@ class SettingsPresenter: BasePresenter
         
     }
     
+    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
+        return false
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         
     }

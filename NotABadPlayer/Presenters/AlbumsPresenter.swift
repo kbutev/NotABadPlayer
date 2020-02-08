@@ -159,6 +159,10 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
         
     }
     
+    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
+        return false
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         
     }

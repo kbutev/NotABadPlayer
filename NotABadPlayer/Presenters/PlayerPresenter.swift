@@ -88,6 +88,20 @@ class PlayerPresenter: BasePresenter
         AudioPlayer.shared.volume = Int(value)
     }
     
+    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
+        let track = self.playlist.playingTrack
+        
+        let isFavorite = GeneralStorage.shared.favorites.isMarkedFavorite(track)
+        
+        if isFavorite {
+            GeneralStorage.shared.favorites.unmarkFavorite(track: track)
+        } else {
+            GeneralStorage.shared.favorites.markFavorite(track: track)
+        }
+        
+        return !isFavorite
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         
     }

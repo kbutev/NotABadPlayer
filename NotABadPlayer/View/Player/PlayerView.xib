@@ -52,6 +52,17 @@
                                                     <color key="textColor" red="1" green="0.93849887456700354" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PGn-vD-NCF">
+                                                    <rect key="frame" x="83" y="0.0" width="240" height="128"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dark_star" highlightedImage="shiny_star" translatesAutoresizingMaskIntoConstraints="NO" id="Ypt-2x-nnc">
+                                                            <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
@@ -95,7 +106,7 @@
                                                     <rect key="frame" x="81" y="232" width="81.5" height="48"/>
                                                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_play" translatesAutoresizingMaskIntoConstraints="NO" id="CXe-ug-Hj2">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_play" highlightedImage="media_pause" translatesAutoresizingMaskIntoConstraints="NO" id="CXe-ug-Hj2">
                                                     <rect key="frame" x="162.5" y="232" width="81" height="48"/>
                                                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </imageView>
@@ -138,6 +149,8 @@
                 <outlet property="bottomStackLayout" destination="11a-fx-Xvm" id="b6j-pV-x0D"/>
                 <outlet property="bottomStackView" destination="qpH-qD-OrJ" id="DJg-Yu-QI3"/>
                 <outlet property="currentTimeLabel" destination="Hdb-qE-dXh" id="0ah-bu-GIy"/>
+                <outlet property="favoriteImage" destination="Ypt-2x-nnc" id="3x4-99-9qf"/>
+                <outlet property="favoriteImageButton" destination="PGn-vD-NCF" id="xoh-dz-bJl"/>
                 <outlet property="mediaButtonStack" destination="mrj-RN-2OL" id="wfW-s5-Hnz"/>
                 <outlet property="mediaSeekLayout" destination="nmW-y9-eRY" id="Udu-Fc-Aeb"/>
                 <outlet property="nextMediaButton" destination="Q19-uJ-v5I" id="JQG-5G-lcq"/>
@@ -171,10 +184,13 @@
     </objects>
     <resources>
         <image name="cover_album_unknown" width="48" height="48"/>
+        <image name="dark_star" width="64" height="64"/>
         <image name="media_next" width="48" height="48"/>
         <image name="media_order_forwards" width="48" height="48"/>
+        <image name="media_pause" width="48" height="48"/>
         <image name="media_play" width="48" height="48"/>
         <image name="media_previous" width="48" height="48"/>
         <image name="media_recall" width="48" height="48"/>
+        <image name="shiny_star" width="64" height="64"/>
     </resources>
 </document>

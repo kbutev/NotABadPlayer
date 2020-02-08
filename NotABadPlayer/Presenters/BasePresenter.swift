@@ -26,6 +26,7 @@ protocol BasePresenter
     func onPlayOrderButtonClick()
     func onOpenPlaylistButtonClick()
     func onPlayerVolumeSet(value: Double)
+    func onMarkOrUnmarkContextTrackFavorite() -> Bool
     
     func onPlaylistItemDelete(index: UInt)
     

@@ -47,8 +47,9 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     }
     
     private func setup() {
-        self.baseView?.onCoverImageTap = {[weak self] () in
-            guard let strongSelf = self else {
+        self.baseView?.onCoverImageTapCallback = {[weak self] () in
+            guard let strongSelf = self else
+            {
                 return
             }
             
@@ -61,7 +62,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
             }
         }
         
-        self.baseView?.onLyricsTap = {[weak self] () in
+        self.baseView?.onLyricsTapCallback = {[weak self] () in
             self?.baseView?.showCoverImage()
         }
         
@@ -85,6 +86,17 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
         self.baseView?.onSideVolumeBarSeekCallback = {[weak self] (percentage) in
             self?.presenter?.onPlayerVolumeSet(value: percentage)
+        }
+        
+        self.baseView?.onFavoritesCallback = {[weak self] () in
+            guard let strongSelf = self else
+            {
+                return
+            }
+            
+            let result = strongSelf.presenter?.onMarkOrUnmarkContextTrackFavorite() ?? false
+            
+            strongSelf.baseView?.markFavorite(result)
         }
     }
     
@@ -133,7 +145,9 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     }
     
     func updatePlayerScreen(playlist: BaseAudioPlaylist) {
-        self.baseView?.updateUIState(player: AudioPlayer.shared, track: playlist.playingTrack)
+        let playingTrack = playlist.playingTrack
+        
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: playingTrack, isFavorite: isMarkedFavorite(playingTrack))
     }
     
     func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
@@ -181,11 +195,15 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
             Toast.show(message: Text.value(.PlayerLyricsNotAvailable), controller: self, duration: 1)
         }
     }
+    
+    private func isMarkedFavorite(_ track: AudioTrack) -> Bool {
+        return GeneralStorage.shared.favorites.isMarkedFavorite(track)
+    }
 }
 
 extension PlayerViewController : AudioPlayerObserver {
     func onPlayerPlay(current: AudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayer.shared, track: current)
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: current, isFavorite: isMarkedFavorite(current))
     }
     
     func onPlayerFinish() {
@@ -197,11 +215,11 @@ extension PlayerViewController : AudioPlayerObserver {
     }
     
     func onPlayerPause(track: AudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track)
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track, isFavorite: isMarkedFavorite(track))
     }
     
     func onPlayerResume(track: AudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track)
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track, isFavorite: isMarkedFavorite(track))
     }
     
     func onPlayOrderChange(order: AudioPlayOrder) {
