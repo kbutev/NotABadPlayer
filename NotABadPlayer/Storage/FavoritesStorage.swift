@@ -28,6 +28,8 @@ class FavoritesStorage {
     
     public var lastTimeUpdated: Date {
         get {
+            updateLocalStorageIfNecessary()
+            
             return synchronous.sync {
                 return _lastTimeUpdated
             }
@@ -75,23 +77,22 @@ class FavoritesStorage {
     
     @discardableResult
     func markFavorite(track: AudioTrack, forced: Bool) throws -> FavoriteStorageItem {
+        updateLocalStorageIfNecessary()
+        
         if let already = markedFavoriteItem(for: track) {
             return already
         }
         
-        updateLocalStorageIfNecessary()
-        
         let item = FavoriteStorageItem(track)
         
         try synchronous.sync {
-            if forced {
-                if !_favorites.isEmpty {
-                    _favorites.remove(at: 0)
-                }
-            } else {
-                if _favorites.count > FavoritesStorage.CAPACITY {
+            if _favorites.count > FavoritesStorage.CAPACITY {
+                // Make sure the capacity is not exceeded
+                if !forced {
                     throw FavoritesStorageError.outOfCapacity
                 }
+                
+                _favorites.remove(at: 0)
             }
             
             _favorites.append(item)
@@ -104,22 +105,12 @@ class FavoritesStorage {
         return item
     }
     
-    func unmarkLastFavorite() {
-        synchronous.sync {
-            if !_favorites.isEmpty {
-                _favorites.remove(at: 0)
-            }
-        }
-    }
-    
     func unmarkFavorite(track: AudioTrack) {
-        if markedFavoriteItem(for: track) == nil {
-            return
-        }
-        
         updateLocalStorageIfNecessary()
         
-        let item = FavoriteStorageItem(track)
+        guard let item = markedFavoriteItem(for: track) else {
+            return
+        }
         
         synchronous.sync {
             _favorites.removeAll(where: { (element) -> Bool in
@@ -130,6 +121,16 @@ class FavoritesStorage {
         }
         
         saveLocalStorage()
+    }
+    
+    func unmarkLastFavorite() {
+        updateLocalStorageIfNecessary()
+        
+        synchronous.sync {
+            if !_favorites.isEmpty {
+                _favorites.remove(at: 0)
+            }
+        }
     }
     
     private func updateLocalStorageIfNecessary() {
