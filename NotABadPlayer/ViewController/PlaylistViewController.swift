@@ -14,6 +14,8 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
     private let presenter: BasePresenter?
     private let rootView: BaseViewDelegate?
     
+    private var favoritesChecker: BasePlaylistFavoritesChecker?
+    
     init(presenter: BasePresenter, rootView: BaseViewDelegate) {
         self.presenter = presenter
         self.rootView = rootView
@@ -95,6 +97,7 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
     
     func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
         self.baseView?.collectionDataSource = dataSource
+        self.baseView?.favoritesChecker = self
         self.baseView?.updateOverlayTitle(title: name)
         
         if let scrollToIndex = playingTrackIndex
@@ -175,5 +178,11 @@ extension PlaylistViewController : QuickPlayerObserver {
     
     func updatePlayOrderButtonState(order: AudioPlayOrder) {
         baseView?.updatePlayOrderButtonState(order: order)
+    }
+}
+
+extension PlaylistViewController : BasePlaylistFavoritesChecker {
+    func isMarkedFavorite(item: AudioTrack) -> Bool {
+        return GeneralStorage.shared.favorites.isMarkedFavorite(item)
     }
 }

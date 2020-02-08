@@ -9,6 +9,7 @@
 import UIKit
 
 protocol BasePlaylistViewDataSource : UICollectionViewDataSource {
+    var favoritesChecker : BasePlaylistFavoritesChecker? { get set }
     var headerSize: CGSize { get }
     
     func playSelectionAnimation()
@@ -16,4 +17,8 @@ protocol BasePlaylistViewDataSource : UICollectionViewDataSource {
 
 protocol BasePlaylistViewActionDelegate : NSObject, UICollectionViewDelegate {
     
+}
+
+protocol BasePlaylistFavoritesChecker : NSObject {
+    func isMarkedFavorite(item: AudioTrack) -> Bool
 }

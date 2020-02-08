@@ -10,6 +10,8 @@ import UIKit
 
 class PlaylistView : UIView
 {
+    public static let SHINY_STAR_IMAGE = "shiny_star"
+    public static let FAVORITES_ICON_SIZE = CGRect(x: 0, y: 1, width: 10, height: 10)
     static let HEADER_IDENTIFIER = "header"
     static let ALBUM_TITLE_OVERLAY_HEIGHT: CGFloat = 48
     
@@ -24,7 +26,17 @@ class PlaylistView : UIView
             return collectionView.dataSource as? BasePlaylistViewDataSource
         }
         set {
+            newValue?.favoritesChecker = self.favoritesChecker
             collectionView.dataSource = newValue
+        }
+    }
+    
+    public weak var favoritesChecker : BasePlaylistFavoritesChecker? {
+        get {
+            return (collectionView.dataSource as? BasePlaylistViewDataSource)?.favoritesChecker
+        }
+        set {
+            (collectionView.dataSource as? BasePlaylistViewDataSource)?.favoritesChecker = newValue
         }
     }
     
@@ -248,6 +260,8 @@ extension PlaylistView {
 // Collection data source
 class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
 {
+    public weak var favoritesChecker : BasePlaylistFavoritesChecker?
+    
     private let audioInfo: AudioInfo
     private let playlist: BaseAudioPlaylist
     
@@ -310,8 +324,9 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         }
         
         let item = playlist.trackAt(indexPath.row)
+        let isFavorite = favoritesChecker?.isMarkedFavorite(item: item) ?? false
         
-        cell.titleText.text = item.title
+        cell.titleText.attributedText = buildTitle(item.title, isFavorite: isFavorite)
         cell.descriptionText.text = item.duration
         cell.setTrackNum(item.trackNum)
         
@@ -343,6 +358,24 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
+    }
+    
+    func buildTitle(_ title: String, isFavorite: Bool=false) -> NSAttributedString {
+        if !isFavorite {
+            return NSMutableAttributedString(string: title)
+        }
+        
+        let fullString = NSMutableAttributedString()
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(named: PlaylistView.SHINY_STAR_IMAGE)
+        imageAttachment.bounds = PlaylistView.FAVORITES_ICON_SIZE
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        fullString.append(imageString)
+        fullString.append(NSAttributedString(string: title))
+        
+        return fullString
     }
     
     private func getPlaylistDescription() -> String {
