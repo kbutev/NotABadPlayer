@@ -147,7 +147,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     func updatePlayerScreen(playlist: BaseAudioPlaylist) {
         let playingTrack = playlist.playingTrack
         
-        self.baseView?.updateUIState(player: AudioPlayer.shared, track: playingTrack, isFavorite: isMarkedFavorite(playingTrack))
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: playingTrack, isFavorite: isStorageMarkedFavorite(playingTrack))
     }
     
     func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
@@ -196,14 +196,14 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         }
     }
     
-    private func isMarkedFavorite(_ track: AudioTrack) -> Bool {
+    private func isStorageMarkedFavorite(_ track: AudioTrack) -> Bool {
         return GeneralStorage.shared.favorites.isMarkedFavorite(track)
     }
 }
 
 extension PlayerViewController : AudioPlayerObserver {
     func onPlayerPlay(current: AudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayer.shared, track: current, isFavorite: isMarkedFavorite(current))
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: current, isFavorite: isStorageMarkedFavorite(current))
     }
     
     func onPlayerFinish() {
@@ -215,11 +215,11 @@ extension PlayerViewController : AudioPlayerObserver {
     }
     
     func onPlayerPause(track: AudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track, isFavorite: isMarkedFavorite(track))
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track, isFavorite: isStorageMarkedFavorite(track))
     }
     
     func onPlayerResume(track: AudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track, isFavorite: isMarkedFavorite(track))
+        self.baseView?.updateUIState(player: AudioPlayer.shared, track: track, isFavorite: isStorageMarkedFavorite(track))
     }
     
     func onPlayOrderChange(order: AudioPlayOrder) {
