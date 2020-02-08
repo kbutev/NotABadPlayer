@@ -137,7 +137,14 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
     }
     
     static func == (lhs: AudioTrack, rhs: AudioTrack) -> Bool {
-        return lhs.identifier == rhs.identifier
+        guard let a = lhs.filePath else {
+            return false
+        }
+        guard let b = rhs.filePath else {
+            return false
+        }
+        
+        return a == b
     }
     
     func retrieveAlbumCoverFromAlbum() -> MPMediaItemArtwork? {
