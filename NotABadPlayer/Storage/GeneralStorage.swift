@@ -149,7 +149,7 @@ class GeneralStorage {
             }
         }
         
-        if let playlistSerialized = Serializing.serialize(object: playlistToSerialize)
+        if let playlistSerialized = Serializing.jsonSerialize(object: playlistToSerialize)
         {
             storage.set(player.playOrder.rawValue, forKey: "player_play_order")
             storage.set(playlistSerialized, forKey: "player_current_playlist")
@@ -219,7 +219,7 @@ class GeneralStorage {
     }
     
     func savePlayerPlayHistoryState() {
-        if let playHistory = Serializing.serialize(object: AudioPlayer.shared.playerHistory.playHistory)
+        if let playHistory = Serializing.jsonSerialize(object: AudioPlayer.shared.playerHistory.playHistory)
         {
             storage.set(playHistory, forKey: "play_history")
         }
@@ -312,7 +312,7 @@ class GeneralStorage {
     }
     
     func saveUserPlaylists(_ playlists: [MutableAudioPlaylist]) {
-        if let serialized = Serializing.serialize(object: playlists)
+        if let serialized = Serializing.jsonSerialize(object: playlists)
         {
             storage.set(serialized, forKey: "user_playlists")
         }
