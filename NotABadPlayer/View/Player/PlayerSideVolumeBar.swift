@@ -40,6 +40,7 @@ class PlayerSideVolumeBar: UIStackView
     
     override func didMoveToSuperview() {
         setup()
+        updatePosition(pos: .zero)
     }
     
     private func setup() {
@@ -81,20 +82,25 @@ class PlayerSideVolumeBar: UIStackView
     public func setProgress(_ value: Double) {
         progressBar.progress = CGFloat(value)
     }
-}
-
-// Actions
-extension PlayerSideVolumeBar {
-    @objc func actionVolumeBarSeek(gesture: UIGestureRecognizer) {
-        let location = gesture.location(in: self.progressBar)
-        
-        let invertY = abs(location.y - self.progressBar.frame.height)
+    
+    @discardableResult
+    private func updatePosition(pos: CGPoint) -> Double {
+        let invertY = abs(pos.y - self.progressBar.frame.height)
         
         let percentage = invertY / self.progressBar.frame.height
         
         self.progressBar.progress = percentage
         
-        self.onVolumeSeekCallback(Double(percentage) * PlayerSideVolumeBar.VOLUME_BAR_MAX_VALUE)
+        return Double(percentage)
+    }
+}
+
+// Actions
+extension PlayerSideVolumeBar {
+    @objc func actionVolumeBarSeek(gesture: UIGestureRecognizer) {
+        let percentage = updatePosition(pos: gesture.location(in: self.progressBar))
+        
+        self.onVolumeSeekCallback(percentage * PlayerSideVolumeBar.VOLUME_BAR_MAX_VALUE)
     }
     
     @objc func actionVolumeSpeakerClick(gesture: UIGestureRecognizer) {
