@@ -47,6 +47,8 @@ enum Text: String {
     case PlaylistRecentlyAdded = "Recently Added";
     case PlaylistCellDescription = "@! tracks";
     
+    case PlayerLyricsNotAvailable = "No lyrics"
+    
     case SearchDescriptionNoResults = "no results";
     case SearchDescriptionResults = "@! search results";
     case SearchPlaylistName = "Search Results"

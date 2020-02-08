@@ -62,6 +62,10 @@ class PlayerPresenter: BasePresenter
         
     }
     
+    func contextAudioTrack() -> AudioTrack? {
+        return self.playlist.playingTrack
+    }
+    
     func onPlayerButtonClick(input: ApplicationInput) {
         let action = Keybinds.shared.getActionFor(input: input)
         

@@ -9,6 +9,10 @@
 import UIKit
 
 class PlayerViewController: UIViewController, BaseViewDelegate {
+    // If the user has tapped the lyrics this many times, do not display toasts anymore.
+    // They will kinda get the idea about clicking on the cover image to see lyrics.
+    public static let MAX_COUNT_LYRICS_TAP_TOAST_DISPLAY = 10
+    
     private var baseView: PlayerView?
     
     private let presenter: BasePresenter?
@@ -43,6 +47,24 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     }
     
     private func setup() {
+        self.baseView?.onCoverImageTap = {[weak self] () in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if let track = strongSelf.presenter?.contextAudioTrack() {
+                if !track.lyrics.isEmpty {
+                    strongSelf.baseView?.showLyrics(track.lyrics)
+                } else {
+                    strongSelf.displayNoLyricsToast()
+                }
+            }
+        }
+        
+        self.baseView?.onLyricsTap = {[weak self] () in
+            self?.baseView?.showCoverImage()
+        }
+        
         self.baseView?.onPlayerSeekCallback = {(percentage) in
             let duration = AudioPlayer.shared.durationSec
             
@@ -148,6 +170,16 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     
     private func onSystemVolumeChanged(_ value: Double) {
         baseView?.onSystemVolumeChanged(value)
+    }
+    
+    private func displayNoLyricsToast() {
+        let count = GeneralStorage.shared.numberOfLyricsTapped()
+        
+        if count < PlayerViewController.MAX_COUNT_LYRICS_TAP_TOAST_DISPLAY {
+            GeneralStorage.shared.incrementNumberOfLyricsTapped()
+            
+            Toast.show(message: Text.value(.PlayerLyricsNotAvailable), controller: self, duration: 1)
+        }
     }
 }
 

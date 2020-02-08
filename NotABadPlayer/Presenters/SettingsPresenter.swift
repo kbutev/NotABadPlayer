@@ -40,6 +40,10 @@ class SettingsPresenter: BasePresenter
         
     }
     
+    func contextAudioTrack() -> AudioTrack? {
+        return nil
+    }
+    
     func onPlayerButtonClick(input: ApplicationInput) {
         
     }
