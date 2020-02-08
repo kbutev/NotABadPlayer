@@ -40,7 +40,7 @@ class SettingsPresenter: BasePresenter
         
     }
     
-    func contextAudioTrack() -> AudioTrack? {
+    func contextAudioTrackLyrics() -> String? {
         return nil
     }
     

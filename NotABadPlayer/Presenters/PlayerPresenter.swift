@@ -62,8 +62,8 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func contextAudioTrack() -> AudioTrack? {
-        return self.playlist.playingTrack
+    func contextAudioTrackLyrics() -> String? {
+        return self.playlist.playingTrack.lyrics
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
