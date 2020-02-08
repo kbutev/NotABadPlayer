@@ -63,7 +63,7 @@ class PlayerPresenter: BasePresenter
     }
     
     func contextAudioTrackLyrics() -> String? {
-        return self.playlist.playingTrack.lyrics
+        return AudioPlayer.shared.playingTrack?.lyrics
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -89,7 +89,10 @@ class PlayerPresenter: BasePresenter
     }
     
     func onMarkOrUnmarkContextTrackFavorite() -> Bool {
-        let track = self.playlist.playingTrack
+        guard let track = AudioPlayer.shared.playingTrack else
+        {
+            return false
+        }
         
         let isFavorite = GeneralStorage.shared.favorites.isMarkedFavorite(track)
         

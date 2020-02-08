@@ -29,7 +29,7 @@ class FavoritesStorage {
     func markedFavoriteItem(for track: AudioTrack) -> FavoriteStorageItem? {
         updateLocalStorageIfNecessary()
         
-        let item = FavoriteStorageItem(track.identifier)
+        let item = FavoriteStorageItem(track)
         
         return synchronous.sync {
             _favorites.filter({ (element) -> Bool in
@@ -46,7 +46,7 @@ class FavoritesStorage {
         
         updateLocalStorageIfNecessary()
         
-        let item = FavoriteStorageItem(track.identifier)
+        let item = FavoriteStorageItem(track)
         
         synchronous.sync {
             _favorites.append(item)
@@ -64,7 +64,7 @@ class FavoritesStorage {
         
         updateLocalStorageIfNecessary()
         
-        let item = FavoriteStorageItem(track.identifier)
+        let item = FavoriteStorageItem(track)
         
         synchronous.sync {
             _favorites.removeAll(where: { (element) -> Bool in
@@ -77,7 +77,7 @@ class FavoritesStorage {
     
     private func updateLocalStorageIfNecessary() {
         let update = synchronous.sync {
-            return _favoritesLoaded
+            return !_favoritesLoaded
         }
         
         if update {
@@ -89,14 +89,16 @@ class FavoritesStorage {
         synchronous.sync {
             _favoritesLoaded = true
             
-            guard let data = storage.data(forKey: FAVORITES_STORAGE_KEY) else {
+            guard let data = storage.string(forKey: FAVORITES_STORAGE_KEY) else {
                 return
             }
             
-            guard let favorites: [FavoriteStorageItem] = Serializing.deserialize(fromData: data) else {
-                Logging.warning(AudioPlayer.self, "Failed to unarchive favorite items from storage")
+            guard let favorites: [FavoriteStorageItem] = Serializing.jsonDeserialize(fromString: data) else {
+                Logging.warning(FavoritesStorage.self, "Failed to unarchive favorite items from storage")
                 return
             }
+            
+            Logging.log(FavoritesStorage.self, "Retrieved \(favorites.count) favorite items from storage")
             
             _favorites = favorites
         }
@@ -106,8 +108,8 @@ class FavoritesStorage {
         updateLocalStorageIfNecessary()
         
         synchronous.sync {
-            guard let data = Serializing.serialize(object: _favorites) else {
-                Logging.warning(AudioPlayer.self, "Failed to archive favorite items from storage")
+            guard let data = Serializing.jsonSerialize(object: _favorites) else {
+                Logging.warning(FavoritesStorage.self, "Failed to archive favorite items to storage")
                 return
             }
             
@@ -120,13 +122,8 @@ struct FavoriteStorageItem: Codable, Equatable {
     let identifier: String
     let dateFavorited: Date
     
-    init(_ identifier: String, dateFavorited: Date=Date()) {
-        self.identifier = identifier
-        self.dateFavorited = dateFavorited
-    }
-    
-    init(_ identifier: Int, dateFavorited: Date=Date()) {
-        self.identifier = "\(identifier)"
+    init(_ track: AudioTrack, dateFavorited: Date=Date()) {
+        self.identifier = "\(track.albumTitle).\(track.title).\(track.duration)"
         self.dateFavorited = dateFavorited
     }
     
