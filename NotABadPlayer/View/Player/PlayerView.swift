@@ -11,7 +11,10 @@ import UIKit
 class PlayerView : UIView
 {
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
+    public static let LYRICS_VISIBLE_OPACITY: CGFloat = 0.9
     
+    public var onCoverImageTap: ()->Void = {() in }
+    public var onLyricsTap: ()->Void = {() in }
     public var onPlayerSeekCallback: (Double)->Void = {(percentage) in }
     public var onPlayerButtonClickCallback: (ApplicationInput)->Void = {(input) in }
     public var onPlayOrderButtonClickCallback: ()->Void = {() in }
@@ -23,8 +26,11 @@ class PlayerView : UIView
     
     @IBOutlet weak var topStackView: UIStackView!
     
-    // The art cover image fills the stack it's added to (@topStackView)
-    @IBOutlet weak var artCoverImage: UIImageView!
+    // Added to (@topStackView).
+    @IBOutlet var artCoverImage: UIImageView!
+    // Added to (@artCoverImage).
+    @IBOutlet var trackLyricsText: UITextView!
+    var trackLyricsIsAnimating = false
     
     // @bottomStackLayout exists only to wrap @bottomStackView, so margins can be added
     @IBOutlet weak var bottomStackLayout: UIView!
@@ -49,6 +55,12 @@ class PlayerView : UIView
     @IBOutlet weak var playOrderMediaButton: UIImageView!
     
     private var sideVolumeBar: PlayerSideVolumeBar?
+    
+    var isLyricsShown: Bool {
+        get {
+            return !self.trackLyricsText.isHidden
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -79,6 +91,20 @@ class PlayerView : UIView
         topStackView.translatesAutoresizingMaskIntoConstraints = false
         topStackView.widthAnchor.constraint(equalTo: primaryStackView.widthAnchor).isActive = true
         topStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
+        
+        // Top items setup
+        topStackView.addArrangedSubview(artCoverImage)
+        artCoverImage.addSubview(trackLyricsText)
+        
+        trackLyricsText.translatesAutoresizingMaskIntoConstraints = false
+        trackLyricsText.widthAnchor.constraint(equalTo: artCoverImage.widthAnchor, multiplier: 0.9).isActive = true
+        trackLyricsText.heightAnchor.constraint(equalTo: artCoverImage.heightAnchor, multiplier: 0.8).isActive = true
+        trackLyricsText.centerXAnchor.constraint(equalTo: artCoverImage.centerXAnchor).isActive = true
+        trackLyricsText.centerYAnchor.constraint(equalTo: artCoverImage.centerYAnchor).isActive = true
+        
+        // Lyrics are hidden by default
+        trackLyricsText.alpha = 0
+        trackLyricsText.isHidden = true
         
         // Bottom stack setup
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +156,12 @@ class PlayerView : UIView
             self?.onPlayerSeekCallback(progress)
         }
         
-        var gestureTap = UITapGestureRecognizer(target: self, action: #selector(actionRecall(sender:)))
+        var gestureTap = UITapGestureRecognizer(target: self, action: #selector(actionCoverImageOrLyrics(sender:)))
+        gestureTap.numberOfTapsRequired = 1
+        self.topStackView.isUserInteractionEnabled = true
+        self.topStackView.addGestureRecognizer(gestureTap)
+        
+        gestureTap = UITapGestureRecognizer(target: self, action: #selector(actionRecall(sender:)))
         gestureTap.numberOfTapsRequired = 1
         self.recallMediaButton.isUserInteractionEnabled = true
         self.recallMediaButton.addGestureRecognizer(gestureTap)
@@ -166,6 +197,41 @@ class PlayerView : UIView
         gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeDown(sender:)))
         gestureSwipe.direction = .down
         self.addGestureRecognizer(gestureSwipe)
+    }
+    
+    public func showCoverImage() {
+        weak var weakSelf = self
+        
+        self.trackLyricsIsAnimating = true
+        self.trackLyricsText.alpha = PlayerView.LYRICS_VISIBLE_OPACITY
+        
+        UIView.animate(withDuration: TimeInterval(0.5), animations: {
+            weakSelf?.trackLyricsText.alpha = 0
+        }) { (value) in
+            weakSelf?.trackLyricsIsAnimating = false
+            weakSelf?.trackLyricsText.isHidden = true
+            weakSelf?.trackLyricsText.isScrollEnabled = false
+            weakSelf?.trackLyricsText.isUserInteractionEnabled = false
+        }
+    }
+    
+    public func showLyrics(_ text: String) {
+        weak var weakSelf = self
+        
+        self.trackLyricsText.text = text
+        
+        self.trackLyricsIsAnimating = true
+        self.trackLyricsText.isScrollEnabled = false
+        self.trackLyricsText.isHidden = false
+        self.trackLyricsText.alpha = 0
+        
+        UIView.animate(withDuration: TimeInterval(0.5), animations: {
+            weakSelf?.trackLyricsText.alpha = PlayerView.LYRICS_VISIBLE_OPACITY
+        }) { (value) in
+            weakSelf?.trackLyricsIsAnimating = false
+            weakSelf?.trackLyricsText.isScrollEnabled = true
+            weakSelf?.trackLyricsText.isUserInteractionEnabled = true
+        }
     }
     
     public func setupAppTheme() {
@@ -315,6 +381,19 @@ class PlayerView : UIView
 
 // Actions
 extension PlayerView {
+    @objc public func actionCoverImageOrLyrics(sender: Any) {
+        // Do nothing if animating
+        guard !trackLyricsIsAnimating else {
+            return
+        }
+        
+        if !self.isLyricsShown {
+            self.onCoverImageTap()
+        } else {
+            self.onLyricsTap()
+        }
+    }
+    
     @objc public func actionRecall(sender: Any) {
         UIAnimations.animateImageClicked(self.recallMediaButton)
         

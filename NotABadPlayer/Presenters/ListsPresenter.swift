@@ -122,6 +122,10 @@ class ListsPresenter: BasePresenter
         self.delegate?.openPlayerScreen(playlist: playlist)
     }
     
+    func contextAudioTrack() -> AudioTrack? {
+        return nil
+    }
+    
     func onPlayerButtonClick(input: ApplicationInput) {
         let action = Keybinds.shared.getActionFor(input: input)
         

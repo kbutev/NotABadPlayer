@@ -19,19 +19,14 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="wau-q1-oXw">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="bMV-jH-T6Y">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
-                            <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_album_unknown" translatesAutoresizingMaskIntoConstraints="NO" id="vG5-cc-mwB">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
-                                </imageView>
-                            </subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="bMV-jH-T6Y">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                         </stackView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="11a-fx-Xvm">
-                            <rect key="frame" x="0.0" y="48" width="414" height="770"/>
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="11a-fx-Xvm">
+                            <rect key="frame" x="0.0" y="50" width="414" height="768"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qpH-qD-OrJ">
-                                    <rect key="frame" x="4" y="0.0" width="406" height="770"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qpH-qD-OrJ">
+                                    <rect key="frame" x="4" y="0.0" width="406" height="768"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vzl-Kb-tKP">
                                             <rect key="frame" x="0.0" y="0.0" width="406" height="128"/>
@@ -89,27 +84,27 @@
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
-                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mrj-RN-2OL">
-                                            <rect key="frame" x="0.0" y="256" width="406" height="514"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mrj-RN-2OL">
+                                            <rect key="frame" x="0.0" y="256" width="406" height="512"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_recall" translatesAutoresizingMaskIntoConstraints="NO" id="Bji-m9-xUQ">
-                                                    <rect key="frame" x="0.0" y="233" width="81" height="48"/>
+                                                    <rect key="frame" x="0.0" y="232" width="81" height="48"/>
                                                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_previous" translatesAutoresizingMaskIntoConstraints="NO" id="QxD-S3-QDA">
-                                                    <rect key="frame" x="81" y="233" width="81.5" height="48"/>
+                                                    <rect key="frame" x="81" y="232" width="81.5" height="48"/>
                                                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_play" translatesAutoresizingMaskIntoConstraints="NO" id="CXe-ug-Hj2">
-                                                    <rect key="frame" x="162.5" y="233" width="81" height="48"/>
+                                                    <rect key="frame" x="162.5" y="232" width="81" height="48"/>
                                                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_next" translatesAutoresizingMaskIntoConstraints="NO" id="Q19-uJ-v5I">
-                                                    <rect key="frame" x="243.5" y="233" width="81.5" height="48"/>
+                                                    <rect key="frame" x="243.5" y="232" width="81.5" height="48"/>
                                                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media_order_forwards" translatesAutoresizingMaskIntoConstraints="NO" id="abI-Cf-mKz">
-                                                    <rect key="frame" x="325" y="233" width="81" height="48"/>
+                                                    <rect key="frame" x="325" y="232" width="81" height="48"/>
                                                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </imageView>
                                             </subviews>
@@ -158,9 +153,21 @@
                 <outlet property="titleLabel" destination="CPg-dq-uhZ" id="moO-Wn-tLC"/>
                 <outlet property="topStackView" destination="bMV-jH-T6Y" id="uT3-Vl-3gV"/>
                 <outlet property="totalDurationLabel" destination="KIo-gR-kr2" id="Lqu-wb-Hzm"/>
+                <outlet property="trackLyricsText" destination="2hq-vl-Vga" id="fMR-ZQ-kSz"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="145.98214285714286"/>
         </view>
+        <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_album_unknown" id="vG5-cc-mwB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+        </imageView>
+        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" directionalLockEnabled="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="&lt;No lyrics&gt;" textAlignment="natural" selectable="NO" id="2hq-vl-Vga">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+        </textView>
     </objects>
     <resources>
         <image name="cover_album_unknown" width="48" height="48"/>

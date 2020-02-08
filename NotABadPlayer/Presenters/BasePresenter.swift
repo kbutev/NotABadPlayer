@@ -21,6 +21,7 @@ protocol BasePresenter
     
     func onOpenPlayer(playlist: BaseAudioPlaylist)
     
+    func contextAudioTrack() -> AudioTrack?
     func onPlayerButtonClick(input: ApplicationInput)
     func onPlayOrderButtonClick()
     func onOpenPlaylistButtonClick()

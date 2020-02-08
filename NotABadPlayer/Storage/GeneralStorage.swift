@@ -421,6 +421,16 @@ class GeneralStorage {
         
         return .NO_CACHING
     }
+    
+    func numberOfLyricsTapped() -> UInt {
+        return UInt(storage.integer(forKey: "number_times_lyrics_tapped"))
+    }
+    
+    func incrementNumberOfLyricsTapped() {
+        let count = numberOfLyricsTapped() + 1
+        
+        storage.set(count, forKey: "number_times_lyrics_tapped")
+    }
 }
 
 // Utils
