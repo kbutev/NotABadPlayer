@@ -22,8 +22,12 @@ class PlayerView : UIView
     @IBOutlet weak var primaryStackView: UIStackView!
     
     @IBOutlet weak var topStackView: UIStackView!
+    
+    // The art cover image fills the stack it's added to (@topStackView)
     @IBOutlet weak var artCoverImage: UIImageView!
     
+    // @bottomStackLayout exists only to wrap @bottomStackView, so margins can be added
+    @IBOutlet weak var bottomStackLayout: UIView!
     @IBOutlet weak var bottomStackView: UIStackView!
     
     @IBOutlet weak var textLayoutView: UIView!
@@ -78,7 +82,7 @@ class PlayerView : UIView
         
         // Bottom stack setup
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
-        bottomStackView.widthAnchor.constraint(equalTo: primaryStackView.widthAnchor).isActive = true
+        bottomStackView.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
         bottomStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
         
         // Text layout setup (is inside the bottom stack)
