@@ -11,7 +11,7 @@ import UIKit
 class PlaylistView : UIView
 {
     public static let SHINY_STAR_IMAGE = "shiny_star"
-    public static let FAVORITES_ICON_SIZE = CGRect(x: 0, y: 1, width: 10, height: 10)
+    public static let FAVORITES_ICON_SIZE = CGRect(x: 0, y: 1, width: 12, height: 12)
     static let HEADER_IDENTIFIER = "header"
     static let ALBUM_TITLE_OVERLAY_HEIGHT: CGFloat = 48
     
@@ -326,8 +326,8 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         let item = playlist.trackAt(indexPath.row)
         let isFavorite = favoritesChecker?.isMarkedFavorite(item: item) ?? false
         
-        cell.titleText.attributedText = buildTitle(item.title, isFavorite: isFavorite)
-        cell.descriptionText.text = item.duration
+        cell.titleText.text = item.title
+        cell.descriptionText.attributedText = buildAttributedDescription(duration: item.duration, isFavorite: isFavorite)
         cell.setTrackNum(item.trackNum)
         
         // Highlight cells that represent the currently playing track
@@ -360,7 +360,7 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         return 1
     }
     
-    func buildTitle(_ title: String, isFavorite: Bool=false) -> NSAttributedString {
+    func buildAttributedTitle(_ title: String, isFavorite: Bool=false) -> NSAttributedString {
         if !isFavorite {
             return NSMutableAttributedString(string: title)
         }
@@ -374,6 +374,24 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         let imageString = NSAttributedString(attachment: imageAttachment)
         fullString.append(imageString)
         fullString.append(NSAttributedString(string: title))
+        
+        return fullString
+    }
+    
+    func buildAttributedDescription(duration: String, isFavorite: Bool=false) -> NSAttributedString {
+        if !isFavorite {
+            return NSMutableAttributedString(string: duration)
+        }
+        
+        let fullString = NSMutableAttributedString()
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(named: PlaylistView.SHINY_STAR_IMAGE)
+        imageAttachment.bounds = PlaylistView.FAVORITES_ICON_SIZE
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        fullString.append(imageString)
+        fullString.append(NSAttributedString(string: " " + duration))
         
         return fullString
     }
