@@ -31,7 +31,7 @@ class AudioPlaylistBuilder {
     }
     
     public static func buildLatestMutableVersionFrom(serializedData: String) throws -> MutableAudioPlaylist {
-        if let result: AudioPlaylistV1 = Serializing.deserialize(fromData: serializedData) {
+        if let result: AudioPlaylistV1 = Serializing.jsonDeserialize(fromString: serializedData) {
             return result
         }
         
@@ -39,7 +39,7 @@ class AudioPlaylistBuilder {
     }
     
     public static func buildLatestVersionListFrom(serializedData: String) throws -> [BaseAudioPlaylist] {
-        if let result: [AudioPlaylistV1] = Serializing.deserialize(fromData: serializedData) {
+        if let result: [AudioPlaylistV1] = Serializing.jsonDeserialize(fromString: serializedData) {
             return result
         }
         
@@ -47,7 +47,7 @@ class AudioPlaylistBuilder {
     }
     
     public static func buildLatestMutableVersionListFrom(serializedData :String) throws -> [MutableAudioPlaylist] {
-        if let result: [AudioPlaylistV1] = Serializing.deserialize(fromData: serializedData) {
+        if let result: [AudioPlaylistV1] = Serializing.jsonDeserialize(fromString: serializedData) {
             return result
         }
         
