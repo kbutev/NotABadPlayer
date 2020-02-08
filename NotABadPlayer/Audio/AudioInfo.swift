@@ -10,9 +10,9 @@ import Foundation
 import MediaPlayer
 
 enum SearchTracksFilter : String {
-    case Title;
-    case Album;
-    case Artist;
+    case Title
+    case Album
+    case Artist
 }
 
 protocol AudioInfo {
@@ -24,6 +24,7 @@ protocol AudioInfo {
     func getAlbumTracks(album: AudioAlbum) -> [AudioTrack]
     func searchForTracks(query: String, filter: SearchTracksFilter) -> [AudioTrack]
     func recentlyAddedTracks() -> [AudioTrack]
+    func favoriteTracks() -> [AudioTrack]
     
     func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int) -> [AudioTrack]
     

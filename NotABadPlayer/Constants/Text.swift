@@ -45,6 +45,7 @@ enum Text: String {
     case ListsDoneButtonName = "Done"
     case PlaylistRecentlyPlayed = "Recently Played";
     case PlaylistRecentlyAdded = "Recently Added";
+    case PlaylistFavorites = "Favorites";
     case PlaylistCellDescription = "@! tracks";
     
     case PlayerLyricsNotAvailable = "No lyrics"

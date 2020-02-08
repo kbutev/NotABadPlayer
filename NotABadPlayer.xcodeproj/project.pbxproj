@@ -473,8 +473,8 @@
 			isa = PBXGroup;
 			children = (
 				996F119C226766C40064D6DA /* GeneralStorage.swift */,
-				99BC3ABB23EEDF340074B081 /* FavoritesStorage.swift */,
 				99DE0086229D7D7D00ADB539 /* GeneralStorageObserver.swift */,
+				99BC3ABB23EEDF340074B081 /* FavoritesStorage.swift */,
 				996393002260BD360050F82A /* AudioLibrary.swift */,
 			);
 			path = Storage;

@@ -84,6 +84,22 @@ class ListsPresenter: BasePresenter
                 }
             }
             
+            let favoriteTracks = self.audioInfo.favoriteTracks()
+            
+            if favoriteTracks.count > 0
+            {
+                var node = AudioPlaylistBuilder.start()
+                node.name = Text.value(.PlaylistFavorites)
+                node.tracks = favoriteTracks
+                node.isTemporary = true
+                
+                do {
+                    playlists.insert(try node.buildMutable(), at: 0)
+                } catch {
+                    
+                }
+            }
+            
             // Then, update on main thread
             DispatchQueue.main.async {
                 Logging.log(ListsPresenter.self, "Retrieved \(playlistsCount) user playlists, updating view")

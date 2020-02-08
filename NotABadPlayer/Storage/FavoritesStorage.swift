@@ -8,8 +8,31 @@
 
 import Foundation
 
+enum FavoritesStorageError: Error {
+    case outOfCapacity
+}
+
 class FavoritesStorage {
+    public static let CAPACITY = 1000
     public let FAVORITES_STORAGE_KEY = "FavoritesStorage.data.key"
+    
+    public var items: [FavoriteStorageItem] {
+        get {
+            updateLocalStorageIfNecessary()
+            
+            return synchronous.sync {
+                return _favorites
+            }
+        }
+    }
+    
+    public var lastTimeUpdated: Date {
+        get {
+            return synchronous.sync {
+                return _lastTimeUpdated
+            }
+        }
+    }
     
     private let synchronous = DispatchQueue(label: "FavoritesStorage.synchronous")
     
@@ -17,6 +40,8 @@ class FavoritesStorage {
     
     private var _favoritesLoaded = false
     private var _favorites: [FavoriteStorageItem] = []
+    
+    private var _lastTimeUpdated = Date()
     
     init(storage: UserDefaults=UserDefaults.standard) {
         self.storage = storage
@@ -39,7 +64,17 @@ class FavoritesStorage {
     }
     
     @discardableResult
-    func markFavorite(track: AudioTrack) -> FavoriteStorageItem {
+    func markFavoriteForced(track: AudioTrack) -> FavoriteStorageItem {
+        return try! markFavorite(track: track, forced: true)
+    }
+    
+    @discardableResult
+    func markFavorite(track: AudioTrack) throws -> FavoriteStorageItem {
+        return try markFavorite(track: track, forced: false)
+    }
+    
+    @discardableResult
+    func markFavorite(track: AudioTrack, forced: Bool) throws -> FavoriteStorageItem {
         if let already = markedFavoriteItem(for: track) {
             return already
         }
@@ -48,13 +83,33 @@ class FavoritesStorage {
         
         let item = FavoriteStorageItem(track)
         
-        synchronous.sync {
+        try synchronous.sync {
+            if forced {
+                if !_favorites.isEmpty {
+                    _favorites.remove(at: 0)
+                }
+            } else {
+                if _favorites.count > FavoritesStorage.CAPACITY {
+                    throw FavoritesStorageError.outOfCapacity
+                }
+            }
+            
             _favorites.append(item)
+            
+            _lastTimeUpdated = Date()
         }
         
         saveLocalStorage()
         
         return item
+    }
+    
+    func unmarkLastFavorite() {
+        synchronous.sync {
+            if !_favorites.isEmpty {
+                _favorites.remove(at: 0)
+            }
+        }
     }
     
     func unmarkFavorite(track: AudioTrack) {
@@ -70,6 +125,8 @@ class FavoritesStorage {
             _favorites.removeAll(where: { (element) -> Bool in
                 return element == item
             })
+            
+            _lastTimeUpdated = Date()
         }
         
         saveLocalStorage()
@@ -101,6 +158,8 @@ class FavoritesStorage {
             Logging.log(FavoritesStorage.self, "Retrieved \(favorites.count) favorite items from storage")
             
             _favorites = favorites
+            
+            _lastTimeUpdated = Date()
         }
     }
     
@@ -121,13 +180,19 @@ class FavoritesStorage {
 struct FavoriteStorageItem: Codable, Equatable {
     let identifier: String
     let dateFavorited: Date
+    let trackPath: URL
     
     init(_ track: AudioTrack, dateFavorited: Date=Date()) {
-        self.identifier = "\(track.albumTitle).\(track.title).\(track.duration)"
+        self.trackPath = track.filePath ?? URL(fileURLWithPath: "")
+        self.identifier = trackPath.absoluteString
         self.dateFavorited = dateFavorited
     }
     
     static func ==(_ a: FavoriteStorageItem, _ b: FavoriteStorageItem) -> Bool {
+        if a.identifier.isEmpty {
+            return false
+        }
+        
         return a.identifier == b.identifier
     }
 }
