@@ -99,7 +99,7 @@ class PlayerPresenter: BasePresenter
         if isFavorite {
             GeneralStorage.shared.favorites.unmarkFavorite(track: track)
         } else {
-            GeneralStorage.shared.favorites.markFavorite(track: track)
+            GeneralStorage.shared.favorites.markFavoriteForced(track: track)
         }
         
         return !isFavorite

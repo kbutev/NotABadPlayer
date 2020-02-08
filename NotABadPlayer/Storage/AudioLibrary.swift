@@ -14,6 +14,7 @@ import MediaPlayer
 // Make sure you have access to user storage before using the audio library.
 class AudioLibrary : AudioInfo {
     public static let SEARCH_TRACKS_CAP = 1000
+    public static let FAVORITE_TRACKS_CAP = FavoritesStorage.CAPACITY
     public static let RECENTLY_ADDED_DAYS_DIFFERENCE = 30
     public static let RECENTLY_ADDED_CAPACITY = 100
     public static let LIBRARY_CHANGES_ALERT_SEC_DELAY: Double = 5
@@ -28,6 +29,9 @@ class AudioLibrary : AudioInfo {
     
     private var audioLibraryChangesListeners : [AudioLibraryChangesListenerReference] = []
     private var audioLibraryChangesUpdatePending: Bool = false
+    
+    private var markedFavoriteTracks: [AudioTrack] = []
+    private var lastTimeFavoritesUpdated: Date?
     
     init() {
         synchronous = DispatchQueue(label: "AudioLibrary.synchronous")
@@ -190,6 +194,77 @@ class AudioLibrary : AudioInfo {
         }
     }
     
+    func favoriteTracks() -> [AudioTrack] {
+        return updateFavoriteTracksIfNecessary()
+    }
+    
+    private func updateFavoriteTracksIfNecessary() -> [AudioTrack] {
+        loadIfNecessary()
+        
+        let lastUpdateTime = synchronous.sync {
+            return self.lastTimeFavoritesUpdated
+        }
+        
+        let lastUpdateOfStorage = GeneralStorage.shared.favorites.lastTimeUpdated
+        
+        if let lastUpdate = lastUpdateTime {
+            if lastUpdate > lastUpdateOfStorage {
+                return synchronous.sync {
+                    return self.markedFavoriteTracks
+                }
+            }
+        }
+        
+        synchronous.sync {
+            self.lastTimeFavoritesUpdated = lastUpdateOfStorage
+        }
+        
+        let mediaQuery: MPMediaQuery = MPMediaQuery.albums()
+        
+        guard let result = mediaQuery.items else
+        {
+            return []
+        }
+        
+        let favoriteItems = GeneralStorage.shared.favorites.items
+        let favoriteItemsContain = { (url) -> Bool in
+            return favoriteItems.filter({ (item) -> Bool in
+                return item.trackPath == url
+            }).first != nil
+        }
+        
+        var tracks: [AudioTrack] = []
+        
+        let node = AudioTrackBuilder.start()
+        
+        for item in result
+        {
+            guard let path = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL else {
+                continue
+            }
+            
+            if !favoriteItemsContain(path) {
+                continue
+            }
+            
+            guard let track = buildTrackFromMPItem(item, reuseNode: node) else {
+                continue
+            }
+            
+            tracks.append(track)
+            
+            if tracks.count >= AudioLibrary.FAVORITE_TRACKS_CAP {
+                break
+            }
+        }
+        
+        synchronous.sync {
+            self.markedFavoriteTracks = tracks
+        }
+        
+        return tracks
+    }
+    
     public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?) -> [AudioTrack] {
         return searchForTracks(mediaQuery: mediaQuery, predicate: predicate, cap: AudioLibrary.SEARCH_TRACKS_CAP)
     }
@@ -206,65 +281,15 @@ class AudioLibrary : AudioInfo {
             return []
         }
         
-        var node = AudioTrackBuilder.start()
+        let node = AudioTrackBuilder.start()
         
         for item in result
         {
-            guard let identifier = item.value(forProperty: MPMediaItemPropertyPersistentID) as? Int else {
+            guard let track = buildTrackFromMPItem(item, reuseNode: node) else {
                 continue
             }
             
-            guard let path = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL else {
-                continue
-            }
-            
-            let albumId_ = item.value(forProperty: MPMediaItemPropertyAlbumPersistentID) as! NSNumber
-            let albumID = albumId_.intValue
-            let albumTitle = item.value(forKey: MPMediaItemPropertyAlbumTitle) as? String ?? "<Unknown>"
-            let artist = item.value(forKey: MPMediaItemPropertyArtist) as? String ?? "<Unknown>"
-            let albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
-            
-            let title = item.value(forProperty: MPMediaItemPropertyTitle) as? String ?? "<Unknown>"
-            let trackNum_ = item.value(forProperty: MPMediaItemPropertyAlbumTrackNumber) as? NSNumber
-            let durationInSeconds_ = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber
-            
-            let lyrics = item.value(forProperty: MPMediaItemPropertyLyrics) as? String ?? ""
-            let dateAdded = item.value(forProperty: MPMediaItemPropertyDateAdded) as? Date
-            let dateLastPlayed = item.value(forProperty: MPMediaItemPropertyLastPlayedDate) as? Date
-            let lastPlayedPosition = item.value(forProperty: MPMediaItemPropertyBookmarkTime) as? NSNumber
-            
-            guard let trackNum = trackNum_?.intValue else {
-                continue
-            }
-            
-            guard let durationInSeconds = durationInSeconds_?.doubleValue else {
-                continue
-            }
-            
-            node.reset()
-            
-            node.identifier = identifier
-            node.filePath = path
-            node.title = title
-            node.artist = artist
-            node.albumTitle = albumTitle
-            node.albumID = albumID
-            node.albumCover = albumCover
-            node.trackNum = trackNum
-            node.durationInSeconds = durationInSeconds
-            node.source = AudioTrackSource.createAlbumSource(albumID: albumID)
-            
-            node.lyrics = lyrics
-            node.dateAdded = dateAdded ?? node.dateAdded
-            node.dateLastPlayed = dateLastPlayed ?? node.dateLastPlayed
-            node.lastPlayedPosition = lastPlayedPosition?.doubleValue ?? 0
-            
-            do {
-                let result = try node.build()
-                tracks.append(result)
-            } catch {
-                
-            }
+            tracks.append(track)
             
             if tracks.count >= cap {
                 break
@@ -272,6 +297,65 @@ class AudioLibrary : AudioInfo {
         }
         
         return tracks
+    }
+    
+    private func buildTrackFromMPItem(_ item: MPMediaItem) -> AudioTrack? {
+        return buildTrackFromMPItem(item, reuseNode: AudioTrackBuilder.start())
+    }
+    
+    private func buildTrackFromMPItem(_ item: MPMediaItem, reuseNode: BaseAudioTrackBuilderNode) -> AudioTrack? {
+        var node = reuseNode
+        
+        guard let identifier = item.value(forProperty: MPMediaItemPropertyPersistentID) as? Int else {
+            return nil
+        }
+        
+        guard let path = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL else {
+            return nil
+        }
+        
+        let albumId_ = item.value(forProperty: MPMediaItemPropertyAlbumPersistentID) as! NSNumber
+        let albumID = albumId_.intValue
+        let albumTitle = item.value(forKey: MPMediaItemPropertyAlbumTitle) as? String ?? "<Unknown>"
+        let artist = item.value(forKey: MPMediaItemPropertyArtist) as? String ?? "<Unknown>"
+        let albumCover = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork
+        
+        let title = item.value(forProperty: MPMediaItemPropertyTitle) as? String ?? "<Unknown>"
+        let trackNum_ = item.value(forProperty: MPMediaItemPropertyAlbumTrackNumber) as? NSNumber
+        let durationInSeconds_ = item.value(forProperty: MPMediaItemPropertyPlaybackDuration) as? NSNumber
+        
+        let lyrics = item.value(forProperty: MPMediaItemPropertyLyrics) as? String ?? ""
+        let dateAdded = item.value(forProperty: MPMediaItemPropertyDateAdded) as? Date
+        let dateLastPlayed = item.value(forProperty: MPMediaItemPropertyLastPlayedDate) as? Date
+        let lastPlayedPosition = item.value(forProperty: MPMediaItemPropertyBookmarkTime) as? NSNumber
+        
+        guard let trackNum = trackNum_?.intValue else {
+            return nil
+        }
+        
+        guard let durationInSeconds = durationInSeconds_?.doubleValue else {
+            return nil
+        }
+        
+        node.reset()
+        
+        node.identifier = identifier
+        node.filePath = path
+        node.title = title
+        node.artist = artist
+        node.albumTitle = albumTitle
+        node.albumID = albumID
+        node.albumCover = albumCover
+        node.trackNum = trackNum
+        node.durationInSeconds = durationInSeconds
+        node.source = AudioTrackSource.createAlbumSource(albumID: albumID)
+        
+        node.lyrics = lyrics
+        node.dateAdded = dateAdded ?? node.dateAdded
+        node.dateLastPlayed = dateLastPlayed ?? node.dateLastPlayed
+        node.lastPlayedPosition = lastPlayedPosition?.doubleValue ?? 0
+        
+        return try? node.build()
     }
     
     // # Audio library changes listening
