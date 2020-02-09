@@ -260,8 +260,6 @@ class AudioPlayer : NSObject {
             if pauseImmediately {
                 self.player?.pause()
             }
-            
-            onPlay(track: track)
         } catch let error {
             Logging.log(AudioPlayer.self, "Error: cannot play track, \(error.localizedDescription)")
             
@@ -293,7 +291,15 @@ class AudioPlayer : NSObject {
         
         playerHistory.addToPlayHistory(newTrack: track)
         
+        onPlay(track: track)
+        
         remote.updateRemoteCenterInfo(track: track)
+        
+        if pauseImmediately {
+            onPause(track: track)
+            
+            remote.updateRemoteCenterInfo(track: track)
+        }
     }
     
     func resume() {
