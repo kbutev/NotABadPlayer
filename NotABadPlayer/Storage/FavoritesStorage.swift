@@ -92,10 +92,10 @@ class FavoritesStorage {
                     throw FavoritesStorageError.outOfCapacity
                 }
                 
-                _favorites.remove(at: 0)
+                let _ = _favorites.popLast()
             }
             
-            _favorites.append(item)
+            _favorites.insert(item, at: 0)
             
             _lastTimeUpdated = Date()
         }
@@ -123,12 +123,12 @@ class FavoritesStorage {
         saveLocalStorage()
     }
     
-    func unmarkLastFavorite() {
+    func unmarkOldestFavorite() {
         updateLocalStorageIfNecessary()
         
         synchronous.sync {
             if !_favorites.isEmpty {
-                _favorites.remove(at: 0)
+                let _ = _favorites.popLast()
             }
         }
     }
