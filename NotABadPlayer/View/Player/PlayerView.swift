@@ -40,7 +40,7 @@ class PlayerView : UIView
     @IBOutlet weak var bottomStackView: UIStackView!
     
     @IBOutlet weak var textLayoutView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: AutoScrollingText!
     @IBOutlet weak var playlistLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var favoriteImageButton: UIView!
@@ -220,6 +220,11 @@ class PlayerView : UIView
         gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeDown(sender:)))
         gestureSwipe.direction = .down
         self.addGestureRecognizer(gestureSwipe)
+        
+        gestureTap = UITapGestureRecognizer(target: self, action: #selector(actionTitleTap(sender:)))
+        gestureTap.numberOfTapsRequired = 1
+        self.titleLabel.isUserInteractionEnabled = true
+        self.titleLabel.addGestureRecognizer(gestureTap)
     }
     
     public func showCoverImage() {
@@ -463,6 +468,10 @@ extension PlayerView {
     
     @objc public func actionSwipeDown(sender: Any) {
         self.onSwipeDownCallback()
+    }
+    
+    @objc public func actionTitleTap(sender: Any) {
+        self.titleLabel.retry()
     }
 }
 
