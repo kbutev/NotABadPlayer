@@ -23,11 +23,13 @@ class QuickPlayerView : UIView
     
     @IBOutlet weak var primaryStackView: UIStackView!
     
+    // Contains @trackInfoArtCoverImage and @trackInfoTextStackView
     @IBOutlet weak var trackInfoStackView: UIStackView!
     @IBOutlet weak var trackInfoArtCoverImage: UIImageView!
     @IBOutlet weak var trackInfoTextStackView: UIStackView!
-    @IBOutlet weak var trackInfoTitleText: UILabel!
+    @IBOutlet weak var trackInfoTitleText: AutoScrollingText!
     @IBOutlet weak var trackInfoDurationText: UILabel!
+    @IBOutlet weak var trackInfoRightEmptySpace: UIView!
     
     @IBOutlet weak var mediaButtonsStackView: UIStackView!
     @IBOutlet weak var playlistMediaButton: UIImageView!
@@ -80,6 +82,10 @@ class QuickPlayerView : UIView
         trackInfoArtCoverImage.translatesAutoresizingMaskIntoConstraints = false
         trackInfoArtCoverImage.widthAnchor.constraint(equalToConstant: 64).isActive = true
         
+        // Constraints - empty space
+        trackInfoRightEmptySpace.translatesAutoresizingMaskIntoConstraints = false
+        trackInfoRightEmptySpace.widthAnchor.constraint(equalToConstant: 4).isActive = true
+        
         // Constraints - media stack
         mediaButtonsStackView.translatesAutoresizingMaskIntoConstraints = false
         mediaButtonsStackView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: QuickPlayerView.MEDIA_BUTTONS_PROPORTIONS).isActive = true
@@ -128,6 +134,10 @@ class QuickPlayerView : UIView
         let gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeUp(sender:)))
         gestureSwipe.direction = .up
         self.addGestureRecognizer(gestureSwipe)
+        
+        // Other
+        // Auto scroll forever
+        trackInfoTitleText.defaultScrollingParameters.restartCapacity = nil
     }
     
     public func appThemeSetup() {

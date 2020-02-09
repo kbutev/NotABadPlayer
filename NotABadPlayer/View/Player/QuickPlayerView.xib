@@ -17,36 +17,40 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="heA-3X-0NM">
-                    <rect key="frame" x="0.0" y="44" width="1448" height="224"/>
+                    <rect key="frame" x="0.0" y="44" width="1448" height="304"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="92x-Ay-PFt">
-                            <rect key="frame" x="0.0" y="0.0" width="1448" height="48"/>
+                            <rect key="frame" x="0.0" y="0.0" width="1448" height="128"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_album_unknown" translatesAutoresizingMaskIntoConstraints="NO" id="iHI-s6-pcL">
-                                    <rect key="frame" x="0.0" y="0.0" width="1396.5" height="48"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="48" height="128"/>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qxe-z5-jYf">
-                                    <rect key="frame" x="1400.5" y="0.0" width="47.5" height="48"/>
+                                    <rect key="frame" x="52" y="0.0" width="47.5" height="128"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKk-5w-j4g">
-                                            <rect key="frame" x="0.0" y="0.0" width="47.5" height="28.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKk-5w-j4g" customClass="AutoScrollingText" customModule="NotABadPlayer" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="47.5" height="108.5"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kmh-uf-mfJ">
-                                            <rect key="frame" x="0.0" y="28.5" width="47.5" height="19.5"/>
+                                            <rect key="frame" x="0.0" y="108.5" width="47.5" height="19.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                 </stackView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7K-3o-guA">
+                                    <rect key="frame" x="103.5" y="0.0" width="1344.5" height="128"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lnm-GN-nDr">
-                            <rect key="frame" x="0.0" y="48" width="1448" height="176"/>
+                            <rect key="frame" x="0.0" y="128" width="1448" height="176"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xS1-q4-Mux">
                                     <rect key="frame" x="0.0" y="0.0" width="1448" height="48"/>
@@ -101,6 +105,7 @@
                 <outlet property="primaryStackView" destination="heA-3X-0NM" id="hmz-uY-S3B"/>
                 <outlet property="trackInfoArtCoverImage" destination="iHI-s6-pcL" id="S6N-0N-Kcp"/>
                 <outlet property="trackInfoDurationText" destination="Kmh-uf-mfJ" id="hHc-w4-2h2"/>
+                <outlet property="trackInfoRightEmptySpace" destination="e7K-3o-guA" id="7qq-un-I0U"/>
                 <outlet property="trackInfoStackView" destination="92x-Ay-PFt" id="ap7-FM-MSZ"/>
                 <outlet property="trackInfoTextStackView" destination="qxe-z5-jYf" id="mwK-nX-yQG"/>
                 <outlet property="trackInfoTitleText" destination="AKk-5w-j4g" id="e4c-1q-U2R"/>
