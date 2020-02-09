@@ -9,8 +9,8 @@
 import UIKit
 
 class AutoScrollingText: UILabel {
-    var scrolling = AutoScrollingTextScrolling()
-    var defaultScrollingParameters = AutoScrollingTextParameters()
+    public var defaultScrollingParameters = AutoScrollingTextParameters()
+    private var scrolling = AutoScrollingTextScrolling()
     
     override var text: String? {
         get {
@@ -69,7 +69,7 @@ class AutoScrollingText: UILabel {
 // Contains the login of scrolling the text of an UILabel.
 // To stop operating, deallocate the instance.
 class AutoScrollingTextScrolling {
-    weak var label: UILabel?
+    public var parameters = AutoScrollingTextParameters()
     
     var text: String {
         get {
@@ -89,34 +89,31 @@ class AutoScrollingTextScrolling {
     // Used to tell if the current caller of self.text = ...
     var isCurrentlySettingText: Bool = false
     
-    var doesNotNeedScrolling: Bool
-    
-    var parameters = AutoScrollingTextParameters()
-    
+    private weak var label: UILabel?
+    private var _doesNotNeedScrolling: Bool
     private var _originalText: String = ""
-    
     private var _timesStarted: UInt = 0
     private var _isExhausted: Bool = false
     
     init(_ label: UILabel?=nil) {
         self.label = label
         self._originalText = label?.text ?? ""
-        self.doesNotNeedScrolling = !(label?.isTruncated ?? false)
+        self._doesNotNeedScrolling = !(label?.isTruncated ?? false)
     }
     
     // Scroll operations
     
     public func start() {
-        self.initialStart()
+        initialStart()
     }
     
     public func stop() {
         self.label = nil
-        self.doesNotNeedScrolling = true
+        self._doesNotNeedScrolling = true
     }
     
     private func initialStart() {
-        if self.doesNotNeedScrolling {
+        if self._doesNotNeedScrolling {
             return
         }
         
@@ -130,7 +127,7 @@ class AutoScrollingTextScrolling {
     }
     
     private func restart() {
-        if doesNotNeedScrolling {
+        if _doesNotNeedScrolling {
             return
         }
         
@@ -151,7 +148,7 @@ class AutoScrollingTextScrolling {
     }
     
     private func startFromBeginning() {
-        if doesNotNeedScrolling {
+        if _doesNotNeedScrolling {
             return
         }
         
