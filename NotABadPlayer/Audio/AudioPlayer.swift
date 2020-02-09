@@ -211,7 +211,7 @@ class AudioPlayer : NSObject {
         GeneralStorage.shared.attach(observer: remote)
     }
     
-    public func play(playlist: BaseAudioPlaylist) throws {
+    public func play(playlist: BaseAudioPlaylist, pauseImmediately: Bool=false) throws {
         checkIfPlayerIsInitialized()
         
         var mutablePlaylist: MutableAudioPlaylist? = nil
@@ -227,7 +227,7 @@ class AudioPlayer : NSObject {
             let newPlaylist = try SafeMutableAudioPlaylist.build(mutablePlaylist!)
             
             try playSync.sync {
-                try play(track: playlist.playingTrack)
+                try play(track: playlist.playingTrack, pauseImmediately: pauseImmediately)
                 
                 self.safeMutablePlaylist = newPlaylist
                 
@@ -238,7 +238,7 @@ class AudioPlayer : NSObject {
         }
     }
     
-    private func play(track: AudioTrack, previousTrack: AudioTrack?=nil, usePlayHistory: Bool=true) throws {
+    private func play(track: AudioTrack, previousTrack: AudioTrack?=nil, pauseImmediately: Bool=false) throws {
         checkIfPlayerIsInitialized()
         
         let wasPlaying = self.isPlaying
@@ -257,6 +257,10 @@ class AudioPlayer : NSObject {
             
             self.player?.play()
             
+            if pauseImmediately {
+                self.player?.pause()
+            }
+            
             onPlay(track: track)
         } catch let error {
             Logging.log(AudioPlayer.self, "Error: cannot play track, \(error.localizedDescription)")
@@ -270,7 +274,7 @@ class AudioPlayer : NSObject {
                     self.player?.delegate = self
                     self.player?.play()
                     
-                    if !wasPlaying
+                    if pauseImmediately || !wasPlaying
                     {
                         self.player?.pause()
                     }
@@ -287,10 +291,7 @@ class AudioPlayer : NSObject {
             throw error
         }
         
-        if usePlayHistory
-        {
-            playerHistory.addToPlayHistory(newTrack: track)
-        }
+        playerHistory.addToPlayHistory(newTrack: track)
         
         remote.updateRemoteCenterInfo(track: track)
     }
