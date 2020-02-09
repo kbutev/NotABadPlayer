@@ -93,6 +93,7 @@
 		99BC2C6C239963F10036D418 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BC2C6B239963F10036D418 /* Counter.swift */; };
 		99BC3ABC23EEDF340074B081 /* FavoritesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BC3ABB23EEDF340074B081 /* FavoritesStorage.swift */; };
 		99BD356D23F01CDE00DE70C2 /* StandardAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BD356C23F01CDE00DE70C2 /* StandardAudioPlayer.swift */; };
+		99BD356F23F0241900DE70C2 /* AutoScrollingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BD356E23F0241900DE70C2 /* AutoScrollingText.swift */; };
 		99C633E722849E2E00A2BF25 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C633E622849E2E00A2BF25 /* PlayerViewController.swift */; };
 		99C633E922849EC800A2BF25 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C633E822849EC800A2BF25 /* PlayerView.swift */; };
 		99C633EB22849ECF00A2BF25 /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99C633EA22849ECF00A2BF25 /* PlayerView.xib */; };
@@ -233,6 +234,7 @@
 		99BC2C6B239963F10036D418 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		99BC3ABB23EEDF340074B081 /* FavoritesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesStorage.swift; sourceTree = "<group>"; };
 		99BD356C23F01CDE00DE70C2 /* StandardAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardAudioPlayer.swift; sourceTree = "<group>"; };
+		99BD356E23F0241900DE70C2 /* AutoScrollingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoScrollingText.swift; sourceTree = "<group>"; };
 		99C633E622849E2E00A2BF25 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		99C633E822849EC800A2BF25 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		99C633EA22849ECF00A2BF25 /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerView.xib; sourceTree = "<group>"; };
@@ -521,6 +523,7 @@
 			children = (
 				994E20FE2296D516002BA684 /* CollectionIndexerView.swift */,
 				99D9672E239BFA4E0014999C /* Toast.swift */,
+				99BD356E23F0241900DE70C2 /* AutoScrollingText.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -792,6 +795,7 @@
 				99F6177923EDEBD2003F33FC /* AudioPlayerRemote.swift in Sources */,
 				9971379A229C6A8C009E8F35 /* SettingsPresenter.swift in Sources */,
 				99021E4A2281EEEA007B2BF7 /* PlaylistPresenter.swift in Sources */,
+				99BD356F23F0241900DE70C2 /* AutoScrollingText.swift in Sources */,
 				996F260222A7BD3D00BE199E /* PlayerSideVolumeBar.swift in Sources */,
 				994046DF229E962B00C6B789 /* SearchPresenter.swift in Sources */,
 				99761BC222898D94004577E0 /* QuickPlayerView.swift in Sources */,
