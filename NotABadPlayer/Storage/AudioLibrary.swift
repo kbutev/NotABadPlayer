@@ -230,13 +230,9 @@ class AudioLibrary : AudioInfo {
         }
         
         let favoriteItems = GeneralStorage.shared.favorites.items
-        let favoriteItemsContain = { (url) -> Bool in
-            return favoriteItems.filter({ (item) -> Bool in
-                return item.trackPath == url
-            }).first != nil
-        }
         
         var tracks: [AudioTrack] = []
+        var items: [(AudioTrack, FavoriteStorageItem)] = []
         
         let node = AudioTrackBuilder.start()
         
@@ -251,7 +247,11 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            if !favoriteItemsContain(path) {
+            let favoriteFirst = favoriteItems.filter { (item) -> Bool in
+                return item.trackPath == path
+            }.first
+            
+            guard let favorite = favoriteFirst else {
                 continue
             }
             
@@ -259,8 +259,16 @@ class AudioLibrary : AudioInfo {
                 continue
             }
             
-            tracks.append(track)
+            items.append((track, favorite))
         }
+        
+        items.sort { (a, b) -> Bool in
+            return a.1.dateFavorited > b.1.dateFavorited
+        }
+        
+        tracks = items.map({ (track, item) -> AudioTrack in
+            return track
+        })
         
         return tracks
     }
