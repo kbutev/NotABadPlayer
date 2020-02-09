@@ -137,7 +137,7 @@ class GeneralStorage {
     }
     
     func savePlayerState() {
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         var playlistToSerialize: MutableAudioPlaylist?
         
         if let playPlaylist = player.playlist
@@ -168,7 +168,7 @@ class GeneralStorage {
     }
     
     func restorePlayerState() {
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         
         guard let playOrderAsString = storage.string(forKey: "player_play_order") else {
             return
@@ -199,8 +199,8 @@ class GeneralStorage {
         }
         
         do {
-            // Always pause by default when restoring state from storag
-            try player.play(playlist: playlist, pauseImmediately: true)
+            // Always pause by default when restoring state from storage
+            try player.playAndPauseImmediately(playlist: playlist)
         } catch let error {
             Logging.log(GeneralStorage.self, "Error: could not restore player audio state, \(error.localizedDescription)")
             return
@@ -217,7 +217,7 @@ class GeneralStorage {
     }
     
     func savePlayerPlayHistoryState() {
-        if let playHistory = Serializing.jsonSerialize(object: AudioPlayer.shared.playerHistory.playHistory)
+        if let playHistory = Serializing.jsonSerialize(object: AudioPlayerService.shared.playerHistory.playHistory)
         {
             storage.set(playHistory, forKey: "play_history")
         }
@@ -228,7 +228,7 @@ class GeneralStorage {
         {
             do {
                 let result:[AudioTrack] = try AudioTrackBuilder.buildLatestVersionListFrom(serializedData: value)
-                AudioPlayer.shared.playerHistory.setPlayHistory(result)
+                AudioPlayerService.shared.playerHistory.playHistory = result
                 return
             } catch {
                 Logging.log(GeneralStorage.self, "Error: could not restore play history for the player from storage")

@@ -49,8 +49,8 @@ class MainViewController : UIViewController, BaseViewDelegate {
         super.viewDidLoad()
         
         GeneralStorage.shared.initialize()
-        AudioPlayer.shared.start(audioInfo: audioStorage)
-        QuickPlayerService.shared.initialize(audioPlayer: AudioPlayer.shared)
+        AudioPlayerService.shared.start(audioInfo: audioStorage)
+        QuickPlayerService.shared.initialize(audioPlayer: AudioPlayerService.shared)
         GeneralStorage.shared.restorePlayerState()
         GeneralStorage.shared.restorePlayerPlayHistoryState()
         

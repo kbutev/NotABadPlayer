@@ -59,7 +59,7 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         }
         
         baseView?.onQuickPlayerSwipeUpCallback = { [weak self] () in
-            if let currentlyPlaying = AudioPlayer.shared.playlist
+            if let currentlyPlaying = AudioPlayerService.shared.playlist
             {
                 self?.presenter?.onOpenPlayer(playlist: currentlyPlaying)
             }

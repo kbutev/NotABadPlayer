@@ -8,10 +8,30 @@
 
 import Foundation
 
-class AudioPlayerHistory {
+protocol AudioPlayerHistory: AnyObject {
+    var playHistory: [AudioTrack] { get set }
+    
+    func addToPlayHistory(newTrack: AudioTrack)
+    func playPreviousInPlayHistory()
+}
+
+class AudioPlayerHistoryStandard: AudioPlayerHistory {
     private let synchronous: DispatchQueue = DispatchQueue(label: "AudioPlayerHistory.synchronous")
     
-    private (set) var playHistory: [AudioTrack] = []
+    private var _playHistory: [AudioTrack] = []
+    
+    var playHistory: [AudioTrack] {
+        get {
+            return synchronous.sync {
+                return _playHistory
+            }
+        }
+        set {
+            synchronous.sync {
+                _playHistory = newValue
+            }
+        }
+    }
     
     private weak var player: AudioPlayer?
     
@@ -23,37 +43,25 @@ class AudioPlayerHistory {
         self.player = player
     }
     
-    public func historyCount() -> UInt {
-        return synchronous.sync {
-            return UInt(playHistory.count)
-        }
-    }
-    
-    public func setPlayHistory(_ list:[AudioTrack]) {
-        synchronous.sync {
-            playHistory = list
-        }
-    }
-    
-    public func addToPlayHistory(newTrack: AudioTrack) {
+    func addToPlayHistory(newTrack: AudioTrack) {
         let capacity = GeneralStorage.shared.getPlayerPlayedHistoryCapacity()
         
         synchronous.sync {
             // Make sure that the history tracks are unique
-            playHistory.removeAll(where: { (element) -> Bool in element == newTrack})
+            _playHistory.removeAll(where: { (element) -> Bool in element == newTrack})
             
-            playHistory.insert(newTrack, at: 0)
+            _playHistory.insert(newTrack, at: 0)
             
             // Do not exceed the play history capacity
             
-            while playHistory.count > capacity
+            while _playHistory.count > capacity
             {
-                playHistory.removeLast()
+                _playHistory.removeLast()
             }
         }
     }
     
-    public func playPreviousInPlayHistory() {
+    func playPreviousInPlayHistory() {
         guard let player = self.player else
         {
             return
@@ -61,7 +69,7 @@ class AudioPlayerHistory {
         
         player.stop()
         
-        if (historyCount() <= 1)
+        if (self.playHistory.count <= 1)
         {
             return
         }
@@ -69,8 +77,8 @@ class AudioPlayerHistory {
         var first: AudioTrack?
         
         synchronous.sync {
-            playHistory.removeFirst()
-            first = playHistory.first
+            _playHistory.removeFirst()
+            first = _playHistory.first
         }
         
         guard let previousTrack = first else {

@@ -68,7 +68,7 @@ class QuickPlayerService : NSObject {
                                      userInfo: nil,
                                      repeats: true)
         
-        AudioPlayer.shared.attach(observer: self)
+        AudioPlayerService.observing.attach(observer: self)
     }
     
     private func checkIfServiceIsInitialized() {
@@ -99,7 +99,7 @@ extension QuickPlayerService {
     }
     
     func fullyUpdateObserver(_ observer: QuickPlayerObserver) {
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         
         if let playlist = player.playlist
         {
@@ -124,7 +124,7 @@ extension QuickPlayerService {
 
 extension QuickPlayerService : LooperClient {
     @objc func loop() {
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         let currentTime = player.currentPositionSec
         let duration = player.durationSec
         
