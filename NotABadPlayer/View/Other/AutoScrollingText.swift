@@ -10,6 +10,7 @@ import UIKit
 
 class AutoScrollingText: UILabel {
     var scrolling = AutoScrollingTextScrolling()
+    var defaultScrollingParameters = AutoScrollingTextParameters()
     
     override var text: String? {
         get {
@@ -43,6 +44,7 @@ class AutoScrollingText: UILabel {
     private func resetScrolling() {
         self.scrolling.stop()
         self.scrolling = AutoScrollingTextScrolling(self)
+        self.scrolling.parameters = defaultScrollingParameters
     }
     
     private func invalidateScrolling() {
