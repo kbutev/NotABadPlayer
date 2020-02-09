@@ -9,68 +9,121 @@
 import UIKit
 
 class AutoScrollingText: UILabel {
-    let SCROLL_X_MOVE: CGFloat = 5
+    var scrolling = AutoScrollingTextScrolling()
     
-    var doesNotNeedScrolling = true
-    
-    var originalText: String = ""
-    
-    var width: CGFloat = 0
-    
-    var initialStartDelay: Double = 3.0
-    var scrollSpeed: Double = 0.5
-    var finishWait: TimeInterval? = 5.0
-    var restartWait: TimeInterval = 10.0
-    var restartCapacity: UInt? = 2
-    
-    private var timesStarted: UInt = 0
-    private var isExhausted: Bool = false
+    override var text: String? {
+        get {
+            return super.text
+        }
+        set {
+            super.text = newValue
+            
+            if !scrolling.isCurrentlySettingText {
+                onTextChanged()
+            }
+        }
+    }
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
         self.lineBreakMode = .byClipping
-        
-        weak var weakSelf = self
-        
-        perform(afterDelay: initialStartDelay) {
-            guard let strongSelf = weakSelf else {
-                return
-            }
-            
-            strongSelf.originalText = strongSelf.text ?? ""
-            strongSelf.width = strongSelf.bounds.size.width
-            
-            strongSelf.doesNotNeedScrolling = !strongSelf.isTruncated
-            
-            if strongSelf.timesStarted == 0 {
-                strongSelf.start()
-            }
+    }
+    
+    public func retry() {
+        if self.scrolling.isExhausted {
+            // When manually retrying, restart and start scrolling immediately
+            resetScrolling()
+            self.scrolling.parameters.restartCapacity = 1
+            self.scrolling.parameters.initialStartDelay = 0
+            self.scrolling.start()
         }
     }
     
-    // Operations
+    private func resetScrolling() {
+        self.scrolling.stop()
+        self.scrolling = AutoScrollingTextScrolling(self)
+    }
     
-    public func retry() {
-        if doesNotNeedScrolling {
-            return
-        }
+    private func invalidateScrolling() {
+        self.scrolling.stop()
+        self.scrolling = AutoScrollingTextScrolling()
+    }
+    
+    private func onTextChanged() {
+        invalidateScrolling()
         
         weak var weakSelf = self
         
-        perform(afterDelay: 0) {
-            guard let strongSelf = weakSelf else {
+        DispatchQueue.main.async {
+            if let strongSelf = weakSelf {
+                strongSelf.resetScrolling()
+                strongSelf.scrolling.start()
+            }
+        }
+    }
+}
+
+// Contains the login of scrolling the text of an UILabel.
+// To stop operating, deallocate the instance.
+class AutoScrollingTextScrolling {
+    weak var label: UILabel?
+    
+    var text: String {
+        get {
+            return label?.text ?? ""
+        }
+        set {
+            label?.text = newValue
+        }
+    }
+    
+    var isExhausted: Bool {
+        get {
+            return _isExhausted
+        }
+    }
+    
+    // Used to tell if the current caller of self.text = ...
+    var isCurrentlySettingText: Bool = false
+    
+    var doesNotNeedScrolling: Bool
+    
+    var parameters = AutoScrollingTextParameters()
+    
+    private var _originalText: String = ""
+    
+    private var _timesStarted: UInt = 0
+    private var _isExhausted: Bool = false
+    
+    init(_ label: UILabel?=nil) {
+        self.label = label
+        self._originalText = label?.text ?? ""
+        self.doesNotNeedScrolling = !(label?.isTruncated ?? false)
+    }
+    
+    // Scroll operations
+    
+    public func start() {
+        self.initialStart()
+    }
+    
+    public func stop() {
+        self.label = nil
+        self.doesNotNeedScrolling = true
+    }
+    
+    private func initialStart() {
+        if self.doesNotNeedScrolling {
+            return
+        }
+        
+        self.perform(afterDelay: self.parameters.initialStartDelay) { [weak self] () in
+            guard let strongSelf = self else {
                 return
             }
             
-            if !strongSelf.isExhausted {
-                return
-            }
-            
-            strongSelf.timesStarted -= 1
-            strongSelf.isExhausted = false
-            
-            strongSelf.start()
+            strongSelf.startFromBeginning()
         }
     }
     
@@ -81,48 +134,46 @@ class AutoScrollingText: UILabel {
         
         scrollToStart()
         
-        if let capacity = restartCapacity {
-            if timesStarted >= capacity {
-                isExhausted = true
+        if let capacity = parameters.restartCapacity {
+            if _timesStarted >= capacity || isExhausted {
+                _isExhausted = true
                 return
             }
         }
         
-        weak var weakSelf = self
+        _timesStarted += 1
         
-        perform(afterDelay: restartWait) {
-            weakSelf?.start()
+        perform(afterDelay: parameters.restartWait) { [weak self] () in
+            self?.startFromBeginning()
         }
     }
     
-    private func start() {
+    private func startFromBeginning() {
         if doesNotNeedScrolling {
             return
         }
         
-        timesStarted += 1
+        _timesStarted += 1
         
         scrollToStart()
         
-        weak var weakSelf = self
-        
-        perform(afterDelay: scrollInterval()) {
-            weakSelf?.scroll()
+        perform(afterDelay: scrollInterval()) { [weak self] () in
+            self?.scroll()
         }
     }
     
     private func scrollToStart() {
-        self.text = self.originalText
+        self.isCurrentlySettingText = true
+        self.text = self._originalText
+        self.isCurrentlySettingText = false
     }
     
     private func scroll() {
         let atTheEnd = scrollNow()
         
-        weak var weakSelf = self
-        
         if !atTheEnd {
-            perform(afterDelay: scrollInterval()) {
-                weakSelf?.scroll()
+            perform(afterDelay: scrollInterval()) { [weak self] () in
+                self?.scroll()
             }
         } else {
             finishScrolling()
@@ -134,39 +185,48 @@ class AutoScrollingText: UILabel {
             return true
         }
         
-        let now = self.text!
-        self.text = now.substring(from: 1)
+        let now = self.text
+        
+        if !now.isEmpty {
+            self.isCurrentlySettingText = true
+            self.text = now.substring(from: 1)
+            self.isCurrentlySettingText = false
+        }
         
         return false
     }
     
     private func finishScrolling() {
-        guard let delay = finishWait else {
+        guard let delay = parameters.finishWait else {
             return
         }
         
-        weak var weakSelf = self
-        
-        perform(afterDelay: delay) {
-            weakSelf?.restart()
+        perform(afterDelay: delay) { [weak self] () in
+            self?.restart()
         }
+    }
+    
+    // Perform async operation
+    
+    private func perform(afterDelay delay: Double, completion: @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay, execute: completion)
     }
     
     // Helpers
     
     private func scrollInterval() -> Double {
-        return 0.1 * (1 / scrollSpeed)
+        return 0.1 * (1 / parameters.scrollSpeed)
     }
     
     private func hasReachedTheEnd() -> Bool {
-        if !self.isTruncated {
-            return true
-        }
-        
-        return self.text?.isEmpty ?? true
+        return !(label?.isTruncated ?? false)
     }
-    
-    private func perform(afterDelay delay: Double, completion: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay, execute: completion)
-    }
+}
+
+struct AutoScrollingTextParameters {
+    var initialStartDelay: Double = 3.0
+    var scrollSpeed: Double = 0.5
+    var finishWait: TimeInterval? = 5.0
+    var restartWait: TimeInterval = 10.0
+    var restartCapacity: UInt? = 2
 }
