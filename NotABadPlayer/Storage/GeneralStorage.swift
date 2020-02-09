@@ -199,7 +199,8 @@ class GeneralStorage {
         }
         
         do {
-            try player.play(playlist: playlist)
+            // Always pause by default when restoring state from storag
+            try player.play(playlist: playlist, pauseImmediately: true)
         } catch let error {
             Logging.log(GeneralStorage.self, "Error: could not restore player audio state, \(error.localizedDescription)")
             return
@@ -210,9 +211,6 @@ class GeneralStorage {
         let currentPositionSec = storage.double(forKey: "player_current_position")
         
         player.seekTo(seconds: currentPositionSec)
-        
-        // Always pause by default when restoring state from storage
-        player.pause()
         
         // Success
         Logging.log(GeneralStorage.self, "Successfully restored the audio player state!")
