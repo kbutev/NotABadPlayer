@@ -12,6 +12,7 @@ class ListsView : UIView
 {
     static let HORIZONTAL_MARGIN: CGFloat = 8
     static let HEADER_HEIGHT: CGFloat = 48
+    static let FAVORITES_IMAGE: String = "shiny_star_small"
     
     private var initialized: Bool = false
     
@@ -281,7 +282,15 @@ class ListsViewDataSource : NSObject, BaseListsViewDataSource
         let item = playlists[indexPath.row]
         let firstTrack = item.firstTrack
         
-        cell.artCoverImage.image = firstTrack.albumCoverImage
+        // Temporary playlists may have a "fixed" image cover, try to use that
+        if let fixedArtCover = fixedArtCover(for: item) {
+            cell.artCoverImage.image = fixedArtCover
+            cell.artCoverImage.contentMode = .center
+        } else {
+            cell.artCoverImage.image = firstTrack.albumCoverImage
+            cell.artCoverImage.contentMode = .scaleToFill
+        }
+        
         cell.titleLabel.text = item.name
         cell.descriptionLabel.text = getPlaylistDescription(playlist: item)
         
@@ -296,6 +305,21 @@ class ListsViewDataSource : NSObject, BaseListsViewDataSource
     
     func getPlaylistDescription(playlist: BaseAudioPlaylist) -> String {
         return Text.value(.PlaylistCellDescription, "\(playlist.tracks.count)")
+    }
+    
+    func fixedArtCover(for playlist: BaseAudioPlaylist) -> UIImage? {
+        if !playlist.isTemporary {
+            return nil
+        }
+        
+        // Favorites playlist has a specific image cover
+        let favoritesName = Text.value(.PlaylistFavorites)
+        
+        if playlist.name == favoritesName {
+            return UIImage(named: ListsView.FAVORITES_IMAGE)
+        }
+        
+        return nil
     }
 }
 
