@@ -81,8 +81,8 @@ class SettingsPresenter: BasePresenter
         
         GeneralStorage.shared.resetDefaultSettingsValues()
         
-        AudioPlayer.shared.unmute()
-        AudioPlayer.shared.pause()
+        AudioPlayerService.shared.unmute()
+        AudioPlayerService.shared.pause()
     }
     
     func onAppThemeChange(_ themeValue: AppThemeValue) {
@@ -118,8 +118,8 @@ class SettingsPresenter: BasePresenter
         GeneralStorage.shared.saveShowVolumeBarValue(value)
         
         Logging.log(SettingsPresenter.self, "ShowVolumeBar setting changed, automatically unmuting and pausing player")
-        AudioPlayer.shared.unmute()
-        AudioPlayer.shared.pause()
+        AudioPlayerService.shared.unmute()
+        AudioPlayerService.shared.pause()
     }
     
     func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {

@@ -331,7 +331,7 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         cell.setTrackNum(item.trackNum)
         
         // Highlight cells that represent the currently playing track
-        if let playerPlaylist = AudioPlayer.shared.playlist
+        if let playerPlaylist = AudioPlayerService.shared.playlist
         {
             if playerPlaylist.playingTrack == item
             {

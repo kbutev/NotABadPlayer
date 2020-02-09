@@ -83,7 +83,7 @@ class SearchPresenter: BasePresenter
     }
     
     func onOpenPlaylistButtonClick() {
-        if let playlist = AudioPlayer.shared.playlist
+        if let playlist = AudioPlayerService.shared.playlist
         {
             delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
         }
@@ -219,7 +219,7 @@ class SearchPresenter: BasePresenter
     }
     
     private func playNewTrack(_ track: AudioTrack) {
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         
         let playlistName = Text.value(.SearchPlaylistName)
         
@@ -268,7 +268,7 @@ class SearchPresenter: BasePresenter
             fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
         }
         
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         
         do {
             try player.play(playlist: playlist)

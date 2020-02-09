@@ -300,7 +300,7 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
         cell.durationText.attributedText = buildAttributedDescription(duration: item.duration, isFavorite: isFavorite)
         
         // Highlight cells that represent the currently playing track
-        if let playerPlaylist = AudioPlayer.shared.playlist
+        if let playerPlaylist = AudioPlayerService.shared.playlist
         {
             if playerPlaylist.playingTrack == item
             {

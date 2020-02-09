@@ -68,7 +68,7 @@ class ListsPresenter: BasePresenter
                 }
             }
             
-            let recentlyPlayedTracks = AudioPlayer.shared.playerHistory.playHistory
+            let recentlyPlayedTracks = AudioPlayerService.shared.playerHistory.playHistory
             
             if recentlyPlayedTracks.count > 0
             {
@@ -163,7 +163,7 @@ class ListsPresenter: BasePresenter
     }
     
     func onOpenPlaylistButtonClick() {
-        if let playlist = AudioPlayer.shared.playlist
+        if let playlist = AudioPlayerService.shared.playlist
         {
             delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
         }

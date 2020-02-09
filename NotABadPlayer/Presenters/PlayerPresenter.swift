@@ -23,7 +23,7 @@ class PlayerPresenter: BasePresenter
     }
     
     func start() {
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         
         if let currentPlaylist = player.playlist
         {
@@ -63,7 +63,7 @@ class PlayerPresenter: BasePresenter
     }
     
     func contextAudioTrackLyrics() -> String? {
-        return AudioPlayer.shared.playingTrack?.lyrics
+        return AudioPlayerService.shared.playingTrack?.lyrics
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -85,11 +85,11 @@ class PlayerPresenter: BasePresenter
     }
     
     func onPlayerVolumeSet(value: Double) {
-        AudioPlayer.shared.volume = Int(value)
+        AudioPlayerService.shared.volume = Int(value)
     }
     
     func onMarkOrUnmarkContextTrackFavorite() -> Bool {
-        guard let track = AudioPlayer.shared.playingTrack else
+        guard let track = AudioPlayerService.shared.playingTrack else
         {
             return false
         }
@@ -157,7 +157,7 @@ class PlayerPresenter: BasePresenter
         
         Logging.log(PlayerPresenter.self, "Opening player and playing new playlist '\(newPlaylistName)' with track '\(newTrack.title)'")
         
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         
         do {
             try player.play(playlist: playlist)

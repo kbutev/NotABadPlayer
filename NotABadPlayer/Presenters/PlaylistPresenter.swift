@@ -39,7 +39,7 @@ class PlaylistPresenter: BasePresenter
         let dataSource = PlaylistViewDataSource(audioInfo: audioInfo, playlist: playlist)
         self.collectionDataSource = dataSource
         
-        let audioPlayer = AudioPlayer.shared
+        let audioPlayer = AudioPlayerService.shared
         var scrollIndex: UInt? = nil
         
         if let playlist = audioPlayer.playlist
@@ -117,7 +117,7 @@ class PlaylistPresenter: BasePresenter
     }
     
     func onOpenPlaylistButtonClick() {
-        if let playlist = AudioPlayer.shared.playlist
+        if let playlist = AudioPlayerService.shared.playlist
         {
             delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
         }
@@ -190,7 +190,7 @@ class PlaylistPresenter: BasePresenter
     }
     
     private func playNewTrack(_ track: AudioTrack) {
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         
         let playlistName = self.playlist.name
         let tracks = self.playlist.tracks
@@ -240,7 +240,7 @@ class PlaylistPresenter: BasePresenter
             fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
         }
         
-        let player = AudioPlayer.shared
+        let player = AudioPlayerService.shared
         
         do {
             try player.play(playlist: playlist)

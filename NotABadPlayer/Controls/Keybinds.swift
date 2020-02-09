@@ -32,17 +32,17 @@ class Keybinds {
             exit(0);
             break
         case .PLAY:
-            AudioPlayer.shared.resume()
+            AudioPlayerService.shared.resume()
             break
         case .PAUSE:
-            AudioPlayer.shared.pause()
+            AudioPlayerService.shared.pause()
             break
         case .PAUSE_OR_RESUME:
-            AudioPlayer.shared.pauseOrResume()
+            AudioPlayerService.shared.pauseOrResume()
             break
         case .NEXT:
             do {
-                try AudioPlayer.shared.playNext()
+                try AudioPlayerService.shared.playNext()
             }
             catch let e
             {
@@ -51,7 +51,7 @@ class Keybinds {
             break
         case .PREVIOUS:
             do {
-                try AudioPlayer.shared.playPrevious()
+                try AudioPlayerService.shared.playPrevious()
             }
             catch let e
             {
@@ -60,7 +60,7 @@ class Keybinds {
             break
         case .SHUFFLE:
             do {
-                try AudioPlayer.shared.shuffle()
+                try AudioPlayerService.shared.shuffle()
             }
             catch let e
             {
@@ -68,37 +68,37 @@ class Keybinds {
             }
             break
         case .MUTE_OR_UNMUTE:
-            AudioPlayer.shared.muteOrUnmute()
+            AudioPlayerService.shared.muteOrUnmute()
             break
         case .MUTE:
-            AudioPlayer.shared.mute()
+            AudioPlayerService.shared.mute()
             break
         case .FORWARDS_8:
-            AudioPlayer.shared.jumpForwards(seconds: 8)
+            AudioPlayerService.shared.jumpForwards(seconds: 8)
             break
         case .FORWARDS_15:
-            AudioPlayer.shared.jumpForwards(seconds: 15)
+            AudioPlayerService.shared.jumpForwards(seconds: 15)
             break
         case .FORWARDS_30:
-            AudioPlayer.shared.jumpForwards(seconds: 30)
+            AudioPlayerService.shared.jumpForwards(seconds: 30)
             break
         case .FORWARDS_60:
-            AudioPlayer.shared.jumpForwards(seconds: 60)
+            AudioPlayerService.shared.jumpForwards(seconds: 60)
             break
         case .BACKWARDS_8:
-            AudioPlayer.shared.jumpBackwards(seconds: 8)
+            AudioPlayerService.shared.jumpBackwards(seconds: 8)
             break
         case .BACKWARDS_15:
-            AudioPlayer.shared.jumpBackwards(seconds: 15)
+            AudioPlayerService.shared.jumpBackwards(seconds: 15)
             break
         case .BACKWARDS_30:
-            AudioPlayer.shared.jumpBackwards(seconds: 30)
+            AudioPlayerService.shared.jumpBackwards(seconds: 30)
             break
         case .BACKWARDS_60:
-            AudioPlayer.shared.jumpBackwards(seconds: 60)
+            AudioPlayerService.shared.jumpBackwards(seconds: 60)
             break
         case .CHANGE_PLAY_ORDER:
-            let player = AudioPlayer.shared
+            let player = AudioPlayerService.shared
             
             let order = player.playOrder
             
@@ -123,7 +123,7 @@ class Keybinds {
             
             break
         case .RECALL:
-            AudioPlayer.shared.playPreviousInPlayHistory()
+            AudioPlayerService.shared.playPreviousInPlayHistory()
             break
         }
         
