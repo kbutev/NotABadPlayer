@@ -222,13 +222,14 @@ class SearchPresenter: BasePresenter
         let player = AudioPlayerService.shared
         
         let playlistName = Text.value(.SearchPlaylistName)
+        let tracks = self.searchResults
         
         var searchPlaylist: BaseAudioPlaylist!
         
         do {
             var node = AudioPlaylistBuilder.start()
             node.name = playlistName
-            node.tracks = searchResults
+            node.tracks = tracks
             node.playingTrack = track
             
             searchPlaylist = try node.build()

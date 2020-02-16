@@ -195,8 +195,17 @@ class PlaylistPresenter: BasePresenter
     private func playNewTrack(_ track: AudioTrack) {
         let player = AudioPlayerService.shared
         
-        let playlistName = self.playlist.name
-        let tracks = self.playlist.tracks
+        var playlistName = self.playlist.name
+        var tracks = self.playlist.tracks
+        
+        // The playlist that will be played would be either the given playlist to the presenter
+        // or the source playlist of the clicked track
+        if self.options.openOriginalSourcePlaylist {
+            if let source = track.originalSource.getSourcePlaylist(audioInfo: self.audioInfo, playingTrack: track) {
+                playlistName = source.name
+                tracks = source.tracks
+            }
+        }
         
         var playlist: BaseAudioPlaylist!
         

@@ -56,8 +56,8 @@ class AudioTrackV1 : AudioTrack {
         set { _durationInSeconds = newValue }
     }
     override public var source : AudioTrackSource {
-        get { return _source }
-        set { _source = newValue }
+        get { return super.source }
+        set { setSource(newValue) }
     }
     override public var lyrics : String {
         get { return _lyrics }
@@ -72,25 +72,12 @@ class AudioTrackV1 : AudioTrack {
         set { _lastPlayedPosition = newValue }
     }
     
-    public init() {
-        super.init(albumID: 0, source: AudioTrackSource.createAlbumSource(albumID: 0))
+    public override init() {
+        super.init()
     }
     
-    public init(_ prototype: AudioTrack) {
-        super.init(albumID: prototype.albumID, source: prototype.source)
-        self.identifier = prototype.identifier
-        self.filePath = prototype.filePath
-        self.title = prototype.title
-        self.artist = prototype.artist
-        self.albumTitle = prototype.albumTitle
-        self.albumID = prototype.albumID
-        self.albumCover = prototype.albumCover
-        self.trackNum = prototype.trackNum
-        self.durationInSeconds = prototype.durationInSeconds
-        
-        self.lyrics = prototype.lyrics
-        self.date = prototype.date
-        self.lastPlayedPosition = prototype.lastPlayedPosition
+    public override init(_ prototype: AudioTrack) {
+        super.init(prototype)
     }
     
     required init(from decoder: Decoder) throws {
