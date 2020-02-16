@@ -26,7 +26,7 @@ struct QuickPlayerObserverValue
 
 protocol QuickPlayerObserver : class {
     func updateTime(currentTime: Double, totalDuration: Double)
-    func updateMediaInfo(track: AudioTrack)
+    func updateMediaInfo(track: BaseAudioTrack)
     func updatePlayButtonState(isPlaying: Bool)
     func updatePlayOrderButtonState(order: AudioPlayOrder)
 }
@@ -136,7 +136,7 @@ extension QuickPlayerService : LooperClient {
 }
 
 extension QuickPlayerService : AudioPlayerObserver {
-    func onPlayerPlay(current: AudioTrack) {
+    func onPlayerPlay(current: BaseAudioTrack) {
         for observer in observers
         {
             observer.value?.updateMediaInfo(track: current)
@@ -158,14 +158,14 @@ extension QuickPlayerService : AudioPlayerObserver {
         }
     }
     
-    func onPlayerPause(track: AudioTrack) {
+    func onPlayerPause(track: BaseAudioTrack) {
         for observer in observers
         {
             observer.value?.updatePlayButtonState(isPlaying: false)
         }
     }
     
-    func onPlayerResume(track: AudioTrack) {
+    func onPlayerResume(track: BaseAudioTrack) {
         for observer in observers
         {
             observer.value?.updatePlayButtonState(isPlaying: true)

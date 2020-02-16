@@ -170,7 +170,7 @@ class PlaylistPresenter: BasePresenter
         
     }
     
-    private func openPlayerScreen(_ track: AudioTrack) {
+    private func openPlayerScreen(_ track: BaseAudioTrack) {
         guard let delegate = self.delegate else {
             fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
         }
@@ -192,7 +192,7 @@ class PlaylistPresenter: BasePresenter
         }
     }
     
-    private func playNewTrack(_ track: AudioTrack) {
+    private func playNewTrack(_ track: BaseAudioTrack) {
         let player = AudioPlayerService.shared
         
         var playlistName = self.playlist.name

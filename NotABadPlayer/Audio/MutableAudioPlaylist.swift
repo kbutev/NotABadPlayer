@@ -22,7 +22,7 @@ enum AudioPlaylistError: Error {
 
 class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     private var _name: String
-    private var _tracks: [AudioTrack]
+    private var _tracks: [BaseAudioTrack]
     
     private var _playing: Bool = false
     private var _playingTrackPosition: Int
@@ -33,12 +33,12 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
             return _name
         }
     }
-    public var tracks: [AudioTrack] {
+    public var tracks: [BaseAudioTrack] {
         get {
             return _tracks
         }
     }
-    public var firstTrack: AudioTrack {
+    public var firstTrack: BaseAudioTrack {
         get {
             return _tracks[0]
         }
@@ -54,7 +54,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         }
     }
     
-    public var playingTrack: AudioTrack {
+    public var playingTrack: BaseAudioTrack {
         get {
             return self.tracks[self.playingTrackPosition]
         }
@@ -75,7 +75,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     }
     
     init(name: String,
-         tracks: [AudioTrack],
+         tracks: [BaseAudioTrack],
          startWithTrackIndex: Int,
          startPlaying: Bool,
          isTemporary: Bool) throws {
@@ -127,7 +127,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         _temporary = isTemporary
     }
     
-    convenience init(name: String, tracks: [AudioTrack]) throws {
+    convenience init(name: String, tracks: [BaseAudioTrack]) throws {
         try self.init(name: name,
                       tracks: tracks,
                       startWithTrackIndex: 0,
@@ -181,7 +181,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         return self.tracks.count
     }
     
-    func trackAt(_ index: Int) -> AudioTrack {
+    func trackAt(_ index: Int) -> BaseAudioTrack {
         return self.tracks[index]
     }
     
@@ -205,7 +205,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         return self.playingTrackPosition + 1 == self.tracks.count
     }
     
-    func hasTrack(_ track: AudioTrack) -> Bool {
+    func hasTrack(_ track: BaseAudioTrack) -> Bool {
         return self.tracks.index(of: track) != nil
     }
     
@@ -213,7 +213,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         _playing = true
     }
     
-    func goToTrack(_ track: AudioTrack) {
+    func goToTrack(_ track: BaseAudioTrack) {
         if let index = _tracks.index(of: track)
         {
             _playing = true

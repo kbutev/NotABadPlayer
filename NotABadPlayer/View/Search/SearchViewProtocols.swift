@@ -20,5 +20,5 @@ protocol BaseSearchViewActionDelegate : UICollectionViewDelegate {
 }
 
 protocol BaseSearchFavoritesChecker : NSObject {
-    func isMarkedFavorite(item: AudioTrack) -> Bool
+    func isMarkedFavorite(item: BaseAudioTrack) -> Bool
 }

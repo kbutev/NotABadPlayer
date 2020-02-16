@@ -60,20 +60,20 @@ protocol BaseAudioPlaylistBuilderNode {
     func buildMutable() throws -> MutableAudioPlaylist
     
     var name: String { get set }
-    var tracks: [AudioTrack] { get set }
-    var playingTrack: AudioTrack? { get set }
+    var tracks: [BaseAudioTrack] { get set }
+    var playingTrack: BaseAudioTrack? { get set }
     var playingTrackIndex: Int { get set }
     var isTemporary: Bool { get set }
 }
 
 class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
     var name: String = ""
-    var tracks: [AudioTrack] = []
+    var tracks: [BaseAudioTrack] = []
     var playingTrackIndex: Int = 0
     var isPlaying: Bool = false
     var isTemporary: Bool = false
     
-    var playingTrack: AudioTrack? {
+    var playingTrack: BaseAudioTrack? {
         get {
             if playingTrackIndex >= 0 && playingTrackIndex < tracks.count
             {

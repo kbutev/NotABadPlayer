@@ -19,7 +19,7 @@ protocol BaseListsViewDelegate : UITableViewDelegate {
 }
 
 protocol BaseCreateListViewAddedTracksTableDataSource : UITableViewDataSource {
-    func getTrackDescription(track: AudioTrack) -> String
+    func getTrackDescription(track: BaseAudioTrack) -> String
 }
 
 protocol BaseCreateListViewAddedTracksActionDelegate : UITableViewDelegate {

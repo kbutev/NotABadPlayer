@@ -151,7 +151,7 @@ class StandardAudioPlayer : NSObject, AudioPlayer {
         }
         
         set {
-            return synchronous.sync {
+            synchronous.sync {
                 _playOrder = newValue
             }
             
@@ -159,7 +159,7 @@ class StandardAudioPlayer : NSObject, AudioPlayer {
         }
     }
     
-    var playingTrack: AudioTrack? {
+    var playingTrack: BaseAudioTrack? {
         get {
             return self.safeMutablePlaylist?.playingTrack
         }
@@ -245,7 +245,7 @@ class StandardAudioPlayer : NSObject, AudioPlayer {
         }
     }
     
-    private func play(track: AudioTrack, previousTrack: AudioTrack?=nil, pauseImmediately: Bool=false) throws {
+    private func play(track: BaseAudioTrack, previousTrack: BaseAudioTrack?=nil, pauseImmediately: Bool=false) throws {
         checkIfPlayerIsInitialized()
         
         let wasPlaying = self.isPlaying
@@ -705,7 +705,7 @@ extension StandardAudioPlayer: AudioPlayerObserving {
         }
     }
     
-    private func onPlay(track: AudioTrack) {
+    private func onPlay(track: BaseAudioTrack) {
         let observers = synchronous.sync {
             return _observers
         }
@@ -738,7 +738,7 @@ extension StandardAudioPlayer: AudioPlayerObserving {
         }
     }
     
-    private func onResume(track: AudioTrack) {
+    private func onResume(track: BaseAudioTrack) {
         let observers = synchronous.sync {
             return _observers
         }
@@ -749,7 +749,7 @@ extension StandardAudioPlayer: AudioPlayerObserving {
         }
     }
     
-    private func onPause(track: AudioTrack) {
+    private func onPause(track: BaseAudioTrack) {
         let observers = synchronous.sync {
             return _observers
         }

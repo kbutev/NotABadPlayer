@@ -25,11 +25,11 @@ struct AudioPlayerObserverValue
 }
 
 protocol AudioPlayerObserver : class {
-    func onPlayerPlay(current: AudioTrack)
+    func onPlayerPlay(current: BaseAudioTrack)
     func onPlayerFinish()
     func onPlayerStop()
-    func onPlayerPause(track: AudioTrack)
-    func onPlayerResume(track: AudioTrack)
+    func onPlayerPause(track: BaseAudioTrack)
+    func onPlayerResume(track: BaseAudioTrack)
     func onPlayOrderChange(order: AudioPlayOrder)
     func onVolumeChanged(volume: Double)
 }

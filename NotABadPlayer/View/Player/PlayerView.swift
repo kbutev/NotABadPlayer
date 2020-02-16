@@ -330,7 +330,7 @@ class PlayerView : UIView
         }
     }
     
-    public func updateUIState(player: AudioPlayer, track: AudioTrack, isFavorite: Bool) {
+    public func updateUIState(player: AudioPlayer, track: BaseAudioTrack, isFavorite: Bool) {
         updateMediaInfo(player: player, track: track, isFavorite: isFavorite)
         updateSoftUIState(player: player)
     }
@@ -356,7 +356,7 @@ class PlayerView : UIView
         updatePlayOrderButtonState(order: player.playOrder)
     }
     
-    public func updateMediaInfo(player: AudioPlayer, track: AudioTrack, isFavorite: Bool) {
+    public func updateMediaInfo(player: AudioPlayer, track: BaseAudioTrack, isFavorite: Bool) {
         self.artCoverImage.image = track.albumCoverImage
         
         self.titleLabel.text = track.title

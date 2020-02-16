@@ -200,7 +200,7 @@ class SearchView: UIView
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    public func updateMediaInfo(track: AudioTrack) {
+    public func updateMediaInfo(track: BaseAudioTrack) {
         quickPlayerView.updateMediaInfo(track: track)
         
         reloadData()
@@ -271,11 +271,11 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
     public weak var favoritesChecker : BaseSearchFavoritesChecker?
     
     let audioInfo: AudioInfo
-    let searchResults: [AudioTrack]
+    let searchResults: [BaseAudioTrack]
     
     private var playSelectionAnimationNextTime: Bool = false
     
-    init(audioInfo: AudioInfo, searchResults: [AudioTrack]) {
+    init(audioInfo: AudioInfo, searchResults: [BaseAudioTrack]) {
         self.audioInfo = audioInfo
         self.searchResults = searchResults
     }

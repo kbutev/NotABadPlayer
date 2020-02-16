@@ -20,5 +20,5 @@ protocol BasePlaylistViewActionDelegate : NSObject, UICollectionViewDelegate {
 }
 
 protocol BasePlaylistFavoritesChecker : NSObject {
-    func isMarkedFavorite(item: AudioTrack) -> Bool
+    func isMarkedFavorite(item: BaseAudioTrack) -> Bool
 }

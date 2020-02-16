@@ -196,13 +196,13 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         }
     }
     
-    private func isStorageMarkedFavorite(_ track: AudioTrack) -> Bool {
+    private func isStorageMarkedFavorite(_ track: BaseAudioTrack) -> Bool {
         return GeneralStorage.shared.favorites.isMarkedFavorite(track)
     }
 }
 
 extension PlayerViewController : AudioPlayerObserver {
-    func onPlayerPlay(current: AudioTrack) {
+    func onPlayerPlay(current: BaseAudioTrack) {
         self.baseView?.updateUIState(player: AudioPlayerService.shared, track: current, isFavorite: isStorageMarkedFavorite(current))
     }
     
@@ -214,11 +214,11 @@ extension PlayerViewController : AudioPlayerObserver {
         self.baseView?.updatePlayButtonState(player: AudioPlayerService.shared)
     }
     
-    func onPlayerPause(track: AudioTrack) {
+    func onPlayerPause(track: BaseAudioTrack) {
         self.baseView?.updateUIState(player: AudioPlayerService.shared, track: track, isFavorite: isStorageMarkedFavorite(track))
     }
     
-    func onPlayerResume(track: AudioTrack) {
+    func onPlayerResume(track: BaseAudioTrack) {
         self.baseView?.updateUIState(player: AudioPlayerService.shared, track: track, isFavorite: isStorageMarkedFavorite(track))
     }
     

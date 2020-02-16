@@ -228,7 +228,7 @@ class GeneralStorage {
         if let value = storage.string(forKey: "play_history")
         {
             do {
-                let result:[AudioTrack] = try AudioTrackBuilder.buildLatestVersionListFrom(serializedData: value)
+                let result:[BaseAudioTrack] = try AudioTrackBuilder.buildLatestVersionListFrom(serializedData: value)
                 AudioPlayerService.shared.playerHistory.playHistory = result
                 return
             } catch {

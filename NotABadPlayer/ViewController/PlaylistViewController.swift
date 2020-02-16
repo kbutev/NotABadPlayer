@@ -168,7 +168,7 @@ extension PlaylistViewController : QuickPlayerObserver {
         baseView?.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: AudioTrack) {
+    func updateMediaInfo(track: BaseAudioTrack) {
         baseView?.updateMediaInfo(track: track)
     }
     
@@ -182,7 +182,7 @@ extension PlaylistViewController : QuickPlayerObserver {
 }
 
 extension PlaylistViewController : BasePlaylistFavoritesChecker {
-    func isMarkedFavorite(item: AudioTrack) -> Bool {
+    func isMarkedFavorite(item: BaseAudioTrack) -> Bool {
         return GeneralStorage.shared.favorites.isMarkedFavorite(item)
     }
 }

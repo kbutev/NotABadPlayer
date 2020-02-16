@@ -13,7 +13,7 @@ class AudioPlaylistV1 : MutableAudioPlaylist {
         super.init(prototype)
     }
     
-    convenience init(name: String, tracks: [AudioTrack]) throws {
+    convenience init(name: String, tracks: [BaseAudioTrack]) throws {
         try self.init(name: name,
                       tracks: tracks,
                       startWithTrackIndex: 0,
@@ -22,7 +22,7 @@ class AudioPlaylistV1 : MutableAudioPlaylist {
     }
     
     override init(name: String,
-                  tracks: [AudioTrack],
+                  tracks: [BaseAudioTrack],
                   startWithTrackIndex: Int,
                   startPlaying: Bool,
                   isTemporary: Bool) throws {
