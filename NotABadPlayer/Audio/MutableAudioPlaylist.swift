@@ -111,7 +111,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
                 let result = try node.build()
                 self._tracks.append(result)
             } catch {
-                let path = track.filePath?.absoluteString ?? ""
+                let path = track.filePath.absoluteString
                 Logging.log(MutableAudioPlaylist.self, "Failed to copy audio track \(path)")
             }
         }

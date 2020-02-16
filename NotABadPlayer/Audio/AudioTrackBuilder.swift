@@ -48,7 +48,7 @@ protocol BaseAudioTrackBuilderNode {
     func reset()
     
     var identifier : Int { get set }
-    var filePath : URL? { get set }
+    var filePath : URL { get set }
     var title : String { get set }
     var artist : String { get set }
     var albumTitle : String { get set }
@@ -80,7 +80,7 @@ class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
         get { return track.identifier }
         set { track.identifier = newValue }
     }
-    public var filePath : URL? {
+    public var filePath : URL {
         get { return track.filePath }
         set { track.filePath = newValue }
     }

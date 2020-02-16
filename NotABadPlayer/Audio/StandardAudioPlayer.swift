@@ -250,10 +250,7 @@ class StandardAudioPlayer : NSObject, AudioPlayer {
         
         let wasPlaying = self.isPlaying
         
-        guard let url = track.filePath else {
-            Logging.log(AudioPlayer.self, "Error: cannot play track with nil url path")
-            throw AudioPlayerError.invalidArgument("Cannot play track with nil url path")
-        }
+        let url = track.filePath
         
         do {
             try self.player = AVAudioPlayer(contentsOf: url)

@@ -9,21 +9,25 @@
 import Foundation
 import MediaPlayer
 
-protocol BaseAudioTrack {
-    var identifier : Int { get }
-    var filePath : URL? { get }
-    var title : String { get }
-    var artist : String { get }
-    var albumTitle : String { get }
-    var albumID : Int { get }
-    var albumCover : MPMediaItemArtwork? { get }
-    var trackNum : Int { get }
-    var durationInSeconds : Double { get }
-    var duration : String { get }
-    var source : AudioTrackSource { get }
-    var originalSource : AudioTrackSource { get }
+class BaseAudioTrack: Equatable, Codable {
+    var identifier : Int { get { return 0 } }
+    var filePath : URL { get { return URL(fileURLWithPath: "") } }
+    var title : String { get { return "" } }
+    var artist : String { get { return "" } }
+    var albumTitle : String { get { return "" } }
+    var albumID : Int { get { return 0 } }
+    var albumCover : MPMediaItemArtwork? { get { return nil } }
+    var trackNum : Int { get { return 0 } }
+    var durationInSeconds : Double { get { return 0 } }
+    var duration : String { get { return "" } }
+    var source : AudioTrackSource { get { return AudioTrackSource.createAlbumSource(albumID: 0) } }
+    var originalSource : AudioTrackSource { get { return AudioTrackSource.createAlbumSource(albumID: 0) } }
     
-    var lyrics : String { get }
-    var date : AudioTrackDate { get }
-    var lastPlayedPosition : TimeInterval { get }
+    var lyrics : String { get { return "" } }
+    var date : AudioTrackDate { get { return AudioTrackDate(AudioTrackDateValue(), AudioTrackDateValue(), AudioTrackDateValue()) } }
+    var lastPlayedPosition : TimeInterval { get { return 0 } }
+    
+    static func == (lhs: BaseAudioTrack, rhs: BaseAudioTrack) -> Bool {
+        return lhs.filePath == rhs.filePath
+    }
 }
