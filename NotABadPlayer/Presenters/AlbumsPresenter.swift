@@ -145,7 +145,7 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
         }
     }
     
-    func onOpenPlaylistButtonClick() {
+    func onQuickOpenPlaylistButtonClick() {
         guard let playlist = AudioPlayerService.shared.playlist else {
             return
         }

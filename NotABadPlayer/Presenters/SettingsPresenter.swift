@@ -52,7 +52,7 @@ class SettingsPresenter: BasePresenter
         
     }
     
-    func onOpenPlaylistButtonClick() {
+    func onQuickOpenPlaylistButtonClick() {
         
     }
     

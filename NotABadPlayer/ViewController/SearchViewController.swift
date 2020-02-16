@@ -64,7 +64,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         }
         
         baseView?.onQuickPlayerPlaylistButtonClickCallback = { [weak self] () in
-            self?.presenter?.onOpenPlaylistButtonClick()
+            self?.presenter?.onQuickOpenPlaylistButtonClick()
         }
         
         baseView?.onQuickPlayerButtonClickCallback = { [weak self] (input) in

@@ -24,7 +24,7 @@ protocol BasePresenter
     func contextAudioTrackLyrics() -> String?
     func onPlayerButtonClick(input: ApplicationInput)
     func onPlayOrderButtonClick()
-    func onOpenPlaylistButtonClick()
+    func onQuickOpenPlaylistButtonClick()
     func onPlayerVolumeSet(value: Double)
     func onMarkOrUnmarkContextTrackFavorite() -> Bool
     
