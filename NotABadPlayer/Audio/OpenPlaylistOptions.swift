@@ -40,4 +40,12 @@ struct OpenPlaylistOptions {
         options.displayTrackNumber = false
         return options
     }
+    
+    public static func buildRecentlyPlayed() -> OpenPlaylistOptions
+    {
+        var options = OpenPlaylistOptions()
+        options.displayDescriptionAlbumTitle = true
+        options.displayTrackNumber = false
+        return options
+    }
 }
