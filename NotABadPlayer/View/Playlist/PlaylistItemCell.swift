@@ -14,7 +14,7 @@ class PlaylistItemCell : UICollectionViewCell
     public static let SIZE = CGSize(width: 0, height: 56)
     
     @IBOutlet weak var horizontalStackView: UIStackView!
-    @IBOutlet weak var trackNumText: UILabel!
+    @IBOutlet var trackNumText: UILabel!
     
     @IBOutlet weak var verticalStackView: UIStackView!
     @IBOutlet weak var titleText: UILabel!
@@ -57,5 +57,58 @@ class PlaylistItemCell : UICollectionViewCell
     
     public func setTrackNum(_ value: Int) {
         trackNumText.text = value > 0 ? "\(value)" : "-"
+    }
+    
+    public func showTrackNum() {
+        if trackNumText.superview == nil {
+            self.addSubview(trackNumText)
+        }
+    }
+    
+    public func hideTrackNum() {
+        if trackNumText.superview != nil {
+            trackNumText.removeFromSuperview()
+        }
+    }
+    
+    public func updateTitleText(_ title: String) {
+        self.titleText.text = title
+    }
+    
+    public func updateDescriptionText(isFavorite: Bool, duration: String?, albumTitle: String?) {
+        self.descriptionText.attributedText = buildAttributedDescription(isFavorite: isFavorite, duration: duration, albumTitle: albumTitle)
+    }
+    
+    public func buildAttributedDescription(isFavorite: Bool, duration: String?, albumTitle: String?) -> NSAttributedString {
+        if !isFavorite {
+            return NSMutableAttributedString(string: buildDescriptionTextValue(duration: duration, albumTitle: albumTitle))
+        }
+        
+        let fullString = NSMutableAttributedString()
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(named: PlaylistView.SHINY_STAR_IMAGE)
+        imageAttachment.bounds = PlaylistView.FAVORITES_ICON_SIZE
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        fullString.append(imageString)
+        fullString.append(NSAttributedString(string: " " + buildDescriptionTextValue(duration: duration, albumTitle: albumTitle)))
+        
+        return fullString
+    }
+    
+    public func buildDescriptionTextValue(duration: String?, albumTitle: String?) -> String
+    {
+        if let dur = duration {
+            if let title = albumTitle {
+                return "\(dur) - \(title)"
+            }
+            
+            return "\(dur)"
+        }
+        
+        let finalValue = albumTitle ?? ""
+        
+        return "\(finalValue)"
     }
 }

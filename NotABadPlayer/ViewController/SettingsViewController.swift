@@ -121,7 +121,7 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
         
     }
     

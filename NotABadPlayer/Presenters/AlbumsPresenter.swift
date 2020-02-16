@@ -105,7 +105,7 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
         
         do {
             let playlist = try node.build()
-            self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+            self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: OpenPlaylistOptions.buildDefault())
         } catch {
             Logging.log(AlbumsPresenter.self, "Error: failed to playlist screen for album '\(album.albumTitle)'")
         }
@@ -152,7 +152,7 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
         
         Logging.log(AlbumsPresenter.self, "Open playlist screen for playlist '\(playlist.name)'")
         
-        delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+        delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: OpenPlaylistOptions.buildDefault())
     }
     
     func onPlayerVolumeSet(value: Double) {

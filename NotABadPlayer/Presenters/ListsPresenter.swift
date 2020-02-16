@@ -129,7 +129,9 @@ class ListsPresenter: BasePresenter
         
         Logging.log(ListsPresenter.self, "Open playlist screen for playlist \(playlist.name)")
         
-        self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+        let appropriateOptions = getAppropriateOptions(for: playlist)
+        
+        self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: appropriateOptions)
     }
     
     func onOpenPlayer(playlist: BaseAudioPlaylist) {
@@ -165,7 +167,7 @@ class ListsPresenter: BasePresenter
     func onOpenPlaylistButtonClick() {
         if let playlist = AudioPlayerService.shared.playlist
         {
-            delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+            delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: OpenPlaylistOptions.buildDefault())
         }
     }
     
@@ -268,5 +270,21 @@ class ListsPresenter: BasePresenter
         }
         
         return playlists
+    }
+    
+    private func getAppropriateOptions(for playlist: BaseAudioPlaylist) -> OpenPlaylistOptions {
+        if !playlist.isTemporary {
+            return OpenPlaylistOptions.buildDefault()
+        }
+        
+        if playlist.name == Text.value(.PlaylistFavorites) {
+            return OpenPlaylistOptions.buildFavorites()
+        }
+        
+        if playlist.name == Text.value(.PlaylistRecentlyAdded) {
+            return OpenPlaylistOptions.buildRecentlyAdded()
+        }
+        
+        return OpenPlaylistOptions.buildDefault()
     }
 }

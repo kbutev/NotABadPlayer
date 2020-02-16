@@ -86,9 +86,9 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         rootView?.goBack()
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
         // Forward request to delegate
-        rootView?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+        rootView?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: options)
     }
     
     func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {

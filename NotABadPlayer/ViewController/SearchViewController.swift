@@ -97,7 +97,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         self.subViewControllerPlaylistName = ""
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
         if self.subViewController != nil
         {
             // Correct playlist is already open? Do nothing
@@ -111,7 +111,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
             goBack()
         }
         
-        let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist)
+        let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist, options: options)
         let vc = PlaylistViewController(presenter: presenter, rootView: self)
         
         presenter.setView(vc)

@@ -264,14 +264,16 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
     
     private let audioInfo: AudioInfo
     private let playlist: BaseAudioPlaylist
+    private let options: OpenPlaylistOptions
     
     private(set) var headerSize: CGSize = .zero
     
     private var playSelectionAnimationNextTime: Bool = false
     
-    init(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
+    init(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
         self.audioInfo = audioInfo
         self.playlist = playlist
+        self.options = options
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -284,6 +286,11 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         }
         
         headerSize = header.frame.size
+        
+        if !options.displayHeader {
+            hideImage(header: header, collectionView: collectionView)
+            return header
+        }
         
         let isAlbum = playlist.isAlbumPlaylist()
         
@@ -326,9 +333,19 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         let item = playlist.trackAt(indexPath.row)
         let isFavorite = favoritesChecker?.isMarkedFavorite(item: item) ?? false
         
-        cell.titleText.text = item.title
-        cell.descriptionText.attributedText = buildAttributedDescription(duration: item.duration, isFavorite: isFavorite)
-        cell.setTrackNum(item.trackNum)
+        cell.updateTitleText(item.title)
+        
+        let durationText = options.displayDescriptionDuration ? item.duration : nil
+        let albumTitleText = options.displayDescriptionAlbumTitle ? item.albumTitle : nil
+        
+        cell.updateDescriptionText(isFavorite: isFavorite, duration: durationText, albumTitle: albumTitleText)
+        
+        if options.displayTrackNumber {
+            cell.showTrackNum()
+            cell.setTrackNum(item.trackNum)
+        } else {
+            cell.hideTrackNum()
+        }
         
         // Highlight cells that represent the currently playing track
         if let playerPlaylist = AudioPlayerService.shared.playlist
@@ -393,43 +410,7 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
     
     public func playSelectionAnimation() {
         self.playSelectionAnimationNextTime = true
-    }
-    
-    func buildAttributedTitle(_ title: String, isFavorite: Bool=false) -> NSAttributedString {
-        if !isFavorite {
-            return NSMutableAttributedString(string: title)
-        }
-        
-        let fullString = NSMutableAttributedString()
-        
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(named: PlaylistView.SHINY_STAR_IMAGE)
-        imageAttachment.bounds = PlaylistView.FAVORITES_ICON_SIZE
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        fullString.append(imageString)
-        fullString.append(NSAttributedString(string: title))
-        
-        return fullString
-    }
-    
-    func buildAttributedDescription(duration: String, isFavorite: Bool=false) -> NSAttributedString {
-        if !isFavorite {
-            return NSMutableAttributedString(string: duration)
-        }
-        
-        let fullString = NSMutableAttributedString()
-        
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(named: PlaylistView.SHINY_STAR_IMAGE)
-        imageAttachment.bounds = PlaylistView.FAVORITES_ICON_SIZE
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        fullString.append(imageString)
-        fullString.append(NSAttributedString(string: " " + duration))
-        
-        return fullString
-    }
+    } 
 }
 
 // Collection delegate
