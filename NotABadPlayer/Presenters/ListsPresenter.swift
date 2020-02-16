@@ -285,6 +285,10 @@ class ListsPresenter: BasePresenter
             return OpenPlaylistOptions.buildRecentlyAdded()
         }
         
+        if playlist.name == Text.value(.PlaylistRecentlyPlayed) {
+            return OpenPlaylistOptions.buildRecentlyPlayed()
+        }
+        
         return OpenPlaylistOptions.buildDefault()
     }
 }
