@@ -124,7 +124,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         NavigationHelpers.dismissPresentedVC(self)
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
         
     }
     

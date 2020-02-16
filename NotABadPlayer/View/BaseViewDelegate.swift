@@ -11,7 +11,7 @@ import Foundation
 protocol BaseViewDelegate : class {
     func goBack()
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist)
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions)
     
     func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String])
     

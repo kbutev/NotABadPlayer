@@ -14,10 +14,11 @@ class PlaylistPresenter: BasePresenter
     
     private let audioInfo: AudioInfo
     private let playlist: BaseAudioPlaylist
+    private let options: OpenPlaylistOptions
     
     private var collectionDataSource: PlaylistViewDataSource?
     
-    required init(audioInfo: AudioInfo, playlist: BaseAudioPlaylist) {
+    required init(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
         self.audioInfo = audioInfo
         
         // Sort playlist
@@ -25,6 +26,8 @@ class PlaylistPresenter: BasePresenter
         let sorting = GeneralStorage.shared.getTrackSortingValue()
         let sortedPlaylist = playlist.isAlbumPlaylist() ? playlist.sortedPlaylist(withSorting: sorting) : playlist
         self.playlist = sortedPlaylist
+        
+        self.options = options
     }
     
     func setView(_ delegate: BaseViewDelegate) {
@@ -36,7 +39,7 @@ class PlaylistPresenter: BasePresenter
             fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
         }
         
-        let dataSource = PlaylistViewDataSource(audioInfo: audioInfo, playlist: playlist)
+        let dataSource = PlaylistViewDataSource(audioInfo: audioInfo, playlist: playlist, options: self.options)
         self.collectionDataSource = dataSource
         
         let audioPlayer = AudioPlayerService.shared
@@ -119,7 +122,7 @@ class PlaylistPresenter: BasePresenter
     func onOpenPlaylistButtonClick() {
         if let playlist = AudioPlayerService.shared.playlist
         {
-            delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist)
+            delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: self.options)
         }
     }
     

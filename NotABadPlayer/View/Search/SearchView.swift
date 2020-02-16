@@ -333,24 +333,6 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
         self.playSelectionAnimationNextTime = true
     }
     
-    func buildAttributedTitle(_ title: String, isFavorite: Bool=false) -> NSAttributedString {
-        if !isFavorite {
-            return NSMutableAttributedString(string: title)
-        }
-        
-        let fullString = NSMutableAttributedString()
-        
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(named: PlaylistView.SHINY_STAR_IMAGE)
-        imageAttachment.bounds = PlaylistView.FAVORITES_ICON_SIZE
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        fullString.append(imageString)
-        fullString.append(NSAttributedString(string: title))
-        
-        return fullString
-    }
-    
     func buildAttributedDescription(duration: String, isFavorite: Bool=false) -> NSAttributedString {
         if !isFavorite {
             return NSMutableAttributedString(string: duration)
