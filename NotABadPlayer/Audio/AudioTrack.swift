@@ -19,7 +19,13 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
     internal var _albumCover : MPMediaItemArtwork? = nil
     internal var _trackNum : Int
     internal var _durationInSeconds : Double
-    internal var _source : AudioTrackSource
+    
+    private var _source : AudioTrackSource
+    private var _originalSource : AudioTrackSource
+    
+    // If the sources are set to a dummy value, this is true.
+    // The only case of this is when building with default constructor.
+    private var _sourceIsDummy : Bool
     
     internal var _lyrics : String
     internal var _date : AudioTrackDate
@@ -101,27 +107,32 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
             return _source
         }
     }
+    public var originalSource: AudioTrackSource {
+        get {
+            return _originalSource
+        }
+    }
     
-    var lyrics : String
+    public var lyrics : String
     {
         get {
             return _lyrics
         }
     }
-    var date : AudioTrackDate
+    public var date : AudioTrackDate
     {
         get {
             return _date
         }
     }
-    var lastPlayedPosition : TimeInterval
+    public var lastPlayedPosition : TimeInterval
     {
         get {
             return _lastPlayedPosition
         }
     }
     
-    init(albumID: Int, source: AudioTrackSource) {
+    public init() {
         self._identifier = 0
         self._filePath = nil
         self._title = ""
@@ -129,11 +140,34 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
         self._albumTitle = ""
         self._trackNum = 0
         self._durationInSeconds = 0
-        self._albumID = albumID
-        self._source = source
+        self._albumID = 0
+        
+        self._source = AudioTrackSource.createAlbumSource(albumID: 0)
+        self._originalSource = AudioTrackSource.createAlbumSource(albumID: 0)
+        self._sourceIsDummy = true
+        
         self._lyrics = ""
         self._date = AudioTrackDateBuilder.buildGeneric()
         self._lastPlayedPosition = 0
+    }
+    
+    public init(_ prototype: AudioTrack) {
+        self._identifier = prototype._identifier
+        self._filePath = prototype._filePath
+        self._title = prototype._title
+        self._artist = prototype._artist
+        self._albumTitle = prototype._albumTitle
+        self._trackNum = prototype._trackNum
+        self._durationInSeconds = prototype._durationInSeconds
+        self._albumID = prototype._albumID
+        
+        self._source = prototype._source
+        self._originalSource = prototype._originalSource
+        self._sourceIsDummy = prototype._sourceIsDummy
+        
+        self._lyrics = prototype._lyrics
+        self._date = prototype._date
+        self._lastPlayedPosition = prototype._lastPlayedPosition
     }
     
     static func == (lhs: AudioTrack, rhs: AudioTrack) -> Bool {
@@ -165,6 +199,16 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
         return nil
     }
     
+    internal func setSource(_ source: AudioTrackSource) {
+        _source = source
+        
+        if _sourceIsDummy {
+            _originalSource = source
+        }
+        
+        _sourceIsDummy = false
+    }
+    
     // Serialization keys
     // MPMediaItemArtwork should not be codable
     internal enum CodingKeys: String, CodingKey {
@@ -177,6 +221,8 @@ class AudioTrack: BaseAudioTrack, Equatable, Codable {
         case _trackNum
         case _durationInSeconds
         case _source
+        case _originalSource
+        case _sourceIsDummy
         case _lyrics
         case _date
         case _lastPlayedPosition

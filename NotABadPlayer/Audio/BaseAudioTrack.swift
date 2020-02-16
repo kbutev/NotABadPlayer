@@ -21,6 +21,7 @@ protocol BaseAudioTrack {
     var durationInSeconds : Double { get }
     var duration : String { get }
     var source : AudioTrackSource { get }
+    var originalSource : AudioTrackSource { get }
     
     var lyrics : String { get }
     var date : AudioTrackDate { get }
