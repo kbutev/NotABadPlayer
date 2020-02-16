@@ -20,6 +20,10 @@ class PlaylistItemCell : UICollectionViewCell
     @IBOutlet weak var titleText: UILabel!
     @IBOutlet weak var descriptionText: UILabel!
     
+    private var trackNumWidthConstraint: NSLayoutConstraint?
+    private var trackNumWidthConstraintDefault: NSLayoutConstraint?
+    private var trackNumWidthConstraintHidden: NSLayoutConstraint?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -44,7 +48,7 @@ class PlaylistItemCell : UICollectionViewCell
         
         // Track num setup
         trackNumText.translatesAutoresizingMaskIntoConstraints = false
-        trackNumText.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        showTrackNum()
         trackNumText.heightAnchor.constraint(equalTo: guide.heightAnchor).isActive = true
     }
     
@@ -60,15 +64,22 @@ class PlaylistItemCell : UICollectionViewCell
     }
     
     public func showTrackNum() {
-        if trackNumText.superview == nil {
-            self.addSubview(trackNumText)
+        if let constraint = trackNumWidthConstraint {
+            trackNumText.removeConstraint(constraint)
         }
+        
+        trackNumWidthConstraint = trackNumText.widthAnchor.constraint(equalToConstant: 32)
+        trackNumWidthConstraint?.isActive = true
     }
     
     public func hideTrackNum() {
-        if trackNumText.superview != nil {
-            trackNumText.removeFromSuperview()
+        if let constraint = trackNumWidthConstraint {
+            trackNumText.removeConstraint(constraint)
         }
+        
+        trackNumWidthConstraint = trackNumText.widthAnchor.constraint(equalToConstant: 6)
+        trackNumWidthConstraint?.isActive = true
+        trackNumText.text = ""
     }
     
     public func updateTitleText(_ title: String) {
