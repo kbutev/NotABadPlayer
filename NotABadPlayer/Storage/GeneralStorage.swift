@@ -189,8 +189,9 @@ class GeneralStorage {
         
         do {
             playlistObject = try AudioPlaylistBuilder.buildLatestMutableVersionFrom(serializedData: playlistAsString)
-        } catch {
-            
+        } catch let e {
+            Logging.log(GeneralStorage.self, "Error: could not restore player audio state, error: \(e)")
+            return
         }
         
         guard let playlist = playlistObject else {
@@ -202,7 +203,7 @@ class GeneralStorage {
             // Always pause by default when restoring state from storage
             try player.playAndPauseImmediately(playlist: playlist)
         } catch let error {
-            Logging.log(GeneralStorage.self, "Error: could not restore player audio state, \(error.localizedDescription)")
+            Logging.log(GeneralStorage.self, "Error: could not restore player audio state, error: \(error)")
             return
         }
         
