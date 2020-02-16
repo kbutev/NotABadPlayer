@@ -15,7 +15,7 @@ class CreateListsViewController: UIViewController {
     
     private let audioInfo: AudioInfo!
     private var audioInfoAlbums: [AudioAlbum] = []
-    private var addedTracks: [AudioTrack] = []
+    private var addedTracks: [BaseAudioTrack] = []
     private var addedTracksAsViewModels: [CreateListAudioTrack] {
         get {
             var result: [CreateListAudioTrack] = []
@@ -29,7 +29,7 @@ class CreateListsViewController: UIViewController {
         }
     }
     private var openedAlbum: AudioAlbum?
-    private var openedAlbumTracks: [AudioTrack] = []
+    private var openedAlbumTracks: [BaseAudioTrack] = []
     private var openedAlbumTracksAsViewModels: [CreateListAudioTrack] {
         get {
             var result: [CreateListAudioTrack] = []
@@ -223,7 +223,7 @@ class CreateListsViewController: UIViewController {
 
 // Added tracks operations
 extension CreateListsViewController {
-    private func getAddedTrackAt(_ index: UInt) -> AudioTrack?
+    private func getAddedTrackAt(_ index: UInt) -> BaseAudioTrack?
     {
         if index < addedTracks.count
         {

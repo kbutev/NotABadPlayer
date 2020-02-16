@@ -37,7 +37,7 @@ class AudioTrackSource: Codable, Equatable, Hashable {
         return !isAlbum()
     }
     
-    func getSourcePlaylist(audioInfo: AudioInfo, playingTrack: AudioTrack) -> BaseAudioPlaylist? {
+    func getSourcePlaylist(audioInfo: AudioInfo, playingTrack: BaseAudioTrack) -> BaseAudioPlaylist? {
         if (isAlbum())
         {
             if let albumID = Int(value)

@@ -14,7 +14,7 @@ class SearchPresenter: BasePresenter
     
     private let audioInfo: AudioInfo
     
-    private var searchResults: [AudioTrack] = []
+    private var searchResults: [BaseAudioTrack] = []
     
     private var dataSource: SearchViewDataSource?
     
@@ -196,7 +196,7 @@ class SearchPresenter: BasePresenter
         
     }
     
-    private func openPlayerScreen(_ track: AudioTrack) {
+    private func openPlayerScreen(_ track: BaseAudioTrack) {
         guard let delegate = self.delegate else {
             fatalError("Delegate is not set for \(String(describing: SearchPresenter.self))")
         }
@@ -218,7 +218,7 @@ class SearchPresenter: BasePresenter
         }
     }
     
-    private func playNewTrack(_ track: AudioTrack) {
+    private func playNewTrack(_ track: BaseAudioTrack) {
         let player = AudioPlayerService.shared
         
         let playlistName = Text.value(.SearchPlaylistName)

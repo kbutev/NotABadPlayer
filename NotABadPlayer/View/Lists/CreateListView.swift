@@ -20,7 +20,7 @@ struct CreateListAudioTrack
         self.identifier = identifier
     }
     
-    public static func createFrom(_ track: AudioTrack) -> CreateListAudioTrack {
+    public static func createFrom(_ track: BaseAudioTrack) -> CreateListAudioTrack {
         return CreateListAudioTrack(title: track.title, description: track.duration, identifier: track.filePath.absoluteString)
     }
     
@@ -28,7 +28,7 @@ struct CreateListAudioTrack
         return lhs.identifier == rhs.identifier
     }
     
-    public func equalsToTrack(_ track: AudioTrack) -> Bool {
+    public func equalsToTrack(_ track: BaseAudioTrack) -> Bool {
         return identifier == track.filePath.absoluteString
     }
 }
@@ -258,9 +258,9 @@ extension CreateListView {
 class CreateListViewAddedTracksTableDataSource : NSObject, BaseCreateListViewAddedTracksTableDataSource
 {
     let audioInfo: AudioInfo
-    let tracks: [AudioTrack]
+    let tracks: [BaseAudioTrack]
     
-    init(audioInfo: AudioInfo, tracks: [AudioTrack]) {
+    init(audioInfo: AudioInfo, tracks: [BaseAudioTrack]) {
         self.audioInfo = audioInfo
         self.tracks = tracks
     }
@@ -289,7 +289,7 @@ class CreateListViewAddedTracksTableDataSource : NSObject, BaseCreateListViewAdd
         return 1
     }
     
-    func getTrackDescription(track: AudioTrack) -> String {
+    func getTrackDescription(track: BaseAudioTrack) -> String {
         return track.duration
     }
 }
@@ -378,7 +378,7 @@ class CreateListViewAlbumsDataSource : NSObject, BaseCreateListViewAlbumsDataSou
         return 1
     }
     
-    func getTrackDescription(track: AudioTrack) -> String {
+    func getTrackDescription(track: BaseAudioTrack) -> String {
         return track.duration
     }
     

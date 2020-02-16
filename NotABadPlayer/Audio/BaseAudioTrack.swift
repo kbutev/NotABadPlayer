@@ -27,6 +27,18 @@ class BaseAudioTrack: Equatable, Codable {
     var date : AudioTrackDate { get { return AudioTrackDate(AudioTrackDateValue(), AudioTrackDateValue(), AudioTrackDateValue()) } }
     var lastPlayedPosition : TimeInterval { get { return 0 } }
     
+    // Album cover getter helper.
+    public var albumCoverImage : UIImage? {
+        get {
+            if let albumCover = self.albumCover
+            {
+                return albumCover.image(at: albumCover.bounds.size)
+            }
+            
+            return nil
+        }
+    }
+    
     static func == (lhs: BaseAudioTrack, rhs: BaseAudioTrack) -> Bool {
         return lhs.filePath == rhs.filePath
     }

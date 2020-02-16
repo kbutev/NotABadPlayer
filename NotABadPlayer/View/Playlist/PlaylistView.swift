@@ -172,7 +172,7 @@ class PlaylistView : UIView
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    public func updateMediaInfo(track: AudioTrack) {
+    public func updateMediaInfo(track: BaseAudioTrack) {
         quickPlayerView.updateMediaInfo(track: track)
         
         reloadData()

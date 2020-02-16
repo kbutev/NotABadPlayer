@@ -12,11 +12,11 @@ import Foundation
 // Thread safe: no
 protocol BaseAudioPlaylist {
     var name: String { get }
-    var tracks: [AudioTrack] { get }
-    var firstTrack: AudioTrack { get }
+    var tracks: [BaseAudioTrack] { get }
+    var firstTrack: BaseAudioTrack { get }
     var isPlaying: Bool { get }
     var playingTrackPosition: Int { get }
-    var playingTrack: AudioTrack { get }
+    var playingTrack: BaseAudioTrack { get }
     var isTemporary: Bool { get }
     
     func equals(_ other: BaseAudioPlaylist) -> Bool
@@ -24,9 +24,9 @@ protocol BaseAudioPlaylist {
     func sortedPlaylist(withSorting sorting: TrackSorting) -> MutableAudioPlaylist
     func isAlbumPlaylist() -> Bool
     func size() -> Int
-    func trackAt(_ index: Int) -> AudioTrack
+    func trackAt(_ index: Int) -> BaseAudioTrack
     func getAlbum(audioInfo: AudioInfo) -> AudioAlbum?
     func isPlayingFirstTrack() -> Bool
     func isPlayingLastTrack() -> Bool
-    func hasTrack(_ track: AudioTrack) -> Bool
+    func hasTrack(_ track: BaseAudioTrack) -> Bool
 }

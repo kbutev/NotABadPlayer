@@ -26,7 +26,7 @@ class AudioPlayerRemote: GeneralStorageObserver {
         setupRemoteControl()
     }
     
-    public func updateRemoteCenterInfo(track: AudioTrack) {
+    public func updateRemoteCenterInfo(track: BaseAudioTrack) {
         var nowPlaying: [String : Any] = [:]
         
         nowPlaying[MPMediaItemPropertyAlbumTitle] = track.albumTitle

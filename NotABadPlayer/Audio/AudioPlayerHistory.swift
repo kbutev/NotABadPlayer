@@ -9,18 +9,18 @@
 import Foundation
 
 protocol AudioPlayerHistory: AnyObject {
-    var playHistory: [AudioTrack] { get set }
+    var playHistory: [BaseAudioTrack] { get set }
     
-    func addToPlayHistory(newTrack: AudioTrack)
+    func addToPlayHistory(newTrack: BaseAudioTrack)
     func playPreviousInPlayHistory()
 }
 
 class AudioPlayerHistoryStandard: AudioPlayerHistory {
     private let synchronous: DispatchQueue = DispatchQueue(label: "AudioPlayerHistory.synchronous")
     
-    private var _playHistory: [AudioTrack] = []
+    private var _playHistory: [BaseAudioTrack] = []
     
-    var playHistory: [AudioTrack] {
+    var playHistory: [BaseAudioTrack] {
         get {
             return synchronous.sync {
                 return _playHistory
@@ -43,7 +43,7 @@ class AudioPlayerHistoryStandard: AudioPlayerHistory {
         self.player = player
     }
     
-    func addToPlayHistory(newTrack: AudioTrack) {
+    func addToPlayHistory(newTrack: BaseAudioTrack) {
         let capacity = GeneralStorage.shared.getPlayerPlayedHistoryCapacity()
         
         synchronous.sync {
@@ -74,7 +74,7 @@ class AudioPlayerHistoryStandard: AudioPlayerHistory {
             return
         }
         
-        var first: AudioTrack?
+        var first: BaseAudioTrack?
         
         synchronous.sync {
             _playHistory.removeFirst()

@@ -165,7 +165,7 @@ class QuickPlayerView : UIView
         }
     }
     
-    func updateMediaInfo(track: AudioTrack) {
+    func updateMediaInfo(track: BaseAudioTrack) {
         trackInfoArtCoverImage.image = track.albumCoverImage
         trackInfoTitleText.text = track.title
     }

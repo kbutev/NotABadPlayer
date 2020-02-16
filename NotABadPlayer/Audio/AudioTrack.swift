@@ -68,16 +68,6 @@ class AudioTrack: BaseAudioTrack {
         }
         set { _albumCover = newValue }
     }
-    public var albumCoverImage : UIImage? {
-        get {
-            if let albumCover = self.albumCover
-            {
-                return albumCover.image(at: albumCover.bounds.size)
-            }
-            
-            return nil
-        }
-    }
     override public var trackNum : Int {
         get { return _trackNum }
         set { _trackNum = newValue }

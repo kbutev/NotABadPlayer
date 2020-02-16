@@ -33,7 +33,7 @@ protocol AudioPlayer: AnyObject {
     var hasPlaylist: Bool { get }
     var playlist: BaseAudioPlaylist? { get }
     var playOrder: AudioPlayOrder { get set }
-    var playingTrack: AudioTrack? { get }
+    var playingTrack: BaseAudioTrack? { get }
     var isMuted: Bool { get }
     var playerHistory: AudioPlayerHistory { get }
     

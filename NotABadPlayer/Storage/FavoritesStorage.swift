@@ -49,11 +49,11 @@ class FavoritesStorage {
         self.storage = storage
     }
     
-    func isMarkedFavorite(_ track: AudioTrack) -> Bool {
+    func isMarkedFavorite(_ track: BaseAudioTrack) -> Bool {
         return markedFavoriteItem(for: track) != nil
     }
     
-    func markedFavoriteItem(for track: AudioTrack) -> FavoriteStorageItem? {
+    func markedFavoriteItem(for track: BaseAudioTrack) -> FavoriteStorageItem? {
         updateLocalStorageIfNecessary()
         
         let item = FavoriteStorageItem(track)
@@ -66,17 +66,17 @@ class FavoritesStorage {
     }
     
     @discardableResult
-    func markFavoriteForced(track: AudioTrack) -> FavoriteStorageItem {
+    func markFavoriteForced(track: BaseAudioTrack) -> FavoriteStorageItem {
         return try! markFavorite(track: track, forced: true)
     }
     
     @discardableResult
-    func markFavorite(track: AudioTrack) throws -> FavoriteStorageItem {
+    func markFavorite(track: BaseAudioTrack) throws -> FavoriteStorageItem {
         return try markFavorite(track: track, forced: false)
     }
     
     @discardableResult
-    func markFavorite(track: AudioTrack, forced: Bool) throws -> FavoriteStorageItem {
+    func markFavorite(track: BaseAudioTrack, forced: Bool) throws -> FavoriteStorageItem {
         updateLocalStorageIfNecessary()
         
         if let already = markedFavoriteItem(for: track) {
@@ -105,7 +105,7 @@ class FavoritesStorage {
         return item
     }
     
-    func unmarkFavorite(track: AudioTrack) {
+    func unmarkFavorite(track: BaseAudioTrack) {
         updateLocalStorageIfNecessary()
         
         guard let item = markedFavoriteItem(for: track) else {
@@ -183,8 +183,8 @@ struct FavoriteStorageItem: Codable, Equatable {
     let dateFavorited: Date
     let trackPath: URL
     
-    init(_ track: AudioTrack, dateFavorited: Date=Date()) {
-        self.trackPath = track.filePath ?? URL(fileURLWithPath: "")
+    init(_ track: BaseAudioTrack, dateFavorited: Date=Date()) {
+        self.trackPath = track.filePath
         self.identifier = trackPath.absoluteString
         self.dateFavorited = dateFavorited
     }

@@ -175,7 +175,7 @@ extension AlbumsViewController : QuickPlayerObserver {
         baseView?.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: AudioTrack) {
+    func updateMediaInfo(track: BaseAudioTrack) {
         baseView?.updateMediaInfo(track: track)
     }
     
