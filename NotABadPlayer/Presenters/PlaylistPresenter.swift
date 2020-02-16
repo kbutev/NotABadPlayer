@@ -119,7 +119,7 @@ class PlaylistPresenter: BasePresenter
         }
     }
     
-    func onOpenPlaylistButtonClick() {
+    func onQuickOpenPlaylistButtonClick() {
         if let playlist = AudioPlayerService.shared.playlist
         {
             delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: self.options)

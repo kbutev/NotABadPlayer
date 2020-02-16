@@ -80,7 +80,7 @@ class PlayerPresenter: BasePresenter
         let _ = Keybinds.shared.performAction(action: .CHANGE_PLAY_ORDER)
     }
     
-    func onOpenPlaylistButtonClick() {
+    func onQuickOpenPlaylistButtonClick() {
         
     }
     
