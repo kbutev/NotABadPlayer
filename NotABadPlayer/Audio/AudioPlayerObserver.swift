@@ -24,6 +24,7 @@ struct AudioPlayerObserverValue
     }
 }
 
+// Note: Delegation may be performed on a background thread.
 protocol AudioPlayerObserver : class {
     func onPlayerPlay(current: BaseAudioTrack)
     func onPlayerFinish()
