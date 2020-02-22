@@ -41,9 +41,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
         presenter?.start()
         
-        AudioPlayerService.observing.attach(observer: self)
-        
-        Looper.shared.subscribe(self)
+        QuickPlayerService.shared.attach(observer: self)
     }
     
     private func setup() {
@@ -115,9 +113,9 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        Looper.shared.unsubscribe(self)
+        super.viewDidDisappear(animated)
         
-        AudioPlayerService.observing.detach(observer: self)
+        QuickPlayerService.shared.detach(observer: self)
     }
     
     func goBack() {
@@ -201,38 +199,25 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
     }
 }
 
-extension PlayerViewController : AudioPlayerObserver {
-    func onPlayerPlay(current: BaseAudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayerService.shared, track: current, isFavorite: isStorageMarkedFavorite(current))
+extension PlayerViewController : QuickPlayerObserver {
+    func updateTime(currentTime: Double, totalDuration: Double) {
+        baseView?.updateSoftUIState(player: AudioPlayerService.shared)
     }
     
-    func onPlayerFinish() {
+    func updateMediaInfo(track: BaseAudioTrack) {
+        let isFavorite = isStorageMarkedFavorite(track)
+        self.baseView?.updateUIState(player: AudioPlayerService.shared, track: track, isFavorite: isFavorite)
+    }
+    
+    func updatePlayButtonState(isPlaying: Bool) {
         self.baseView?.updatePlayButtonState(player: AudioPlayerService.shared)
     }
     
-    func onPlayerStop() {
-        self.baseView?.updatePlayButtonState(player: AudioPlayerService.shared)
-    }
-    
-    func onPlayerPause(track: BaseAudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayerService.shared, track: track, isFavorite: isStorageMarkedFavorite(track))
-    }
-    
-    func onPlayerResume(track: BaseAudioTrack) {
-        self.baseView?.updateUIState(player: AudioPlayerService.shared, track: track, isFavorite: isStorageMarkedFavorite(track))
-    }
-    
-    func onPlayOrderChange(order: AudioPlayOrder) {
+    func updatePlayOrderButtonState(order: AudioPlayOrder) {
         self.baseView?.updatePlayOrderButtonState(order: order)
     }
     
     func onVolumeChanged(volume: Double) {
         self.onSystemVolumeChanged(volume)
-    }
-}
-
-extension PlayerViewController : LooperClient {
-    func loop() {
-        baseView?.updateSoftUIState(player: AudioPlayerService.shared)
     }
 }

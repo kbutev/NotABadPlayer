@@ -242,4 +242,8 @@ extension ListsViewController : QuickPlayerObserver {
     func updatePlayOrderButtonState(order: AudioPlayOrder) {
         baseView?.updatePlayOrderButtonState(order: order)
     }
+    
+    func onVolumeChanged(volume: Double) {
+        
+    }
 }
