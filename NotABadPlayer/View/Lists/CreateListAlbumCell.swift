@@ -25,11 +25,11 @@ class CreateListAlbumCell: UITableViewCell
     public var onOpenedAlbumTrackSelectionCallback: (UInt)->Void = {(index) in }
     public var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void = {(index) in }
     
-    private var delegate : BaseCreateListAlbumCellDelegate?
+    private var delegate : BaseCreateListAlbumTrackCellDelegate?
     
-    public var dataSource : BaseCreateListAlbumCellDataSource? {
+    public var dataSource : BaseCreateListAlbumTrackCellDataSource? {
         get {
-            return tracksTable.dataSource as? BaseCreateListAlbumCellDataSource
+            return tracksTable.dataSource as? BaseCreateListAlbumTrackCellDataSource
         }
         set {
             tracksTable.dataSource = newValue
@@ -77,7 +77,7 @@ class CreateListAlbumCell: UITableViewCell
         let nib = UINib(nibName: String(describing: CreateListAlbumTrackCell.self), bundle: nil)
         tracksTable.register(nib, forCellReuseIdentifier: CreateListAlbumTrackCell.CELL_IDENTIFIER)
         
-        self.delegate = CreateListAlbumCellDelegate(view: self)
+        self.delegate = CreateListAlbumTrackCellDelegate(view: self)
         tracksTable.delegate = self.delegate
     }
     

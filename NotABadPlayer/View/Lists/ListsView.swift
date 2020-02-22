@@ -155,22 +155,6 @@ class ListsView : UIView
         playlistsTable.reloadData()
     }
     
-    public func updateTime(currentTime: Double, totalDuration: Double) {
-        quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
-    }
-    
-    public func updateMediaInfo(track: BaseAudioTrack) {
-        quickPlayerView.updateMediaInfo(track: track)
-    }
-    
-    public func updatePlayButtonState(playing: Bool) {
-        quickPlayerView.updatePlayButtonState(playing: playing)
-    }
-    
-    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
-        quickPlayerView.updatePlayOrderButtonState(order: order)
-    }
-    
     public func startDeletingLists() {
         if !playlistsTable.isEditing
         {
@@ -187,6 +171,29 @@ class ListsView : UIView
             
             deleteButton.setTitle(Text.value(.ListsDeleteButtonName), for: .normal)
         }
+    }
+}
+
+// QuickPlayerObserver
+extension ListsView: QuickPlayerObserver {
+    public func updateTime(currentTime: Double, totalDuration: Double) {
+        quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
+    }
+    
+    public func updateMediaInfo(track: BaseAudioTrack) {
+        quickPlayerView.updateMediaInfo(track: track)
+    }
+    
+    public func updatePlayButtonState(isPlaying: Bool) {
+        quickPlayerView.updatePlayButtonState(isPlaying: isPlaying)
+    }
+    
+    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
+        quickPlayerView.updatePlayOrderButtonState(order: order)
+    }
+    
+    func onVolumeChanged(volume: Double) {
+        
     }
 }
 

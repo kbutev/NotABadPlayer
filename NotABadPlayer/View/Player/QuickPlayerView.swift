@@ -170,8 +170,8 @@ class QuickPlayerView : UIView
         trackInfoTitleText.text = track.title
     }
     
-    func updatePlayButtonState(playing: Bool) {
-        playMediaButton.isHighlighted = playing
+    func updatePlayButtonState(isPlaying: Bool) {
+        playMediaButton.isHighlighted = isPlaying
     }
     
     func updatePlayOrderButtonState(order: AudioPlayOrder) {

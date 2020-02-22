@@ -32,15 +32,15 @@ protocol BaseCreateListViewAlbumsDataSource : UITableViewDataSource {
     func deselectAlbumTrack(_ track: CreateListAudioTrack)
 }
 
-protocol BaseCreateListViewAlbumsDelegate : UITableViewDelegate {
+protocol BaseCreateListViewAlbumTracksDelegate : UITableViewDelegate {
     func selectAlbum(index: UInt, albumTracks: [CreateListAudioTrack])
     func deselectAlbum()
 }
 
-protocol BaseCreateListAlbumCellDataSource : UITableViewDataSource {
+protocol BaseCreateListAlbumTrackCellDataSource : UITableViewDataSource {
     
 }
 
-protocol BaseCreateListAlbumCellDelegate : UITableViewDelegate {
+protocol BaseCreateListAlbumTrackCellDelegate : UITableViewDelegate {
     
 }

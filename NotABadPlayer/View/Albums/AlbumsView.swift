@@ -150,22 +150,6 @@ class AlbumsView : UIView
         collectionView.reloadData()
     }
     
-    public func updateTime(currentTime: Double, totalDuration: Double) {
-        quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
-    }
-    
-    public func updateMediaInfo(track: BaseAudioTrack) {
-        quickPlayerView.updateMediaInfo(track: track)
-    }
-    
-    public func updatePlayButtonState(playing: Bool) {
-        quickPlayerView.updatePlayButtonState(playing: playing)
-    }
-    
-    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
-        quickPlayerView.updatePlayOrderButtonState(order: order)
-    }
-    
     public func updateIndexerAlphabet(albumTitles: [String]) {
         collectionIndexerView?.setAlphabet(albumTitles)
     }
@@ -192,6 +176,29 @@ class AlbumsView : UIView
     
     public func hideIndexerCenterCharacter() {
         UIAnimations.animateViewFadeOut(indexerCenterCharacter)
+    }
+}
+
+// QuickPlayerObserver
+extension AlbumsView: QuickPlayerObserver {
+    public func updateTime(currentTime: Double, totalDuration: Double) {
+        quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
+    }
+    
+    public func updateMediaInfo(track: BaseAudioTrack) {
+        quickPlayerView.updateMediaInfo(track: track)
+    }
+    
+    public func updatePlayButtonState(isPlaying: Bool) {
+        quickPlayerView.updatePlayButtonState(isPlaying: isPlaying)
+    }
+    
+    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
+        quickPlayerView.updatePlayOrderButtonState(order: order)
+    }
+    
+    func onVolumeChanged(volume: Double) {
+        
     }
 }
 

@@ -168,24 +168,6 @@ class PlaylistView : UIView
         }
     }
     
-    public func updateTime(currentTime: Double, totalDuration: Double) {
-        quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
-    }
-    
-    public func updateMediaInfo(track: BaseAudioTrack) {
-        quickPlayerView.updateMediaInfo(track: track)
-        
-        reloadData()
-    }
-    
-    public func updatePlayButtonState(playing: Bool) {
-        quickPlayerView.updatePlayButtonState(playing: playing)
-    }
-    
-    public func updatePlayOrderButtonState(order: AudioPlayOrder) {
-        quickPlayerView.updatePlayOrderButtonState(order: order)
-    }
-    
     public func updateOverlayTitle(title: String) {
         albumTitleOverlayLabel.text = title
     }
@@ -228,6 +210,31 @@ class PlaylistView : UIView
         {
             self.reloadData()
         }
+    }
+}
+
+// QuickPlayerObserver
+extension PlaylistView: QuickPlayerObserver {
+    func updateTime(currentTime: Double, totalDuration: Double) {
+        quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
+    }
+    
+    func updateMediaInfo(track: BaseAudioTrack) {
+        quickPlayerView.updateMediaInfo(track: track)
+        
+        reloadData()
+    }
+    
+    func updatePlayButtonState(isPlaying: Bool) {
+        quickPlayerView.updatePlayButtonState(isPlaying: isPlaying)
+    }
+    
+    func updatePlayOrderButtonState(order: AudioPlayOrder) {
+        quickPlayerView.updatePlayOrderButtonState(order: order)
+    }
+    
+    func onVolumeChanged(volume: Double) {
+        
     }
 }
 

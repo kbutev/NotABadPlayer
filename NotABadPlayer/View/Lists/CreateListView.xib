@@ -54,31 +54,39 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tracks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wfv-sh-Sh7">
-                    <rect key="frame" x="169" y="433" width="75" height="29"/>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Yg7-if-GJY">
+                    <rect key="frame" x="146" y="434" width="121" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7FY-yb-V5F">
-                    <rect key="frame" x="0.0" y="384" width="414" height="128"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </tableView>
+                    <segments>
+                        <segment title="Album Tracks"/>
+                        <segment title="Search"/>
+                    </segments>
+                </segmentedControl>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="addedTracksLabel" destination="BVy-rL-dyt" id="XNQ-qU-m3g"/>
                 <outlet property="addedTracksTable" destination="mBt-2R-igG" id="tbH-C6-rTN"/>
-                <outlet property="albumsTable" destination="7FY-yb-V5F" id="Q6N-Bi-5y4"/>
+                <outlet property="albumsTable" destination="7FY-yb-V5F" id="YSY-cu-sTl"/>
                 <outlet property="cancelButton" destination="qvS-Ck-u4z" id="WpX-nF-ylX"/>
                 <outlet property="doneButton" destination="q5R-lu-cUf" id="sLR-30-ab9"/>
                 <outlet property="header" destination="UHP-FT-t70" id="Zum-8I-RV4"/>
                 <outlet property="playlistNameField" destination="jm8-sA-DbB" id="4ij-Zi-lHk"/>
-                <outlet property="tracksLabel" destination="Wfv-sh-Sh7" id="jQK-Vl-WnL"/>
+                <outlet property="searchLayout" destination="tyi-UI-U6V" id="ls7-bj-TfJ"/>
+                <outlet property="tracksSwitch" destination="Yg7-if-GJY" id="g1Q-do-1Gv"/>
             </connections>
+        </view>
+        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7FY-yb-V5F">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </tableView>
+        <view contentMode="scaleToFill" id="tyi-UI-U6V">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="2xh-aO-rFg"/>
         </view>
     </objects>
 </document>
