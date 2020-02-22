@@ -136,10 +136,8 @@ extension QuickPlayerService {
             observer.updatePlayOrderButtonState(order: player.playOrder)
         }
     }
-}
-
-extension QuickPlayerService : LooperClient {
-    @objc func loop() {
+    
+    private func updatePlayerTime() {
         let observers = self.observersCopy
         let player = AudioPlayerService.shared
         let currentTime = player.currentPositionSec
@@ -154,8 +152,16 @@ extension QuickPlayerService : LooperClient {
     }
 }
 
+extension QuickPlayerService : LooperClient {
+    @objc func loop() {
+        updatePlayerTime()
+    }
+}
+
 extension QuickPlayerService : AudioPlayerObserver {
     func onPlayerPlay(current: BaseAudioTrack) {
+        weak var weakSelf = self
+        
         let observers = self.observersCopy
         
         performOnMain {
@@ -164,6 +170,8 @@ extension QuickPlayerService : AudioPlayerObserver {
                 observer.value?.updateMediaInfo(track: current)
                 observer.value?.updatePlayButtonState(isPlaying: true)
             }
+            
+            weakSelf?.updatePlayerTime()
         }
     }
     
