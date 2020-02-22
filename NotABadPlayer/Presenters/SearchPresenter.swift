@@ -14,15 +14,35 @@ class SearchPresenter: BasePresenter
     
     private let audioInfo: AudioInfo
     
-    private var searchResults: [BaseAudioTrack] = []
+    public var searchResults: [BaseAudioTrack] {
+        get {
+            var value: [BaseAudioTrack] = []
+            
+            performOnMain {
+                value = self._searchResults
+            }
+            
+            return value
+        }
+        set {
+            performOnMain {
+                self._searchResults = newValue
+            }
+        }
+    }
+    
+    private var _searchResults: [BaseAudioTrack] = []
     
     private var dataSource: SearchViewDataSource?
     
     private var lastSearchQuery: String?
     private var lastSearchFilter: SearchTracksFilter = .Title
     
-    required init(audioInfo: AudioInfo) {
+    private let restoreLastSearch: Bool
+    
+    init(audioInfo: AudioInfo, restoreLastSearch:Bool=true) {
         self.audioInfo = audioInfo
+        self.restoreLastSearch = restoreLastSearch
     }
     
     func setView(_ delegate: BaseViewDelegate) {
@@ -30,6 +50,10 @@ class SearchPresenter: BasePresenter
     }
     
     func start() {
+        if !self.restoreLastSearch {
+            return
+        }
+        
         // Restore last search query from storage
         let savedQuery = GeneralStorage.shared.retrieveSearchQuery()
         let savedFilter = GeneralStorage.shared.retrieveSearchQueryFilter()
@@ -102,12 +126,14 @@ class SearchPresenter: BasePresenter
     }
     
     func onSearchResultClick(index: UInt) {
-        if index >= searchResults.count
+        let results = searchResults
+        
+        if index >= results.count
         {
             return
         }
         
-        let clickedTrack = searchResults[Int(index)]
+        let clickedTrack = results[Int(index)]
         
         if GeneralStorage.shared.getOpenPlayerOnPlayValue().openForSearch()
         {
@@ -307,5 +333,18 @@ class SearchPresenter: BasePresenter
         }
         
         return 0
+    }
+}
+
+// Utilities
+extension SearchPresenter {
+    func performOnMain(_ callback: () -> Void) {
+        if Thread.isMainThread {
+            callback()
+        } else {
+            DispatchQueue.main.sync {
+                callback()
+            }
+        }
     }
 }

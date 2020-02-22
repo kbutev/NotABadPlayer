@@ -12,53 +12,19 @@ class CreateListsViewController: UIViewController {
     public static let PLAYLIST_NAME_LENGTH_LIMIT = 16
     
     private var baseView: CreateListView?
+    private let presenter: CreateListsPresenter
     
-    private let audioInfo: AudioInfo!
-    private var audioInfoAlbums: [AudioAlbum] = []
-    private var addedTracks: [BaseAudioTrack] = []
-    private var addedTracksAsViewModels: [CreateListAudioTrack] {
-        get {
-            var result: [CreateListAudioTrack] = []
-            
-            for track in self.addedTracks
-            {
-                result.append(CreateListAudioTrack.createFrom(track))
-            }
-            
-            return result
-        }
-    }
-    private var openedAlbum: AudioAlbum?
-    private var openedAlbumTracks: [BaseAudioTrack] = []
-    private var openedAlbumTracksAsViewModels: [CreateListAudioTrack] {
-        get {
-            var result: [CreateListAudioTrack] = []
-            
-            for track in self.openedAlbumTracks
-            {
-                result.append(CreateListAudioTrack.createFrom(track))
-            }
-            
-            return result
-        }
-    }
-    
-    private var playlistName: String = ""
-    
-    private var addedTracksTableDataSource: BaseCreateListViewAddedTracksTableDataSource?
-    private var albumsDataSource: BaseCreateListViewAlbumsDataSource?
-    
-    private var onOpenedAlbumTrackSelectionCallback: (UInt)->Void = {(index) in }
-    private var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void = {(index) in }
+    var onOpenedAlbumTrackSelectionCallback: (UInt)->Void = {(index) in }
+    var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void = {(index) in }
     
     init(audioInfo: AudioInfo) {
-        self.audioInfo = audioInfo
+        self.presenter = CreateListsPresenter(audioInfo: audioInfo)
         super.init(nibName: nil, bundle: nil)
+        self.presenter.setView(self)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.audioInfo = nil
-        super.init(coder: aDecoder)
+        fatalError("Not implemented decode()")
     }
     
     override func loadView() {
@@ -69,21 +35,14 @@ class CreateListsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.audioInfoAlbums = audioInfo?.getAlbums() ?? []
+        self.presenter.start()
         
         setup()
     }
     
     private func setup() {
-        baseView?.onTextFieldEditedCallback = {[weak self] (text) in
-            if text.count < CreateListsViewController.PLAYLIST_NAME_LENGTH_LIMIT
-            {
-                self?.playlistName = text
-            }
-            else
-            {
-                self?.playlistName = String(text.prefix(CreateListsViewController.PLAYLIST_NAME_LENGTH_LIMIT))
-            }
+        baseView?.onPlaylistNameFieldEditedCallback = {[weak self] (text) in
+            self?.presenter.setPlaylistName(text)
         }
         
         baseView?.onCancelButtonClickedCallback = {[weak self] () in
@@ -91,212 +50,179 @@ class CreateListsViewController: UIViewController {
         }
         
         baseView?.onDoneButtonClickedCallback = {[weak self] () in
-            self?.saveUserPlaylist()
+            self?.presenter.saveUserPlaylist()
         }
         
         baseView?.onAlbumClickedCallback = {[weak self] (index) in
-            self?.openAlbumAt(index: index)
+            self?.presenter.openAlbumAt(index: index)
         }
         
         // When clicking an added track:
         // Remove it from current list model
         // Deselect it from opened album (if there is one)
         baseView?.onAddedTrackClickedCallback = {[weak self] (index: UInt) -> Void in
-            if let strongSelf = self
-            {
-                if let track = strongSelf.getAddedTrackAt(index)
-                {
-                    strongSelf.deselectTrackInOpenedAlbum(CreateListAudioTrack.createFrom(track))
-                }
-                
-                strongSelf.removeTrackFromAddedTracks(at: index)
-            }
+            self?.presenter.onAddedTrackClicked(at: index)
         }
         
         // When selecting an opened album track:
         // Add it to the current list model
         self.onOpenedAlbumTrackSelectionCallback = {[weak self] (index: UInt) -> Void in
-            self?.addTrackToAddedTracks(fromOpenedAlbumIndex: index)
+            self?.presenter.onAlbumTrackSelect(fromOpenedAlbumIndex: index)
         }
         
         // When deselecting an opened album track:
         // Remove from to the current list model
         self.onOpenedAlbumTrackDeselectionCallback = {[weak self] (index: UInt) -> Void in
-            self?.removeTrackFromAddedTracks(withOpenedAlbumIndex: index)
+            self?.presenter.onAlbumTrackDeselect(withOpenedAlbumIndex: index)
         }
         
-        updateAlbumsView()
+        // Search tracks
+        baseView?.onSearchItemClickedCallback = {[weak self] (index) in
+            self?.presenter.onSearchResultClick(index: index)
+        }
+        
+        baseView?.onSearchQueryCallback = {[weak self] (text) in
+            self?.presenter.onSearchQuery(query: text, filterIndex: 0)
+        }
+        
+        // Switch
+        baseView?.onSwitchTrackPickerCallback = {[weak self] () in
+            self?.baseView?.reloadAlbumsData()
+            self?.baseView?.reloadSearchTracksData()
+        }
+        
+        presenter.updateAlbumsView()
     }
     
-    private func goBack() {
-        NavigationHelpers.dismissPresentedVC(self)
-    }
-    
-    private func updateAddedTracksView() {
-        self.addedTracksTableDataSource = CreateListViewAddedTracksTableDataSource(audioInfo: audioInfo, tracks: addedTracks)
-        
-        baseView?.addedTracksTableDataSource = self.addedTracksTableDataSource
-        
+    func updateAddedTracksDataSource(_ dataSource: BaseCreateListViewAddedTracksTableDataSource?) {
+        baseView?.addedTracksTableDataSource = dataSource
         baseView?.reloadAddedTracksData()
     }
     
-    private func updateAlbumsView() {
-        self.albumsDataSource = CreateListViewAlbumsDataSource(albums: self.audioInfoAlbums,
-                                                               onOpenedAlbumTrackSelectionCallback: self.onOpenedAlbumTrackSelectionCallback,
-                                                               onOpenedAlbumTrackDeselectionCallback: self.onOpenedAlbumTrackDeselectionCallback)
-        
-        baseView?.albumsTableDataSource = self.albumsDataSource
-        
+    func updateAlbumsDataSource(_ dataSource: BaseCreateListViewAlbumsDataSource?) {
+        baseView?.albumsTableDataSource = dataSource
         baseView?.reloadAlbumsData()
     }
     
-    public func saveUserPlaylist() {
-        if playlistName.count == 0
-        {
-            showPlaylistNameEmptyError()
-            return
-        }
+    func updateSearchTracksDataSource(_ dataSource: BaseSearchViewDataSource?) {
+        dataSource?.highlightedChecker = self
+        dataSource?.favoritesChecker = self
         
-        if addedTracks.count == 0
-        {
-            showPlaylistEmptyError()
-            return
-        }
-        
-        var storagePlaylists = GeneralStorage.shared.getUserPlaylists()
-        
-        for storagePlaylist in storagePlaylists
-        {
-            if playlistName == storagePlaylist.name
-            {
-                showPlaylistAlreadyExistsError()
-                return
-            }
-        }
-        
-        var node = AudioPlaylistBuilder.start()
-        node.name = playlistName
-        node.tracks = addedTracks
-        
-        do {
-            let result = try node.buildMutable()
-            storagePlaylists.append(result)
-        } catch {
-            Logging.log(CreateListsViewController.self, "Failed to save user playlist '\(playlistName)' with \(addedTracks.count) tracks to storage, failed to build playlist")
-            showPlaylistUnknownError()
-            return
-        }
-        
-        // Save
-        GeneralStorage.shared.saveUserPlaylists(storagePlaylists)
-        
-        Logging.log(CreateListsViewController.self, "Saved new user playlist '\(playlistName)' with \(addedTracks.count) tracks to storage")
-        
-        // Leave current screen
-        self.goBack()
+        baseView?.searchTracksTableDataSource = dataSource
+        baseView?.reloadSearchTracksData()
     }
     
-    private func showPlaylistNameEmptyError() {
+    func openAlbumAt(index: UInt, albumTracks: [CreateListAudioTrack], addedTracks: [CreateListAudioTrack]) {
+        baseView?.openAlbumAt(index: index, albumTracks: albumTracks, addedTracks: addedTracks)
+    }
+    
+    func deselectAddedTrack(_ track: CreateListAudioTrack) {
+        baseView?.deselectTrackFromOpenedAlbum(track)
+        baseView?.reloadSearchTracksData()
+    }
+    
+    func onSearchResultClick(index: UInt) {
+        let dataSource = baseView?.searchTracksTableDataSource
+        dataSource?.highlightedChecker = self
+        dataSource?.favoritesChecker = self
+        
+        baseView?.reloadSearchTracksData()
+    }
+    
+    func showPlaylistNameEmptyError() {
         AlertWindows.shared.show(sourceVC: self,
                                  withTitle: Text.value(.Error),
                                  withDescription: Text.value(.ErrorPlaylistNameEmpty))
     }
     
-    private func showPlaylistEmptyError() {
+    func showPlaylistEmptyError() {
         AlertWindows.shared.show(sourceVC: self,
                                  withTitle: Text.value(.Error),
                                  withDescription: Text.value(.ErrorPlaylistEmpty))
     }
     
-    private func showPlaylistAlreadyExistsError() {
+    func showPlaylistAlreadyExistsError() {
         AlertWindows.shared.show(sourceVC: self,
                                  withTitle: Text.value(.Error),
                                  withDescription: Text.value(.ErrorPlaylistAlreadyExists))
     }
     
-    private func showPlaylistUnknownError() {
+    func showPlaylistUnknownError() {
         AlertWindows.shared.show(sourceVC: self,
                                  withTitle: Text.value(.Error),
                                  withDescription: Text.value(.ErrorUnknown))
     }
 }
 
-// Added tracks operations
-extension CreateListsViewController {
-    private func getAddedTrackAt(_ index: UInt) -> BaseAudioTrack?
-    {
-        if index < addedTracks.count
-        {
-            return addedTracks[Int(index)]
-        }
-        
-        return nil
+// BaseCreateListsPresenterDelegate
+extension CreateListsViewController: BaseCreateListsPresenterDelegate {
+    func goBack() {
+        NavigationHelpers.dismissPresentedVC(self)
     }
     
-    private func addTrackToAddedTracks(fromOpenedAlbumIndex index: UInt)
-    {
-        if index >= self.openedAlbumTracks.count
-        {
-            return
-        }
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
         
-        let item = self.openedAlbumTracks[Int(index)]
-        
-        for addedTrack in self.addedTracks
-        {
-            if item == addedTrack
-            {
-                return
-            }
-        }
-        
-        addedTracks.append(item)
-        
-        updateAddedTracksView()
     }
     
-    private func removeTrackFromAddedTracks(at index: UInt)
-    {
-        if index >= self.openedAlbumTracks.count
-        {
-            return
-        }
+    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
         
-        addedTracks.remove(at: Int(index))
-        
-        updateAddedTracksView()
     }
     
-    private func removeTrackFromAddedTracks(withOpenedAlbumIndex index: UInt)
-    {
-        if index >= self.openedAlbumTracks.count
-        {
-            return
-        }
+    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
         
-        let openedAlbumTrack = openedAlbumTracks[Int(index)]
+    }
+    
+    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
         
-        addedTracks.removeAll(where: { (element) -> Bool in openedAlbumTrack == element})
+    }
+    
+    func openPlayerScreen(playlist: BaseAudioPlaylist) {
         
-        updateAddedTracksView()
+    }
+    
+    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
+        
+    }
+    
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+        updateSearchTracksDataSource(dataSource)
+    }
+    
+    func onResetSettingsDefaults() {
+        
+    }
+    
+    func onThemeSelect(_ value: AppThemeValue) {
+        
+    }
+    
+    func onTrackSortingSelect(_ value: TrackSorting) {
+        
+    }
+    
+    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
+        
+    }
+    
+    func onAudioLibraryChanged() {
+        
+    }
+    
+    func onFetchDataErrorEncountered(_ error: Error) {
+        
+    }
+    
+    func onPlayerErrorEncountered(_ error: Error) {
+        
     }
 }
 
-// Album operations
-extension CreateListsViewController {
-    private func openAlbumAt(index: UInt)
-    {
-        let selectedAlbum = audioInfoAlbums[Int(index)]
-        self.openedAlbum = selectedAlbum
-        self.openedAlbumTracks = audioInfo.getAlbumTracks(album: selectedAlbum)
-        
-        baseView?.openAlbumAt(index: index,
-                              albumTracks: openedAlbumTracksAsViewModels,
-                              addedTracks: addedTracksAsViewModels)
+extension CreateListsViewController : BaseSearchHighlighedChecker, BaseSearchFavoritesChecker {
+    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool {
+        return presenter.isTrackAdded(item)
     }
     
-    private func deselectTrackInOpenedAlbum(_ track: CreateListAudioTrack)
-    {
-        baseView?.deselectTrackFromOpenedAlbum(track)
+    func isMarkedFavorite(item: BaseAudioTrack) -> Bool {
+        return GeneralStorage.shared.favorites.isMarkedFavorite(item)
     }
 }

@@ -236,7 +236,7 @@ extension ListsViewController : QuickPlayerObserver {
     }
     
     func updatePlayButtonState(isPlaying: Bool) {
-        baseView?.updatePlayButtonState(playing: isPlaying)
+        baseView?.updatePlayButtonState(isPlaying: isPlaying)
     }
     
     func updatePlayOrderButtonState(order: AudioPlayOrder) {

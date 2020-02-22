@@ -8,20 +8,26 @@
 
 import UIKit
 
-struct CreateListAudioTrack
+struct CreateListAudioTrack: Equatable
 {
-    public let title: String
-    public let description: String
-    private let identifier: String
+    public let identifier: String
     
-    init(title: String, description: String, identifier: String) {
-        self.title = title
-        self.description = description
+    public let title: String
+    public let albumTitle: String
+    public let description: String
+    
+    init(identifier: String, title: String, albumTitle: String, description: String) {
         self.identifier = identifier
+        self.title = title
+        self.albumTitle = albumTitle
+        self.description = description
     }
     
     public static func createFrom(_ track: BaseAudioTrack) -> CreateListAudioTrack {
-        return CreateListAudioTrack(title: track.title, description: track.duration, identifier: track.filePath.absoluteString)
+        return CreateListAudioTrack(identifier: CreateListAudioTrack.identifier(of: track),
+                                    title: track.title,
+                                    albumTitle: track.albumTitle,
+                                    description: track.duration)
     }
     
     static func ==(lhs: CreateListAudioTrack, rhs: CreateListAudioTrack) -> Bool {
@@ -29,7 +35,11 @@ struct CreateListAudioTrack
     }
     
     public func equalsToTrack(_ track: BaseAudioTrack) -> Bool {
-        return identifier == track.filePath.absoluteString
+        return identifier == CreateListAudioTrack.identifier(of: track)
+    }
+    
+    public static func identifier(of track: BaseAudioTrack) -> String {
+        return track.filePath.absoluteString
     }
 }
 
@@ -51,7 +61,7 @@ class CreateListView : UIView
         }
     }
     
-    private var albumsTableDelegate : BaseCreateListViewAlbumsDelegate?
+    private var albumsTableDelegate : BaseCreateListViewAlbumTracksDelegate?
     
     public var albumsTableDataSource : BaseCreateListViewAlbumsDataSource? {
         get {
@@ -62,11 +72,38 @@ class CreateListView : UIView
         }
     }
     
-    public var onTextFieldEditedCallback: (String)->Void = {(text) in }
+    private var searchTracksTableDelegate : BaseSearchViewActionDelegate? {
+        get {
+            return searchLayoutView.collectionActionDelegate
+        }
+        set {
+            searchLayoutView.collectionActionDelegate = newValue
+        }
+    }
+    
+    public var searchTracksTableDataSource : BaseSearchViewDataSource? {
+        get {
+            return searchLayoutView.collectionDataSource
+        }
+        set {
+            searchLayoutView.collectionDataSource = newValue
+        }
+    }
+    
+    public var onPlaylistNameFieldEditedCallback: (String)->Void = {(text) in }
     public var onCancelButtonClickedCallback: ()->Void = {() in }
     public var onDoneButtonClickedCallback: ()->Void = {() in }
+    public var onSwitchTrackPickerCallback: ()->Void = {() in }
     public var onAddedTrackClickedCallback: (UInt)->Void = {(index) in }
     public var onAlbumClickedCallback: (UInt)->Void = {(index) in }
+    public var onSearchQueryCallback: (String)->Void {
+        get { return searchLayoutView.onSearchFieldTextEnteredCallback }
+        set { searchLayoutView.onSearchFieldTextEnteredCallback = newValue }
+    }
+    public var onSearchItemClickedCallback: (UInt)->Void {
+        get { return searchLayoutView.onSearchResultClickedCallback }
+        set { searchLayoutView.onSearchResultClickedCallback = newValue }
+    }
     
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var cancelButton: UIButton!
@@ -75,19 +112,28 @@ class CreateListView : UIView
     
     @IBOutlet weak var addedTracksLabel: UILabel!
     @IBOutlet weak var addedTracksTable: UITableView!
-    @IBOutlet weak var tracksLabel: UILabel!
-    @IBOutlet weak var albumsTable: UITableView!
+    
+    @IBOutlet weak var tracksSwitch: UISegmentedControl!
+    @IBOutlet var albumsTable: UITableView!
+    @IBOutlet var searchLayout: UIView!
+    var searchLayoutView: SearchViewPlain!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        initialize()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        initialize()
     }
     
     override func awakeFromNib() {
         setup()
+    }
+    
+    private func initialize() {
+        self.searchLayoutView = SearchViewPlain.create(owner: self)
     }
     
     private func setup() {
@@ -129,7 +175,7 @@ class CreateListView : UIView
         playlistNameField.rightAnchor.constraint(equalTo: doneButton.leftAnchor).isActive = true
         
         playlistNameField.delegate = self
-        playlistNameField.addTarget(self, action: #selector(actionTextFieldChanged(_:)), for: .editingChanged)
+        playlistNameField.addTarget(self, action: #selector(actionPlaylistNameChanged), for: .editingChanged)
         
         // Label - added tracks
         addedTracksLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -148,7 +194,7 @@ class CreateListView : UIView
         
         addedTracksTable.separatorStyle = .none
         
-        var nib = UINib(nibName: String(describing: CreateListAddedTrackCell.self), bundle: nil)
+        let nib = UINib(nibName: String(describing: CreateListAddedTrackCell.self), bundle: nil)
         addedTracksTable.register(nib, forCellReuseIdentifier: CreateListAddedTrackCell.CELL_IDENTIFIER)
         
         self.addedTracksTableDelegate = CreateListViewAddedTracksActionDelegate(view: self)
@@ -156,26 +202,17 @@ class CreateListView : UIView
         
         top = addedTracksTable.bottomAnchor
         
-        // Label - tracks
-        tracksLabel.translatesAutoresizingMaskIntoConstraints = false
-        tracksLabel.topAnchor.constraint(equalTo: top).isActive = true
-        tracksLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
-        tracksLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        // Switch tracks
+        tracksSwitch.translatesAutoresizingMaskIntoConstraints = false
+        tracksSwitch.topAnchor.constraint(equalTo: top).isActive = true
+        tracksSwitch.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
+        tracksSwitch.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        tracksSwitch.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
-        top = tracksLabel.bottomAnchor
+        tracksSwitch.addTarget(self, action: #selector(switchTracksType), for: .valueChanged)
         
-        // Albums table
-        albumsTable.translatesAutoresizingMaskIntoConstraints = false
-        albumsTable.topAnchor.constraint(equalTo: top).isActive = true
-        albumsTable.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        albumsTable.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
-        albumsTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
-        
-        nib = UINib(nibName: String(describing: CreateListAlbumCell.self), bundle: nil)
-        albumsTable.register(nib, forCellReuseIdentifier: CreateListAlbumCell.CELL_IDENTIFIER)
-        
-        self.albumsTableDelegate = CreateListViewAlbumsDelegate(view: self)
-        albumsTable.delegate = self.albumsTableDelegate
+        // Show album tracks by default for picking tracks
+        showAlbumTracks()
     }
     
     public func setupAppTheme() {
@@ -184,7 +221,6 @@ class CreateListView : UIView
         addedTracksTable.backgroundColor = .clear
         albumsTable.backgroundColor = .clear
         addedTracksLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
-        tracksLabel.textColor = AppTheme.shared.colorFor(.STANDART_TEXT)
         
         cancelButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
         doneButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
@@ -198,7 +234,13 @@ class CreateListView : UIView
     }
     
     public func reloadAlbumsData() {
+        self.albumsTableDataSource?.closeAlbum()
+        
         albumsTable.reloadData()
+    }
+    
+    public func reloadSearchTracksData() {
+        searchLayoutView.reloadData()
     }
     
     public func openAlbumAt(index: UInt,
@@ -212,6 +254,66 @@ class CreateListView : UIView
     
     public func deselectTrackFromOpenedAlbum(_ albumTrack: CreateListAudioTrack) {
         self.albumsTableDataSource?.deselectAlbumTrack(albumTrack)
+    }
+    
+    public func isAlbumTracksShown() -> Bool {
+        return self.albumsTable.superview != nil
+    }
+    
+    public func showAlbumTracks() {
+        if isAlbumTracksShown() {
+            return
+        }
+        
+        self.searchLayout.removeFromSuperview()
+        
+        self.addSubview(self.albumsTable)
+        
+        let guide = self.safeAreaLayoutGuide
+        let top = self.tracksSwitch.bottomAnchor
+        
+        // Albums table
+        albumsTable.translatesAutoresizingMaskIntoConstraints = false
+        albumsTable.topAnchor.constraint(equalTo: top, constant: 5).isActive = true
+        albumsTable.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+        albumsTable.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
+        albumsTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        
+        let nib = UINib(nibName: String(describing: CreateListAlbumCell.self), bundle: nil)
+        albumsTable.register(nib, forCellReuseIdentifier: CreateListAlbumCell.CELL_IDENTIFIER)
+        
+        self.albumsTableDelegate = CreateListViewAlbumTracksDelegate(view: self)
+        albumsTable.delegate = self.albumsTableDelegate
+    }
+    
+    public func showSearchTracks() {
+        if !isAlbumTracksShown() {
+            return
+        }
+        
+        self.albumsTable.removeFromSuperview()
+        
+        self.addSubview(self.searchLayout)
+        
+        let guide = self.safeAreaLayoutGuide
+        var top = self.tracksSwitch.bottomAnchor
+        
+        // Search layout
+        searchLayout.translatesAutoresizingMaskIntoConstraints = false
+        searchLayout.topAnchor.constraint(equalTo: top, constant: 5).isActive = true
+        searchLayout.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+        searchLayout.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
+        searchLayout.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        
+        top = searchLayout.topAnchor
+        
+        // Search plain view
+        if self.searchLayoutView.superview == nil {
+            searchLayout.addSubview(self.searchLayoutView)
+        }
+        
+        // Filters are not displayed
+        searchLayoutView.hideFiltersView()
     }
 }
 
@@ -233,11 +335,22 @@ extension CreateListView {
         self.onAlbumClickedCallback(index)
     }
     
-    @objc func actionTextFieldChanged(_ textField: UITextField) {
-        if let text = textField.text
-        {
-            self.onTextFieldEditedCallback(text)
+    @objc func actionPlaylistNameChanged() {
+        self.onPlaylistNameFieldEditedCallback(self.playlistNameField.text ?? "")
+    }
+    
+    @objc func actionSearchTrackClick(index: UInt) {
+        self.onSearchItemClickedCallback(index)
+    }
+    
+    @objc func switchTracksType() {
+        if isAlbumTracksShown() {
+            showSearchTracks()
+        } else {
+            showAlbumTracks()
         }
+        
+        self.onSwitchTrackPickerCallback()
     }
 }
 
@@ -246,9 +359,12 @@ extension CreateListView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
-        if let text = textField.text
-        {
-            self.onTextFieldEditedCallback(text)
+        let text = textField.text ?? ""
+        
+        if textField == self.playlistNameField {
+            self.onPlaylistNameFieldEditedCallback(text)
+        } else {
+            self.onSearchQueryCallback(text)
         }
         
         return true
@@ -263,290 +379,5 @@ extension CreateListView {
         let nib = UINib(nibName: nibName, bundle: bundle)
         
         return nib.instantiate(withOwner: owner, options: nil).first as? CreateListView
-    }
-}
-
-// Table data source
-class CreateListViewAddedTracksTableDataSource : NSObject, BaseCreateListViewAddedTracksTableDataSource
-{
-    let audioInfo: AudioInfo
-    let tracks: [BaseAudioTrack]
-    
-    init(audioInfo: AudioInfo, tracks: [BaseAudioTrack]) {
-        self.audioInfo = audioInfo
-        self.tracks = tracks
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tracks.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListAddedTrackCell.CELL_IDENTIFIER, for: indexPath)
-        
-        guard let cell = reusableCell as? CreateListAddedTrackCell else {
-            return reusableCell
-        }
-        
-        let item = tracks[indexPath.row]
-        
-        cell.coverImage.image = item.albumCoverImage
-        cell.titleLabel.text = item.title
-        cell.descriptionLabel.text = getTrackDescription(track: item)
-        
-        return cell
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func getTrackDescription(track: BaseAudioTrack) -> String {
-        return track.duration
-    }
-}
-
-// Table action delegate
-class CreateListViewAddedTracksActionDelegate : NSObject, BaseCreateListViewAddedTracksActionDelegate
-{
-    private weak var view: CreateListView?
-    
-    init(view: CreateListView) {
-        self.view = view
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.view?.actionAddedTrackClick(index: UInt(indexPath.row))
-    }
-}
-
-// Table data source
-class CreateListViewAlbumsDataSource : NSObject, BaseCreateListViewAlbumsDataSource
-{
-    let albums: [AudioAlbum]
-    let onOpenedAlbumTrackSelectionCallback: (UInt)->()
-    let onOpenedAlbumTrackDeselectionCallback: (UInt)->()
-    
-    private var selectedAlbumIndex: Int = -1
-    private var selectedAlbumCell: CreateListAlbumCell?
-    private var selectedAlbumTracks: [CreateListAudioTrack] = []
-    private var selectedAlbumDataSource: BaseCreateListAlbumCellDataSource?
-    
-    private var addedTracks: [CreateListAudioTrack] = []
-    
-    init(albums: [AudioAlbum],
-         onOpenedAlbumTrackSelectionCallback: @escaping (UInt)->(),
-         onOpenedAlbumTrackDeselectionCallback: @escaping (UInt)->()) {
-        self.albums = albums
-        self.onOpenedAlbumTrackSelectionCallback = onOpenedAlbumTrackSelectionCallback
-        self.onOpenedAlbumTrackDeselectionCallback = onOpenedAlbumTrackDeselectionCallback
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return albums.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListAlbumCell.CELL_IDENTIFIER, for: indexPath)
-        
-        guard let cell = reusableCell as? CreateListAlbumCell else {
-            return reusableCell
-        }
-        
-        let item = albums[indexPath.row]
-        
-        cell.coverImage.image = item.albumCoverImage
-        cell.titleLabel.text = item.albumTitle
-        
-        // Selected album - display, update callbacks and update table data source
-        if indexPath.row == selectedAlbumIndex
-        {
-            self.selectedAlbumCell = cell
-            
-            cell.tracksTable.isHidden = false
-            
-            cell.onOpenedAlbumTrackSelectionCallback = onOpenedAlbumTrackSelectionCallback
-            cell.onOpenedAlbumTrackDeselectionCallback = onOpenedAlbumTrackDeselectionCallback
-            
-            self.selectedAlbumDataSource = CreateListAlbumCellDataSource(tracks: selectedAlbumTracks)
-            cell.tracksTable.dataSource = self.selectedAlbumDataSource
-            cell.tracksTable.reloadData()
-            
-            updateSelectedAlbumTracks()
-        }
-        else
-        {
-            cell.tracksTable.isHidden = true
-            cell.tracksTable.dataSource = nil
-            
-            cell.onOpenedAlbumTrackSelectionCallback = {(index)->() in }
-            cell.onOpenedAlbumTrackDeselectionCallback = {(index)->() in }
-        }
-        
-        return cell
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func getTrackDescription(track: BaseAudioTrack) -> String {
-        return track.duration
-    }
-    
-    public func openAlbum(index: UInt, albumTracks: [CreateListAudioTrack], addedTracks: [CreateListAudioTrack]) {
-        if self.selectedAlbumIndex == Int(index)
-        {
-            self.closeAlbum()
-            return
-        }
-        
-        self.selectedAlbumIndex = Int(index)
-        self.selectedAlbumCell = nil
-        self.selectedAlbumTracks = albumTracks
-        self.addedTracks = addedTracks
-    }
-    
-    public func closeAlbum() {
-        self.selectedAlbumIndex = -1
-        self.selectedAlbumCell = nil
-        self.selectedAlbumTracks = []
-        self.addedTracks = []
-    }
-    
-    private func updateSelectedAlbumTracks() {
-        guard let selectedAlbum = self.selectedAlbumCell else {
-            return
-        }
-        
-        for e in 0..<addedTracks.count
-        {
-            let trackToSelect = addedTracks[e]
-            
-            // Find the corresponding index
-            for i in 0..<selectedAlbumTracks.count
-            {
-                let albumTrack = selectedAlbumTracks[i]
-                
-                if albumTrack == trackToSelect
-                {
-                    selectedAlbum.selectAlbumTrack(at: UInt(i))
-                }
-            }
-        }
-    }
-    
-    public func deselectAlbumTrack(_ track: CreateListAudioTrack) {
-        guard let selectedAlbum = self.selectedAlbumCell else {
-            return
-        }
-        
-        for e in 0..<selectedAlbumTracks.count
-        {
-            let albumTrack = selectedAlbumTracks[e]
-            
-            if albumTrack == track
-            {
-                selectedAlbum.deselectAlbumTrack(at: UInt(e))
-                break
-            }
-        }
-    }
-}
-
-// Table action delegate
-class CreateListViewAlbumsDelegate : NSObject, BaseCreateListViewAlbumsDelegate
-{
-    private weak var view: CreateListView?
-    
-    private var selectedAlbumIndex: Int = -1
-    private var selectedAlbumTracksCount: UInt = 0
-    
-    init(view: CreateListView) {
-        self.view = view
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.view?.actionAlbumClick(index: UInt(indexPath.row))
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if selectedAlbumIndex == indexPath.row
-        {
-            return CreateListAlbumCell.SELECTED_SIZE.height
-        }
-        
-        return CreateListAlbumCell.SIZE.height
-    }
-    
-    public func selectAlbum(index: UInt, albumTracks: [CreateListAudioTrack]) {
-        if self.selectedAlbumIndex == Int(index)
-        {
-            self.deselectAlbum()
-            return
-        }
-        
-        self.selectedAlbumIndex = Int(index)
-        self.selectedAlbumTracksCount = UInt(albumTracks.count)
-    }
-    
-    public func deselectAlbum() {
-        self.selectedAlbumIndex = -1
-        self.selectedAlbumTracksCount = 0
-    }
-}
-
-// Table data source
-class CreateListAlbumCellDataSource : NSObject, BaseCreateListAlbumCellDataSource
-{
-    let tracks: [CreateListAudioTrack]
-    
-    init(tracks: [CreateListAudioTrack]) {
-        self.tracks = tracks
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tracks.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: CreateListAlbumCell.CELL_IDENTIFIER, for: indexPath)
-        
-        guard let cell = reusableCell as? CreateListAlbumTrackCell else {
-            return reusableCell
-        }
-        
-        let item = tracks[indexPath.row]
-        
-        cell.titleLabel.text = item.title
-        cell.descriptionLabel.text = item.description
-        
-        return cell
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-}
-
-// Table delegate
-class CreateListAlbumCellDelegate : NSObject, BaseCreateListAlbumCellDelegate
-{
-    private weak var view: CreateListAlbumCell?
-    
-    init(view: CreateListAlbumCell) {
-        self.view = view
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.view?.actionOnTrackSelection(UInt(indexPath.row))
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        self.view?.actionOnTrackDeselection(UInt(indexPath.row))
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CreateListAlbumTrackCell.HEIGHT
     }
 }

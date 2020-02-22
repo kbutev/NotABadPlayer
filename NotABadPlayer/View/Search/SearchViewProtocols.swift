@@ -10,6 +10,7 @@ import UIKit
 
 protocol BaseSearchViewDataSource : UICollectionViewDataSource
 {
+    var highlightedChecker : BaseSearchHighlighedChecker? { get set }
     var favoritesChecker : BaseSearchFavoritesChecker? { get set }
     
     func playSelectionAnimation()
@@ -19,6 +20,10 @@ protocol BaseSearchViewActionDelegate : UICollectionViewDelegate {
     
 }
 
-protocol BaseSearchFavoritesChecker : NSObject {
+protocol BaseSearchHighlighedChecker : AnyObject {
+    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool
+}
+
+protocol BaseSearchFavoritesChecker : AnyObject {
     func isMarkedFavorite(item: BaseAudioTrack) -> Bool
 }

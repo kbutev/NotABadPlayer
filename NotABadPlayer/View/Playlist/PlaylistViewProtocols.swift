@@ -15,10 +15,10 @@ protocol BasePlaylistViewDataSource : UICollectionViewDataSource {
     func playSelectionAnimation()
 }
 
-protocol BasePlaylistViewActionDelegate : NSObject, UICollectionViewDelegate {
+protocol BasePlaylistViewActionDelegate : AnyObject, UICollectionViewDelegate {
     
 }
 
-protocol BasePlaylistFavoritesChecker : NSObject {
+protocol BasePlaylistFavoritesChecker : AnyObject {
     func isMarkedFavorite(item: BaseAudioTrack) -> Bool
 }
