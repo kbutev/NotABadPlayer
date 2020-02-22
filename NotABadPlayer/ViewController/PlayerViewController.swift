@@ -65,9 +65,12 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         }
         
         self.baseView?.onPlayerSeekCallback = {(percentage) in
-            let duration = AudioPlayerService.shared.durationSec
+            let player = AudioPlayerService.shared
+            let duration = player.durationSec
             
-            AudioPlayerService.shared.seekTo(seconds: duration * percentage)
+            player.seekTo(seconds: duration * percentage)
+            
+            self.baseView?.updateSoftUIState(player: player)
         }
         
         self.baseView?.onPlayerButtonClickCallback = {[weak self] (input) in
