@@ -68,7 +68,7 @@ class CreateListView : UIView
     public var onAddedTrackClickedCallback: (UInt)->Void = {(index) in }
     public var onAlbumClickedCallback: (UInt)->Void = {(index) in }
     
-    @IBOutlet weak var header: UIStackView!
+    @IBOutlet weak var header: UIView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var playlistNameField: UITextField!
     @IBOutlet weak var doneButton: UIButton!
@@ -108,14 +108,26 @@ class CreateListView : UIView
         top = header.bottomAnchor
         
         // Header buttons
-        cancelButton.frame.size.width = 32
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.centerYAnchor.constraint(equalTo: header.centerYAnchor).isActive = true
+        cancelButton.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
+        cancelButton.widthAnchor.constraint(equalToConstant: 64).isActive = true
+        cancelButton.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
         cancelButton.addTarget(self, action: #selector(actionCancelButtonClick), for: .touchUpInside)
         
-        doneButton.frame.size.width = 32
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.centerYAnchor.constraint(equalTo: header.centerYAnchor).isActive = true
+        doneButton.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        doneButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        doneButton.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
         doneButton.addTarget(self, action: #selector(actionDoneButtonClick), for: .touchUpInside)
         
         // Playlist name text field
-        playlistNameField.frame.size.width = header.frame.width
+        playlistNameField.translatesAutoresizingMaskIntoConstraints = false
+        playlistNameField.centerYAnchor.constraint(equalTo: header.centerYAnchor).isActive = true
+        playlistNameField.leftAnchor.constraint(equalTo: cancelButton.rightAnchor).isActive = true
+        playlistNameField.rightAnchor.constraint(equalTo: doneButton.leftAnchor).isActive = true
+        
         playlistNameField.delegate = self
         playlistNameField.addTarget(self, action: #selector(actionTextFieldChanged(_:)), for: .editingChanged)
         
