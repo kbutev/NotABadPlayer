@@ -53,7 +53,6 @@ class AudioPlayerHistoryStandard: AudioPlayerHistory {
             _playHistory.insert(newTrack, at: 0)
             
             // Do not exceed the play history capacity
-            
             while _playHistory.count > capacity
             {
                 _playHistory.removeLast()
