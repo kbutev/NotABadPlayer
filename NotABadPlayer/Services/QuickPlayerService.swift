@@ -30,6 +30,7 @@ protocol QuickPlayerObserver : class {
     func updateMediaInfo(track: BaseAudioTrack)
     func updatePlayButtonState(isPlaying: Bool)
     func updatePlayOrderButtonState(order: AudioPlayOrder)
+    func onVolumeChanged(volume: Double)
 }
 
 // Listens to player events from the AudioPlayer.
@@ -222,7 +223,14 @@ extension QuickPlayerService : AudioPlayerObserver {
     }
     
     func onVolumeChanged(volume: Double) {
+        let observers = self.observersCopy
         
+        performOnMain {
+            for observer in observers
+            {
+                observer.value?.onVolumeChanged(volume: volume)
+            }
+        }
     }
 }
 
