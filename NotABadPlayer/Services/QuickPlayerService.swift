@@ -24,6 +24,7 @@ struct QuickPlayerObserverValue
     }
 }
 
+// Note: All observer delegation is performed on the main thread.
 protocol QuickPlayerObserver : class {
     func updateTime(currentTime: Double, totalDuration: Double)
     func updateMediaInfo(track: BaseAudioTrack)
@@ -31,10 +32,14 @@ protocol QuickPlayerObserver : class {
     func updatePlayOrderButtonState(order: AudioPlayOrder)
 }
 
+// Listens to player events from the AudioPlayer.
+// Note: All observer delegation is performed on the main thread.
 class QuickPlayerService : NSObject {
     public static let LOOP_INTERVAL_SECONDS: Double = 0.4
     
     public static let shared = QuickPlayerService()
+    
+    private let synchronous: DispatchQueue = DispatchQueue(label: "QuickPlayerService.synchronous")
     
     private var _audioPlayer: AudioPlayer?
     
@@ -46,7 +51,13 @@ class QuickPlayerService : NSObject {
         }
     }
     
-    private var observers: [QuickPlayerObserverValue] = []
+    private var observersCopy: [QuickPlayerObserverValue] {
+        get {
+            return synchronous.sync { return _observers }
+        }
+    }
+    
+    private var _observers: [QuickPlayerObserverValue] = []
     
     private var timer: Timer?
     
@@ -82,20 +93,24 @@ class QuickPlayerService : NSObject {
 // Observers
 extension QuickPlayerService {
     func attach(observer: QuickPlayerObserver) {
-        observers.append(QuickPlayerObserverValue(observer))
+        synchronous.sync {
+            _observers.append(QuickPlayerObserverValue(observer))
+        }
         
         fullyUpdateObserver(observer)
     }
     
     func detach(observer: QuickPlayerObserver) {
-        observers.removeAll(where: {(element) -> Bool in
-            if let elementValue = element.value
-            {
-                return elementValue === observer
-            }
-            
-            return false
-        })
+        synchronous.sync {
+            _observers.removeAll(where: {(element) -> Bool in
+                if let elementValue = element.value
+                {
+                    return elementValue === observer
+                }
+                
+                return false
+            })
+        }
     }
     
     func fullyUpdateObserver(_ observer: QuickPlayerObserver) {
@@ -124,62 +139,101 @@ extension QuickPlayerService {
 
 extension QuickPlayerService : LooperClient {
     @objc func loop() {
+        let observers = self.observersCopy
         let player = AudioPlayerService.shared
         let currentTime = player.currentPositionSec
         let duration = player.durationSec
         
-        for observer in observers
-        {
-            observer.value?.updateTime(currentTime: currentTime, totalDuration: duration)
+        performOnMain {
+            for observer in observers
+            {
+                observer.value?.updateTime(currentTime: currentTime, totalDuration: duration)
+            }
         }
     }
 }
 
 extension QuickPlayerService : AudioPlayerObserver {
     func onPlayerPlay(current: BaseAudioTrack) {
-        for observer in observers
-        {
-            observer.value?.updateMediaInfo(track: current)
-            observer.value?.updatePlayButtonState(isPlaying: true)
+        let observers = self.observersCopy
+        
+        performOnMain {
+            for observer in observers
+            {
+                observer.value?.updateMediaInfo(track: current)
+                observer.value?.updatePlayButtonState(isPlaying: true)
+            }
         }
     }
     
     func onPlayerFinish() {
-        for observer in observers
-        {
-            observer.value?.updatePlayButtonState(isPlaying: false)
+        let observers = self.observersCopy
+        
+        performOnMain {
+            for observer in observers
+            {
+                observer.value?.updatePlayButtonState(isPlaying: false)
+            }
         }
     }
     
     func onPlayerStop() {
-        for observer in observers
-        {
-            observer.value?.updatePlayButtonState(isPlaying: false)
+        let observers = self.observersCopy
+        
+        performOnMain {
+            for observer in observers
+            {
+                observer.value?.updatePlayButtonState(isPlaying: false)
+            }
         }
     }
     
     func onPlayerPause(track: BaseAudioTrack) {
-        for observer in observers
-        {
-            observer.value?.updatePlayButtonState(isPlaying: false)
+        let observers = self.observersCopy
+        
+        performOnMain {
+            for observer in observers
+            {
+                observer.value?.updatePlayButtonState(isPlaying: false)
+            }
         }
     }
     
     func onPlayerResume(track: BaseAudioTrack) {
-        for observer in observers
-        {
-            observer.value?.updatePlayButtonState(isPlaying: true)
+        let observers = self.observersCopy
+        
+        performOnMain {
+            for observer in observers
+            {
+                observer.value?.updatePlayButtonState(isPlaying: true)
+            }
         }
     }
     
     func onPlayOrderChange(order: AudioPlayOrder) {
-        for observer in observers
-        {
-            observer.value?.updatePlayOrderButtonState(order: order)
+        let observers = self.observersCopy
+        
+        performOnMain {
+            for observer in observers
+            {
+                observer.value?.updatePlayOrderButtonState(order: order)
+            }
         }
     }
     
     func onVolumeChanged(volume: Double) {
         
+    }
+}
+
+extension QuickPlayerService {
+    private func performOnMain(_ callback: () -> Void) {
+        if Thread.isMainThread {
+            callback()
+        } else {
+            DispatchQueue.main.sync {
+                callback()
+            }
+        }
     }
 }
