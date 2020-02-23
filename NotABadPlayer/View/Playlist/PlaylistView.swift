@@ -365,10 +365,10 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
             cell.hideTrackNum()
         }
         
-        // Highlight cells that represent the currently playing track
+        // Highlight
         if highlightedChecker?.shouldBeHighlighed(item: item) ?? false
         {
-            cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
+            cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_HIGHLIGHTED_TRACK)
             
             if animateHighlightedCells && playSelectionAnimationNextTime
             {
