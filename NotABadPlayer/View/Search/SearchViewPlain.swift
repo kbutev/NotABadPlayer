@@ -275,9 +275,10 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
         cell.albumTitle.text = item.albumTitle
         cell.durationText.attributedText = buildAttributedDescription(duration: item.duration, isFavorite: isFavorite)
         
+        // Highlight
         if highlightedChecker?.shouldBeHighlighed(item: item) ?? false
         {
-            cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
+            cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_HIGHLIGHTED_TRACK)
             
             if animateHighlightedCells && playSelectionAnimationNextTime
             {
