@@ -9,14 +9,20 @@
 import UIKit
 
 protocol BasePlaylistViewDataSource : UICollectionViewDataSource {
+    var highlightedChecker : BasePlaylistHighlighedChecker? { get set }
     var favoritesChecker : BasePlaylistFavoritesChecker? { get set }
     var headerSize: CGSize { get }
+    var animateHighlightedCells : Bool { get set }
     
     func playSelectionAnimation()
 }
 
 protocol BasePlaylistViewActionDelegate : AnyObject, UICollectionViewDelegate {
     
+}
+
+protocol BasePlaylistHighlighedChecker : AnyObject {
+    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool
 }
 
 protocol BasePlaylistFavoritesChecker : AnyObject {

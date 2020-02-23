@@ -97,6 +97,7 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
     
     func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
         self.baseView?.collectionDataSource = dataSource
+        self.baseView?.highlightedChecker = self
         self.baseView?.favoritesChecker = self
         self.baseView?.updateOverlayTitle(title: name)
         
@@ -185,7 +186,15 @@ extension PlaylistViewController : QuickPlayerObserver {
     }
 }
 
-extension PlaylistViewController : BasePlaylistFavoritesChecker {
+extension PlaylistViewController : BasePlaylistHighlighedChecker, BasePlaylistFavoritesChecker {
+    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool {
+        if let playlist = AudioPlayerService.shared.playlist {
+            return playlist.playingTrack == item
+        }
+        
+        return false
+    }
+    
     func isMarkedFavorite(item: BaseAudioTrack) -> Bool {
         return GeneralStorage.shared.favorites.isMarkedFavorite(item)
     }

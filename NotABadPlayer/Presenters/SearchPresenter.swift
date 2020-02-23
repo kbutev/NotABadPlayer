@@ -183,11 +183,11 @@ class SearchPresenter: BasePresenter
             let results = self.audioInfo.searchForTracks(query: query, filter: filter)
             self.searchResults = results
             
-            let dataSource = SearchViewDataSource(audioInfo: self.audioInfo, searchResults: results)
-            self.dataSource = dataSource
-            
             DispatchQueue.main.async {
                 Logging.log(SearchPresenter.self, "Retrieved search results, updating view")
+                
+                let dataSource = SearchViewDataSource(audioInfo: self.audioInfo, searchResults: results)
+                self.dataSource = dataSource
                 
                 self.delegate?.updateSearchQueryResults(query: query,
                                                         filterIndex: filterIndex,
