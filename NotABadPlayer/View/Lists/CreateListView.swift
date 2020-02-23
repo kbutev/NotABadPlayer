@@ -211,8 +211,11 @@ class CreateListView : UIView
         
         tracksSwitch.addTarget(self, action: #selector(switchTracksType), for: .valueChanged)
         
-        // Show album tracks by default for picking tracks
-        showAlbumTracks()
+        if tracksSwitch.selectedSegmentIndex == 0 {
+            setupSearchTracks()
+        } else {
+            setupAlbumTracks()
+        }
     }
     
     public func setupAppTheme() {
@@ -267,6 +270,10 @@ class CreateListView : UIView
         
         self.searchLayout.removeFromSuperview()
         
+        setupAlbumTracks()
+    }
+    
+    private func setupAlbumTracks() {
         self.addSubview(self.albumsTable)
         
         let guide = self.safeAreaLayoutGuide
@@ -293,6 +300,10 @@ class CreateListView : UIView
         
         self.albumsTable.removeFromSuperview()
         
+        setupSearchTracks()
+    }
+    
+    private func setupSearchTracks() {
         self.addSubview(self.searchLayout)
         
         let guide = self.safeAreaLayoutGuide

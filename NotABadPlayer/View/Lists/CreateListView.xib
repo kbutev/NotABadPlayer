@@ -58,8 +58,8 @@
                     <rect key="frame" x="146" y="434" width="121" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <segments>
-                        <segment title="Album Tracks"/>
                         <segment title="Search"/>
+                        <segment title="Album Tracks"/>
                     </segments>
                 </segmentedControl>
             </subviews>
