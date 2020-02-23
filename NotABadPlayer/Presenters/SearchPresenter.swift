@@ -14,7 +14,7 @@ class SearchPresenter: BasePresenter
     
     private let audioInfo: AudioInfo
     
-    public var searchResults: [BaseAudioTrack] {
+    var searchResults: [BaseAudioTrack] {
         get {
             var value: [BaseAudioTrack] = []
             
