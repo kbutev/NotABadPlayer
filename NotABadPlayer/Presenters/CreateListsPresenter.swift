@@ -30,10 +30,13 @@ protocol BaseCreateListsPresenterDelegate: BaseViewDelegate {
 }
 
 protocol BaseCreateListsPresenter: BasePresenter {
-    func setPlaylistName(_ name: String)
     func updateAddedTracksView()
     func updateAlbumsView()
-    func saveUserPlaylist()
+    
+    func onPlaylistNameChanged(_ name: String)
+    
+    // Flow
+    func onSaveUserPlaylist()
     
     // Added tracks operations
     func isTrackAdded(_ track: BaseAudioTrack) -> Bool
@@ -90,17 +93,6 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         self.searchPresenter = SearchPresenter(audioInfo: audioInfo, restoreLastSearch: false)
     }
     
-    func setPlaylistName(_ name: String) {
-        if name.count < CreateListsViewController.PLAYLIST_NAME_LENGTH_LIMIT
-        {
-            self.playlistName = name
-        }
-        else
-        {
-            self.playlistName = String(name.prefix(CreateListsViewController.PLAYLIST_NAME_LENGTH_LIMIT))
-        }
-    }
-    
     func updateAddedTracksView() {
         self.addedTracksTableDataSource = CreateListViewAddedTracksTableDataSource(audioInfo: audioInfo, tracks: addedTracks)
         
@@ -122,7 +114,20 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         delegate?.updateAlbumsDataSource(self.albumsDataSource)
     }
     
-    func saveUserPlaylist() {
+    func onPlaylistNameChanged(_ name: String) {
+        if name.count < CreateListsViewController.PLAYLIST_NAME_LENGTH_LIMIT
+        {
+            self.playlistName = name
+        }
+        else
+        {
+            self.playlistName = String(name.prefix(CreateListsViewController.PLAYLIST_NAME_LENGTH_LIMIT))
+        }
+    }
+    
+    // Flow
+    
+    func onSaveUserPlaylist() {
         if playlistName.count == 0
         {
             delegate?.showPlaylistNameEmptyError()
