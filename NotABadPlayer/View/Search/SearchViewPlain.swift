@@ -32,8 +32,6 @@ class SearchViewPlain: UIView
             return collectionView.dataSource as? BaseSearchViewDataSource
         }
         set {
-            newValue?.highlightedChecker = self.highlightedChecker
-            newValue?.favoritesChecker = self.favoritesChecker
             collectionView.dataSource = newValue
         }
     }
@@ -246,6 +244,8 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
     public weak var highlightedChecker : BaseSearchHighlighedChecker?
     public weak var favoritesChecker : BaseSearchFavoritesChecker?
     
+    var animateHighlightedCells: Bool = true
+    
     let audioInfo: AudioInfo
     let searchResults: [BaseAudioTrack]
     
@@ -279,7 +279,7 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
         {
             cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
             
-            if playSelectionAnimationNextTime
+            if animateHighlightedCells && playSelectionAnimationNextTime
             {
                 playSelectionAnimationNextTime = false
                 UIAnimations.animateListItemClicked(cell)
@@ -298,6 +298,10 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
     }
     
     public func playSelectionAnimation() {
+        if !animateHighlightedCells {
+            return
+        }
+        
         self.playSelectionAnimationNextTime = true
     }
     

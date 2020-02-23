@@ -26,8 +26,16 @@ class PlaylistView : UIView
             return collectionView.dataSource as? BasePlaylistViewDataSource
         }
         set {
-            newValue?.favoritesChecker = self.favoritesChecker
             collectionView.dataSource = newValue
+        }
+    }
+    
+    public weak var highlightedChecker : BasePlaylistHighlighedChecker? {
+        get {
+            return (collectionView.dataSource as? BasePlaylistViewDataSource)?.highlightedChecker
+        }
+        set {
+            (collectionView.dataSource as? BasePlaylistViewDataSource)?.highlightedChecker = newValue
         }
     }
     
@@ -267,7 +275,10 @@ extension PlaylistView {
 // Collection data source
 class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
 {
+    public weak var highlightedChecker : BasePlaylistHighlighedChecker?
     public weak var favoritesChecker : BasePlaylistFavoritesChecker?
+    
+    var animateHighlightedCells: Bool = true
     
     private let audioInfo: AudioInfo
     private let playlist: BaseAudioPlaylist
@@ -355,21 +366,14 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
         }
         
         // Highlight cells that represent the currently playing track
-        if let playerPlaylist = AudioPlayerService.shared.playlist
+        if highlightedChecker?.shouldBeHighlighed(item: item) ?? false
         {
-            if playerPlaylist.playingTrack == item
+            cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
+            
+            if animateHighlightedCells && playSelectionAnimationNextTime
             {
-                cell.backgroundColor = AppTheme.shared.colorFor(.PLAYLIST_PLAYING_TRACK)
-                
-                if playSelectionAnimationNextTime
-                {
-                    playSelectionAnimationNextTime = false
-                    UIAnimations.animateListItemClicked(cell)
-                }
-            }
-            else
-            {
-                cell.backgroundColor = .clear
+                playSelectionAnimationNextTime = false
+                UIAnimations.animateListItemClicked(cell)
             }
         }
         else
@@ -416,6 +420,10 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
     }
     
     public func playSelectionAnimation() {
+        if !animateHighlightedCells {
+            return
+        }
+        
         self.playSelectionAnimationNextTime = true
     } 
 }

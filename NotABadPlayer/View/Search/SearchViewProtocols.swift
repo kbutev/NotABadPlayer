@@ -13,6 +13,8 @@ protocol BaseSearchViewDataSource : UICollectionViewDataSource
     var highlightedChecker : BaseSearchHighlighedChecker? { get set }
     var favoritesChecker : BaseSearchFavoritesChecker? { get set }
     
+    var animateHighlightedCells : Bool { get set }
+    
     func playSelectionAnimation()
 }
 

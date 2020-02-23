@@ -107,6 +107,7 @@ class CreateListsViewController: UIViewController {
     func updateSearchTracksDataSource(_ dataSource: BaseSearchViewDataSource?) {
         dataSource?.highlightedChecker = self
         dataSource?.favoritesChecker = self
+        dataSource?.animateHighlightedCells = false
         
         baseView?.searchTracksTableDataSource = dataSource
         baseView?.reloadSearchTracksData()
@@ -125,6 +126,7 @@ class CreateListsViewController: UIViewController {
         let dataSource = baseView?.searchTracksTableDataSource
         dataSource?.highlightedChecker = self
         dataSource?.favoritesChecker = self
+        dataSource?.animateHighlightedCells = false
         
         baseView?.reloadSearchTracksData()
     }
