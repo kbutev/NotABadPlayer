@@ -42,7 +42,7 @@ class CreateListsViewController: UIViewController {
     
     private func setup() {
         baseView?.onPlaylistNameFieldEditedCallback = {[weak self] (text) in
-            self?.presenter.setPlaylistName(text)
+            self?.presenter.onPlaylistNameChanged(text)
         }
         
         baseView?.onCancelButtonClickedCallback = {[weak self] () in
@@ -50,7 +50,7 @@ class CreateListsViewController: UIViewController {
         }
         
         baseView?.onDoneButtonClickedCallback = {[weak self] () in
-            self?.presenter.saveUserPlaylist()
+            self?.presenter.onSaveUserPlaylist()
         }
         
         baseView?.onAlbumClickedCallback = {[weak self] (index) in
