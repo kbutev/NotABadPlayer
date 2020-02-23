@@ -113,6 +113,7 @@ class CreateListView : UIView
     @IBOutlet weak var addedTracksLabel: UILabel!
     @IBOutlet weak var addedTracksTable: UITableView!
     
+    @IBOutlet weak var pickTracksLayout: UIView!
     @IBOutlet weak var tracksSwitch: UISegmentedControl!
     @IBOutlet var albumsTable: UITableView!
     @IBOutlet var searchLayout: UIView!
@@ -177,31 +178,6 @@ class CreateListView : UIView
         playlistNameField.delegate = self
         playlistNameField.addTarget(self, action: #selector(actionPlaylistNameChanged), for: .editingChanged)
         
-        // Label - added tracks
-        addedTracksLabel.translatesAutoresizingMaskIntoConstraints = false
-        addedTracksLabel.topAnchor.constraint(equalTo: top).isActive = true
-        addedTracksLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
-        addedTracksLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
-        
-        top = addedTracksLabel.bottomAnchor
-        
-        // Added tracks collection
-        addedTracksTable.translatesAutoresizingMaskIntoConstraints = false
-        addedTracksTable.topAnchor.constraint(equalTo: top).isActive = true
-        addedTracksTable.heightAnchor.constraint(equalToConstant: entireContentSize.height * 0.2).isActive = true
-        addedTracksTable.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
-        addedTracksTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
-        
-        addedTracksTable.separatorStyle = .none
-        
-        let nib = UINib(nibName: String(describing: CreateListAddedTrackCell.self), bundle: nil)
-        addedTracksTable.register(nib, forCellReuseIdentifier: CreateListAddedTrackCell.CELL_IDENTIFIER)
-        
-        self.addedTracksTableDelegate = CreateListViewAddedTracksActionDelegate(view: self)
-        addedTracksTable.delegate = self.addedTracksTableDelegate
-        
-        top = addedTracksTable.bottomAnchor
-        
         // Switch tracks
         tracksSwitch.translatesAutoresizingMaskIntoConstraints = false
         tracksSwitch.topAnchor.constraint(equalTo: top).isActive = true
@@ -216,6 +192,39 @@ class CreateListView : UIView
         } else {
             setupAlbumTracks()
         }
+        
+        top = tracksSwitch.bottomAnchor
+        
+        // Pick tracks layout
+        pickTracksLayout.translatesAutoresizingMaskIntoConstraints = false
+        pickTracksLayout.topAnchor.constraint(equalTo: top).isActive = true
+        pickTracksLayout.widthAnchor.constraint(equalTo: guide.widthAnchor).isActive = true
+        pickTracksLayout.heightAnchor.constraint(equalToConstant: entireContentSize.height * 0.25).isActive = true
+        
+        top = pickTracksLayout.bottomAnchor
+        
+        // Label - added tracks
+        addedTracksLabel.translatesAutoresizingMaskIntoConstraints = false
+        addedTracksLabel.topAnchor.constraint(equalTo: top, constant: 5).isActive = true
+        addedTracksLabel.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
+        addedTracksLabel.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        
+        top = addedTracksLabel.bottomAnchor
+        
+        // Added tracks collection
+        addedTracksTable.translatesAutoresizingMaskIntoConstraints = false
+        addedTracksTable.topAnchor.constraint(equalTo: top, constant: 5).isActive = true
+        addedTracksTable.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+        addedTracksTable.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
+        addedTracksTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        
+        addedTracksTable.separatorStyle = .none
+        
+        let nib = UINib(nibName: String(describing: CreateListAddedTrackCell.self), bundle: nil)
+        addedTracksTable.register(nib, forCellReuseIdentifier: CreateListAddedTrackCell.CELL_IDENTIFIER)
+        
+        self.addedTracksTableDelegate = CreateListViewAddedTracksActionDelegate(view: self)
+        addedTracksTable.delegate = self.addedTracksTableDelegate
     }
     
     public func setupAppTheme() {
@@ -274,17 +283,15 @@ class CreateListView : UIView
     }
     
     private func setupAlbumTracks() {
-        self.addSubview(self.albumsTable)
+        pickTracksLayout.addSubview(self.albumsTable)
         
-        let guide = self.safeAreaLayoutGuide
         let top = self.tracksSwitch.bottomAnchor
         
         // Albums table
         albumsTable.translatesAutoresizingMaskIntoConstraints = false
         albumsTable.topAnchor.constraint(equalTo: top, constant: 5).isActive = true
-        albumsTable.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        albumsTable.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
-        albumsTable.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        albumsTable.heightAnchor.constraint(equalTo: pickTracksLayout.heightAnchor).isActive = true
+        albumsTable.widthAnchor.constraint(equalTo: pickTracksLayout.widthAnchor).isActive = true
         
         let nib = UINib(nibName: String(describing: CreateListAlbumCell.self), bundle: nil)
         albumsTable.register(nib, forCellReuseIdentifier: CreateListAlbumCell.CELL_IDENTIFIER)
@@ -304,17 +311,15 @@ class CreateListView : UIView
     }
     
     private func setupSearchTracks() {
-        self.addSubview(self.searchLayout)
+        pickTracksLayout.addSubview(self.searchLayout)
         
-        let guide = self.safeAreaLayoutGuide
         var top = self.tracksSwitch.bottomAnchor
         
         // Search layout
         searchLayout.translatesAutoresizingMaskIntoConstraints = false
         searchLayout.topAnchor.constraint(equalTo: top, constant: 5).isActive = true
-        searchLayout.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        searchLayout.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: CreateListView.HORIZONTAL_MARGIN).isActive = true
-        searchLayout.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
+        searchLayout.heightAnchor.constraint(equalTo: pickTracksLayout.heightAnchor).isActive = true
+        searchLayout.widthAnchor.constraint(equalTo: pickTracksLayout.widthAnchor).isActive = true
         
         top = searchLayout.topAnchor
         

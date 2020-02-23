@@ -62,6 +62,11 @@
                         <segment title="Album Tracks"/>
                     </segments>
                 </segmentedControl>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bzI-wY-97N">
+                    <rect key="frame" x="87" y="384" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
@@ -72,6 +77,7 @@
                 <outlet property="cancelButton" destination="qvS-Ck-u4z" id="WpX-nF-ylX"/>
                 <outlet property="doneButton" destination="q5R-lu-cUf" id="sLR-30-ab9"/>
                 <outlet property="header" destination="UHP-FT-t70" id="Zum-8I-RV4"/>
+                <outlet property="pickTracksLayout" destination="bzI-wY-97N" id="WzT-av-NQW"/>
                 <outlet property="playlistNameField" destination="jm8-sA-DbB" id="4ij-Zi-lHk"/>
                 <outlet property="searchLayout" destination="tyi-UI-U6V" id="ls7-bj-TfJ"/>
                 <outlet property="tracksSwitch" destination="Yg7-if-GJY" id="g1Q-do-1Gv"/>
