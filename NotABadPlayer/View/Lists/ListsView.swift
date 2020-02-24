@@ -72,7 +72,7 @@ class ListsView : UIView
     }
     
     private func initialize() {
-        self.quickPlayerView = QuickPlayerView.create(owner: self)
+        self.quickPlayerView = QuickPlayerView.createAndAttach(to: self)
         self.tableActionDelegate = ListsViewDelegate(view: self)
     }
     
@@ -91,14 +91,6 @@ class ListsView : UIView
         
         // App theme setup
         setupAppTheme()
-        
-        // Quick player setup
-        addSubview(quickPlayerView)
-        quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
-        quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
-        quickPlayerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
-        quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
         
         // Header setup
         header.translatesAutoresizingMaskIntoConstraints = false

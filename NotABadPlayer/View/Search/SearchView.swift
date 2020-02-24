@@ -77,8 +77,8 @@ class SearchView: UIView
     }
     
     private func initialize() {
+        self.quickPlayerView = QuickPlayerView.createAndAttach(to: self)
         self.searchBaseView = SearchViewPlain.create(owner: self)
-        self.quickPlayerView = QuickPlayerView.create(owner: self)
     }
     
     override func didMoveToSuperview() {
@@ -104,13 +104,6 @@ class SearchView: UIView
         searchBaseView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
         searchBaseView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
         searchBaseView.bottomAnchor.constraint(equalTo: quickPlayerView.topAnchor).isActive = true
-        
-        // Quick player setup
-        quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
-        quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
-        quickPlayerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
-        quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
     }
     
     public func reloadData() {
