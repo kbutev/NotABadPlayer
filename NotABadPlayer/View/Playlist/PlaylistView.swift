@@ -86,7 +86,7 @@ class PlaylistView : UIView
     }
     
     private func initialize() {
-        self.quickPlayerView = QuickPlayerView.create(owner: self)
+        self.quickPlayerView = QuickPlayerView.createAndAttach(to: self)
         self.collectionActionDelegate = PlaylistViewActionDelegate(view: self)
     }
     
@@ -112,14 +112,6 @@ class PlaylistView : UIView
         self.rightAnchor.constraint(equalTo: superview!.rightAnchor).isActive = true
         self.topAnchor.constraint(equalTo: superview!.topAnchor).isActive = true
         self.bottomAnchor.constraint(equalTo: superview!.bottomAnchor).isActive = true
-        
-        // Quick player setup
-        addSubview(quickPlayerView)
-        quickPlayerView.translatesAutoresizingMaskIntoConstraints = false
-        quickPlayerView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive = true
-        quickPlayerView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive = true
-        quickPlayerView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        quickPlayerView.heightAnchor.constraint(equalTo: guide.heightAnchor, multiplier: 0.2).isActive = true
         
         // Collection setup
         collectionView.translatesAutoresizingMaskIntoConstraints = false

@@ -10,6 +10,8 @@ import UIKit
 
 class QuickPlayerView : UIView
 {
+    public static let DEFAULT_HEIGHT_PROPORTION: CGFloat = 0.2
+    
     public static let MEDIA_BUTTONS_PROPORTIONS: CGFloat = 0.55
     public static let MEDIA_BAR_MAX_VALUE: Double = 100
     public static let MEDIA_BAR_SIZE: CGSize = CGSize(width: 0, height: 10)
@@ -241,5 +243,20 @@ extension QuickPlayerView {
         let nib = UINib(nibName: nibName, bundle: bundle)
         
         return nib.instantiate(withOwner: owner, options: nil).first as? QuickPlayerView
+    }
+    
+    class func createAndAttach(to owner: UIView) -> QuickPlayerView? {
+        guard let view = create(owner: owner) else {
+            return nil
+        }
+        
+        owner.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.leftAnchor.constraint(equalTo: owner.leftAnchor, constant: 0).isActive = true
+        view.rightAnchor.constraint(equalTo: owner.rightAnchor, constant: 0).isActive = true
+        view.bottomAnchor.constraint(equalTo: owner.bottomAnchor).isActive = true
+        view.heightAnchor.constraint(equalTo: owner.heightAnchor, multiplier: DEFAULT_HEIGHT_PROPORTION).isActive = true
+        
+        return view
     }
 }
