@@ -122,7 +122,7 @@ class AutoScrollingTextScrolling {
                 return
             }
             
-            strongSelf.startFromBeginning()
+            strongSelf.startScrollingFromBeginning()
         }
     }
     
@@ -143,11 +143,11 @@ class AutoScrollingTextScrolling {
         _timesStarted += 1
         
         perform(afterDelay: parameters.restartWait) { [weak self] () in
-            self?.startFromBeginning()
+            self?.startScrollingFromBeginning()
         }
     }
     
-    private func startFromBeginning() {
+    private func startScrollingFromBeginning() {
         if _doesNotNeedScrolling {
             return
         }
@@ -157,7 +157,7 @@ class AutoScrollingTextScrolling {
         scrollToStart()
         
         perform(afterDelay: scrollInterval()) { [weak self] () in
-            self?.scroll()
+            self?.scrollUpdate()
         }
     }
     
@@ -167,23 +167,20 @@ class AutoScrollingTextScrolling {
         self.isCurrentlySettingText = false
     }
     
-    private func scroll() {
-        let atTheEnd = scrollNow()
-        
-        if !atTheEnd {
-            perform(afterDelay: scrollInterval()) { [weak self] () in
-                self?.scroll()
-            }
-        } else {
+    private func scrollUpdate() {
+        if hasReachedTheEnd() {
             finishScrolling()
+            return
+        }
+        
+        scrollUpdateNow()
+        
+        perform(afterDelay: scrollInterval()) { [weak self] () in
+            self?.scrollUpdate()
         }
     }
     
-    private func scrollNow() -> Bool {
-        if hasReachedTheEnd() {
-            return true
-        }
-        
+    private func scrollUpdateNow() {
         let now = self.text
         
         if !now.isEmpty {
@@ -191,8 +188,6 @@ class AutoScrollingTextScrolling {
             self.text = now.substring(from: 1)
             self.isCurrentlySettingText = false
         }
-        
-        return false
     }
     
     private func finishScrolling() {
@@ -205,13 +200,11 @@ class AutoScrollingTextScrolling {
         }
     }
     
-    // Perform async operation
+    // Helpers
     
     private func perform(afterDelay delay: Double, completion: @escaping () -> Void) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay, execute: completion)
     }
-    
-    // Helpers
     
     private func scrollInterval() -> Double {
         return 0.1 * (1 / parameters.scrollSpeed)
