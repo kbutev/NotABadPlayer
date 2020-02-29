@@ -9,11 +9,11 @@
 import Foundation
 
 enum TabID: String, CaseIterable {
-    case None;
-    case Albums;
-    case Lists;
-    case Search;
-    case Settings;
+    case None
+    case Albums
+    case Lists
+    case Search
+    case Settings
     
     static func stringValues() -> [String] {
         var strings: [String] = []
@@ -28,9 +28,9 @@ enum TabID: String, CaseIterable {
 }
 
 enum AppThemeValue: String, CaseIterable {
-    case LIGHT;
-    case DARK;
-    case MIX;
+    case LIGHT
+    case DARK
+    case MIX
     
     static func stringValues() -> [String] {
         var strings: [String] = []
@@ -45,11 +45,11 @@ enum AppThemeValue: String, CaseIterable {
 }
 
 enum TrackSorting: String, CaseIterable {
-    case NONE;
-    case TRACK_NUMBER;
-    case TITLE;
-    case LONGEST;
-    case SHORTEST;
+    case NONE
+    case TRACK_NUMBER
+    case TITLE
+    case LONGEST
+    case SHORTEST
     
     static func stringValues() -> [String] {
         var strings: [String] = []
@@ -64,9 +64,9 @@ enum TrackSorting: String, CaseIterable {
 }
 
 enum ShowVolumeBar: String, CaseIterable {
-    case NO;
-    case LEFT_SIDE;
-    case RIGHT_SIDE;
+    case NO
+    case LEFT_SIDE
+    case RIGHT_SIDE
     
     static func stringValues() -> [String] {
         var strings: [String] = []
@@ -81,10 +81,10 @@ enum ShowVolumeBar: String, CaseIterable {
 }
 
 enum OpenPlayerOnPlay: String, CaseIterable {
-    case NO;
-    case YES;
-    case PLAYLIST_ONLY;
-    case SEARCH_ONLY;
+    case NO
+    case YES
+    case PLAYLIST_ONLY
+    case SEARCH_ONLY
     
     static func stringValues() -> [String] {
         var strings: [String] = []
@@ -107,9 +107,9 @@ enum OpenPlayerOnPlay: String, CaseIterable {
 }
 
 enum TabsCachingPolicy: String, CaseIterable {
-    case NO_CACHING;
-    case ALBUMS_ONLY;
-    case CACHE_ALL;
+    case NO_CACHING
+    case ALBUMS_ONLY
+    case CACHE_ALL
     
     func canCacheAlbums() -> Bool {
         return self == .CACHE_ALL || self == .ALBUMS_ONLY

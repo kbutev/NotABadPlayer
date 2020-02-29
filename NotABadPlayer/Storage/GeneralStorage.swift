@@ -118,7 +118,7 @@ class GeneralStorage {
         saveKeybindAction(action: .BACKWARDS_8, forInput: .LOCK_PLAYER_PREVIOUS_BUTTON)
         saveKeybindAction(action: .PAUSE, forInput: .EARPHONES_UNPLUG)
         
-        saveCachingPolicy(.ALBUMS_ONLY);
+        saveCachingPolicy(.ALBUMS_ONLY)
         
         let playlists: [MutableAudioPlaylist] = []
         

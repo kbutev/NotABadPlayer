@@ -9,11 +9,11 @@
 import Foundation
 
 enum AudioPlayOrder: String, Codable {
-    case ONCE;
-    case ONCE_FOREVER;
-    case FORWARDS;
-    case FORWARDS_REPEAT;
-    case SHUFFLE;
+    case ONCE
+    case ONCE_FOREVER
+    case FORWARDS
+    case FORWARDS_REPEAT
+    case SHUFFLE
 }
 
 enum AudioPlaylistError: Error {
@@ -67,7 +67,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     }
     
     init(_ prototype: MutableAudioPlaylist) {
-        self._name = prototype.name;
+        self._name = prototype.name
         self._tracks = prototype.tracks
         self._playingTrackPosition = prototype.playingTrackPosition
         self._playing = prototype.isPlaying
@@ -83,7 +83,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
             fatalError("Given Playlist Track Must Not Be Empty")
         }
         
-        self._name = name;
+        self._name = name
         self._tracks = []
         self._playingTrackPosition = 0
         

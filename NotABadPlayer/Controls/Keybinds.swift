@@ -29,7 +29,7 @@ class Keybinds {
         case .DO_NOTHING:
             break
         case .EXIT:
-            exit(0);
+            exit(0)
             break
         case .PLAY:
             AudioPlayerService.shared.resume()

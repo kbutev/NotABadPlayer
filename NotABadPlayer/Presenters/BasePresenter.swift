@@ -34,7 +34,7 @@ protocol BasePresenter
     func onSearchQuery(query: String, filterIndex: Int)
     
     func onAppSettingsReset()
-    func onAppThemeChange(_ themeValue: AppThemeValue);
+    func onAppThemeChange(_ themeValue: AppThemeValue)
     func onTrackSortingSettingChange(_ trackSorting: TrackSorting)
     func onShowVolumeBarSettingChange(_ value: ShowVolumeBar)
     func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay)

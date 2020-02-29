@@ -10,10 +10,22 @@ import UIKit
 import iOSDropDown
 
 enum SettingsPickerValue {
-    case Theme; case TrackSorting; case OpenPlayerOnPlay;
-    case PlayerRecall; case PlayerPrevious; case PlayerNext; case PlayerSwipeL; case PlayerSwipeR;
-    case QPlayerPrevious; case QPlayerNext;
-    case LockPlayerPrevious; case LockPlayerNext;
+    case Theme
+    case TrackSorting
+    
+    case OpenPlayerOnPlay
+    
+    case PlayerRecall
+    case PlayerPrevious
+    case PlayerNext
+    case PlayerSwipeL
+    case PlayerSwipeR
+    
+    case QPlayerPrevious
+    case QPlayerNext
+    
+    case LockPlayerPrevious
+    case LockPlayerNext
 }
 
 protocol SettingsActionDelegate: class {
