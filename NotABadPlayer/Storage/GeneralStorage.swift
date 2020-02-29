@@ -423,6 +423,24 @@ class GeneralStorage {
         return .NO_CACHING
     }
     
+    func getCurrentlySelectedTab() -> TabID {
+        if let value = storage.string(forKey: "selected_tab")
+        {
+            if let result = TabID(rawValue: value)
+            {
+                return result
+            }
+            
+            Logging.log(GeneralStorage.self, "Error: could not read TabID value from storage")
+        }
+        
+        return .Albums
+    }
+    
+    func saveCurrentlySelectedTab(_ value: TabID) {
+        storage.set(value.rawValue, forKey: "selected_tab")
+    }
+    
     func numberOfLyricsTapped() -> UInt {
         return UInt(storage.integer(forKey: "number_times_lyrics_tapped"))
     }

@@ -10,7 +10,6 @@ import UIKit
 import MediaPlayer
 
 class MainViewController : UIViewController, BaseViewDelegate {
-    public static let DEFAULT_SELECTED_TAB: TabID = .Albums
     public static let TAB_SIZE = CGSize(width: 0, height: 60.0)
     
     private var baseView: MainView?
@@ -67,7 +66,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
     
     private func setup() {
         // Select default tab
-        onTabItemSelected(MainViewController.DEFAULT_SELECTED_TAB)
+        onTabItemSelected(GeneralStorage.shared.getCurrentlySelectedTab())
         
         // Button interaction
         var gesture = UITapGestureRecognizer(target: self, action: #selector(actionAlbumsMenuButtonTap(sender:)))
@@ -124,6 +123,8 @@ class MainViewController : UIViewController, BaseViewDelegate {
             fatalError("Cannot select tab \(tabID.rawValue)")
             break
         }
+        
+        GeneralStorage.shared.saveCurrentlySelectedTab(tabID)
     }
     
     private func deselectAllTabs() {
