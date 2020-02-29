@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MarqueeLabel
 
 class QuickPlayerView : UIView
 {
@@ -29,7 +30,7 @@ class QuickPlayerView : UIView
     @IBOutlet weak var trackInfoStackView: UIStackView!
     @IBOutlet weak var trackInfoArtCoverImage: UIImageView!
     @IBOutlet weak var trackInfoTextStackView: UIStackView!
-    @IBOutlet weak var trackInfoTitleText: AutoScrollingText!
+    @IBOutlet weak var trackInfoTitleText: NBPMarqueeLabel!
     @IBOutlet weak var trackInfoDurationText: UILabel!
     @IBOutlet weak var trackInfoRightEmptySpace: UIView!
     
@@ -136,10 +137,6 @@ class QuickPlayerView : UIView
         let gestureSwipe = UISwipeGestureRecognizer(target: self, action: #selector(actionSwipeUp(sender:)))
         gestureSwipe.direction = .up
         self.addGestureRecognizer(gestureSwipe)
-        
-        // Other
-        // Auto scroll forever
-        trackInfoTitleText.defaultScrollingParameters.restartCapacity = nil
     }
     
     public func appThemeSetup() {

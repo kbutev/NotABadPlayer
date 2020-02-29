@@ -1,6 +1,1 @@
-module iOSDropDown {
-  umbrella header "iOSDropDown-umbrella.h"
-
-  export *
-  module * { export * }
-}
+../../../Target Support Files/iOSDropDown/iOSDropDown.modulemap
