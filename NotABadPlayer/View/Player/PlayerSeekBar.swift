@@ -67,7 +67,14 @@ class PlayerSeekBar: UIView
     }
     
     override func didMoveToSuperview() {
+        super.didMoveToSuperview()
         setup()
+        updateThumbView()
+    }
+    
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        updateThumbView()
     }
     
     private func setup() {
@@ -118,7 +125,6 @@ class PlayerSeekBar: UIView
         let newX = Int(progressBar.frame.width * progressBar.progress)
         
         thumbView.frame.origin.x = CGFloat(newX)
-        thumbView.frame.origin.y = progressBar.frame.origin.y
     }
 }
 
