@@ -19,7 +19,7 @@ protocol AudioInfo {
     func loadIfNecessary()
     func load()
     
-    func getAlbums() -> [AudioAlbum];
+    func getAlbums() -> [AudioAlbum]
     func getAlbum(byID identifier: Int) -> AudioAlbum?
     func getAlbumTracks(album: AudioAlbum) -> [BaseAudioTrack]
     func searchForTracks(query: String, filter: SearchTracksFilter) -> [BaseAudioTrack]

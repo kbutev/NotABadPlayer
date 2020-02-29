@@ -33,25 +33,25 @@ enum Text: String {
     }
     
     // List of text values
-    case Empty = "";
-    case ListDescription = "@! tracks, duration @!";
-    case NothingPlaying = "Nothing Playing";
-    case ZeroTimer = "0:00";
-    case DoubleZeroTimers = "0:00/0:00";
+    case Empty = ""
+    case ListDescription = "@! tracks, duration @!"
+    case NothingPlaying = "Nothing Playing"
+    case ZeroTimer = "0:00"
+    case DoubleZeroTimers = "0:00/0:00"
     
     case AlbumsLibraryChanged = "Device library changed"
     
     case ListsDeleteButtonName = "Delete"
     case ListsDoneButtonName = "Done"
-    case PlaylistRecentlyPlayed = "Recently Played";
-    case PlaylistRecentlyAdded = "Recently Added";
-    case PlaylistFavorites = "Favorites";
-    case PlaylistCellDescription = "@! tracks";
+    case PlaylistRecentlyPlayed = "Recently Played"
+    case PlaylistRecentlyAdded = "Recently Added"
+    case PlaylistFavorites = "Favorites"
+    case PlaylistCellDescription = "@! tracks"
     
     case PlayerLyricsNotAvailable = "No lyrics"
     
-    case SearchDescriptionNoResults = "no results";
-    case SearchDescriptionResults = "@! search results";
+    case SearchDescriptionNoResults = "no results"
+    case SearchDescriptionResults = "@! search results"
     case SearchPlaylistName = "Search Results"
     
     case SettingsTheme = "Theme"
