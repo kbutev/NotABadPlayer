@@ -112,11 +112,6 @@ class PlayerView : UIView
         trackLyricsText.alpha = 0
         trackLyricsText.isHidden = true
         
-        // Bottom stack setup
-        bottomStackView.translatesAutoresizingMaskIntoConstraints = false
-        bottomStackView.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
-        bottomStackView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
-        
         // Text layout setup (fills 0.5x of the bottom stack)
         textLayoutView.translatesAutoresizingMaskIntoConstraints = false
         textLayoutView.widthAnchor.constraint(equalTo: bottomStackView.widthAnchor).isActive = true
