@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MarqueeLabel
 
 class PlayerView : UIView
 {
@@ -40,7 +41,7 @@ class PlayerView : UIView
     @IBOutlet weak var bottomStackView: UIStackView!
     
     @IBOutlet weak var textLayoutView: UIView!
-    @IBOutlet weak var titleLabel: AutoScrollingText!
+    @IBOutlet weak var titleLabel: NBPMarqueeLabel!
     @IBOutlet weak var playlistLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var favoriteImageButton: UIView!
@@ -125,6 +126,9 @@ class PlayerView : UIView
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: textLayoutView.topAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalTo: textLayoutView.widthAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: textLayoutView.centerXAnchor).isActive = true
+        titleLabel.font = UIFont(name: "TrebuchetMS-Bold", size: 24)
+        titleLabel.textAlignment = .center
         
         // Playlist label setup
         playlistLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -471,7 +475,7 @@ extension PlayerView {
     }
     
     @objc public func actionTitleTap(sender: Any) {
-        self.titleLabel.retry()
+        
     }
 }
 

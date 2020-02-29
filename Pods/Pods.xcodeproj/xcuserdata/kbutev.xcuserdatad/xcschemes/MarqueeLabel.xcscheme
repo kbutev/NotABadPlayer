@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "750B3FC9F2DD9834CE4A14B7EC2632D3"
-               BuildableName = "libPods-NotABadPlayer.a"
-               BlueprintName = "Pods-NotABadPlayer"
+               BlueprintIdentifier = "D9C2083273DEBD8649B1B7A60A439C01"
+               BuildableName = "libMarqueeLabel.a"
+               BlueprintName = "MarqueeLabel"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

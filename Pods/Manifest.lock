@@ -1,20 +1,24 @@
 PODS:
   - GTProgressBar (0.3.3)
   - iOSDropDown (0.2.7)
+  - MarqueeLabel (4.0.2)
 
 DEPENDENCIES:
   - GTProgressBar
   - iOSDropDown
+  - MarqueeLabel
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - GTProgressBar
     - iOSDropDown
+    - MarqueeLabel
 
 SPEC CHECKSUMS:
   GTProgressBar: a480283ecb0ada50de16c71e634892826928f640
   iOSDropDown: 7a4cfc67d5166f319858747b63cd2f7760c4fb4b
+  MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
 
-PODFILE CHECKSUM: 20c722b79df10ec3c48430db61800ff06b224239
+PODFILE CHECKSUM: 852ddbcfc4f62620e28a6ad22be525ffa92b3e9d
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

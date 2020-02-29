@@ -31,13 +31,18 @@
                                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vzl-Kb-tKP">
                                             <rect key="frame" x="0.0" y="0.0" width="406" height="128"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-dq-uhZ" customClass="AutoScrollingText" customModule="NotABadPlayer" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="50" width="406" height="26.5"/>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i2r-Hv-DaH" customClass="NBPMarqueeLabel" customModule="NotABadPlayer" customModuleProvider="target">
+                                                    <rect key="frame" x="83" y="0.0" width="240" height="128"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="tapToScroll" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="holdScrolling" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="trailingBuffer">
+                                                            <real key="value" value="50"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbx-Vc-Okd">
                                                     <rect key="frame" x="0.0" y="54" width="406" height="19.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -163,7 +168,7 @@
                 <outlet property="seekBar" destination="X6l-cp-baX" id="Hg6-Km-6Va"/>
                 <outlet property="seekTimeStackView" destination="dk9-jt-ttd" id="ur0-Wf-agr"/>
                 <outlet property="textLayoutView" destination="vzl-Kb-tKP" id="D4W-0Y-YsH"/>
-                <outlet property="titleLabel" destination="CPg-dq-uhZ" id="moO-Wn-tLC"/>
+                <outlet property="titleLabel" destination="i2r-Hv-DaH" id="9wp-ab-ndL"/>
                 <outlet property="topStackView" destination="bMV-jH-T6Y" id="uT3-Vl-3gV"/>
                 <outlet property="totalDurationLabel" destination="KIo-gR-kr2" id="Lqu-wb-Hzm"/>
                 <outlet property="trackLyricsText" destination="2hq-vl-Vga" id="fMR-ZQ-kSz"/>
