@@ -60,10 +60,12 @@ class PlayerSeekBar: UIView
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        addCustomViews()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        addCustomViews()
     }
     
     override func didMoveToSuperview() {
@@ -72,9 +74,9 @@ class PlayerSeekBar: UIView
         updateThumbView()
     }
     
-    override func layoutIfNeeded() {
-        super.layoutIfNeeded()
-        updateThumbView()
+    private func addCustomViews() {
+        self.addSubview(progressBar)
+        self.addSubview(thumbView)
     }
     
     private func setup() {
@@ -86,10 +88,6 @@ class PlayerSeekBar: UIView
         // Self setup
         self.translatesAutoresizingMaskIntoConstraints = false
         self.heightAnchor.constraint(equalToConstant: PlayerSeekBar.SIZE.height).isActive = true
-        
-        // Add the views are manually created
-        self.addSubview(progressBar)
-        self.addSubview(thumbView)
         
         // Progress bar setup
         progressBar.translatesAutoresizingMaskIntoConstraints = false
