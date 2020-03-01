@@ -8,7 +8,7 @@ Platform: iOS 11+
 
 Usage: Media player
 
-Technologies: iOS 11, [iOSDropDown](https://github.com/jriosdev/iOSDropDown), [GTProgressBar](https://github.com/gregttn/GTProgressBar)
+Technologies: iOS 11, [iOSDropDown](https://github.com/jriosdev/iOSDropDown), [GTProgressBar](https://github.com/gregttn/GTProgressBar), [MarqueeLabel](https://github.com/cbpowell/MarqueeLabel)
 
 Architectural design:
 
