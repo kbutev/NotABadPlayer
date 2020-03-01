@@ -84,8 +84,8 @@
 		99A6CA7C22677C850071DC0D /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A6CA7B22677C850071DC0D /* AppSettings.swift */; };
 		99A6CA7E22677EA40071DC0D /* AppThemeSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A6CA7D22677EA40071DC0D /* AppThemeSetter.swift */; };
 		99A6CA8022677EF20071DC0D /* Serializing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A6CA7F22677EF20071DC0D /* Serializing.swift */; };
-		99ACFBAC2401B07700A40121 /* CreateListViewAlbumTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACFBAB2401B07700A40121 /* CreateListViewAlbumTracks.swift */; };
-		99ACFBAE2401B09D00A40121 /* CreateListViewAddedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACFBAD2401B09D00A40121 /* CreateListViewAddedTracks.swift */; };
+		99ACFBAC2401B07700A40121 /* CreateListPickAlbumTracksDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACFBAB2401B07700A40121 /* CreateListPickAlbumTracksDelegate.swift */; };
+		99ACFBAE2401B09D00A40121 /* CreateListAddedTracksDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACFBAD2401B09D00A40121 /* CreateListAddedTracksDelegate.swift */; };
 		99ACFBB22401C3AA00A40121 /* SearchViewPlain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACFBB12401C3AA00A40121 /* SearchViewPlain.swift */; };
 		99ACFBB42401C5E000A40121 /* SearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99ACFBB32401C5E000A40121 /* SearchView.xib */; };
 		99ACFBB62401CF2200A40121 /* CreateListsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACFBB52401CF2200A40121 /* CreateListsPresenter.swift */; };
@@ -231,8 +231,8 @@
 		99A6CA7B22677C850071DC0D /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		99A6CA7D22677EA40071DC0D /* AppThemeSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppThemeSetter.swift; sourceTree = "<group>"; };
 		99A6CA7F22677EF20071DC0D /* Serializing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serializing.swift; sourceTree = "<group>"; };
-		99ACFBAB2401B07700A40121 /* CreateListViewAlbumTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListViewAlbumTracks.swift; sourceTree = "<group>"; };
-		99ACFBAD2401B09D00A40121 /* CreateListViewAddedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListViewAddedTracks.swift; sourceTree = "<group>"; };
+		99ACFBAB2401B07700A40121 /* CreateListPickAlbumTracksDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListPickAlbumTracksDelegate.swift; sourceTree = "<group>"; };
+		99ACFBAD2401B09D00A40121 /* CreateListAddedTracksDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListAddedTracksDelegate.swift; sourceTree = "<group>"; };
 		99ACFBB12401C3AA00A40121 /* SearchViewPlain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewPlain.swift; sourceTree = "<group>"; };
 		99ACFBB32401C5E000A40121 /* SearchView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchView.xib; sourceTree = "<group>"; };
 		99ACFBB52401CF2200A40121 /* CreateListsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListsPresenter.swift; sourceTree = "<group>"; };
@@ -575,8 +575,8 @@
 				99F33F6F22A419070049DA68 /* ListsItemCell.swift */,
 				99F33F7122A4191E0049DA68 /* ListsItemCell.xib */,
 				99B2D9E822A444D6003BC592 /* CreateListView.swift */,
-				99ACFBAD2401B09D00A40121 /* CreateListViewAddedTracks.swift */,
-				99ACFBAB2401B07700A40121 /* CreateListViewAlbumTracks.swift */,
+				99ACFBAD2401B09D00A40121 /* CreateListAddedTracksDelegate.swift */,
+				99ACFBAB2401B07700A40121 /* CreateListPickAlbumTracksDelegate.swift */,
 				99B2D9EA22A444DD003BC592 /* CreateListView.xib */,
 				992FC78B22A54F8800411305 /* CreateListAddedTrackCell.swift */,
 				992FC78D22A54FCF00411305 /* CreateListAddedTrackCell.xib */,
@@ -832,7 +832,7 @@
 				99194243227867CA00FF041E /* AlbumsCell.swift in Sources */,
 				996F260822A7C61B00BE199E /* AppTheme.swift in Sources */,
 				992EC1B9225B6A5C007DDD9D /* ListsViewController.swift in Sources */,
-				99ACFBAC2401B07700A40121 /* CreateListViewAlbumTracks.swift in Sources */,
+				99ACFBAC2401B07700A40121 /* CreateListPickAlbumTracksDelegate.swift in Sources */,
 				9949E52F228E9599002CDCC0 /* QuickPlayerService.swift in Sources */,
 				99D69D5622998667007D79F8 /* MainView.swift in Sources */,
 				996392FF2260BC0B0050F82A /* AudioInfo.swift in Sources */,
@@ -861,7 +861,7 @@
 				99B9CA5D2278859100000888 /* AlbumsPresenter.swift in Sources */,
 				99194241227867BF00FF041E /* AlbumsView.swift in Sources */,
 				99D69D5A22998733007D79F8 /* MainTabView.swift in Sources */,
-				99ACFBAE2401B09D00A40121 /* CreateListViewAddedTracks.swift in Sources */,
+				99ACFBAE2401B09D00A40121 /* CreateListAddedTracksDelegate.swift in Sources */,
 				9961B68B229F1C83001F4B35 /* UIExtensions.swift in Sources */,
 				996392F72260AB090050F82A /* AudioAlbum.swift in Sources */,
 				99D1AA9C23941CB000C82E9F /* StringUtilities.swift in Sources */,

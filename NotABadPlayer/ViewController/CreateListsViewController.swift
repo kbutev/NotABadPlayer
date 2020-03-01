@@ -94,7 +94,7 @@ class CreateListsViewController: UIViewController {
         presenter.updateAlbumsView()
     }
     
-    func updateAddedTracksDataSource(_ dataSource: BaseCreateListViewAddedTracksTableDataSource?) {
+    func updateAddedTracksDataSource(_ dataSource: BaseCreateListAddedTracksTableDataSource?) {
         baseView?.addedTracksTableDataSource = dataSource
         baseView?.reloadAddedTracksData()
     }

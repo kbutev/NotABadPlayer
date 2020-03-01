@@ -1,5 +1,5 @@
 //
-//  CreateListViewAddedTracks.swift
+//  CreateListAddedTracksDelegate.swift
 //  NotABadPlayer
 //
 //  Created by Kristiyan Butev on 22.02.20.
@@ -9,7 +9,7 @@
 import UIKit
 
 // Table data source
-class CreateListViewAddedTracksTableDataSource : NSObject, BaseCreateListViewAddedTracksTableDataSource
+class CreateListAddedTracksTableDataSource : NSObject, BaseCreateListAddedTracksTableDataSource
 {
     let audioInfo: AudioInfo
     let tracks: [BaseAudioTrack]
@@ -49,7 +49,7 @@ class CreateListViewAddedTracksTableDataSource : NSObject, BaseCreateListViewAdd
 }
 
 // Table action delegate
-class CreateListViewAddedTracksActionDelegate : NSObject, BaseCreateListViewAddedTracksActionDelegate
+class CreateListAddedTracksActionDelegate : NSObject, BaseCreateListAddedTracksActionDelegate
 {
     private weak var view: CreateListView?
     
