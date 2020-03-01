@@ -110,6 +110,14 @@ class SearchView: UIView
         searchBaseView.reloadData()
     }
     
+    public func showLoadingIndicator() {
+        searchBaseView.showLoadingIndicator()
+    }
+    
+    public func hideLoadingIndicator() {
+        searchBaseView.hideLoadingIndicator()
+    }
+    
     public func setTextFieldText(_ text: String) {
         searchBaseView.setTextFieldText(text)
     }
@@ -118,8 +126,12 @@ class SearchView: UIView
         searchBaseView.setTextFilterIndex(index)
     }
     
-    public func updateSearchResults(resultsCount: UInt, searchTip: String?) {
-        searchBaseView.updateSearchResults(resultsCount: resultsCount, searchTip: searchTip)
+    public func updateSearchDescriptionToLoading() {
+        searchBaseView.updateSearchDescriptionToLoading()
+    }
+    
+    public func updateSearchDescription(resultsCount: UInt) {
+        searchBaseView.updateSearchDescription(resultsCount: resultsCount)
     }
     
     public func playSelectionAnimation(reloadData: Bool) {

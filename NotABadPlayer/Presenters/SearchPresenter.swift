@@ -171,11 +171,7 @@ class SearchPresenter: BasePresenter
         GeneralStorage.shared.saveSearchQueryFilter(filter)
         
         // Start search process
-        delegate?.updateSearchQueryResults(query: query,
-                                           filterIndex: filterIndex,
-                                           dataSource: nil,
-                                           resultsCount: 0,
-                                           searchTip: "Searching...")
+        delegate?.onSearchQueryBegin()
         
         // Use background thread to retrieve the search results
         // Then, update the view on the main thread
@@ -192,8 +188,7 @@ class SearchPresenter: BasePresenter
                 self.delegate?.updateSearchQueryResults(query: query,
                                                         filterIndex: filterIndex,
                                                         dataSource: dataSource,
-                                                        resultsCount: UInt(results.count),
-                                                        searchTip: nil)
+                                                        resultsCount: UInt(results.count))
             }
         }
     }

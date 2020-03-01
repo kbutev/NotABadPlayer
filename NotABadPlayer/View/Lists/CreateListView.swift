@@ -255,6 +255,14 @@ class CreateListView : UIView
         searchLayoutView.reloadData()
     }
     
+    public func showLoadingIndicator(_ value: Bool) {
+        if value {
+            searchLayoutView.showLoadingIndicator()
+        } else {
+            searchLayoutView.hideLoadingIndicator()
+        }
+    }
+    
     public func openAlbumAt(index: UInt,
                             albumTracks: [CreateListAudioTrack],
                             addedTracks: [CreateListAudioTrack]) {

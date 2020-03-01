@@ -53,6 +53,7 @@ enum Text: String {
     case SearchDescriptionNoResults = "no results"
     case SearchDescriptionResults = "@! search results"
     case SearchPlaylistName = "Search Results"
+    case SearchingDescription = "Searching..."
     
     case SettingsTheme = "Theme"
     case SettingsTrackSorting = "Track Sorting"

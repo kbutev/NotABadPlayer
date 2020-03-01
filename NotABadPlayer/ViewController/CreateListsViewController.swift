@@ -186,8 +186,14 @@ extension CreateListsViewController: BaseCreateListsPresenterDelegate {
         
     }
     
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func onSearchQueryBegin() {
+        updateSearchTracksDataSource(nil)
+        baseView?.showLoadingIndicator(true)
+    }
+    
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
         updateSearchTracksDataSource(dataSource)
+        baseView?.showLoadingIndicator(false)
     }
     
     func onResetSettingsDefaults() {

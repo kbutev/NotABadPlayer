@@ -16,6 +16,10 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xHq-hL-ya3">
+                    <rect key="frame" x="197" y="438" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </activityIndicatorView>
                 <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KXA-GE-Kig">
                     <rect key="frame" x="152" y="348" width="240" height="266"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -57,6 +61,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="collectionView" destination="cEl-is-6pK" id="ych-Lx-GcA"/>
+                <outlet property="loadingIndicator" destination="xHq-hL-ya3" id="ByR-6A-glA"/>
                 <outlet property="searchDescription" destination="uoC-gA-fl7" id="Sx1-5R-zd3"/>
                 <outlet property="searchField" destination="yjM-Dr-I4r" id="gqd-YI-Y5L"/>
                 <outlet property="searchFilterPicker" destination="lTX-M3-aHy" id="aLk-jb-TUe"/>
