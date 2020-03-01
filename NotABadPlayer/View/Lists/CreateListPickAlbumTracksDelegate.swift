@@ -1,5 +1,5 @@
 //
-//  CreateListViewAlbumTracks.swift
+//  CreateListPickAlbumTracksDelegate.swift
 //  NotABadPlayer
 //
 //  Created by Kristiyan Butev on 22.02.20.
@@ -9,7 +9,7 @@
 import UIKit
 
 // Table data source
-class CreateListViewAlbumTracksDataSource : NSObject, BaseCreateListViewAlbumsDataSource
+class CreateListPickAlbumTracksDataSource : NSObject, BaseCreateListViewAlbumsDataSource
 {
     let albums: [AudioAlbum]
     let onOpenedAlbumTrackSelectionCallback: (UInt)->()
@@ -143,7 +143,7 @@ class CreateListViewAlbumTracksDataSource : NSObject, BaseCreateListViewAlbumsDa
 }
 
 // Table action delegate
-class CreateListViewAlbumTracksDelegate : NSObject, BaseCreateListViewAlbumTracksDelegate
+class CreateListPickAlbumTracksDelegate : NSObject, BaseCreateListPickAlbumTracksDelegate
 {
     private weak var view: CreateListView?
     

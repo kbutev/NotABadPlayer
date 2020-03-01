@@ -50,18 +50,18 @@ class CreateListView : UIView
     
     private var openedAlbum: CreateListAlbumCell?
     
-    private var addedTracksTableDelegate : BaseCreateListViewAddedTracksActionDelegate?
+    private var addedTracksTableDelegate : BaseCreateListAddedTracksActionDelegate?
     
-    public var addedTracksTableDataSource : BaseCreateListViewAddedTracksTableDataSource? {
+    public var addedTracksTableDataSource : BaseCreateListAddedTracksTableDataSource? {
         get {
-            return addedTracksTable.dataSource as? BaseCreateListViewAddedTracksTableDataSource
+            return addedTracksTable.dataSource as? BaseCreateListAddedTracksTableDataSource
         }
         set {
             addedTracksTable.dataSource = newValue
         }
     }
     
-    private var albumsTableDelegate : BaseCreateListViewAlbumTracksDelegate?
+    private var albumsTableDelegate : BaseCreateListPickAlbumTracksDelegate?
     
     public var albumsTableDataSource : BaseCreateListViewAlbumsDataSource? {
         get {
@@ -223,7 +223,7 @@ class CreateListView : UIView
         let nib = UINib(nibName: String(describing: CreateListAddedTrackCell.self), bundle: nil)
         addedTracksTable.register(nib, forCellReuseIdentifier: CreateListAddedTrackCell.CELL_IDENTIFIER)
         
-        self.addedTracksTableDelegate = CreateListViewAddedTracksActionDelegate(view: self)
+        self.addedTracksTableDelegate = CreateListAddedTracksActionDelegate(view: self)
         addedTracksTable.delegate = self.addedTracksTableDelegate
     }
     
@@ -304,7 +304,7 @@ class CreateListView : UIView
         let nib = UINib(nibName: String(describing: CreateListAlbumCell.self), bundle: nil)
         albumsTable.register(nib, forCellReuseIdentifier: CreateListAlbumCell.CELL_IDENTIFIER)
         
-        self.albumsTableDelegate = CreateListViewAlbumTracksDelegate(view: self)
+        self.albumsTableDelegate = CreateListPickAlbumTracksDelegate(view: self)
         albumsTable.delegate = self.albumsTableDelegate
     }
     

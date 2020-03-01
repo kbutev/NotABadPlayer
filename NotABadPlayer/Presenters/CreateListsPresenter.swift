@@ -13,7 +13,7 @@ protocol BaseCreateListsPresenterDelegate: BaseViewDelegate {
     var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void { get }
     
     // Added tracks operations
-    func updateAddedTracksDataSource(_ dataSource: BaseCreateListViewAddedTracksTableDataSource?)
+    func updateAddedTracksDataSource(_ dataSource: BaseCreateListAddedTracksTableDataSource?)
     func updateAlbumsDataSource(_ dataSource: BaseCreateListViewAlbumsDataSource?)
     func deselectAddedTrack(_ track: CreateListAudioTrack)
     
@@ -85,7 +85,7 @@ class CreateListsPresenter: BaseCreateListsPresenter {
     
     private var playlistName: String = ""
     
-    private var addedTracksTableDataSource: BaseCreateListViewAddedTracksTableDataSource?
+    private var addedTracksTableDataSource: BaseCreateListAddedTracksTableDataSource?
     private var albumsDataSource: BaseCreateListViewAlbumsDataSource?
     
     init(audioInfo: AudioInfo) {
@@ -94,7 +94,7 @@ class CreateListsPresenter: BaseCreateListsPresenter {
     }
     
     func updateAddedTracksView() {
-        self.addedTracksTableDataSource = CreateListViewAddedTracksTableDataSource(audioInfo: audioInfo, tracks: addedTracks)
+        self.addedTracksTableDataSource = CreateListAddedTracksTableDataSource(audioInfo: audioInfo, tracks: addedTracks)
         
         delegate?.updateAddedTracksDataSource(self.addedTracksTableDataSource)
     }
@@ -107,7 +107,7 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         let onOpenedAlbumTrackSelectionCallback = view.onOpenedAlbumTrackSelectionCallback
         let onOpenedAlbumTrackDeselectionCallback = view.onOpenedAlbumTrackDeselectionCallback
         
-        self.albumsDataSource = CreateListViewAlbumTracksDataSource(albums: self.audioInfoAlbums,
+        self.albumsDataSource = CreateListPickAlbumTracksDataSource(albums: self.audioInfoAlbums,
                                                                     onOpenedAlbumTrackSelectionCallback: onOpenedAlbumTrackSelectionCallback,
                                                                     onOpenedAlbumTrackDeselectionCallback: onOpenedAlbumTrackDeselectionCallback)
         
