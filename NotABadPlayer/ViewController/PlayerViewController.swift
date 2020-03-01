@@ -151,7 +151,11 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         self.baseView?.updateUIState(player: AudioPlayerService.shared, track: playingTrack, isFavorite: isStorageMarkedFavorite(playingTrack))
     }
     
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func onSearchQueryBegin() {
+        
+    }
+    
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
         
     }
     

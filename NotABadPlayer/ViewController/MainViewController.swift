@@ -310,7 +310,11 @@ class MainViewController : UIViewController, BaseViewDelegate {
         
     }
     
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func onSearchQueryBegin() {
+        
+    }
+    
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
         
     }
     

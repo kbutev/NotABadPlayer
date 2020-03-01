@@ -63,6 +63,7 @@ class SearchViewPlain: UIView
     @IBOutlet var searchFilterPicker: UISegmentedControl!
     @IBOutlet weak var searchDescription: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -124,6 +125,12 @@ class SearchViewPlain: UIView
         
         // Search filter picker setup
         searchFilterPicker.addTarget(self, action: #selector(pickerValueChanged), for: .valueChanged)
+        
+        // Loading indicator
+        self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.loadingIndicator.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
+        self.loadingIndicator.centerYAnchor.constraint(equalTo: guide.centerYAnchor).isActive = true
+        self.loadingIndicator.isHidden = true
     }
     
     public func setupAppTheme() {
@@ -146,6 +153,16 @@ class SearchViewPlain: UIView
         collectionView.reloadData()
     }
     
+    public func showLoadingIndicator() {
+        self.loadingIndicator.isHidden = false
+        self.loadingIndicator.startAnimating()
+    }
+    
+    public func hideLoadingIndicator() {
+        self.loadingIndicator.isHidden = true
+        self.loadingIndicator.stopAnimating()
+    }
+    
     public func hideFiltersView() {
         if searchFilterPicker.superview != nil {
             stackView.removeArrangedSubview(searchFilterPicker)
@@ -160,14 +177,12 @@ class SearchViewPlain: UIView
     public func setTextFilterIndex(_ index: Int) {
         searchFilterPicker.selectedSegmentIndex = index
     }
+
+    public func updateSearchDescriptionToLoading() {
+        searchDescription.text = Text.value(.SearchingDescription)
+    }
     
-    public func updateSearchResults(resultsCount: UInt, searchTip: String?) {
-        if let tip = searchTip
-        {
-            searchDescription.text = tip
-            return
-        }
-        
+    public func updateSearchDescription(resultsCount: UInt) {
         if resultsCount == 0
         {
             let isEmpty = searchField.text?.isEmpty ?? true

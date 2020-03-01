@@ -146,7 +146,15 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         
     }
     
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt, searchTip: String?) {
+    func onSearchQueryBegin() {
+        baseView?.collectionDataSource = nil
+        baseView?.updateSearchDescriptionToLoading()
+        baseView?.reloadData()
+        
+        baseView?.showLoadingIndicator()
+    }
+    
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
         searchFieldText = query
         searchFilterPickedIndex = filterIndex
         
@@ -155,7 +163,9 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         baseView?.favoritesChecker = self
         baseView?.setTextFieldText(query)
         baseView?.setTextFilterIndex(filterIndex)
-        baseView?.updateSearchResults(resultsCount: resultsCount, searchTip: searchTip)
+        baseView?.updateSearchDescription(resultsCount: resultsCount)
+        
+        baseView?.hideLoadingIndicator()
     }
     
     func onResetSettingsDefaults() {
