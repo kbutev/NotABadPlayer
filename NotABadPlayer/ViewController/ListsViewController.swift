@@ -47,10 +47,10 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     
     private func setup() {
         baseView?.onCreateButtonClickedCallback = { [weak self] () in
-            self?.openCreateListsScreen()
+            self?.openCreateListsScreen(with: nil)
         }
         
-        baseView?.onDeleteButtonClickedCallback = { [weak self] () in
+        baseView?.onEditButtonClickedCallback = { [weak self] () in
             self?.startOrEndEditing()
         }
         
@@ -58,17 +58,11 @@ class ListsViewController: UIViewController, BaseViewDelegate {
             self?.presenter?.onPlaylistItemClick(index: index)
         }
         
-        baseView?.onPrepareDeletePlaylistCallback = { [weak self] (index: UInt) -> Bool in
-            if let dataSource = self?.playlistsDataSource {
-                if index >= 0 && index < dataSource.count {
-                    return !dataSource.data(at: index).isTemporary
-                }
-            }
-            
-            return false
+        baseView?.onPlaylistEditClickedCallback = { [weak self] (index: UInt) -> Void in
+            self?.presenter?.onPlaylistItemEdit(index: index)
         }
         
-        baseView?.onDidDeletePlaylistCallback = { [weak self] (index: UInt) -> Void in
+        baseView?.onPlaylistDeleteCallback = { [weak self] (index: UInt) -> Void in
             self?.presenter?.onPlaylistItemDelete(index: index)
         }
         
@@ -90,13 +84,23 @@ class ListsViewController: UIViewController, BaseViewDelegate {
                 self?.presenter?.onOpenPlayer(playlist: currentlyPlaying)
             }
         }
+        
+        baseView?.canDeletePlaylistCondition = { [weak self] (index: UInt) -> Bool in
+            if let dataSource = self?.playlistsDataSource {
+                if index >= 0 && index < dataSource.count {
+                    return !dataSource.data(at: index).isTemporary
+                }
+            }
+            
+            return false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         presenter?.fetchData()
         
         // Make sure we are not in deletion mode, when resuming
-        baseView?.endDeletingLists()
+        endEditing()
         
         // Attach quick player
         QuickPlayerService.shared.attach(observer: self)
@@ -173,6 +177,16 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
+        guard let audioInfo = self.audioInfo else {
+            return
+        }
+        
+        let vc = CreateListsViewController(audioInfo: audioInfo, editPlaylist: editPlaylist)
+        
+        NavigationHelpers.presentVC(current: self, vc: vc)
+    }
+    
     func onResetSettingsDefaults() {
         
     }
@@ -206,27 +220,26 @@ class ListsViewController: UIViewController, BaseViewDelegate {
                                  action: nil)
     }
     
-    private func openCreateListsScreen() {
-        guard let audioInfo = self.audioInfo else {
-            return
-        }
-        
-        let vc = CreateListsViewController(audioInfo: audioInfo)
-        
-        NavigationHelpers.presentVC(current: self, vc: vc)
-    }
-    
     public func startOrEndEditing() {
         if !isEditingLists
         {
-            baseView?.startDeletingLists()
+            baseView?.startEditingLists()
         }
         else
         {
-            baseView?.endDeletingLists()
+            baseView?.endEditingLists()
         }
         
         isEditingLists = !isEditingLists
+    }
+    
+    public func endEditing() {
+        if !isEditingLists {
+            return
+        }
+        
+        isEditingLists = false
+        baseView?.endEditingLists()
     }
 }
 

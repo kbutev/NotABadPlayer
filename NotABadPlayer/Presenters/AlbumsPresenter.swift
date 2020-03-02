@@ -111,10 +111,6 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
         }
     }
     
-    func onPlaylistItemClick(index: UInt) {
-        
-    }
-    
     func onOpenPlayer(playlist: BaseAudioPlaylist) {
         Logging.log(AlbumsPresenter.self, "Open player screen")
         
@@ -161,6 +157,14 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
     
     func onMarkOrUnmarkContextTrackFavorite() -> Bool {
         return false
+    }
+    
+    func onPlaylistItemClick(index: UInt) {
+        
+    }
+    
+    func onPlaylistItemEdit(index: UInt) {
+        
     }
     
     func onPlaylistItemDelete(index: UInt) {

@@ -159,6 +159,10 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
+        
+    }
+    
     func onResetSettingsDefaults() {
         
     }

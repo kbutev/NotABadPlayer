@@ -32,10 +32,6 @@ class SettingsPresenter: BasePresenter
         
     }
     
-    func onPlaylistItemClick(index: UInt) {
-        
-    }
-    
     func onOpenPlayer(playlist: BaseAudioPlaylist) {
         
     }
@@ -62,6 +58,14 @@ class SettingsPresenter: BasePresenter
     
     func onMarkOrUnmarkContextTrackFavorite() -> Bool {
         return false
+    }
+    
+    func onPlaylistItemClick(index: UInt) {
+        
+    }
+    
+    func onPlaylistItemEdit(index: UInt) {
+        
     }
     
     func onPlaylistItemDelete(index: UInt) {

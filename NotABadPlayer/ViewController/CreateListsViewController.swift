@@ -14,11 +14,16 @@ class CreateListsViewController: UIViewController {
     private var baseView: CreateListView?
     private let presenter: CreateListsPresenter
     
+    private let isEditingPlaylist: Bool
+    private let editingPlaylistName: String
+    
     var onOpenedAlbumTrackSelectionCallback: (UInt)->Void = {(index) in }
     var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void = {(index) in }
     
-    init(audioInfo: AudioInfo) {
-        self.presenter = CreateListsPresenter(audioInfo: audioInfo)
+    init(audioInfo: AudioInfo, editPlaylist: BaseAudioPlaylist?) {
+        self.isEditingPlaylist = editPlaylist != nil
+        self.editingPlaylistName = editPlaylist?.name ?? ""
+        self.presenter = CreateListsPresenter(audioInfo: audioInfo, editPlaylist: editPlaylist)
         super.init(nibName: nil, bundle: nil)
         self.presenter.setView(self)
     }
@@ -89,6 +94,14 @@ class CreateListsViewController: UIViewController {
         baseView?.onSwitchTrackPickerCallback = {[weak self] () in
             self?.baseView?.reloadAlbumsData()
             self?.baseView?.reloadSearchTracksData()
+        }
+        
+        // Disable and update name field if editing
+        if self.isEditingPlaylist {
+            baseView?.playlistNameField.text = self.editingPlaylistName
+            baseView?.playlistNameField.isEnabled = false
+            
+            baseView?.doneButton.setTitle(Text.value(.CreateListDoneForUpdateButton), for: .normal)
         }
         
         presenter.updateAlbumsView()
@@ -194,6 +207,10 @@ extension CreateListsViewController: BaseCreateListsPresenterDelegate {
     func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
         updateSearchTracksDataSource(dataSource)
         baseView?.showLoadingIndicator(false)
+    }
+    
+    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
+        
     }
     
     func onResetSettingsDefaults() {

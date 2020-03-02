@@ -30,10 +30,11 @@ class ListsView : UIView
     }
     
     public var onCreateButtonClickedCallback: ()->Void = {() in }
-    public var onDeleteButtonClickedCallback: ()->Void = {() in }
+    public var onEditButtonClickedCallback: ()->Void = {() in }
     public var onPlaylistClickedCallback: (UInt)->Void = {(index) in }
-    public var onPrepareDeletePlaylistCallback: (UInt)->Bool = {(index) in true }
-    public var onDidDeletePlaylistCallback: (UInt)->Void = {(index) in }
+    public var onPlaylistEditClickedCallback: (UInt)->Void = {(index) in }
+    public var onPlaylistDeleteCallback: (UInt)->Void = {(index) in }
+    public var canDeletePlaylistCondition: (UInt)->Bool = {(index) in true }
     
     public var onQuickPlayerPlaylistButtonClickCallback: ()->Void {
         get { return quickPlayerView.onPlaylistButtonClickCallback }
@@ -57,7 +58,7 @@ class ListsView : UIView
     
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var createButton: UIButton!
-    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var playlistsTable: UITableView!
     var quickPlayerView: QuickPlayerView!
     
@@ -107,12 +108,12 @@ class ListsView : UIView
         
         createButton.addTarget(self, action: #selector(actionCreateButtonClick), for: .touchUpInside)
         
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.topAnchor.constraint(equalTo: header.topAnchor).isActive = true
-        deleteButton.rightAnchor.constraint(equalTo: header.rightAnchor).isActive = true
-        deleteButton.heightAnchor.constraint(equalToConstant: ListsView.HEADER_HEIGHT).isActive = true
+        editButton.translatesAutoresizingMaskIntoConstraints = false
+        editButton.topAnchor.constraint(equalTo: header.topAnchor).isActive = true
+        editButton.rightAnchor.constraint(equalTo: header.rightAnchor).isActive = true
+        editButton.heightAnchor.constraint(equalToConstant: ListsView.HEADER_HEIGHT).isActive = true
         
-        deleteButton.addTarget(self, action: #selector(actionDeleteButtonClick), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(actionDeleteButtonClick), for: .touchUpInside)
         
         // Table setup
         playlistsTable.translatesAutoresizingMaskIntoConstraints = false
@@ -127,8 +128,8 @@ class ListsView : UIView
         playlistsTable.register(nib, forCellReuseIdentifier: ListsItemCell.CELL_IDENTIFIER)
         
         playlistsTable.delegate = tableActionDelegate
-        
         playlistsTable.dataSource = self
+        playlistsTable.allowsSelectionDuringEditing = true
     }
     
     public func setupAppTheme() {
@@ -138,7 +139,7 @@ class ListsView : UIView
         playlistsTable.backgroundColor = .clear
         
         createButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
-        deleteButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
+        editButton.tintColor = AppTheme.shared.colorFor(.STANDART_BUTTON)
         
         playlistsTable.indicatorStyle = AppTheme.shared.scrollBarColor()
     }
@@ -147,21 +148,21 @@ class ListsView : UIView
         playlistsTable.reloadData()
     }
     
-    public func startDeletingLists() {
+    public func startEditingLists() {
         if !playlistsTable.isEditing
         {
             playlistsTable.setEditing(true, animated: true)
             
-            deleteButton.setTitle(Text.value(.ListsDoneButtonName), for: .normal)
+            editButton.setTitle(Text.value(.ListsDoneButtonName), for: .normal)
         }
     }
     
-    public func endDeletingLists() {
+    public func endEditingLists() {
         if playlistsTable.isEditing
         {
             playlistsTable.setEditing(false, animated: true)
             
-            deleteButton.setTitle(Text.value(.ListsDeleteButtonName), for: .normal)
+            editButton.setTitle(Text.value(.ListsEditButtonName), for: .normal)
         }
     }
 }
@@ -216,7 +217,7 @@ extension ListsView : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        self.onDidDeletePlaylistCallback(UInt(indexPath.row))
+        self.onPlaylistDeleteCallback(UInt(indexPath.row))
     }
 }
 
@@ -227,11 +228,15 @@ extension ListsView {
     }
     
     @objc func actionDeleteButtonClick() {
-        self.onDeleteButtonClickedCallback()
+        self.onEditButtonClickedCallback()
     }
     
     @objc func actionPlaylistClick(index: UInt) {
         self.onPlaylistClickedCallback(index)
+    }
+    
+    @objc func actionPlaylistEditClick(index: UInt) {
+        self.onPlaylistEditClickedCallback(index)
     }
 }
 
@@ -332,7 +337,13 @@ class ListsViewDelegate : NSObject, BaseListsViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.view?.actionPlaylistClick(index: UInt(indexPath.row))
+        let index = UInt(indexPath.row)
+        
+        if !tableView.isEditing {
+            self.view?.actionPlaylistClick(index: index)
+        } else {
+            self.view?.actionPlaylistEditClick(index: index)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -342,7 +353,7 @@ class ListsViewDelegate : NSObject, BaseListsViewDelegate
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         if tableView.isEditing {
             // Show delete symbol only for those for which the callback returns true
-            if view?.onPrepareDeletePlaylistCallback(UInt(indexPath.row)) ?? false
+            if view?.canDeletePlaylistCondition(UInt(indexPath.row)) ?? false
             {
                 return .delete
             }

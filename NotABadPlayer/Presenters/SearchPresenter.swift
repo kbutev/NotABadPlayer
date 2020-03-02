@@ -72,10 +72,6 @@ class SearchPresenter: BasePresenter
         
     }
     
-    func onPlaylistItemClick(index: UInt) {
-        
-    }
-    
     func onOpenPlayer(playlist: BaseAudioPlaylist) {
         Logging.log(SearchPresenter.self, "Open player screen")
         
@@ -119,6 +115,14 @@ class SearchPresenter: BasePresenter
     
     func onMarkOrUnmarkContextTrackFavorite() -> Bool {
         return false
+    }
+    
+    func onPlaylistItemClick(index: UInt) {
+        
+    }
+    
+    func onPlaylistItemEdit(index: UInt) {
+        
     }
     
     func onPlaylistItemDelete(index: UInt) {

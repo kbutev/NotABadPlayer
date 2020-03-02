@@ -25,6 +25,8 @@ protocol BaseViewDelegate : class {
     func onSearchQueryBegin()
     func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt)
     
+    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?)
+    
     func onResetSettingsDefaults()
     func onThemeSelect(_ value: AppThemeValue)
     func onTrackSortingSelect(_ value: TrackSorting)

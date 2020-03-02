@@ -54,10 +54,6 @@ class PlayerPresenter: BasePresenter
         
     }
     
-    func onPlaylistItemClick(index: UInt) {
-        
-    }
-    
     func onOpenPlayer(playlist: BaseAudioPlaylist) {
         
     }
@@ -103,6 +99,14 @@ class PlayerPresenter: BasePresenter
         }
         
         return !isFavorite
+    }
+    
+    func onPlaylistItemClick(index: UInt) {
+        
+    }
+    
+    func onPlaylistItemEdit(index: UInt) {
+        
     }
     
     func onPlaylistItemDelete(index: UInt) {

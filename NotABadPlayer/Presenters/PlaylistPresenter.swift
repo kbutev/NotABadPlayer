@@ -71,24 +71,6 @@ class PlaylistPresenter: BasePresenter
         
     }
     
-    func onPlaylistItemClick(index: UInt) {
-        if index >= playlist.tracks.count
-        {
-            return
-        }
-        
-        let clickedTrack = playlist.tracks[Int(index)]
-        
-        if GeneralStorage.shared.getOpenPlayerOnPlayValue().openForPlaylist()
-        {
-            openPlayerScreen(clickedTrack)
-        }
-        else
-        {
-            playNewTrack(clickedTrack)
-        }
-    }
-    
     func onOpenPlayer(playlist: BaseAudioPlaylist) {
         Logging.log(PlaylistPresenter.self, "Open player screen")
         
@@ -132,6 +114,28 @@ class PlaylistPresenter: BasePresenter
     
     func onMarkOrUnmarkContextTrackFavorite() -> Bool {
         return false
+    }
+    
+    func onPlaylistItemClick(index: UInt) {
+        if index >= playlist.tracks.count
+        {
+            return
+        }
+        
+        let clickedTrack = playlist.tracks[Int(index)]
+        
+        if GeneralStorage.shared.getOpenPlayerOnPlayValue().openForPlaylist()
+        {
+            openPlayerScreen(clickedTrack)
+        }
+        else
+        {
+            playNewTrack(clickedTrack)
+        }
+    }
+    
+    func onPlaylistItemEdit(index: UInt) {
+        
     }
     
     func onPlaylistItemDelete(index: UInt) {

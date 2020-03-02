@@ -153,6 +153,10 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
         
     }
     
+    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
+        
+    }
+    
     func onResetSettingsDefaults() {
         
     }
