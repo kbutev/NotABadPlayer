@@ -27,10 +27,10 @@
                             <state key="normal" title="Create"/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tjh-Wl-Ajf">
-                            <rect key="frame" x="96" y="48" width="51" height="32"/>
+                            <rect key="frame" x="106" y="48" width="31" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                            <state key="normal" title="Delete"/>
+                            <state key="normal" title="Edit"/>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -45,7 +45,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="createButton" destination="JMB-vc-9k8" id="bXt-R7-QNH"/>
-                <outlet property="deleteButton" destination="tjh-Wl-Ajf" id="fbW-Re-qbh"/>
+                <outlet property="editButton" destination="tjh-Wl-Ajf" id="fbW-Re-qbh"/>
                 <outlet property="header" destination="3s2-R5-GKH" id="lIW-0h-zeQ"/>
                 <outlet property="playlistsTable" destination="ey9-ki-3Es" id="yww-Cd-MDd"/>
             </connections>

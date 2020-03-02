@@ -165,7 +165,7 @@ class CreateListView : UIView
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.centerYAnchor.constraint(equalTo: header.centerYAnchor).isActive = true
         doneButton.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: -CreateListView.HORIZONTAL_MARGIN).isActive = true
-        doneButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        doneButton.widthAnchor.constraint(equalToConstant: 64).isActive = true
         doneButton.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
         doneButton.addTarget(self, action: #selector(actionDoneButtonClick), for: .touchUpInside)
         

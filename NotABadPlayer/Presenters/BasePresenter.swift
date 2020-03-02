@@ -17,7 +17,6 @@ protocol BasePresenter
     func fetchData()
     
     func onAlbumClick(index: UInt)
-    func onPlaylistItemClick(index: UInt)
     
     func onOpenPlayer(playlist: BaseAudioPlaylist)
     
@@ -28,6 +27,8 @@ protocol BasePresenter
     func onPlayerVolumeSet(value: Double)
     func onMarkOrUnmarkContextTrackFavorite() -> Bool
     
+    func onPlaylistItemClick(index: UInt)
+    func onPlaylistItemEdit(index: UInt)
     func onPlaylistItemDelete(index: UInt)
     
     func onSearchResultClick(index: UInt)

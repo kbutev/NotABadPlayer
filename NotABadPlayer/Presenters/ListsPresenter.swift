@@ -118,22 +118,6 @@ class ListsPresenter: BasePresenter
         
     }
     
-    func onPlaylistItemClick(index: UInt) {
-        
-        if index >= self.playlists.count
-        {
-            return
-        }
-        
-        let playlist = self.playlists[Int(index)]
-        
-        Logging.log(ListsPresenter.self, "Open playlist screen for playlist \(playlist.name)")
-        
-        let appropriateOptions = getAppropriateOptions(for: playlist)
-        
-        self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: appropriateOptions)
-    }
-    
     func onOpenPlayer(playlist: BaseAudioPlaylist) {
         Logging.log(ListsPresenter.self, "Open player screen")
         
@@ -179,13 +163,47 @@ class ListsPresenter: BasePresenter
         return false
     }
     
+    func onPlaylistItemClick(index: UInt) {
+        
+        if index >= self.playlists.count
+        {
+            return
+        }
+        
+        let playlist = self.playlists[Int(index)]
+        
+        Logging.log(ListsPresenter.self, "Open playlist screen for playlist \(playlist.name)")
+        
+        let appropriateOptions = getAppropriateOptions(for: playlist)
+        
+        self.delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: appropriateOptions)
+    }
+    
+    func onPlaylistItemEdit(index: UInt) {
+        if index >= self.playlists.count
+        {
+            return
+        }
+        
+        if !canEditPlaylist(at: index)
+        {
+            return
+        }
+        
+        let playlistToEdit = self.playlists[Int(index)]
+        
+        Logging.log(ListsPresenter.self, "Edit user playlist '\(playlistToEdit.name)'")
+        
+        self.delegate?.openCreateListsScreen(with: playlistToEdit)
+    }
+    
     func onPlaylistItemDelete(index: UInt) {
         if index >= self.playlists.count
         {
             return
         }
         
-        if !shouldDeletePlaylistAt(index: index)
+        if !canEditPlaylist(at: index)
         {
             return
         }
@@ -247,8 +265,8 @@ class ListsPresenter: BasePresenter
         delegate?.onUserPlaylistsLoad(audioInfo: audioInfo, dataSource: collectionDataSource)
     }
     
-    private func shouldDeletePlaylistAt(index: UInt) -> Bool {
-        // Do not delete temporary playlists, as they are recently played/added playlists
+    private func canEditPlaylist(at index: UInt) -> Bool {
+        // Do not edit temporary playlists, as they are automatically generated
         return !self.playlists[Int(index)].isTemporary
     }
     

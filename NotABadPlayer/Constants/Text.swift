@@ -41,12 +41,15 @@ enum Text: String {
     
     case AlbumsLibraryChanged = "Device library changed"
     
-    case ListsDeleteButtonName = "Delete"
+    case ListsEditButtonName = "Edit"
     case ListsDoneButtonName = "Done"
     case PlaylistRecentlyPlayed = "Recently Played"
     case PlaylistRecentlyAdded = "Recently Added"
     case PlaylistFavorites = "Favorites"
     case PlaylistCellDescription = "@! tracks"
+    
+    case CreateListDoneForCreateButton = "Create"
+    case CreateListDoneForUpdateButton = "Update"
     
     case PlayerLyricsNotAvailable = "No lyrics"
     

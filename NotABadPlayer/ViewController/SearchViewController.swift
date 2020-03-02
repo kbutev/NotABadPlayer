@@ -168,6 +168,10 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         baseView?.hideLoadingIndicator()
     }
     
+    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
+        
+    }
+    
     func onResetSettingsDefaults() {
         
     }

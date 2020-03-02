@@ -85,12 +85,21 @@ class CreateListsPresenter: BaseCreateListsPresenter {
     
     private var playlistName: String = ""
     
+    private let isEditingPlaylist: Bool
+    
     private var addedTracksTableDataSource: BaseCreateListAddedTracksTableDataSource?
     private var albumsDataSource: BaseCreateListViewAlbumsDataSource?
     
-    init(audioInfo: AudioInfo) {
+    init(audioInfo: AudioInfo, editPlaylist: BaseAudioPlaylist?=nil) {
         self.audioInfo = audioInfo
         self.searchPresenter = SearchPresenter(audioInfo: audioInfo, restoreLastSearch: false)
+        
+        isEditingPlaylist = editPlaylist != nil
+        
+        if let initialPlaylist = editPlaylist {
+            playlistName = initialPlaylist.name
+            addedTracks = initialPlaylist.tracks
+        }
     }
     
     func updateAddedTracksView() {
@@ -141,13 +150,22 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         }
         
         var storagePlaylists = GeneralStorage.shared.getUserPlaylists()
+        var insertIndex = storagePlaylists.endIndex
         
-        for storagePlaylist in storagePlaylists
+        for e in 0..<storagePlaylists.count
         {
+            let storagePlaylist = storagePlaylists[e]
+            
             if playlistName == storagePlaylist.name
             {
-                delegate?.showPlaylistAlreadyExistsError()
-                return
+                if !self.isEditingPlaylist {
+                    delegate?.showPlaylistAlreadyExistsError()
+                    return
+                } else {
+                    storagePlaylists.remove(at: e)
+                    insertIndex = e
+                    break
+                }
             }
         }
         
@@ -157,7 +175,8 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         
         do {
             let result = try node.buildMutable()
-            storagePlaylists.append(result)
+            
+            storagePlaylists.insert(result, at: insertIndex)
         } catch {
             Logging.log(CreateListsPresenter.self, "Failed to save user playlist '\(playlistName)' with \(addedTracks.count) tracks to storage, failed to build playlist")
             delegate?.showPlaylistUnknownError()
@@ -270,6 +289,9 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         self.audioInfoAlbums = audioInfo?.getAlbums() ?? []
         
         self.searchPresenter.start()
+        
+        self.updateAlbumsView()
+        self.updateAddedTracksView()
     }
     
     func fetchData() {
@@ -277,10 +299,6 @@ class CreateListsPresenter: BaseCreateListsPresenter {
     }
     
     func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemClick(index: UInt) {
         
     }
     
@@ -310,6 +328,14 @@ class CreateListsPresenter: BaseCreateListsPresenter {
     
     func onMarkOrUnmarkContextTrackFavorite() -> Bool {
         return false
+    }
+    
+    func onPlaylistItemClick(index: UInt) {
+        
+    }
+    
+    func onPlaylistItemEdit(index: UInt) {
+        
     }
     
     func onPlaylistItemDelete(index: UInt) {
