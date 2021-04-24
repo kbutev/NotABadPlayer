@@ -12,9 +12,9 @@ import UIKit
 class CreateListAddedTracksTableDataSource : NSObject, BaseCreateListAddedTracksTableDataSource
 {
     let audioInfo: AudioInfo
-    let tracks: [BaseAudioTrack]
+    let tracks: [AudioTrackProtocol]
     
-    init(audioInfo: AudioInfo, tracks: [BaseAudioTrack]) {
+    init(audioInfo: AudioInfo, tracks: [AudioTrackProtocol]) {
         self.audioInfo = audioInfo
         self.tracks = tracks
     }
@@ -43,7 +43,7 @@ class CreateListAddedTracksTableDataSource : NSObject, BaseCreateListAddedTracks
         return 1
     }
     
-    func getTrackDescription(track: BaseAudioTrack) -> String {
+    func getTrackDescription(track: AudioTrackProtocol) -> String {
         return track.duration
     }
 }

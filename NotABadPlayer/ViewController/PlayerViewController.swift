@@ -8,18 +8,24 @@
 
 import UIKit
 
-class PlayerViewController: UIViewController, BaseViewDelegate {
+protocol PlayerViewControllerProtocol: BaseView {
+    func updatePlayerScreen(playlist: AudioPlaylistProtocol)
+    
+    func onPlayerErrorEncountered(_ error: Error)
+}
+
+class PlayerViewController: UIViewController, PlayerViewControllerProtocol {
     // If the user has tapped the lyrics this many times, do not display toasts anymore.
     // They will kinda get the idea about clicking on the cover image to see lyrics.
     public static let MAX_COUNT_LYRICS_TAP_TOAST_DISPLAY = 10
     
     private var baseView: PlayerView?
     
-    private let presenter: BasePresenter?
+    private let presenter: PlayerPresenterProtocol?
     
     private var encounteredError: String?
     
-    init(presenter: BasePresenter) {
+    init(presenter: PlayerPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -51,7 +57,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
                 return
             }
             
-            if let trackLyrics = strongSelf.presenter?.contextAudioTrackLyrics() {
+            if let trackLyrics = strongSelf.presenter?.contextAudioTrackLyrics{
                 if !trackLyrics.isEmpty {
                     strongSelf.baseView?.showLyrics(trackLyrics)
                 } else {
@@ -121,70 +127,16 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         QuickPlayerService.shared.detach(observer: self)
     }
     
+    // PlayerViewControllerProtocol
+    
     func goBack() {
         NavigationHelpers.dismissPresentedVC(self)
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
-        
-    }
-    
-    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
-        
-    }
-    
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
-        
-    }
-    
-    func openPlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
+    func updatePlayerScreen(playlist: AudioPlaylistProtocol) {
         let playingTrack = playlist.playingTrack
         
         self.baseView?.updateUIState(player: AudioPlayerService.shared, track: playingTrack, isFavorite: isStorageMarkedFavorite(playingTrack))
-    }
-    
-    func onSearchQueryBegin() {
-        
-    }
-    
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
-        
-    }
-    
-    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
-        
-    }
-    
-    func onResetSettingsDefaults() {
-        
-    }
-    
-    func onThemeSelect(_ value: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSelect(_ value: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onAudioLibraryChanged() {
-        
-    }
-    
-    func onFetchDataErrorEncountered(_ error: Error) {
-        
     }
     
     func onPlayerErrorEncountered(_ error: Error) {
@@ -205,7 +157,7 @@ class PlayerViewController: UIViewController, BaseViewDelegate {
         }
     }
     
-    private func isStorageMarkedFavorite(_ track: BaseAudioTrack) -> Bool {
+    private func isStorageMarkedFavorite(_ track: AudioTrackProtocol) -> Bool {
         return GeneralStorage.shared.favorites.isMarkedFavorite(track)
     }
 }
@@ -215,7 +167,7 @@ extension PlayerViewController : QuickPlayerObserver {
         baseView?.updateSoftUIState(player: AudioPlayerService.shared)
     }
     
-    func updateMediaInfo(track: BaseAudioTrack) {
+    func updateMediaInfo(track: AudioTrackProtocol) {
         let isFavorite = isStorageMarkedFavorite(track)
         self.baseView?.updateUIState(player: AudioPlayerService.shared, track: track, isFavorite: isFavorite)
     }

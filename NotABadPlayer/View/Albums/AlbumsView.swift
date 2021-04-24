@@ -20,20 +20,20 @@ class AlbumsView : UIView
     
     private var flowLayout: AlbumsFlowLayout?
     
-    public var collectionActionDelegate : BaseAlbumsViewActionDelegate?
+    public var collectionActionDelegate : AlbumsViewActionDelegate?
     
-    public var collectionDataSource : BaseAlbumsViewDataSource? {
+    public var collectionDataSource : AlbumsViewDataSource? {
         get {
-            return collectionView.dataSource as? BaseAlbumsViewDataSource
+            return collectionView.dataSource as? AlbumsViewDataSource
         }
         set {
             collectionView.dataSource = newValue
         }
     }
     
-    public var collectionDelegate : BaseAlbumsViewActionDelegate? {
+    public var collectionDelegate : AlbumsViewActionDelegate? {
         get {
-            return collectionView.delegate as? BaseAlbumsViewActionDelegate
+            return collectionView.delegate as? AlbumsViewActionDelegate
         }
         set {
             collectionView.delegate = newValue
@@ -78,7 +78,7 @@ class AlbumsView : UIView
     
     private func initialize() {
         self.quickPlayerView = QuickPlayerView.createAndAttach(to: self)
-        self.collectionActionDelegate = AlbumsViewActionDelegate(view: self)
+        self.collectionActionDelegate = CollectionAlbumsViewActionDelegate(view: self)
         self.collectionIndexerView = CollectionIndexerView()
     }
     
@@ -177,7 +177,7 @@ extension AlbumsView: QuickPlayerObserver {
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    public func updateMediaInfo(track: BaseAudioTrack) {
+    public func updateMediaInfo(track: AudioTrackProtocol) {
         quickPlayerView.updateMediaInfo(track: track)
     }
     
@@ -237,7 +237,7 @@ extension AlbumsView {
 }
 
 // Collection data source
-class AlbumsViewDataSource : NSObject, BaseAlbumsViewDataSource
+class CollectionAlbumsViewDataSource : NSObject, AlbumsViewDataSource
 {
     let audioInfo: AudioInfo
     let albums: [AudioAlbum]
@@ -272,7 +272,7 @@ class AlbumsViewDataSource : NSObject, BaseAlbumsViewDataSource
 }
 
 // Collection delegate
-class AlbumsViewActionDelegate : NSObject, BaseAlbumsViewActionDelegate
+class CollectionAlbumsViewActionDelegate : NSObject, AlbumsViewActionDelegate
 {
     private weak var view: AlbumsView?
     

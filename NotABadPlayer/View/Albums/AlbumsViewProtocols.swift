@@ -8,10 +8,10 @@
 
 import UIKit
 
-protocol BaseAlbumsViewDataSource : UICollectionViewDataSource {
+protocol AlbumsViewDataSource : UICollectionViewDataSource {
     
 }
 
-protocol BaseAlbumsViewActionDelegate : UICollectionViewDelegate {
+protocol AlbumsViewActionDelegate : UICollectionViewDelegate {
     
 }

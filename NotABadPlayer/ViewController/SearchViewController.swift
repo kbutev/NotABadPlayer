@@ -8,10 +8,21 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, BaseViewDelegate {
+protocol SearchViewControllerProtocol: BasePlayingView {
+    func openPlayerScreen(playlist: AudioPlaylistProtocol)
+    func updatePlayerScreen(playlist: AudioPlaylistProtocol)
+    
+    func onSearchQueryBegin()
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt)
+    
+    func onFetchDataErrorEncountered(_ error: Error)
+    func onPlayerErrorEncountered(_ error: Error)
+}
+
+class SearchViewController: UIViewController, SearchViewControllerProtocol {
     private var baseView: SearchView?
     
-    private var presenter: BasePresenter?
+    private var presenter: SearchPresenterProtocol?
     
     private var subViewController: PlaylistViewController?
     private var subViewControllerPlaylistName: String = ""
@@ -19,7 +30,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
     private var searchFieldText: String = ""
     private var searchFilterPickedIndex: Int = 0
     
-    init(presenter: BasePresenter?) {
+    init(presenter: SearchPresenterProtocol?) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -91,13 +102,15 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         QuickPlayerService.shared.detach(observer: self)
     }
     
+    // SearchViewControllerProtocol
+    
     func goBack() {
         self.subViewController?.goBack()
         self.subViewController = nil
         self.subViewControllerPlaylistName = ""
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylistProtocol, options: OpenPlaylistOptions) {
         if self.subViewController != nil
         {
             // Correct playlist is already open? Do nothing
@@ -114,35 +127,23 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist, options: options)
         let vc = PlaylistViewController(presenter: presenter, rootView: self)
         
-        presenter.setView(vc)
+        presenter.delegate = vc
         self.subViewController = vc
         self.subViewControllerPlaylistName = playlist.name
         
         NavigationHelpers.addVCChild(parent: self, child: vc)
     }
     
-    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
-        
-    }
-    
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
-        
-    }
-    
-    func openPlayerScreen(playlist: BaseAudioPlaylist) {
+    func openPlayerScreen(playlist: AudioPlaylistProtocol) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController(presenter: presenter)
         
-        presenter.setView(vc)
+        presenter.delegate = vc
         
         NavigationHelpers.presentVC(current: self, vc: vc)
     }
     
-    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
+    func updatePlayerScreen(playlist: AudioPlaylistProtocol) {
         
     }
     
@@ -154,7 +155,7 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         baseView?.showLoadingIndicator()
     }
     
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt) {
         searchFieldText = query
         searchFilterPickedIndex = filterIndex
         
@@ -168,33 +169,8 @@ class SearchViewController: UIViewController, BaseViewDelegate {
         baseView?.hideLoadingIndicator()
     }
     
-    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
-        
-    }
-    
-    func onResetSettingsDefaults() {
-        
-    }
-    
-    func onThemeSelect(_ value: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSelect(_ value: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onAudioLibraryChanged() {
-        
-    }
-    
     func onFetchDataErrorEncountered(_ error: Error) {
-        // Fetch data again until successful
-        presenter?.fetchData()
+        
     }
     
     func onPlayerErrorEncountered(_ error: Error) {
@@ -211,7 +187,7 @@ extension SearchViewController : QuickPlayerObserver {
         baseView?.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: BaseAudioTrack) {
+    func updateMediaInfo(track: AudioTrackProtocol) {
         baseView?.updateMediaInfo(track: track)
     }
     
@@ -228,8 +204,8 @@ extension SearchViewController : QuickPlayerObserver {
     }
 }
 
-extension SearchViewController : BaseSearchHighlighedChecker, BaseSearchFavoritesChecker {
-    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool {
+extension SearchViewController : SearchHighlighedChecker, SearchFavoritesChecker {
+    func shouldBeHighlighed(item: AudioTrackProtocol) -> Bool {
         if let playlist = AudioPlayerService.shared.playlist {
             return playlist.playingTrack == item
         }
@@ -237,7 +213,7 @@ extension SearchViewController : BaseSearchHighlighedChecker, BaseSearchFavorite
         return false
     }
     
-    func isMarkedFavorite(item: BaseAudioTrack) -> Bool {
+    func isMarkedFavorite(item: AudioTrackProtocol) -> Bool {
         return GeneralStorage.shared.favorites.isMarkedFavorite(item)
     }
 }

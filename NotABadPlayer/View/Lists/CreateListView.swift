@@ -23,7 +23,7 @@ struct CreateListAudioTrack: Equatable
         self.description = description
     }
     
-    public static func createFrom(_ track: BaseAudioTrack) -> CreateListAudioTrack {
+    public static func createFrom(_ track: AudioTrackProtocol) -> CreateListAudioTrack {
         return CreateListAudioTrack(identifier: CreateListAudioTrack.identifier(of: track),
                                     title: track.title,
                                     albumTitle: track.albumTitle,
@@ -34,11 +34,11 @@ struct CreateListAudioTrack: Equatable
         return lhs.identifier == rhs.identifier
     }
     
-    public func equalsToTrack(_ track: BaseAudioTrack) -> Bool {
+    public func equalsToTrack(_ track: AudioTrackProtocol) -> Bool {
         return identifier == CreateListAudioTrack.identifier(of: track)
     }
     
-    public static func identifier(of track: BaseAudioTrack) -> String {
+    public static func identifier(of track: AudioTrackProtocol) -> String {
         return track.filePath.absoluteString
     }
 }
@@ -72,7 +72,7 @@ class CreateListView : UIView
         }
     }
     
-    private var searchTracksTableDelegate : BaseSearchViewActionDelegate? {
+    private var searchTracksTableDelegate : SearchViewActionDelegate? {
         get {
             return searchLayoutView.collectionActionDelegate
         }
@@ -81,7 +81,7 @@ class CreateListView : UIView
         }
     }
     
-    public var searchTracksTableDataSource : BaseSearchViewDataSource? {
+    public var searchTracksTableDataSource : SearchViewDataSource? {
         get {
             return searchLayoutView.collectionDataSource
         }

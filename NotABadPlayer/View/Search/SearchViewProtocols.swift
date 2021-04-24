@@ -8,24 +8,23 @@
 
 import UIKit
 
-protocol BaseSearchViewDataSource : UICollectionViewDataSource
-{
-    var highlightedChecker : BaseSearchHighlighedChecker? { get set }
-    var favoritesChecker : BaseSearchFavoritesChecker? { get set }
+protocol SearchViewDataSource : UICollectionViewDataSource {
+    var highlightedChecker : SearchHighlighedChecker? { get set }
+    var favoritesChecker : SearchFavoritesChecker? { get set }
     
     var animateHighlightedCells : Bool { get set }
     
     func playSelectionAnimation()
 }
 
-protocol BaseSearchViewActionDelegate : UICollectionViewDelegate {
+protocol SearchViewActionDelegate : UICollectionViewDelegate {
     
 }
 
-protocol BaseSearchHighlighedChecker : AnyObject {
-    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool
+protocol SearchHighlighedChecker : AnyObject {
+    func shouldBeHighlighed(item: AudioTrackProtocol) -> Bool
 }
 
-protocol BaseSearchFavoritesChecker : AnyObject {
-    func isMarkedFavorite(item: BaseAudioTrack) -> Bool
+protocol SearchFavoritesChecker : AnyObject {
+    func isMarkedFavorite(item: AudioTrackProtocol) -> Bool
 }

@@ -8,10 +8,23 @@
 
 import UIKit
 
-class ListsViewController: UIViewController, BaseViewDelegate {
+protocol ListsViewControllerProtocol: BaseView {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylistProtocol, options: OpenPlaylistOptions)
+    
+    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?)
+    
+    func openPlayerScreen(playlist: AudioPlaylistProtocol)
+    
+    func openCreateListsScreen(with editPlaylist: AudioPlaylistProtocol?)
+    
+    func onFetchDataErrorEncountered(_ error: Error)
+    func onPlayerErrorEncountered(_ error: Error)
+}
+
+class ListsViewController: UIViewController, ListsViewControllerProtocol {
     private var baseView: ListsView?
     
-    private let presenter: BasePresenter?
+    private let presenter: ListsPresenterProtocol?
     
     private var playlistsDataSource: BaseListsViewDataSource?
     
@@ -22,7 +35,7 @@ class ListsViewController: UIViewController, BaseViewDelegate {
     
     private var isEditingLists: Bool = false
     
-    init(presenter: BasePresenter) {
+    init(presenter: ListsPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -110,13 +123,15 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         QuickPlayerService.shared.detach(observer: self)
     }
     
+    // ListsViewControllerProtocol
+    
     func goBack() {
         self.subViewController?.goBack()
         self.subViewController = nil
         self.subViewControllerPlaylistName = ""
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylistProtocol, options: OpenPlaylistOptions) {
         if self.subViewController != nil
         {
             // Correct playlist is already open? Do nothing
@@ -133,19 +148,11 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         let presenter = PlaylistPresenter(audioInfo: audioInfo, playlist: playlist, options: options)
         let vc = PlaylistViewController(presenter: presenter, rootView: self)
         
-        presenter.setView(vc)
+        presenter.delegate = vc
         self.subViewController = vc
         self.subViewControllerPlaylistName = playlist.name
         
         NavigationHelpers.addVCChild(parent: self, child: vc)
-    }
-    
-    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
-        
     }
     
     func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
@@ -156,28 +163,16 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         self.baseView?.reloadData()
     }
     
-    func openPlayerScreen(playlist: BaseAudioPlaylist) {
+    func openPlayerScreen(playlist: AudioPlaylistProtocol) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController(presenter: presenter)
         
-        presenter.setView(vc)
+        presenter.delegate = vc
         
         NavigationHelpers.presentVC(current: self, vc: vc)
     }
     
-    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func onSearchQueryBegin() {
-        
-    }
-    
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
-        
-    }
-    
-    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
+    func openCreateListsScreen(with editPlaylist: AudioPlaylistProtocol?) {
         guard let audioInfo = self.audioInfo else {
             return
         }
@@ -185,26 +180,6 @@ class ListsViewController: UIViewController, BaseViewDelegate {
         let vc = CreateListsViewController(audioInfo: audioInfo, editPlaylist: editPlaylist)
         
         NavigationHelpers.presentVC(current: self, vc: vc)
-    }
-    
-    func onResetSettingsDefaults() {
-        
-    }
-    
-    func onThemeSelect(_ value: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSelect(_ value: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onAudioLibraryChanged() {
-        
     }
     
     func onFetchDataErrorEncountered(_ error: Error) {
@@ -248,7 +223,7 @@ extension ListsViewController : QuickPlayerObserver {
         baseView?.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: BaseAudioTrack) {
+    func updateMediaInfo(track: AudioTrackProtocol) {
         baseView?.updateMediaInfo(track: track)
     }
     

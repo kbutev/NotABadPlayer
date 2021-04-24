@@ -8,7 +8,28 @@
 
 import Foundation
 
-protocol BaseCreateListsPresenterDelegate: BaseViewDelegate {
+protocol CreateListsPresenterProtocol: BasePresenter {
+    var delegate: CreateListsPresenterDelegate? { get set }
+    
+    func updateAddedTracksView()
+    func updateAlbumsView()
+    
+    func onPlaylistNameChanged(_ name: String)
+    
+    // Flow
+    func onSaveUserPlaylist()
+    
+    // Added tracks operations
+    func isTrackAdded(_ track: AudioTrackProtocol) -> Bool
+    func onAddedTrackClicked(at index: UInt)
+    
+    // Album track operations
+    func openAlbumAt(index: UInt)
+    func onAlbumTrackSelect(fromOpenedAlbumIndex index: UInt)
+    func onAlbumTrackDeselect(withOpenedAlbumIndex index: UInt)
+}
+
+protocol CreateListsPresenterDelegate: BaseView {
     var onOpenedAlbumTrackSelectionCallback: (UInt)->Void { get }
     var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void { get }
     
@@ -29,33 +50,14 @@ protocol BaseCreateListsPresenterDelegate: BaseViewDelegate {
     func showPlaylistUnknownError()
 }
 
-protocol BaseCreateListsPresenter: BasePresenter {
-    func updateAddedTracksView()
-    func updateAlbumsView()
-    
-    func onPlaylistNameChanged(_ name: String)
-    
-    // Flow
-    func onSaveUserPlaylist()
-    
-    // Added tracks operations
-    func isTrackAdded(_ track: BaseAudioTrack) -> Bool
-    func onAddedTrackClicked(at index: UInt)
-    
-    // Album track operations
-    func openAlbumAt(index: UInt)
-    func onAlbumTrackSelect(fromOpenedAlbumIndex index: UInt)
-    func onAlbumTrackDeselect(withOpenedAlbumIndex index: UInt)
-}
-
-class CreateListsPresenter: BaseCreateListsPresenter {
-    private weak var delegate: BaseCreateListsPresenterDelegate?
+class CreateListsPresenter: CreateListsPresenterProtocol {
+    weak var delegate: CreateListsPresenterDelegate?
     
     private let searchPresenter: SearchPresenter
     
     private let audioInfo: AudioInfo!
     private var audioInfoAlbums: [AudioAlbum] = []
-    private var addedTracks: [BaseAudioTrack] = []
+    private var addedTracks: [AudioTrackProtocol] = []
     private var addedTracksAsViewModels: [CreateListAudioTrack] {
         get {
             var result: [CreateListAudioTrack] = []
@@ -69,7 +71,7 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         }
     }
     private var openedAlbum: AudioAlbum?
-    private var openedAlbumTracks: [BaseAudioTrack] = []
+    private var openedAlbumTracks: [AudioTrackProtocol] = []
     private var openedAlbumTracksAsViewModels: [CreateListAudioTrack] {
         get {
             var result: [CreateListAudioTrack] = []
@@ -90,7 +92,7 @@ class CreateListsPresenter: BaseCreateListsPresenter {
     private var addedTracksTableDataSource: BaseCreateListAddedTracksTableDataSource?
     private var albumsDataSource: BaseCreateListViewAlbumsDataSource?
     
-    init(audioInfo: AudioInfo, editPlaylist: BaseAudioPlaylist?=nil) {
+    init(audioInfo: AudioInfo, editPlaylist: AudioPlaylistProtocol?=nil) {
         self.audioInfo = audioInfo
         self.searchPresenter = SearchPresenter(audioInfo: audioInfo, restoreLastSearch: false)
         
@@ -100,6 +102,17 @@ class CreateListsPresenter: BaseCreateListsPresenter {
             playlistName = initialPlaylist.name
             addedTracks = initialPlaylist.tracks
         }
+    }
+    
+    // CreateListsPresenterProtocol
+    
+    func start() {
+        self.audioInfoAlbums = audioInfo?.getAlbums() ?? []
+        
+        self.searchPresenter.start()
+        
+        self.updateAlbumsView()
+        self.updateAddedTracksView()
     }
     
     func updateAddedTracksView() {
@@ -133,8 +146,6 @@ class CreateListsPresenter: BaseCreateListsPresenter {
             self.playlistName = String(name.prefix(CreateListsViewController.PLAYLIST_NAME_LENGTH_LIMIT))
         }
     }
-    
-    // Flow
     
     func onSaveUserPlaylist() {
         if playlistName.count == 0
@@ -192,9 +203,7 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         delegate?.goBack()
     }
     
-    // Added tracks operations
-    
-    func isTrackAdded(_ track: BaseAudioTrack) -> Bool {
+    func isTrackAdded(_ track: AudioTrackProtocol) -> Bool {
         for addedTrack in self.addedTracks
         {
             if track == addedTrack
@@ -230,8 +239,6 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         
         updateAddedTracksView()
     }
-    
-    // Album tracks operations
     
     func openAlbumAt(index: UInt)
     {
@@ -277,71 +284,6 @@ class CreateListsPresenter: BaseCreateListsPresenter {
         updateAddedTracksView()
     }
     
-    // Base presenter
-    
-    func setView(_ delegate: BaseViewDelegate) {
-        self.delegate = delegate as? BaseCreateListsPresenterDelegate
-        
-        self.searchPresenter.setView(delegate)
-    }
-    
-    func start() {
-        self.audioInfoAlbums = audioInfo?.getAlbums() ?? []
-        
-        self.searchPresenter.start()
-        
-        self.updateAlbumsView()
-        self.updateAddedTracksView()
-    }
-    
-    func fetchData() {
-        
-    }
-    
-    func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func onOpenPlayer(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func contextAudioTrackLyrics() -> String? {
-        return nil
-    }
-    
-    func onPlayerButtonClick(input: ApplicationInput) {
-        
-    }
-    
-    func onPlayOrderButtonClick() {
-        
-    }
-    
-    func onQuickOpenPlaylistButtonClick() {
-        
-    }
-    
-    func onPlayerVolumeSet(value: Double) {
-        
-    }
-    
-    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
-        return false
-    }
-    
-    func onPlaylistItemClick(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemEdit(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemDelete(index: UInt) {
-        
-    }
-    
     func onSearchResultClick(index: UInt) {
         let results = searchPresenter.searchResults
         
@@ -368,35 +310,11 @@ class CreateListsPresenter: BaseCreateListsPresenter {
     func onSearchQuery(query: String, filterIndex: Int) {
         self.searchPresenter.onSearchQuery(query: query, filterIndex: filterIndex)
     }
-    
-    func onAppSettingsReset() {
-        
-    }
-    
-    func onAppThemeChange(_ themeValue: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
-        
-    }
-    
-    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
-        
-    }
 }
 
 // Utilities
 extension CreateListsPresenter {
-    private func getAddedTrack(at index: UInt) -> BaseAudioTrack?
+    private func getAddedTrack(at index: UInt) -> AudioTrackProtocol?
     {
         if index < addedTracks.count
         {

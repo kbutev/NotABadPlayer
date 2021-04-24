@@ -8,8 +8,16 @@
 
 import UIKit
 
-class CreateListsViewController: UIViewController {
+protocol CreateListsViewControllerProtocol: BaseView {
+    var searchView: SearchViewControllerProtocol { get }
+}
+
+class CreateListsViewController: UIViewController, CreateListsViewControllerProtocol, SearchViewControllerProtocol, CreateListsPresenterDelegate {
     public static let PLAYLIST_NAME_LENGTH_LIMIT = 16
+    
+    var searchView: SearchViewControllerProtocol {
+        return self
+    }
     
     private var baseView: CreateListView?
     private let presenter: CreateListsPresenter
@@ -20,12 +28,12 @@ class CreateListsViewController: UIViewController {
     var onOpenedAlbumTrackSelectionCallback: (UInt)->Void = {(index) in }
     var onOpenedAlbumTrackDeselectionCallback: (UInt)->Void = {(index) in }
     
-    init(audioInfo: AudioInfo, editPlaylist: BaseAudioPlaylist?) {
+    init(audioInfo: AudioInfo, editPlaylist: AudioPlaylistProtocol?) {
         self.isEditingPlaylist = editPlaylist != nil
         self.editingPlaylistName = editPlaylist?.name ?? ""
         self.presenter = CreateListsPresenter(audioInfo: audioInfo, editPlaylist: editPlaylist)
         super.init(nibName: nil, bundle: nil)
-        self.presenter.setView(self)
+        self.presenter.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -107,6 +115,8 @@ class CreateListsViewController: UIViewController {
         presenter.updateAlbumsView()
     }
     
+    // CreateListsPresenterDelegate
+    
     func updateAddedTracksDataSource(_ dataSource: BaseCreateListAddedTracksTableDataSource?) {
         baseView?.addedTracksTableDataSource = dataSource
         baseView?.reloadAddedTracksData()
@@ -117,7 +127,7 @@ class CreateListsViewController: UIViewController {
         baseView?.reloadAlbumsData()
     }
     
-    func updateSearchTracksDataSource(_ dataSource: BaseSearchViewDataSource?) {
+    func updateSearchTracksDataSource(_ dataSource: SearchViewDataSource?) {
         dataSource?.highlightedChecker = self
         dataSource?.favoritesChecker = self
         dataSource?.animateHighlightedCells = false
@@ -167,69 +177,20 @@ class CreateListsViewController: UIViewController {
                                  withTitle: Text.value(.Error),
                                  withDescription: Text.value(.ErrorUnknown))
     }
-}
-
-// BaseCreateListsPresenterDelegate
-extension CreateListsViewController: BaseCreateListsPresenterDelegate {
+    
+    // CreateListsViewControllerProtocol
+    
     func goBack() {
         NavigationHelpers.dismissPresentedVC(self)
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
+    // SearchViewControllerProtocol
+    
+    func openPlayerScreen(playlist: AudioPlaylistProtocol) {
         
     }
     
-    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
-        
-    }
-    
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
-        
-    }
-    
-    func openPlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func onSearchQueryBegin() {
-        updateSearchTracksDataSource(nil)
-        baseView?.showLoadingIndicator(true)
-    }
-    
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
-        updateSearchTracksDataSource(dataSource)
-        baseView?.showLoadingIndicator(false)
-    }
-    
-    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
-        
-    }
-    
-    func onResetSettingsDefaults() {
-        
-    }
-    
-    func onThemeSelect(_ value: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSelect(_ value: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onAudioLibraryChanged() {
+    func updatePlayerScreen(playlist: AudioPlaylistProtocol) {
         
     }
     
@@ -240,14 +201,28 @@ extension CreateListsViewController: BaseCreateListsPresenterDelegate {
     func onPlayerErrorEncountered(_ error: Error) {
         
     }
+    
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylistProtocol, options: OpenPlaylistOptions) {
+        
+    }
+    
+    func onSearchQueryBegin() {
+        updateSearchTracksDataSource(nil)
+        baseView?.showLoadingIndicator(true)
+    }
+    
+    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: SearchViewDataSource?, resultsCount: UInt) {
+        updateSearchTracksDataSource(dataSource)
+        baseView?.showLoadingIndicator(false)
+    }
 }
 
-extension CreateListsViewController : BaseSearchHighlighedChecker, BaseSearchFavoritesChecker {
-    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool {
+extension CreateListsViewController : SearchHighlighedChecker, SearchFavoritesChecker {
+    func shouldBeHighlighed(item: AudioTrackProtocol) -> Bool {
         return presenter.isTrackAdded(item)
     }
     
-    func isMarkedFavorite(item: BaseAudioTrack) -> Bool {
+    func isMarkedFavorite(item: AudioTrackProtocol) -> Bool {
         return GeneralStorage.shared.favorites.isMarkedFavorite(item)
     }
 }

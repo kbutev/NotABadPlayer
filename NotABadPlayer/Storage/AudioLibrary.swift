@@ -25,12 +25,12 @@ class AudioLibrary : AudioInfo {
     private var albums : [AudioAlbum] = []
     
     private var loadedRecentlyAdded : Bool = false
-    private var recentlyAdded : [BaseAudioTrack] = []
+    private var recentlyAdded : [AudioTrackProtocol] = []
     
     private var audioLibraryChangesListeners : [AudioLibraryChangesListenerReference] = []
     private var audioLibraryChangesUpdatePending: Bool = false
     
-    private var markedFavoriteTracks: [BaseAudioTrack] = []
+    private var markedFavoriteTracks: [AudioTrackProtocol] = []
     private var lastTimeFavoritesUpdated: Date?
     
     init() {
@@ -103,7 +103,7 @@ class AudioLibrary : AudioInfo {
     public func loadRecentlyAddedTracks() {
         let allTracks = MPMediaQuery.songs()
         
-        let tracks: [BaseAudioTrack] = searchForTracks(mediaQuery: allTracks, predicate: nil, cap: AudioLibrary.RECENTLY_ADDED_CAPACITY)
+        let tracks: [AudioTrackProtocol] = searchForTracks(mediaQuery: allTracks, predicate: nil, cap: AudioLibrary.RECENTLY_ADDED_CAPACITY)
         
         let now = Date()
         let minimumDate = Calendar.current.date(
@@ -145,7 +145,7 @@ class AudioLibrary : AudioInfo {
         })
     }
     
-    public func getAlbumTracks(album: AudioAlbum) -> [BaseAudioTrack] {
+    public func getAlbumTracks(album: AudioAlbum) -> [AudioTrackProtocol] {
         let allTracks = MPMediaQuery.songs()
         
         let predicate = MPMediaPropertyPredicate.init(value: album.albumID, forProperty: MPMediaItemPropertyAlbumPersistentID)
@@ -153,7 +153,7 @@ class AudioLibrary : AudioInfo {
         return searchForTracks(mediaQuery: allTracks, predicate: predicate)
     }
     
-    public func searchForTracks(query: String, filter: SearchTracksFilter) -> [BaseAudioTrack] {
+    public func searchForTracks(query: String, filter: SearchTracksFilter) -> [AudioTrackProtocol] {
         if query.count == 0 {
             return []
         }
@@ -176,7 +176,7 @@ class AudioLibrary : AudioInfo {
         return searchForTracks(mediaQuery: allTracks, predicate: predicate)
     }
     
-    public func recentlyAddedTracks() -> [BaseAudioTrack] {
+    public func recentlyAddedTracks() -> [AudioTrackProtocol] {
         loadIfNecessary()
         
         var hasLoadedRecentlyAdded = false
@@ -194,7 +194,7 @@ class AudioLibrary : AudioInfo {
         }
     }
     
-    func favoriteTracks() -> [BaseAudioTrack] {
+    func favoriteTracks() -> [AudioTrackProtocol] {
         loadIfNecessary()
         
         let lastUpdateTime = synchronous.sync {
@@ -221,7 +221,7 @@ class AudioLibrary : AudioInfo {
         return tracks
     }
     
-    private func updateFavoriteTracksIfNecessary() -> [BaseAudioTrack] {
+    private func updateFavoriteTracksIfNecessary() -> [AudioTrackProtocol] {
         let mediaQuery: MPMediaQuery = MPMediaQuery.albums()
         
         guard let result = mediaQuery.items else
@@ -231,8 +231,8 @@ class AudioLibrary : AudioInfo {
         
         let favoriteItems = GeneralStorage.shared.favorites.items
         
-        var tracks: [BaseAudioTrack] = []
-        var items: [(BaseAudioTrack, FavoriteStorageItem)] = []
+        var tracks: [AudioTrackProtocol] = []
+        var items: [(AudioTrackProtocol, FavoriteStorageItem)] = []
         
         let node = AudioTrackBuilder.start()
         
@@ -266,19 +266,19 @@ class AudioLibrary : AudioInfo {
             return a.1.dateFavorited > b.1.dateFavorited
         }
         
-        tracks = items.map({ (track, item) -> BaseAudioTrack in
+        tracks = items.map({ (track, item) -> AudioTrackProtocol in
             return track
         })
         
         return tracks
     }
     
-    public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?) -> [BaseAudioTrack] {
+    public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?) -> [AudioTrackProtocol] {
         return searchForTracks(mediaQuery: mediaQuery, predicate: predicate, cap: AudioLibrary.SEARCH_TRACKS_CAP)
     }
     
-    public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int) -> [BaseAudioTrack] {
-        var tracks: [BaseAudioTrack] = []
+    public func searchForTracks(mediaQuery: MPMediaQuery, predicate: MPMediaPropertyPredicate?, cap: Int) -> [AudioTrackProtocol] {
+        var tracks: [AudioTrackProtocol] = []
         
         if let predicate_ = predicate {
             mediaQuery.addFilterPredicate(predicate_)
@@ -307,11 +307,11 @@ class AudioLibrary : AudioInfo {
         return tracks
     }
     
-    private func buildTrackFromMPItem(_ item: MPMediaItem) -> BaseAudioTrack? {
+    private func buildTrackFromMPItem(_ item: MPMediaItem) -> AudioTrackProtocol? {
         return buildTrackFromMPItem(item, reuseNode: AudioTrackBuilder.start())
     }
     
-    private func buildTrackFromMPItem(_ item: MPMediaItem, reuseNode: BaseAudioTrackBuilderNode) -> BaseAudioTrack? {
+    private func buildTrackFromMPItem(_ item: MPMediaItem, reuseNode: BaseAudioTrackBuilderNode) -> AudioTrackProtocol? {
         var node = reuseNode
         
         guard let identifier = item.value(forProperty: MPMediaItemPropertyPersistentID) as? Int else {

@@ -9,7 +9,7 @@
 import Foundation
 import MediaPlayer
 
-class BaseAudioTrack: Equatable, Codable {
+class AudioTrackProtocol: Equatable, Codable {
     var identifier : Int { get { return 0 } }
     var filePath : URL { get { return URL(fileURLWithPath: "") } }
     var title : String { get { return "" } }
@@ -39,7 +39,7 @@ class BaseAudioTrack: Equatable, Codable {
         }
     }
     
-    static func == (lhs: BaseAudioTrack, rhs: BaseAudioTrack) -> Bool {
+    static func == (lhs: AudioTrackProtocol, rhs: AudioTrackProtocol) -> Bool {
         return lhs.filePath == rhs.filePath
     }
 }

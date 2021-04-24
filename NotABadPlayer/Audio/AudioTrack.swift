@@ -9,7 +9,7 @@
 import Foundation
 import MediaPlayer
 
-class AudioTrack: BaseAudioTrack {
+class AudioTrack: AudioTrackProtocol {
     private var _identifier : Int
     private var _filePath : URL
     private var _title : String
@@ -128,7 +128,7 @@ class AudioTrack: BaseAudioTrack {
         super.init()
     }
     
-    public init(_ prototype: BaseAudioTrack) {
+    public init(_ prototype: AudioTrackProtocol) {
         self._identifier = prototype.identifier
         self._filePath = prototype.filePath
         self._title = prototype.title

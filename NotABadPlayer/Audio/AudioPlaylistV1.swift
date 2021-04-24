@@ -13,7 +13,7 @@ class AudioPlaylistV1 : MutableAudioPlaylist {
         super.init(prototype)
     }
     
-    convenience init(name: String, tracks: [BaseAudioTrack]) throws {
+    convenience init(name: String, tracks: [AudioTrackProtocol]) throws {
         try self.init(name: name,
                       tracks: tracks,
                       startWithTrackIndex: 0,
@@ -22,7 +22,7 @@ class AudioPlaylistV1 : MutableAudioPlaylist {
     }
     
     override init(name: String,
-                  tracks: [BaseAudioTrack],
+                  tracks: [AudioTrackProtocol],
                   startWithTrackIndex: Int,
                   startPlaying: Bool,
                   isTemporary: Bool) throws {
@@ -41,7 +41,7 @@ class AudioPlaylistV1 : MutableAudioPlaylist {
         return lhs.name == rhs.name && lhs.playingTrackPosition == rhs.playingTrackPosition && lhs.tracks == rhs.tracks
     }
     
-    override func equals(_ other: BaseAudioPlaylist) -> Bool {
+    override func equals(_ other: AudioPlaylistProtocol) -> Bool {
         if let other_ = other as? AudioPlaylistV1 {
             return self == other_
         }

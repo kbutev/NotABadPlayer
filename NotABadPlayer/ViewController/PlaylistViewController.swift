@@ -8,15 +8,27 @@
 
 import UIKit
 
-class PlaylistViewController: UIViewController, BaseViewDelegate {
+protocol PlaylistViewControllerProtocol: BaseView {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylistProtocol, options: OpenPlaylistOptions)
+    
+    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?)
+    
+    func openPlayerScreen(playlist: AudioPlaylistProtocol)
+    func updatePlayerScreen(playlist: AudioPlaylistProtocol)
+    
+    func onFetchDataErrorEncountered(_ error: Error)
+    func onPlayerErrorEncountered(_ error: Error)
+}
+
+class PlaylistViewController: UIViewController, PlaylistViewControllerProtocol {
     private var baseView: PlaylistView?
     
-    private let presenter: BasePresenter?
-    private let rootView: BaseViewDelegate?
+    private let presenter: PlaylistPresenterProtocol?
+    private let rootView: BaseView?
     
     private var favoritesChecker: BasePlaylistFavoritesChecker?
     
-    init(presenter: BasePresenter, rootView: BaseViewDelegate) {
+    init(presenter: PlaylistPresenterProtocol, rootView: BaseView) {
         self.presenter = presenter
         self.rootView = rootView
         super.init(nibName: nil, bundle: nil)
@@ -76,6 +88,8 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         QuickPlayerService.shared.detach(observer: self)
     }
     
+    // PlaylistViewControllerProtocol
+    
     func goBack() {
         // This is called by the parent when we call their goBack()
         NavigationHelpers.removeVCChild(self)
@@ -86,13 +100,10 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         rootView?.goBack()
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
+    func openPlaylistScreen(audioInfo: AudioInfo, playlist: AudioPlaylistProtocol, options: OpenPlaylistOptions) {
         // Forward request to delegate
-        rootView?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: options)
-    }
-    
-    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
-        
+        let playlistView = rootView as? BasePlayingView
+        playlistView?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: options)
     }
     
     func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
@@ -109,58 +120,21 @@ class PlaylistViewController: UIViewController, BaseViewDelegate {
         self.baseView?.reloadData()
     }
     
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
-        
-    }
-    
-    func openPlayerScreen(playlist: BaseAudioPlaylist) {
+    func openPlayerScreen(playlist: AudioPlaylistProtocol) {
         let presenter = PlayerPresenter(playlist: playlist)
         let vc = PlayerViewController(presenter: presenter)
         
-        presenter.setView(vc)
+        presenter.delegate = vc
         
         NavigationHelpers.presentVC(current: self, vc: vc)
     }
     
-    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func onSearchQueryBegin() {
-        
-    }
-    
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
-        
-    }
-    
-    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
-        
-    }
-    
-    func onResetSettingsDefaults() {
-        
-    }
-    
-    func onThemeSelect(_ value: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSelect(_ value: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onAudioLibraryChanged() {
+    func updatePlayerScreen(playlist: AudioPlaylistProtocol) {
         
     }
     
     func onFetchDataErrorEncountered(_ error: Error) {
-        // Fetch data again until successful
-        presenter?.fetchData()
+        
     }
     
     func onPlayerErrorEncountered(_ error: Error) {
@@ -177,7 +151,7 @@ extension PlaylistViewController : QuickPlayerObserver {
         baseView?.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: BaseAudioTrack) {
+    func updateMediaInfo(track: AudioTrackProtocol) {
         baseView?.updateMediaInfo(track: track)
     }
     
@@ -195,7 +169,7 @@ extension PlaylistViewController : QuickPlayerObserver {
 }
 
 extension PlaylistViewController : BasePlaylistHighlighedChecker, BasePlaylistFavoritesChecker {
-    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool {
+    func shouldBeHighlighed(item: AudioTrackProtocol) -> Bool {
         if let playlist = AudioPlayerService.shared.playlist {
             return playlist.playingTrack == item
         }
@@ -203,7 +177,7 @@ extension PlaylistViewController : BasePlaylistHighlighedChecker, BasePlaylistFa
         return false
     }
     
-    func isMarkedFavorite(item: BaseAudioTrack) -> Bool {
+    func isMarkedFavorite(item: AudioTrackProtocol) -> Bool {
         return GeneralStorage.shared.favorites.isMarkedFavorite(item)
     }
 }

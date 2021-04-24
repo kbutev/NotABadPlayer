@@ -26,11 +26,11 @@ struct AudioPlayerObserverValue
 
 // Note: Delegation may be performed on a background thread.
 protocol AudioPlayerObserver : class {
-    func onPlayerPlay(current: BaseAudioTrack)
+    func onPlayerPlay(current: AudioTrackProtocol)
     func onPlayerFinish()
     func onPlayerStop()
-    func onPlayerPause(track: BaseAudioTrack)
-    func onPlayerResume(track: BaseAudioTrack)
+    func onPlayerPause(track: AudioTrackProtocol)
+    func onPlayerResume(track: AudioTrackProtocol)
     func onPlayOrderChange(order: AudioPlayOrder)
     func onVolumeChanged(volume: Double)
 }

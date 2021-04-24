@@ -8,75 +8,27 @@
 
 import Foundation
 
-class SettingsPresenter: BasePresenter
-{
-    private weak var delegate: BaseViewDelegate?
+protocol SettingsPresenterProtocol: BasePresenter {
+    var delegate: SettingsViewControllerProtocol? { get set }
+    
+    func onAppSettingsReset()
+    func onAppThemeChange(_ themeValue: AppThemeValue)
+    func onTrackSortingSettingChange(_ trackSorting: TrackSorting)
+    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar)
+    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay)
+    func onKeybindChange(input: ApplicationInput, action: ApplicationAction)
+}
+
+class SettingsPresenter: SettingsPresenterProtocol {
+    weak var delegate: SettingsViewControllerProtocol?
     
     init() {
         
     }
     
-    func setView(_ delegate: BaseViewDelegate) {
-        self.delegate = delegate
-    }
+    // SettingsPresenterProtocol
     
     func start() {
-        
-    }
-    
-    func fetchData() {
-        
-    }
-    
-    func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func onOpenPlayer(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func contextAudioTrackLyrics() -> String? {
-        return nil
-    }
-    
-    func onPlayerButtonClick(input: ApplicationInput) {
-        
-    }
-    
-    func onPlayOrderButtonClick() {
-        
-    }
-    
-    func onQuickOpenPlaylistButtonClick() {
-        
-    }
-    
-    func onPlayerVolumeSet(value: Double) {
-        
-    }
-    
-    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
-        return false
-    }
-    
-    func onPlaylistItemClick(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemEdit(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemDelete(index: UInt) {
-        
-    }
-    
-    func onSearchResultClick(index: UInt) {
-        
-    }
-    
-    func onSearchQuery(query: String, filterIndex: Int) {
         
     }
     

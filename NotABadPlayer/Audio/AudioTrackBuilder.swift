@@ -22,11 +22,11 @@ class AudioTrackBuilder {
         return AudioTrackBuilderNode()
     }
     
-    public static func start(prototype: BaseAudioTrack) -> BaseAudioTrackBuilderNode {
+    public static func start(prototype: AudioTrackProtocol) -> BaseAudioTrackBuilderNode {
         return AudioTrackBuilderNode(prototype: prototype)
     }
     
-    public static func buildLatestVersionFrom(serializedData :String) throws -> BaseAudioTrack {
+    public static func buildLatestVersionFrom(serializedData :String) throws -> AudioTrackProtocol {
         if let result: AudioTrackBuilderLatestVersion = Serializing.jsonDeserialize(fromString: serializedData) {
             return result
         }
@@ -34,7 +34,7 @@ class AudioTrackBuilder {
         throw AudioTrackBuilderError.deserializationFailed("Failed to deserialize given data")
     }
     
-    public static func buildLatestVersionListFrom(serializedData :String) throws -> [BaseAudioTrack] {
+    public static func buildLatestVersionListFrom(serializedData :String) throws -> [AudioTrackProtocol] {
         if let result: [AudioTrackBuilderLatestVersion] = Serializing.jsonDeserialize(fromString: serializedData) {
             return result
         }
@@ -44,7 +44,7 @@ class AudioTrackBuilder {
 }
 
 protocol BaseAudioTrackBuilderNode {
-    func build() throws -> BaseAudioTrack
+    func build() throws -> AudioTrackProtocol
     func reset()
     
     var identifier : Int { get set }
@@ -69,7 +69,7 @@ class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
     static let genericOrigin = AudioTrackBuilderLatestVersion()
     static let genericDate: AudioTrackDateValue = AudioTrackDateValue()
     
-    private var template: BaseAudioTrack
+    private var template: AudioTrackProtocol
     private var track: AudioTrackBuilderLatestVersion
     
     private var _dateAdded: AudioTrackDateValue = AudioTrackBuilderNode.genericDate
@@ -149,13 +149,13 @@ class AudioTrackBuilderNode: BaseAudioTrackBuilderNode {
         reset()
     }
     
-    init(prototype: BaseAudioTrack) {
+    init(prototype: AudioTrackProtocol) {
         template = prototype
         track = AudioTrackBuilderNode.genericOrigin
         reset()
     }
     
-    func build() throws -> BaseAudioTrack {
+    func build() throws -> AudioTrackProtocol {
         let track = self.track
         track.date = AudioTrackDateBuilder.build(_dateAdded, _dateFirstPlayed, _dateLastPlayed)
         return track

@@ -31,15 +31,15 @@ protocol AudioPlayer: AnyObject {
     var volume: Int { get set }
     var audioInfo: AudioInfo { get }
     var hasPlaylist: Bool { get }
-    var playlist: BaseAudioPlaylist? { get }
+    var playlist: AudioPlaylistProtocol? { get }
     var playOrder: AudioPlayOrder { get set }
-    var playingTrack: BaseAudioTrack? { get }
+    var playingTrack: AudioTrackProtocol? { get }
     var isMuted: Bool { get }
     var playerHistory: AudioPlayerHistory { get }
     
     func start(audioInfo: AudioInfo)
-    func play(playlist: BaseAudioPlaylist) throws
-    func playAndPauseImmediately(playlist: BaseAudioPlaylist) throws
+    func play(playlist: AudioPlaylistProtocol) throws
+    func playAndPauseImmediately(playlist: AudioPlaylistProtocol) throws
     
     func resume()
     func pause()

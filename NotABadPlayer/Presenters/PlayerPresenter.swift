@@ -8,19 +8,28 @@
 
 import Foundation
 
-class PlayerPresenter: BasePresenter
-{
-    private weak var delegate: BaseViewDelegate?
+protocol PlayerPresenterProtocol: BasePresenter {
+    var delegate: PlayerViewControllerProtocol? { get set }
     
-    private let playlist: BaseAudioPlaylist
+    var contextAudioTrackLyrics: String? { get }
     
-    required init(playlist: BaseAudioPlaylist) {
+    func onPlayerButtonClick(input: ApplicationInput)
+    func onPlayOrderButtonClick()
+    func onPlayerVolumeSet(value: Double)
+    
+    func onMarkOrUnmarkContextTrackFavorite() -> Bool
+}
+
+class PlayerPresenter: PlayerPresenterProtocol {
+    weak var delegate: PlayerViewControllerProtocol?
+    
+    private let playlist: AudioPlaylistProtocol
+    
+    required init(playlist: AudioPlaylistProtocol) {
         self.playlist = playlist
     }
     
-    func setView(_ delegate: BaseViewDelegate) {
-        self.delegate = delegate
-    }
+    // PlayerPresenterProtocol
     
     func start() {
         let player = AudioPlayerService.shared
@@ -46,19 +55,7 @@ class PlayerPresenter: BasePresenter
         playFirstTime(playlist: self.playlist)
     }
     
-    func fetchData() {
-        
-    }
-    
-    func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func onOpenPlayer(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func contextAudioTrackLyrics() -> String? {
+    var contextAudioTrackLyrics: String? {
         return AudioPlayerService.shared.playingTrack?.lyrics
     }
     
@@ -74,10 +71,6 @@ class PlayerPresenter: BasePresenter
         Logging.log(PlayerPresenter.self, "Change play order")
         
         let _ = Keybinds.shared.performAction(action: .CHANGE_PLAY_ORDER)
-    }
-    
-    func onQuickOpenPlaylistButtonClick() {
-        
     }
     
     func onPlayerVolumeSet(value: Double) {
@@ -101,61 +94,17 @@ class PlayerPresenter: BasePresenter
         return !isFavorite
     }
     
-    func onPlaylistItemClick(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemEdit(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemDelete(index: UInt) {
-        
-    }
-    
-    func onSearchResultClick(index: UInt) {
-        
-    }
-    
-    func onSearchQuery(query: String, filterIndex: Int) {
-        
-    }
-    
-    func onAppSettingsReset() {
-        
-    }
-    
-    func onAppThemeChange(_ themeValue: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
-        
-    }
-    
-    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
-        
-    }
-    
-    private func playContinue(playlist: BaseAudioPlaylist) {
+    private func playContinue(playlist: AudioPlaylistProtocol) {
         Logging.log(PlayerPresenter.self, "Opening player without changing current audio player state")
         
         delegate?.updatePlayerScreen(playlist: playlist)
     }
     
-    private func playFirstTime(playlist: BaseAudioPlaylist) {
+    private func playFirstTime(playlist: AudioPlaylistProtocol) {
         playNew(playlist: playlist)
     }
     
-    private func playNew(playlist: BaseAudioPlaylist) {
+    private func playNew(playlist: AudioPlaylistProtocol) {
         let newPlaylistName = playlist.name
         let newTrack = playlist.playingTrack
         

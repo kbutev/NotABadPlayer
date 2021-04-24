@@ -11,7 +11,7 @@ import UIKit
 protocol BaseListsViewDataSource : UITableViewDataSource {
     var count: Int { get }
     
-    func data(at index: UInt) -> BaseAudioPlaylist
+    func data(at index: UInt) -> AudioPlaylistProtocol
 }
 
 protocol BaseListsViewDelegate : UITableViewDelegate {
@@ -19,7 +19,7 @@ protocol BaseListsViewDelegate : UITableViewDelegate {
 }
 
 protocol BaseCreateListAddedTracksTableDataSource : UITableViewDataSource {
-    func getTrackDescription(track: BaseAudioTrack) -> String
+    func getTrackDescription(track: AudioTrackProtocol) -> String
 }
 
 protocol BaseCreateListAddedTracksActionDelegate : UITableViewDelegate {

@@ -20,9 +20,9 @@ enum AudioPlaylistError: Error {
     case invalidArgument(String)
 }
 
-class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
+class MutableAudioPlaylist: AudioPlaylistProtocol, Codable {
     private var _name: String
-    private var _tracks: [BaseAudioTrack]
+    private var _tracks: [AudioTrackProtocol]
     
     private var _playing: Bool = false
     private var _playingTrackPosition: Int
@@ -33,12 +33,12 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
             return _name
         }
     }
-    public var tracks: [BaseAudioTrack] {
+    public var tracks: [AudioTrackProtocol] {
         get {
             return _tracks
         }
     }
-    public var firstTrack: BaseAudioTrack {
+    public var firstTrack: AudioTrackProtocol {
         get {
             return _tracks[0]
         }
@@ -54,7 +54,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         }
     }
     
-    public var playingTrack: BaseAudioTrack {
+    public var playingTrack: AudioTrackProtocol {
         get {
             return self.tracks[self.playingTrackPosition]
         }
@@ -75,7 +75,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
     }
     
     init(name: String,
-         tracks: [BaseAudioTrack],
+         tracks: [AudioTrackProtocol],
          startWithTrackIndex: Int,
          startPlaying: Bool,
          isTemporary: Bool) throws {
@@ -127,7 +127,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         _temporary = isTemporary
     }
     
-    convenience init(name: String, tracks: [BaseAudioTrack]) throws {
+    convenience init(name: String, tracks: [AudioTrackProtocol]) throws {
         try self.init(name: name,
                       tracks: tracks,
                       startWithTrackIndex: 0,
@@ -149,7 +149,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         return lhs.name == rhs.name && lhs.playingTrackPosition == rhs.playingTrackPosition && lhs.tracks == rhs.tracks
     }
     
-    func equals(_ other: BaseAudioPlaylist) -> Bool {
+    func equals(_ other: AudioPlaylistProtocol) -> Bool {
         if let other_ = other as? MutableAudioPlaylist {
             return self == other_
         }
@@ -181,7 +181,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         return self.tracks.count
     }
     
-    func trackAt(_ index: Int) -> BaseAudioTrack {
+    func trackAt(_ index: Int) -> AudioTrackProtocol {
         return self.tracks[index]
     }
     
@@ -205,7 +205,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         return self.playingTrackPosition + 1 == self.tracks.count
     }
     
-    func hasTrack(_ track: BaseAudioTrack) -> Bool {
+    func hasTrack(_ track: AudioTrackProtocol) -> Bool {
         return self.tracks.index(of: track) != nil
     }
     
@@ -213,7 +213,7 @@ class MutableAudioPlaylist: BaseAudioPlaylist, Codable {
         _playing = true
     }
     
-    func goToTrack(_ track: BaseAudioTrack) {
+    func goToTrack(_ track: AudioTrackProtocol) {
         if let index = _tracks.index(of: track)
         {
             _playing = true

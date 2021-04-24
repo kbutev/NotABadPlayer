@@ -8,14 +8,18 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, BaseViewDelegate {
+protocol SettingsViewControllerProtocol: BaseView {
+    func onFetchDataErrorEncountered(_ error: Error)
+}
+
+class SettingsViewController: UIViewController, SettingsViewControllerProtocol {
     private var baseView: SettingsView?
     
-    private let presenter: BasePresenter?
+    private let presenter: SettingsPresenterProtocol?
     
-    private let rootView: BaseViewDelegate?
+    private let rootView: BaseView?
     
-    init(presenter: BasePresenter, rootView: BaseViewDelegate?) {
+    init(presenter: SettingsPresenterProtocol, rootView: BaseView?) {
         self.presenter = presenter
         self.rootView = rootView
         super.init(nibName: nil, bundle: nil)
@@ -117,72 +121,13 @@ class SettingsViewController: UIViewController, BaseViewDelegate {
         baseView?.selectKeybind(keybind: input, action: storage.getKeybindAction(forInput: input))
     }
     
+    // SettingsViewControllerProtocol
+    
     func goBack() {
         
     }
     
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
-        
-    }
-    
-    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
-        
-    }
-    
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
-        
-    }
-    
-    func openPlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func onSearchQueryBegin() {
-        
-    }
-    
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
-        
-    }
-    
-    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
-        
-    }
-    
-    func onResetSettingsDefaults() {
-        
-    }
-    
-    func onThemeSelect(_ value: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSelect(_ value: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onAudioLibraryChanged() {
-        
-    }
-    
     func onFetchDataErrorEncountered(_ error: Error) {
-        // Fetch data again until successful
-        presenter?.fetchData()
-    }
-    
-    func onPlayerErrorEncountered(_ error: Error) {
         
     }
 }

@@ -8,17 +8,28 @@
 
 import Foundation
 
-class PlaylistPresenter: BasePresenter
-{
-    private weak var delegate: BaseViewDelegate?
+protocol PlaylistPresenterProtocol: BasePresenter {
+    var delegate: PlaylistViewControllerProtocol? { get set }
+    
+    func onOpenPlayer(playlist: AudioPlaylistProtocol)
+    
+    func onPlayerButtonClick(input: ApplicationInput)
+    func onQuickOpenPlaylistButtonClick()
+    func onPlayOrderButtonClick()
+    
+    func onPlaylistItemClick(index: UInt)
+}
+
+class PlaylistPresenter: PlaylistPresenterProtocol {
+    weak var delegate: PlaylistViewControllerProtocol?
     
     private let audioInfo: AudioInfo
-    private let playlist: BaseAudioPlaylist
+    private let playlist: AudioPlaylistProtocol
     private let options: OpenPlaylistOptions
     
     private var collectionDataSource: PlaylistViewDataSource?
     
-    required init(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
+    required init(audioInfo: AudioInfo, playlist: AudioPlaylistProtocol, options: OpenPlaylistOptions) {
         self.audioInfo = audioInfo
         
         // Sort playlist
@@ -30,9 +41,7 @@ class PlaylistPresenter: BasePresenter
         self.options = options
     }
     
-    func setView(_ delegate: BaseViewDelegate) {
-        self.delegate = delegate
-    }
+    // PlaylistPresenterProtocol
     
     func start() {
         guard let delegate = self.delegate else {
@@ -63,22 +72,10 @@ class PlaylistPresenter: BasePresenter
         delegate.onPlaylistSongsLoad(name: playlist.name, dataSource: dataSource, playingTrackIndex: scrollIndex)
     }
     
-    func fetchData() {
-        
-    }
-    
-    func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func onOpenPlayer(playlist: BaseAudioPlaylist) {
+    func onOpenPlayer(playlist: AudioPlaylistProtocol) {
         Logging.log(PlaylistPresenter.self, "Open player screen")
         
         self.delegate?.openPlayerScreen(playlist: playlist)
-    }
-    
-    func contextAudioTrackLyrics() -> String? {
-        return nil
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -108,14 +105,6 @@ class PlaylistPresenter: BasePresenter
         }
     }
     
-    func onPlayerVolumeSet(value: Double) {
-        
-    }
-    
-    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
-        return false
-    }
-    
     func onPlaylistItemClick(index: UInt) {
         if index >= playlist.tracks.count
         {
@@ -134,47 +123,7 @@ class PlaylistPresenter: BasePresenter
         }
     }
     
-    func onPlaylistItemEdit(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemDelete(index: UInt) {
-        
-    }
-    
-    func onSearchResultClick(index: UInt) {
-        
-    }
-    
-    func onSearchQuery(query: String, filterIndex: Int) {
-        
-    }
-    
-    func onAppSettingsReset() {
-        
-    }
-    
-    func onAppThemeChange(_ themeValue: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
-        
-    }
-    
-    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
-        
-    }
-    
-    private func openPlayerScreen(_ track: BaseAudioTrack) {
+    private func openPlayerScreen(_ track: AudioTrackProtocol) {
         guard let delegate = self.delegate else {
             fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
         }
@@ -196,7 +145,7 @@ class PlaylistPresenter: BasePresenter
         }
     }
     
-    private func playNewTrack(_ track: BaseAudioTrack) {
+    private func playNewTrack(_ track: AudioTrackProtocol) {
         let player = AudioPlayerService.shared
         
         var playlistName = self.playlist.name
@@ -211,7 +160,7 @@ class PlaylistPresenter: BasePresenter
             }
         }
         
-        var playlist: BaseAudioPlaylist!
+        var playlist: AudioPlaylistProtocol!
         
         do {
             var node = AudioPlaylistBuilder.start()
@@ -247,11 +196,11 @@ class PlaylistPresenter: BasePresenter
         playFirstTime(playlist: playlist)
     }
     
-    private func playFirstTime(playlist: BaseAudioPlaylist) {
+    private func playFirstTime(playlist: AudioPlaylistProtocol) {
         playNew(playlist: playlist)
     }
     
-    private func playNew(playlist: BaseAudioPlaylist) {
+    private func playNew(playlist: AudioPlaylistProtocol) {
         guard let delegate = self.delegate else {
             fatalError("Delegate is not set for \(String(describing: PlaylistPresenter.self))")
         }

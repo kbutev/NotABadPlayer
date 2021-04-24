@@ -135,7 +135,7 @@ class StandardAudioPlayer : NSObject, AudioPlayer {
         }
     }
     
-    var playlist: BaseAudioPlaylist? {
+    var playlist: AudioPlaylistProtocol? {
         get {
             return self.safeMutablePlaylist?.copy()
         }
@@ -159,7 +159,7 @@ class StandardAudioPlayer : NSObject, AudioPlayer {
         }
     }
     
-    var playingTrack: BaseAudioTrack? {
+    var playingTrack: AudioTrackProtocol? {
         get {
             return self.safeMutablePlaylist?.playingTrack
         }
@@ -210,15 +210,15 @@ class StandardAudioPlayer : NSObject, AudioPlayer {
         GeneralStorage.shared.attach(observer: remote)
     }
     
-    func play(playlist: BaseAudioPlaylist) throws {
+    func play(playlist: AudioPlaylistProtocol) throws {
         try play(playlist: playlist, pauseImmediately: false)
     }
     
-    func playAndPauseImmediately(playlist: BaseAudioPlaylist) throws {
+    func playAndPauseImmediately(playlist: AudioPlaylistProtocol) throws {
         try play(playlist: playlist, pauseImmediately: true)
     }
     
-    private func play(playlist: BaseAudioPlaylist, pauseImmediately: Bool=false) throws {
+    private func play(playlist: AudioPlaylistProtocol, pauseImmediately: Bool=false) throws {
         checkIfPlayerIsInitialized()
         
         var mutablePlaylist: MutableAudioPlaylist? = nil
@@ -245,7 +245,7 @@ class StandardAudioPlayer : NSObject, AudioPlayer {
         }
     }
     
-    private func play(track: BaseAudioTrack, previousTrack: BaseAudioTrack?=nil, pauseImmediately: Bool=false) throws {
+    private func play(track: AudioTrackProtocol, previousTrack: AudioTrackProtocol?=nil, pauseImmediately: Bool=false) throws {
         checkIfPlayerIsInitialized()
         
         let wasPlaying = self.isPlaying
@@ -705,7 +705,7 @@ extension StandardAudioPlayer: AudioPlayerObserving {
         }
     }
     
-    private func onPlay(track: BaseAudioTrack) {
+    private func onPlay(track: AudioTrackProtocol) {
         let observers = synchronous.sync {
             return _observers
         }
@@ -738,7 +738,7 @@ extension StandardAudioPlayer: AudioPlayerObserving {
         }
     }
     
-    private func onResume(track: BaseAudioTrack) {
+    private func onResume(track: AudioTrackProtocol) {
         let observers = synchronous.sync {
             return _observers
         }
@@ -749,7 +749,7 @@ extension StandardAudioPlayer: AudioPlayerObserving {
         }
     }
     
-    private func onPause(track: BaseAudioTrack) {
+    private func onPause(track: AudioTrackProtocol) {
         let observers = synchronous.sync {
             return _observers
         }

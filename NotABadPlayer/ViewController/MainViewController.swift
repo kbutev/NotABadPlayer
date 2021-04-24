@@ -9,7 +9,11 @@
 import UIKit
 import MediaPlayer
 
-class MainViewController : UIViewController, BaseViewDelegate {
+protocol MainViewControllerProtocol: BaseView {
+    
+}
+
+class MainViewController : UIViewController, MainViewControllerProtocol {
     public static let DEFAULT_SELECTED_TAB: TabID = .Albums
     public static let TAB_SIZE = CGSize(width: 0, height: 60.0)
     
@@ -19,9 +23,9 @@ class MainViewController : UIViewController, BaseViewDelegate {
     
     private var _selectedTab: UIViewController?
     
-    private var selectedTab: BaseViewDelegate? {
+    private var selectedTab: BaseView? {
         get {
-            return _selectedTab as? BaseViewDelegate
+            return _selectedTab as? BaseView
         }
     }
     
@@ -38,7 +42,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
         }
     }
     
-    private var tabsCache: [TabID: BaseViewDelegate] = [:]
+    private var tabsCache: [TabID: BaseView] = [:]
     
     override func loadView() {
         self.baseView = MainView.create(owner: self)
@@ -195,7 +199,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
             let presenter = AlbumsPresenter(audioInfo: audioStorage)
             let albumsVC = AlbumsViewController(presenter: presenter)
             self._selectedTab = albumsVC
-            presenter.setView(albumsVC)
+            presenter.delegate = albumsVC
         }
         else
         {
@@ -220,7 +224,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
             let presenter = ListsPresenter(audioInfo: audioStorage)
             let listsVC = ListsViewController(presenter: presenter)
             self._selectedTab = listsVC
-            presenter.setView(listsVC)
+            presenter.delegate = listsVC
         }
         else
         {
@@ -245,7 +249,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
             let presenter = SearchPresenter(audioInfo: audioStorage)
             let searchVC = SearchViewController(presenter: presenter)
             self._selectedTab = searchVC
-            presenter.setView(searchVC)
+            presenter.delegate = searchVC
         }
         else
         {
@@ -270,7 +274,7 @@ class MainViewController : UIViewController, BaseViewDelegate {
             let presenter = SettingsPresenter()
             let settingsVC = SettingsViewController(presenter: presenter, rootView: self)
             self._selectedTab = settingsVC
-            presenter.setView(settingsVC)
+            presenter.delegate = settingsVC
         }
         else
         {
@@ -291,76 +295,14 @@ class MainViewController : UIViewController, BaseViewDelegate {
         tabsCache.removeAll()
     }
     
-    func goBack() {
-        
-    }
-    
-    func openPlaylistScreen(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
-        
-    }
-    
-    func onMediaAlbumsLoad(dataSource: BaseAlbumsViewDataSource?, albumTitles: [String]) {
-        
-    }
-    
-    func onPlaylistSongsLoad(name: String, dataSource: BasePlaylistViewDataSource?, playingTrackIndex: UInt?) {
-        
-    }
-    
-    func onUserPlaylistsLoad(audioInfo: AudioInfo, dataSource: BaseListsViewDataSource?) {
-        
-    }
-    
-    func openPlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func updatePlayerScreen(playlist: BaseAudioPlaylist) {
-        
-    }
-    
-    func onSearchQueryBegin() {
-        
-    }
-    
-    func updateSearchQueryResults(query: String, filterIndex: Int, dataSource: BaseSearchViewDataSource?, resultsCount: UInt) {
-        
-    }
-    
-    func openCreateListsScreen(with editPlaylist: BaseAudioPlaylist?) {
-        
-    }
-    
-    func onResetSettingsDefaults() {
-        
-    }
-    
-    func onThemeSelect(_ value: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSelect(_ value: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSelect(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onAudioLibraryChanged() {
-        
-    }
-    
-    func onFetchDataErrorEncountered(_ error: Error) {
-        
-    }
-    
-    func onPlayerErrorEncountered(_ error: Error) {
-        
-    }
-    
     private func updateAppTheme() {
         AppTheme.shared.setAppearance(theme: GeneralStorage.shared.getAppThemeValue())
+    }
+    
+    // MainViewControllerProtocol
+    
+    func goBack() {
+        
     }
 }
 

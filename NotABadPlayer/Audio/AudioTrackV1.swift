@@ -14,7 +14,7 @@ class AudioTrackV1 : AudioTrack {
         super.init()
     }
     
-    override init(_ prototype: BaseAudioTrack) {
+    override init(_ prototype: AudioTrackProtocol) {
         super.init(prototype)
     }
     

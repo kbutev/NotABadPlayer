@@ -55,7 +55,7 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
         }
     }
     
-    override public var playingTrack: BaseAudioTrack {
+    override public var playingTrack: AudioTrackProtocol {
         get {
             lock()
             let read = self._read
@@ -97,7 +97,7 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
         return read.tracks.count
     }
     
-    override func trackAt(_ index: Int) -> BaseAudioTrack {
+    override func trackAt(_ index: Int) -> AudioTrackProtocol {
         lock()
         let read = self._read
         unlock()
@@ -137,7 +137,7 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
         return read.playingTrackPosition + 1 == read.tracks.count
     }
     
-    override func hasTrack(_ track: BaseAudioTrack) -> Bool {
+    override func hasTrack(_ track: AudioTrackProtocol) -> Bool {
         lock()
         let read = self._read
         unlock()
@@ -152,7 +152,7 @@ class SafeMutableAudioPlaylist: MutableAudioPlaylist {
         self.updateReadPlaylist()
     }
     
-    override func goToTrack(_ track: BaseAudioTrack) {
+    override func goToTrack(_ track: AudioTrackProtocol) {
         lock()
         self._write.goToTrack(track)
         unlock()

@@ -173,7 +173,7 @@ extension ListsView: QuickPlayerObserver {
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    public func updateMediaInfo(track: BaseAudioTrack) {
+    public func updateMediaInfo(track: AudioTrackProtocol) {
         quickPlayerView.updateMediaInfo(track: track)
     }
     
@@ -255,7 +255,7 @@ extension ListsView {
 class ListsViewDataSource : NSObject, BaseListsViewDataSource
 {
     let audioInfo: AudioInfo
-    var playlists: [BaseAudioPlaylist]
+    var playlists: [AudioPlaylistProtocol]
     
     public var count: Int {
         get {
@@ -263,12 +263,12 @@ class ListsViewDataSource : NSObject, BaseListsViewDataSource
         }
     }
     
-    init(audioInfo: AudioInfo, playlists: [BaseAudioPlaylist]) {
+    init(audioInfo: AudioInfo, playlists: [AudioPlaylistProtocol]) {
         self.audioInfo = audioInfo
         self.playlists = playlists
     }
     
-    func data(at index: UInt) -> BaseAudioPlaylist {
+    func data(at index: UInt) -> AudioPlaylistProtocol {
         return playlists[Int(index)]
     }
     
@@ -307,11 +307,11 @@ class ListsViewDataSource : NSObject, BaseListsViewDataSource
         return 1
     }
     
-    func getPlaylistDescription(playlist: BaseAudioPlaylist) -> String {
+    func getPlaylistDescription(playlist: AudioPlaylistProtocol) -> String {
         return Text.value(.PlaylistCellDescription, "\(playlist.tracks.count)")
     }
     
-    func fixedArtCover(for playlist: BaseAudioPlaylist) -> UIImage? {
+    func fixedArtCover(for playlist: AudioPlaylistProtocol) -> UIImage? {
         if !playlist.isTemporary {
             return nil
         }

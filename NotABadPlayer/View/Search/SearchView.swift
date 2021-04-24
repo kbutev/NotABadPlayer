@@ -10,19 +10,19 @@ import UIKit
 
 class SearchView: UIView
 {
-    public var collectionActionDelegate : BaseSearchViewActionDelegate?
+    public var collectionActionDelegate : SearchViewActionDelegate?
     
-    public var collectionDataSource : BaseSearchViewDataSource? {
+    public var collectionDataSource : SearchViewDataSource? {
         get { return searchBaseView.collectionDataSource }
         set { searchBaseView.collectionDataSource = newValue }
     }
     
-    public var highlightedChecker : BaseSearchHighlighedChecker? {
+    public var highlightedChecker : SearchHighlighedChecker? {
         get { return searchBaseView.highlightedChecker }
         set { searchBaseView.highlightedChecker = newValue }
     }
     
-    public var favoritesChecker : BaseSearchFavoritesChecker? {
+    public var favoritesChecker : SearchFavoritesChecker? {
         get { return searchBaseView.favoritesChecker }
         set { searchBaseView.favoritesChecker = newValue }
     }
@@ -145,7 +145,7 @@ extension SearchView: QuickPlayerObserver {
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    public func updateMediaInfo(track: BaseAudioTrack) {
+    public func updateMediaInfo(track: AudioTrackProtocol) {
         quickPlayerView.updateMediaInfo(track: track)
         
         self.searchBaseView.reloadData()

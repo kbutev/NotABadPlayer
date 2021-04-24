@@ -78,7 +78,7 @@ class CreateListPickAlbumTracksDataSource : NSObject, BaseCreateListViewAlbumsDa
         return 1
     }
     
-    func getTrackDescription(track: BaseAudioTrack) -> String {
+    func getTrackDescription(track: AudioTrackProtocol) -> String {
         return track.duration
     }
     

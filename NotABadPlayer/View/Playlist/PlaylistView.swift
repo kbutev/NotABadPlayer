@@ -219,7 +219,7 @@ extension PlaylistView: QuickPlayerObserver {
         quickPlayerView.updateTime(currentTime: currentTime, totalDuration: totalDuration)
     }
     
-    func updateMediaInfo(track: BaseAudioTrack) {
+    func updateMediaInfo(track: AudioTrackProtocol) {
         quickPlayerView.updateMediaInfo(track: track)
         
         reloadData()
@@ -273,14 +273,14 @@ class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
     var animateHighlightedCells: Bool = true
     
     private let audioInfo: AudioInfo
-    private let playlist: BaseAudioPlaylist
+    private let playlist: AudioPlaylistProtocol
     private let options: OpenPlaylistOptions
     
     private(set) var headerSize: CGSize = .zero
     
     private var playSelectionAnimationNextTime: Bool = false
     
-    init(audioInfo: AudioInfo, playlist: BaseAudioPlaylist, options: OpenPlaylistOptions) {
+    init(audioInfo: AudioInfo, playlist: AudioPlaylistProtocol, options: OpenPlaylistOptions) {
         self.audioInfo = audioInfo
         self.playlist = playlist
         self.options = options

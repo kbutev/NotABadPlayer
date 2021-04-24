@@ -14,19 +14,19 @@ enum AudioPlaylistBuilderError: Error {
 }
 
 class AudioPlaylistBuilder {
-    public static func start() -> BaseAudioPlaylistBuilderNode {
+    public static func start() -> AudioPlaylistBuilderNodeProtocol {
         return AudioPlaylistBuilderNode()
     }
     
-    public static func start(prototype: BaseAudioPlaylist) -> BaseAudioPlaylistBuilderNode {
+    public static func start(prototype: AudioPlaylistProtocol) -> AudioPlaylistBuilderNodeProtocol {
         return AudioPlaylistBuilderNode(prototype: prototype)
     }
     
-    public static func buildMutableFromImmutable(prototype: BaseAudioPlaylist) throws -> MutableAudioPlaylist {
+    public static func buildMutableFromImmutable(prototype: AudioPlaylistProtocol) throws -> MutableAudioPlaylist {
         return try AudioPlaylistBuilderNode(prototype: prototype).buildMutable()
     }
     
-    public static func buildLatestVersionFrom(serializedData: String) throws -> BaseAudioPlaylist {
+    public static func buildLatestVersionFrom(serializedData: String) throws -> AudioPlaylistProtocol {
         return try buildLatestMutableVersionFrom(serializedData: serializedData)
     }
     
@@ -38,7 +38,7 @@ class AudioPlaylistBuilder {
         throw AudioPlaylistBuilderError.deserializationFailed("Failed to deserialize given data")
     }
     
-    public static func buildLatestVersionListFrom(serializedData: String) throws -> [BaseAudioPlaylist] {
+    public static func buildLatestVersionListFrom(serializedData: String) throws -> [AudioPlaylistProtocol] {
         if let result: [AudioPlaylistV1] = Serializing.jsonDeserialize(fromString: serializedData) {
             return result
         }
@@ -55,25 +55,25 @@ class AudioPlaylistBuilder {
     }
 }
 
-protocol BaseAudioPlaylistBuilderNode {
-    func build() throws -> BaseAudioPlaylist
+protocol AudioPlaylistBuilderNodeProtocol {
+    func build() throws -> AudioPlaylistProtocol
     func buildMutable() throws -> MutableAudioPlaylist
     
     var name: String { get set }
-    var tracks: [BaseAudioTrack] { get set }
-    var playingTrack: BaseAudioTrack? { get set }
+    var tracks: [AudioTrackProtocol] { get set }
+    var playingTrack: AudioTrackProtocol? { get set }
     var playingTrackIndex: Int { get set }
     var isTemporary: Bool { get set }
 }
 
-class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
+class AudioPlaylistBuilderNode: AudioPlaylistBuilderNodeProtocol {
     var name: String = ""
-    var tracks: [BaseAudioTrack] = []
+    var tracks: [AudioTrackProtocol] = []
     var playingTrackIndex: Int = 0
     var isPlaying: Bool = false
     var isTemporary: Bool = false
     
-    var playingTrack: BaseAudioTrack? {
+    var playingTrack: AudioTrackProtocol? {
         get {
             if playingTrackIndex >= 0 && playingTrackIndex < tracks.count
             {
@@ -95,7 +95,7 @@ class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
         
     }
     
-    init(prototype: BaseAudioPlaylist) {
+    init(prototype: AudioPlaylistProtocol) {
         name = prototype.name
         tracks = prototype.tracks
         playingTrackIndex = prototype.playingTrackPosition
@@ -103,7 +103,7 @@ class AudioPlaylistBuilderNode: BaseAudioPlaylistBuilderNode {
         isTemporary = prototype.isTemporary
     }
     
-    func build() throws -> BaseAudioPlaylist {
+    func build() throws -> AudioPlaylistProtocol {
         return try buildMutable()
     }
     

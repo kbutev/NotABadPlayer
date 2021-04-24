@@ -8,17 +8,32 @@
 
 import Foundation
 
+protocol ListsPresenterProtocol: BasePresenter {
+    var delegate: ListsViewControllerProtocol? { get }
+    
+    func fetchData()
+    
+    func onOpenPlayer(playlist: AudioPlaylistProtocol)
+    
+    func onPlaylistItemClick(index: UInt)
+    func onPlaylistItemEdit(index: UInt)
+    func onPlaylistItemDelete(index: UInt)
+    
+    func onPlayerButtonClick(input: ApplicationInput)
+    func onPlayOrderButtonClick()
+    func onQuickOpenPlaylistButtonClick()
+}
+
 enum ListsPresenterError: Error {
     case failedToBuildMutableList(String)
 }
 
-class ListsPresenter: BasePresenter
-{
-    private weak var delegate: BaseViewDelegate?
+class ListsPresenter: ListsPresenterProtocol {
+    weak var delegate: ListsViewControllerProtocol?
     
     private let audioInfo: AudioInfo
     
-    private var playlists: [BaseAudioPlaylist] = []
+    private var playlists: [AudioPlaylistProtocol] = []
     
     private var collectionDataSource: BaseListsViewDataSource?
     
@@ -28,9 +43,7 @@ class ListsPresenter: BasePresenter
         self.audioInfo = audioInfo
     }
     
-    func setView(_ delegate: BaseViewDelegate) {
-        self.delegate = delegate
-    }
+    // ListsPresenterProtocol
     
     func start() {
         fetchData()
@@ -114,18 +127,10 @@ class ListsPresenter: BasePresenter
         }
     }
     
-    func onAlbumClick(index: UInt) {
-        
-    }
-    
-    func onOpenPlayer(playlist: BaseAudioPlaylist) {
+    func onOpenPlayer(playlist: AudioPlaylistProtocol) {
         Logging.log(ListsPresenter.self, "Open player screen")
         
         self.delegate?.openPlayerScreen(playlist: playlist)
-    }
-    
-    func contextAudioTrackLyrics() -> String? {
-        return nil
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -155,16 +160,7 @@ class ListsPresenter: BasePresenter
         }
     }
     
-    func onPlayerVolumeSet(value: Double) {
-        
-    }
-    
-    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
-        return false
-    }
-    
     func onPlaylistItemClick(index: UInt) {
-        
         if index >= self.playlists.count
         {
             return
@@ -227,38 +223,6 @@ class ListsPresenter: BasePresenter
         updateDataSource()
     }
     
-    func onSearchResultClick(index: UInt) {
-        
-    }
-    
-    func onSearchQuery(query: String, filterIndex: Int) {
-        
-    }
-    
-    func onAppSettingsReset() {
-        
-    }
-    
-    func onAppThemeChange(_ themeValue: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
-        
-    }
-    
-    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
-        
-    }
-    
     private func updateDataSource() {
         self.collectionDataSource = ListsViewDataSource(audioInfo: audioInfo, playlists: playlists)
         
@@ -290,7 +254,7 @@ class ListsPresenter: BasePresenter
         return playlists
     }
     
-    private func getAppropriateOptions(for playlist: BaseAudioPlaylist) -> OpenPlaylistOptions {
+    private func getAppropriateOptions(for playlist: AudioPlaylistProtocol) -> OpenPlaylistOptions {
         if !playlist.isTemporary {
             return OpenPlaylistOptions.buildDefault()
         }

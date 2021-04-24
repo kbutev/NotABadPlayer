@@ -22,9 +22,9 @@ protocol BasePlaylistViewActionDelegate : AnyObject, UICollectionViewDelegate {
 }
 
 protocol BasePlaylistHighlighedChecker : AnyObject {
-    func shouldBeHighlighed(item: BaseAudioTrack) -> Bool
+    func shouldBeHighlighed(item: AudioTrackProtocol) -> Bool
 }
 
 protocol BasePlaylistFavoritesChecker : AnyObject {
-    func isMarkedFavorite(item: BaseAudioTrack) -> Bool
+    func isMarkedFavorite(item: AudioTrackProtocol) -> Bool
 }

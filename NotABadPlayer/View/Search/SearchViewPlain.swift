@@ -23,34 +23,34 @@ class SearchViewPlain: UIView
     
     private var initialized: Bool = false
     
-    private var flowLayout: SearchFlowLayout?
+    private var flowLayout: UICollectionViewFlowLayout?
     
-    public var collectionActionDelegate : BaseSearchViewActionDelegate?
+    public var collectionActionDelegate : SearchViewActionDelegate?
     
-    public var collectionDataSource : BaseSearchViewDataSource? {
+    public var collectionDataSource : SearchViewDataSource? {
         get {
-            return collectionView.dataSource as? BaseSearchViewDataSource
+            return collectionView.dataSource as? SearchViewDataSource
         }
         set {
             collectionView.dataSource = newValue
         }
     }
     
-    public var highlightedChecker : BaseSearchHighlighedChecker? {
+    public var highlightedChecker : SearchHighlighedChecker? {
         get {
-            return (collectionView.dataSource as? BaseSearchViewDataSource)?.highlightedChecker
+            return (collectionView.dataSource as? SearchViewDataSource)?.highlightedChecker
         }
         set {
-            (collectionView.dataSource as? BaseSearchViewDataSource)?.highlightedChecker = newValue
+            (collectionView.dataSource as? SearchViewDataSource)?.highlightedChecker = newValue
         }
     }
     
-    public var favoritesChecker : BaseSearchFavoritesChecker? {
+    public var favoritesChecker : SearchFavoritesChecker? {
         get {
-            return (collectionView.dataSource as? BaseSearchViewDataSource)?.favoritesChecker
+            return (collectionView.dataSource as? SearchViewDataSource)?.favoritesChecker
         }
         set {
-            (collectionView.dataSource as? BaseSearchViewDataSource)?.favoritesChecker = newValue
+            (collectionView.dataSource as? SearchViewDataSource)?.favoritesChecker = newValue
         }
     }
     
@@ -76,7 +76,7 @@ class SearchViewPlain: UIView
     }
     
     private func initialize() {
-        self.collectionActionDelegate = SearchViewActionDelegate(view: self)
+        self.collectionActionDelegate = CollectionSearchViewActionDelegate(view: self)
     }
     
     override func awakeFromNib() {
@@ -114,7 +114,7 @@ class SearchViewPlain: UIView
         let cellNib = UINib(nibName: String(describing: SearchItemCell.self), bundle: nil)
         collectionView.register(cellNib, forCellWithReuseIdentifier: SearchItemCell.CELL_IDENTIFIER)
         
-        flowLayout = SearchFlowLayout()
+        flowLayout = CollectionSearchFlowLayout()
         
         collectionView.collectionViewLayout = flowLayout!
         
@@ -254,19 +254,19 @@ extension SearchViewPlain {
 }
 
 // Collection data source
-class SearchViewDataSource : NSObject, BaseSearchViewDataSource
+class CollectionSearchViewDataSource : NSObject, SearchViewDataSource
 {
-    public weak var highlightedChecker : BaseSearchHighlighedChecker?
-    public weak var favoritesChecker : BaseSearchFavoritesChecker?
+    public weak var highlightedChecker : SearchHighlighedChecker?
+    public weak var favoritesChecker : SearchFavoritesChecker?
     
     var animateHighlightedCells: Bool = true
     
     let audioInfo: AudioInfo
-    let searchResults: [BaseAudioTrack]
+    let searchResults: [AudioTrackProtocol]
     
     private var playSelectionAnimationNextTime: Bool = false
     
-    init(audioInfo: AudioInfo, searchResults: [BaseAudioTrack]) {
+    init(audioInfo: AudioInfo, searchResults: [AudioTrackProtocol]) {
         self.audioInfo = audioInfo
         self.searchResults = searchResults
     }
@@ -341,7 +341,7 @@ class SearchViewDataSource : NSObject, BaseSearchViewDataSource
 }
 
 // Collection delegate
-class SearchViewActionDelegate : NSObject, BaseSearchViewActionDelegate
+class CollectionSearchViewActionDelegate : NSObject, SearchViewActionDelegate
 {
     private weak var view: SearchViewPlain?
     
@@ -356,7 +356,7 @@ class SearchViewActionDelegate : NSObject, BaseSearchViewActionDelegate
 }
 
 // Collection flow layout
-class SearchFlowLayout : UICollectionViewFlowLayout
+class CollectionSearchFlowLayout : UICollectionViewFlowLayout
 {
     init(minimumInteritemSpacing: CGFloat = 1, minimumLineSpacing: CGFloat = 1, sectionInset: UIEdgeInsets = .zero) {
         super.init()

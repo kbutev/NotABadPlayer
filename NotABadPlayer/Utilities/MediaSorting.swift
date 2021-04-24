@@ -9,7 +9,7 @@
 import Foundation
 
 struct MediaSorting {
-    public static func sortTracks(_ tracks:[BaseAudioTrack], sorting: TrackSorting) -> [BaseAudioTrack] {
+    public static func sortTracks(_ tracks:[AudioTrackProtocol], sorting: TrackSorting) -> [AudioTrackProtocol] {
         switch sorting
         {
         case .NONE:
@@ -25,7 +25,7 @@ struct MediaSorting {
         }
     }
     
-    public static func sortTracksByTrackNumber(_ tracks:[BaseAudioTrack]) -> [BaseAudioTrack] {
+    public static func sortTracksByTrackNumber(_ tracks:[AudioTrackProtocol]) -> [AudioTrackProtocol] {
         var result = tracks
         
         result.sort(by: {(trackA, trackB) -> Bool in
@@ -37,7 +37,7 @@ struct MediaSorting {
         return result
     }
     
-    public static func sortTracksByTitle(_ tracks:[BaseAudioTrack]) -> [BaseAudioTrack] {
+    public static func sortTracksByTitle(_ tracks:[AudioTrackProtocol]) -> [AudioTrackProtocol] {
         var result = tracks
         
         result.sort(by: {(trackA, trackB) -> Bool in
@@ -47,7 +47,7 @@ struct MediaSorting {
         return result
     }
     
-    public static func sortTracksByLength(_ tracks:[BaseAudioTrack], longest: Bool=true) -> [BaseAudioTrack] {
+    public static func sortTracksByLength(_ tracks:[AudioTrackProtocol], longest: Bool=true) -> [AudioTrackProtocol] {
         var result = tracks
         
         if longest {

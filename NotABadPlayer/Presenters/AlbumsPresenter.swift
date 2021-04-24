@@ -8,6 +8,21 @@
 
 import Foundation
 
+protocol AlbumsPresenterProtocol: BasePresenter {
+    var delegate: AlbumsViewControllerProtocol? { get }
+    
+    func fetchData()
+    
+    func onAlbumClick(index: UInt)
+    
+    func onOpenPlayer(playlist: AudioPlaylistProtocol)
+    
+    func onPlayerButtonClick(input: ApplicationInput)
+    func onPlayOrderButtonClick()
+    
+    func onQuickOpenPlaylistButtonClick()
+}
+
 public enum AlbumsPresenterError: Error {
     case AlbumDoesNotExist
 }
@@ -21,9 +36,8 @@ extension AlbumsPresenterError: LocalizedError {
     }
 }
 
-class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
-{
-    private weak var delegate: BaseViewDelegate?
+class AlbumsPresenter: AlbumsPresenterProtocol {
+    weak var delegate: AlbumsViewControllerProtocol?
     
     private let audioInfo: AudioInfo
     private var albums: [AudioAlbum] = []
@@ -40,9 +54,7 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
          self.audioInfo.unregisterLibraryChangesListener(self)
     }
     
-    func setView(_ delegate: BaseViewDelegate) {
-        self.delegate = delegate
-    }
+    // AlbumsPresenterProtocol
     
     func start() {
         guard self.delegate != nil else {
@@ -70,7 +82,7 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
             
             let albums = audioInfo.getAlbums()
             
-            let dataSource = AlbumsViewDataSource(audioInfo: audioInfo, albums: albums)
+            let dataSource = CollectionAlbumsViewDataSource(audioInfo: audioInfo, albums: albums)
             
             var albumTitles: [String] = []
             
@@ -111,14 +123,10 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
         }
     }
     
-    func onOpenPlayer(playlist: BaseAudioPlaylist) {
+    func onOpenPlayer(playlist: AudioPlaylistProtocol) {
         Logging.log(AlbumsPresenter.self, "Open player screen")
         
         self.delegate?.openPlayerScreen(playlist: playlist)
-    }
-    
-    func contextAudioTrackLyrics() -> String? {
-        return nil
     }
     
     func onPlayerButtonClick(input: ApplicationInput) {
@@ -150,61 +158,10 @@ class AlbumsPresenter: BasePresenter, AudioLibraryChangesListener
         
         delegate?.openPlaylistScreen(audioInfo: audioInfo, playlist: playlist, options: OpenPlaylistOptions.buildDefault())
     }
-    
-    func onPlayerVolumeSet(value: Double) {
-        
-    }
-    
-    func onMarkOrUnmarkContextTrackFavorite() -> Bool {
-        return false
-    }
-    
-    func onPlaylistItemClick(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemEdit(index: UInt) {
-        
-    }
-    
-    func onPlaylistItemDelete(index: UInt) {
-        
-    }
-    
-    func onSearchResultClick(index: UInt) {
-        
-    }
-    
-    func onSearchQuery(query: String, filterIndex: Int) {
-        
-    }
-    
-    func onAppSettingsReset() {
-        
-    }
-    
-    func onAppThemeChange(_ themeValue: AppThemeValue) {
-        
-    }
-    
-    func onTrackSortingSettingChange(_ trackSorting: TrackSorting) {
-        
-    }
-    
-    func onShowVolumeBarSettingChange(_ value: ShowVolumeBar) {
-        
-    }
-    
-    func onOpenPlayerOnPlaySettingChange(_ value: OpenPlayerOnPlay) {
-        
-    }
-    
-    func onKeybindChange(input: ApplicationInput, action: ApplicationAction) {
-        
-    }
-    
-    // # AudioLibraryChangesListener
-    
+}
+
+// # AudioLibraryChangesListener
+extension AlbumsPresenter: AudioLibraryChangesListener {
     func onMediaLibraryChanged() {
         Logging.log(AlbumsPresenter.self, "Audio library changed in the background")
         

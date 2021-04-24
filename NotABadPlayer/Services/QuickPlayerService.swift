@@ -27,7 +27,7 @@ struct QuickPlayerObserverValue
 // Note: All observer delegation is performed on the main thread.
 protocol QuickPlayerObserver : class {
     func updateTime(currentTime: Double, totalDuration: Double)
-    func updateMediaInfo(track: BaseAudioTrack)
+    func updateMediaInfo(track: AudioTrackProtocol)
     func updatePlayButtonState(isPlaying: Bool)
     func updatePlayOrderButtonState(order: AudioPlayOrder)
     func onVolumeChanged(volume: Double)
@@ -159,7 +159,7 @@ extension QuickPlayerService : LooperClient {
 }
 
 extension QuickPlayerService : AudioPlayerObserver {
-    func onPlayerPlay(current: BaseAudioTrack) {
+    func onPlayerPlay(current: AudioTrackProtocol) {
         weak var weakSelf = self
         
         let observers = self.observersCopy
@@ -197,7 +197,7 @@ extension QuickPlayerService : AudioPlayerObserver {
         }
     }
     
-    func onPlayerPause(track: BaseAudioTrack) {
+    func onPlayerPause(track: AudioTrackProtocol) {
         let observers = self.observersCopy
         
         performOnMain {
@@ -208,7 +208,7 @@ extension QuickPlayerService : AudioPlayerObserver {
         }
     }
     
-    func onPlayerResume(track: BaseAudioTrack) {
+    func onPlayerResume(track: AudioTrackProtocol) {
         let observers = self.observersCopy
         
         performOnMain {

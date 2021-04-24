@@ -1,5 +1,5 @@
 //
-//  BaseAudioPlaylist.swift
+//  AudioPlaylistProtocol.swift
 //  NotABadPlayer
 //
 //  Created by Kristiyan Butev on 1.12.19.
@@ -10,23 +10,23 @@ import Foundation
 
 // Describes a playlist model.
 // Thread safe: no
-protocol BaseAudioPlaylist {
+protocol AudioPlaylistProtocol {
     var name: String { get }
-    var tracks: [BaseAudioTrack] { get }
-    var firstTrack: BaseAudioTrack { get }
+    var tracks: [AudioTrackProtocol] { get }
+    var firstTrack: AudioTrackProtocol { get }
     var isPlaying: Bool { get }
     var playingTrackPosition: Int { get }
-    var playingTrack: BaseAudioTrack { get }
+    var playingTrack: AudioTrackProtocol { get }
     var isTemporary: Bool { get }
     
-    func equals(_ other: BaseAudioPlaylist) -> Bool
+    func equals(_ other: AudioPlaylistProtocol) -> Bool
     
     func sortedPlaylist(withSorting sorting: TrackSorting) -> MutableAudioPlaylist
     func isAlbumPlaylist() -> Bool
     func size() -> Int
-    func trackAt(_ index: Int) -> BaseAudioTrack
+    func trackAt(_ index: Int) -> AudioTrackProtocol
     func getAlbum(audioInfo: AudioInfo) -> AudioAlbum?
     func isPlayingFirstTrack() -> Bool
     func isPlayingLastTrack() -> Bool
-    func hasTrack(_ track: BaseAudioTrack) -> Bool
+    func hasTrack(_ track: AudioTrackProtocol) -> Bool
 }

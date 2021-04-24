@@ -49,11 +49,11 @@ class FavoritesStorage {
         self.storage = storage
     }
     
-    func isMarkedFavorite(_ track: BaseAudioTrack) -> Bool {
+    func isMarkedFavorite(_ track: AudioTrackProtocol) -> Bool {
         return markedFavoriteItem(for: track) != nil
     }
     
-    func markedFavoriteItem(for track: BaseAudioTrack) -> FavoriteStorageItem? {
+    func markedFavoriteItem(for track: AudioTrackProtocol) -> FavoriteStorageItem? {
         updateLocalStorageIfNecessary()
         
         let item = FavoriteStorageItem(track)
@@ -66,17 +66,17 @@ class FavoritesStorage {
     }
     
     @discardableResult
-    func markFavoriteForced(track: BaseAudioTrack) -> FavoriteStorageItem {
+    func markFavoriteForced(track: AudioTrackProtocol) -> FavoriteStorageItem {
         return try! markFavorite(track: track, forced: true)
     }
     
     @discardableResult
-    func markFavorite(track: BaseAudioTrack) throws -> FavoriteStorageItem {
+    func markFavorite(track: AudioTrackProtocol) throws -> FavoriteStorageItem {
         return try markFavorite(track: track, forced: false)
     }
     
     @discardableResult
-    func markFavorite(track: BaseAudioTrack, forced: Bool) throws -> FavoriteStorageItem {
+    func markFavorite(track: AudioTrackProtocol, forced: Bool) throws -> FavoriteStorageItem {
         updateLocalStorageIfNecessary()
         
         if let already = markedFavoriteItem(for: track) {
@@ -105,7 +105,7 @@ class FavoritesStorage {
         return item
     }
     
-    func unmarkFavorite(track: BaseAudioTrack) {
+    func unmarkFavorite(track: AudioTrackProtocol) {
         updateLocalStorageIfNecessary()
         
         guard let item = markedFavoriteItem(for: track) else {
@@ -183,7 +183,7 @@ struct FavoriteStorageItem: Codable, Equatable {
     let dateFavorited: Date
     let trackPath: URL
     
-    init(_ track: BaseAudioTrack, dateFavorited: Date=Date()) {
+    init(_ track: AudioTrackProtocol, dateFavorited: Date=Date()) {
         self.trackPath = track.filePath
         self.identifier = trackPath.absoluteString
         self.dateFavorited = dateFavorited
