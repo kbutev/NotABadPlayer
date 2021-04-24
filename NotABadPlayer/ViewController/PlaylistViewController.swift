@@ -21,7 +21,9 @@ protocol PlaylistViewControllerProtocol: BaseView {
 }
 
 class PlaylistViewController: UIViewController, PlaylistViewControllerProtocol {
-    private var baseView: PlaylistView?
+    var baseView: PlaylistView? {
+        return self.view as? PlaylistView
+    }
     
     private let presenter: PlaylistPresenterProtocol?
     private let rootView: BaseView?
@@ -35,14 +37,7 @@ class PlaylistViewController: UIViewController, PlaylistViewControllerProtocol {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.presenter = nil
-        self.rootView = nil
-        super.init(coder: aDecoder)
-    }
-    
-    override func loadView() {
-        self.baseView = PlaylistView.create(owner: self)
-        self.view = self.baseView
+        fatalError("Not implemented decode()")
     }
     
     override func viewDidLoad() {

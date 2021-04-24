@@ -17,7 +17,9 @@ class MainViewController : UIViewController, MainViewControllerProtocol {
     public static let DEFAULT_SELECTED_TAB: TabID = .Albums
     public static let TAB_SIZE = CGSize(width: 0, height: 60.0)
     
-    private var baseView: MainView?
+    var baseView: MainView? {
+        return self.view as? MainView
+    }
     
     private var audioStorage: AudioLibrary = AudioLibrary()
     
@@ -43,11 +45,6 @@ class MainViewController : UIViewController, MainViewControllerProtocol {
     }
     
     private var tabsCache: [TabID: BaseView] = [:]
-    
-    override func loadView() {
-        self.baseView = MainView.create(owner: self)
-        self.view = self.baseView!
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

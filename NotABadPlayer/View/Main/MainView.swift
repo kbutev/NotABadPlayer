@@ -76,14 +76,3 @@ class MainView : UIView
         view.rightAnchor.constraint(equalTo: guide.rightAnchor).isActive = true
     }
 }
-
-// Builder
-extension MainView {
-    class func create(owner: Any) -> MainView? {
-        let bundle = Bundle.main
-        let nibName = String(describing: MainView.self)
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        
-        return nib.instantiate(withOwner: owner, options: nil).first as? MainView
-    }
-}

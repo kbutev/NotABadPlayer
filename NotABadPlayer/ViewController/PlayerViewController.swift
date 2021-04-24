@@ -19,7 +19,9 @@ class PlayerViewController: UIViewController, PlayerViewControllerProtocol {
     // They will kinda get the idea about clicking on the cover image to see lyrics.
     public static let MAX_COUNT_LYRICS_TAP_TOAST_DISPLAY = 10
     
-    private var baseView: PlayerView?
+    var baseView: PlayerView? {
+        return self.view as? PlayerView
+    }
     
     private let presenter: PlayerPresenterProtocol?
     
@@ -31,13 +33,7 @@ class PlayerViewController: UIViewController, PlayerViewControllerProtocol {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.presenter = nil
-        super.init(coder: aDecoder)
-    }
-    
-    override func loadView() {
-        self.baseView = PlayerView.create(owner: self)
-        self.view = self.baseView
+        fatalError("Not implemented decode()")
     }
     
     override func viewDidLoad() {

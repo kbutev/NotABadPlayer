@@ -20,7 +20,9 @@ protocol SearchViewControllerProtocol: BasePlayingView {
 }
 
 class SearchViewController: UIViewController, SearchViewControllerProtocol {
-    private var baseView: SearchView?
+    var baseView: SearchView? {
+        return self.view as? SearchView
+    }
     
     private var presenter: SearchPresenterProtocol?
     
@@ -36,13 +38,7 @@ class SearchViewController: UIViewController, SearchViewControllerProtocol {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.presenter = nil
-        super.init(coder: aDecoder)
-    }
-    
-    override func loadView() {
-        self.baseView = SearchView.create(owner: self)
-        self.view = self.baseView!
+        fatalError("Not implemented decode()")
     }
     
     override func viewDidLoad() {

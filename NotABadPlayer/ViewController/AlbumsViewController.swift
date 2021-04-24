@@ -22,7 +22,9 @@ protocol AlbumsViewControllerProtocol: BaseView {
 }
 
 class AlbumsViewController: UIViewController, AlbumsViewControllerProtocol {
-    private var baseView: AlbumsView?
+    var baseView: AlbumsView? {
+        return self.view as? AlbumsView
+    }
     
     private let presenter: AlbumsPresenterProtocol?
     
@@ -35,13 +37,7 @@ class AlbumsViewController: UIViewController, AlbumsViewControllerProtocol {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.presenter = nil
-        super.init(coder: aDecoder)
-    }
-    
-    override func loadView() {
-        self.baseView = AlbumsView.create(owner: self)
-        self.view = self.baseView!
+        fatalError("Not implemented decode()")
     }
     
     override func viewDidLoad() {

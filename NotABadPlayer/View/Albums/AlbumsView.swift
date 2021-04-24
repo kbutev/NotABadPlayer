@@ -225,17 +225,6 @@ extension AlbumsView : CollectionIndexerDelegate {
     }
 }
 
-// Builder
-extension AlbumsView {
-    class func create(owner: Any) -> AlbumsView? {
-        let bundle = Bundle.main
-        let nibName = String(describing: AlbumsView.self)
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        
-        return nib.instantiate(withOwner: owner, options: nil).first as? AlbumsView
-    }
-}
-
 // Collection data source
 class CollectionAlbumsViewDataSource : NSObject, AlbumsViewDataSource
 {

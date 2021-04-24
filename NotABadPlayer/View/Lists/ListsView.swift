@@ -240,17 +240,6 @@ extension ListsView {
     }
 }
 
-// Builder
-extension ListsView {
-    class func create(owner: Any) -> ListsView? {
-        let bundle = Bundle.main
-        let nibName = String(describing: ListsView.self)
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        
-        return nib.instantiate(withOwner: owner, options: nil).first as? ListsView
-    }
-}
-
 // Table data source
 class ListsViewDataSource : NSObject, BaseListsViewDataSource
 {

@@ -481,14 +481,3 @@ extension SettingsView: SettingsPickActionDelegate {
         enableAllPickerViews()
     }
 }
-
-// Builder
-extension SettingsView {
-    class func create(owner: Any) -> SettingsView? {
-        let bundle = Bundle.main
-        let nibName = String(describing: SettingsView.self)
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        
-        return nib.instantiate(withOwner: owner, options: nil).first as? SettingsView
-    }
-}

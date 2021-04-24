@@ -253,17 +253,6 @@ extension PlaylistView {
     }
 }
 
-// Builder
-extension PlaylistView {
-    class func create(owner: Any) -> PlaylistView? {
-        let bundle = Bundle.main
-        let nibName = String(describing: PlaylistView.self)
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        
-        return nib.instantiate(withOwner: owner, options: nil).first as? PlaylistView
-    }
-}
-
 // Collection data source
 class PlaylistViewDataSource : NSObject, BasePlaylistViewDataSource
 {

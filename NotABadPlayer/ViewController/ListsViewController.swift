@@ -22,7 +22,9 @@ protocol ListsViewControllerProtocol: BaseView {
 }
 
 class ListsViewController: UIViewController, ListsViewControllerProtocol {
-    private var baseView: ListsView?
+    var baseView: ListsView? {
+        return self.view as? ListsView
+    }
     
     private let presenter: ListsPresenterProtocol?
     
@@ -41,13 +43,7 @@ class ListsViewController: UIViewController, ListsViewControllerProtocol {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.presenter = nil
-        super.init(coder: aDecoder)
-    }
-    
-    override func loadView() {
-        self.baseView = ListsView.create(owner: self)
-        self.view = self.baseView!
+        fatalError("Not implemented decode()")
     }
     
     override func viewDidLoad() {

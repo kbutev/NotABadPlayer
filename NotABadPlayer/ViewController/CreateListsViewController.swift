@@ -15,11 +15,14 @@ protocol CreateListsViewControllerProtocol: BaseView {
 class CreateListsViewController: UIViewController, CreateListsViewControllerProtocol, SearchViewControllerProtocol, CreateListsPresenterDelegate {
     public static let PLAYLIST_NAME_LENGTH_LIMIT = 16
     
+    var baseView: CreateListView? {
+        return self.view as? CreateListView
+    }
+    
     var searchView: SearchViewControllerProtocol {
         return self
     }
     
-    private var baseView: CreateListView?
     private let presenter: CreateListsPresenter
     
     private let isEditingPlaylist: Bool
@@ -41,8 +44,7 @@ class CreateListsViewController: UIViewController, CreateListsViewControllerProt
     }
     
     override func loadView() {
-        self.baseView = CreateListView.create(owner: self)
-        self.view = self.baseView!
+        self.view = CreateListView.create(owner: self)
     }
     
     override func viewDidLoad() {

@@ -24,7 +24,7 @@ class CreateListAddedTrackCell: UITableViewCell
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("Not implemented decode()")
     }
     
     override func awakeFromNib() {

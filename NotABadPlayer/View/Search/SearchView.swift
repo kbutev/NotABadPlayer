@@ -163,14 +163,3 @@ extension SearchView: QuickPlayerObserver {
         
     }
 }
-
-// Builder
-extension SearchView {
-    class func create(owner: Any) -> SearchView? {
-        let bundle = Bundle.main
-        let nibName = String(describing: SearchView.self)
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        
-        return nib.instantiate(withOwner: owner, options: nil).first as? SearchView
-    }
-}

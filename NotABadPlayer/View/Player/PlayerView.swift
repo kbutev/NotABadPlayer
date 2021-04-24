@@ -473,14 +473,3 @@ extension PlayerView {
         
     }
 }
-
-// Builder
-extension PlayerView {
-    class func create(owner: Any) -> PlayerView? {
-        let bundle = Bundle.main
-        let nibName = String(describing: PlayerView.self)
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        
-        return nib.instantiate(withOwner: owner, options: nil).first as? PlayerView
-    }
-}

@@ -13,7 +13,9 @@ protocol SettingsViewControllerProtocol: BaseView {
 }
 
 class SettingsViewController: UIViewController, SettingsViewControllerProtocol {
-    private var baseView: SettingsView?
+    var baseView: SettingsView? {
+        return self.view as? SettingsView
+    }
     
     private let presenter: SettingsPresenterProtocol?
     
@@ -26,14 +28,7 @@ class SettingsViewController: UIViewController, SettingsViewControllerProtocol {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.presenter = nil
-        self.rootView = nil
-        super.init(coder: aDecoder)
-    }
-    
-    override func loadView() {
-        self.baseView = SettingsView.create(owner: self)
-        self.view = self.baseView!
+        fatalError("Not implemented decode()")
     }
     
     override func viewDidLoad() {
