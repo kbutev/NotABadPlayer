@@ -30,13 +30,16 @@ class AudioTrackProtocol: Equatable, Codable {
     // Album cover getter helper.
     public var albumCoverImage : UIImage? {
         get {
-            if let albumCover = self.albumCover
-            {
+            if let albumCover = self.albumCover {
                 return albumCover.image(at: albumCover.bounds.size)
             }
             
-            return nil
+            return UIImage(named: "cover_album_unknown")
         }
+    }
+    
+    public var hasCoverImage : Bool {
+        return self.albumCover != nil
     }
     
     static func == (lhs: AudioTrackProtocol, rhs: AudioTrackProtocol) -> Bool {
